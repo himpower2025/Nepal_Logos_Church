@@ -4,13 +4,13 @@
   "description": "An application for the Nepal Logos Church community for worship, fellowship, and prayer.",
   "icons": [
     {
-      "src": "https://i.ibb.co/Vvz1DNM/logos-church-new-high-res.png",
-      "type": "image/png",
+      "src": "https://i.ibb.co/F8L9fQ6/logos-church-new.jpg",
+      "type": "image/jpeg",
       "sizes": "192x192"
     },
     {
-      "src": "https://i.ibb.co/Vvz1DNM/logos-church-new-high-res.png",
-      "type": "image/png",
+      "src": "https://i.ibb.co/F8L9fQ6/logos-church-new.jpg",
+      "type": "image/jpeg",
       "sizes": "512x512"
     }
   ],
