@@ -879,13 +879,13 @@ const NotificationPanel = ({ notifications, onClose }: { notifications: Notifica
 
 const App = () => {
     const [user, setUser] = React.useState<User | null>(null);
-    const [church, setChurch] = React.useState(CHURCHES[0]); // Default to the first church
+    const [church] = React.useState(CHURCHES[0]); // Default to the first church
     const [activePage, setActivePage] = React.useState('worship');
     
     // Data states
     const [chats, setChats] = React.useState(MOCK_CHATS);
     const [prayerRequests, setPrayerRequests] = React.useState(MOCK_PRAYER_REQUESTS);
-    const [notifications, setNotifications] = React.useState(MOCK_NOTIFICATIONS);
+    const [notifications] = React.useState(MOCK_NOTIFICATIONS);
 
     // View states
     const [activeChatId, setActiveChatId] = React.useState<string | null>(null);
