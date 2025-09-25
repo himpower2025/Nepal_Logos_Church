@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import churchLogo from './assets/logo.jpg';
+import qrCodeImage from './assets/qr-code.png';
 
 // --- Platform Configuration ---
 
@@ -30,7 +31,7 @@ const CHURCHES: Church[] = [
         name: 'Nepal Logos Church',
         logo: churchLogo,
         offeringDetails: {
-            qrCodeUrl: 'https://i.ibb.co/9g0P5P3/logos-qr-code.png', // Using a stable URL for the QR code
+            qrCodeUrl: qrCodeImage, // Use local QR code image
             bankName: 'Global IME Bank',
             accountHolder: 'YAM PRADHAN',
             accountNumber: '10507010042662'
@@ -727,7 +728,7 @@ const PROVERBS_NNRV: { [key: number]: string } = {
 ४ धनले धेरै साथीहरू बनाउँछ, तर गरीब मानिस उसको साथीबाट अलग हुन्छ।
 ५ झूटो साक्षी दण्डविना रहनेछैन, र जसले झूट बोल्छ, ऊ उम्कनेछैन।
 ६ धेरैले उदार मानिसको निगाह खोज्छन्, र उपहार दिने मानिसको हरेक व्यक्ति मित्र हो।
-७ गरीब मानिसका सबै दाजुभाइले उसलाई घृणा गर्छन्, उसका साथीहरू झन् कति बढी ऊबाट टाढा जान्छन्! उसले वचनहरूले तिनीहरूलाई खेद्छ, तर तिनीहरू कतै छैनन्।
+७ गरीब मानिसका सबै दाजुभाइले उसलाई घृणा गर्छन्, ਉਸका साथीहरू झन् कति बढी ऊबाट टाढा जान्छन्! उसले वचनहरूले तिनीहरूलाई खेद्छ, तर तिनीहरू कतै छैनन्।
 ८ जसले बुद्धि प्राप्त गर्छ, उसले आफ्नै आत्मालाई प्रेम गर्छ, जसले समझलाई जोगाउँछ, उसले समृद्धि पाउनेछ।
 ९ झूटो साक्षी दण्डविना रहनेछैन, र जसले झूट बोल्छ, ऊ नाश हुनेछ।
 १० मूर्खको निम्ति विलासिता सुहाउँदैन, दासले राजकुमारहरूमाथि शासन गर्नु झन् कति कम सुहाउँछ।
