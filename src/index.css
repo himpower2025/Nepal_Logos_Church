@@ -44,6 +44,27 @@ html, body, #root {
     font-size: var(--font-size-base);
 }
 
+/* --- Loading Screen --- */
+.loading-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: var(--primary-color-dark);
+}
+.loading-logo {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+
 /* --- Church Selection Screen --- */
 .church-selection-container {
     display: flex;
@@ -622,6 +643,8 @@ html, body, #root {
     max-width: 75%;
     width: fit-content;
     line-height: 1.4;
+    display: flex;
+    flex-direction: column;
 }
 .message-bubble.sent {
     background-color: var(--sent-bubble-color);
@@ -632,6 +655,10 @@ html, body, #root {
     background-color: var(--received-bubble-color);
     align-self: flex-start;
     border-bottom-left-radius: 4px;
+}
+.message-text {
+    margin: 0;
+    word-break: break-word;
 }
 .message-timestamp {
     display: block;
@@ -644,19 +671,56 @@ html, body, #root {
 .message-image, .message-video {
     max-width: 100%;
     border-radius: 10px;
-    margin-top: var(--space-sm);
-}
-.message-video {
+    margin-bottom: var(--space-sm);
     background-color: #000;
+    cursor: pointer;
 }
 
+
+.message-input-area {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--secondary-color);
+    border-top: 1px solid #ccc;
+    flex-shrink: 0;
+}
+.media-preview-container {
+    position: relative;
+    padding: var(--space-sm);
+    background-color: #e0e0e0;
+    width: fit-content;
+    margin: var(--space-sm);
+    border-radius: 8px;
+}
+.media-preview-container img, .media-preview-container video {
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 4px;
+    display: block;
+}
+.cancel-media-button {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+}
+.cancel-media-button .material-symbols-outlined { font-size: 16px; }
 
 .message-input-container {
     display: flex;
     align-items: center;
     padding: var(--space-sm);
     background-color: var(--secondary-color);
-    border-top: 1px solid #ccc;
     flex-shrink: 0;
     position: relative;
     gap: var(--space-sm);
@@ -675,10 +739,16 @@ html, body, #root {
 .input-action-button, .send-button {
     background: none;
     border: none;
-    padding: var(--space-sm);
+    padding: 0;
     color: #616161;
     cursor: pointer;
     flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .send-button { color: var(--primary-color); }
 
@@ -1019,6 +1089,16 @@ html, body, #root {
 }
 .modal-form button {
     align-self: center;
+}
+.form-field {
+    margin-bottom: var(--space-sm);
+}
+.form-label {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: #616161;
+    margin-bottom: var(--space-xs);
+    font-weight: 500;
 }
 
 .image-upload-container {
