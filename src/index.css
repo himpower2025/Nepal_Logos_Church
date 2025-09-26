@@ -328,8 +328,9 @@ html, body, #root {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex-grow: 1;
-    padding: var(--space-sm) 4px;
+    flex: 1; /* Use flex shorthand for equal distribution and shrinking */
+    min-width: 0; /* Allow items to shrink below their content width */
+    padding: var(--space-sm) 2px; /* Slightly reduce horizontal padding */
     background: none;
     border: none;
     color: #757575;
@@ -1326,4 +1327,10 @@ html, body, #root {
     bottom: 75px;
     right: 15px;
   }
+}
+
+@media (max-width: 340px) {
+    .nav-item span {
+        font-size: 9px;
+    }
 }
