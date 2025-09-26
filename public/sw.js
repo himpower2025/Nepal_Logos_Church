@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nepal-logos-church-v8'; // Increment version on significant changes
+const CACHE_NAME = 'nepal-logos-church-v9'; // Increment version on significant changes
 
 // These are cached on install for basic offline fallback.
 const APP_SHELL_URLS = [
@@ -63,4 +63,46 @@ self.addEventListener('fetch', event => {
         })
     );
   }
+});
+
+self.addEventListener('push', event => {
+  const data = event.data ? event.data.json() : {
+      body: 'You have a new notification.',
+      url: '/'
+  };
+  const title = 'Nepal Logos Church';
+  const options = {
+    body: data.body,
+    icon: '/logo192.png',
+    badge: '/logo192.png', // Badge should be monochrome, but this works for demo
+    data: {
+      url: data.url
+    }
+  };
+
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  const urlToOpen = new URL(event.notification.data.url || '/', self.location.origin).href;
+
+  event.waitUntil(
+    clients.matchAll({
+      type: 'window',
+      includeUncontrolled: true,
+    }).then(windowClients => {
+      // Check if a window is already open.
+      for(let i=0; i<windowClients.length; i++) {
+        const client = windowClients[i];
+        if (client.url === urlToOpen && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      // If not, open a new window.
+      if (clients.openWindow) {
+        return clients.openWindow(urlToOpen);
+      }
+    })
+  );
 });

@@ -779,6 +779,19 @@ html, body, #root {
     text-align: center;
     margin-bottom: var(--space-md);
 }
+.modal-search-input {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    margin-bottom: var(--space-md);
+    border: 1px solid #bdbdbd;
+    border-radius: 20px;
+    font-size: var(--font-size-base);
+}
+.modal-search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 77, 64, 0.2);
+}
 .new-chat-options h4 {
     margin-top: var(--space-md);
     margin-bottom: var(--space-sm);
@@ -787,7 +800,7 @@ html, body, #root {
     padding-bottom: var(--space-xs);
 }
 .user-list {
-    max-height: 150px;
+    max-height: 200px;
     overflow-y: auto;
 }
 .user-list-item {
@@ -798,7 +811,11 @@ html, body, #root {
 .user-list-item:hover {
     background-color: #f0f0f0;
 }
-
+.no-results {
+    padding: var(--space-md);
+    text-align: center;
+    color: #757575;
+}
 
 /* Prayer Page */
 .prayer-item {
