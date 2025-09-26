@@ -329,7 +329,7 @@ html, body, #root {
     align-items: center;
     justify-content: center;
     flex-grow: 1;
-    padding: var(--space-sm) 0;
+    padding: var(--space-sm) 4px;
     background: none;
     border: none;
     color: #757575;
@@ -342,8 +342,10 @@ html, body, #root {
     font-size: 24px;
 }
 .nav-item span {
-    font-size: var(--font-size-sm);
+    font-size: 11px;
     margin-top: var(--space-xs);
+    text-align: center;
+    line-height: 1.2;
 }
 
 .nav-item.active {
@@ -533,6 +535,46 @@ html, body, #root {
 .vod-date {
     font-size: var(--font-size-sm);
     color: #757575;
+}
+
+/* Podcast Page */
+.podcast-controls {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding-top: var(--space-sm);
+}
+.recording-indicator {
+    text-align: center;
+    margin-top: var(--space-md);
+    color: var(--danger-color);
+    font-weight: 500;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+.podcast-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+.podcast-title {
+    font-weight: 500;
+}
+.podcast-player {
+    width: 100%;
+}
+.audio-preview {
+    margin-bottom: var(--space-md);
+    text-align: center;
+}
+.audio-preview p {
+    margin-bottom: var(--space-xs);
+    font-size: var(--font-size-sm);
+    color: var(--text-color-dark);
+}
+.audio-preview audio {
+    width: 100%;
 }
 
 
@@ -1274,7 +1316,7 @@ html, body, #root {
 
   /* Adjust nav bar for smaller space */
   .nav-item span {
-    font-size: 0.7rem;
+    font-size: 10px;
   }
 
   /* Adjust FAB button */
