@@ -1072,7 +1072,7 @@ const App = () => {
     const [prayerRequests, setPrayerRequests] = React.useState(MOCK_PRAYER_REQUESTS);
     const [news, setNews] = React.useState(MOCK_NEWS);
     const [worshipVODs, setWorshipVODs] = React.useState(MOCK_VODS);
-    const [notifications, setNotifications] = React.useState(MOCK_NOTIFICATIONS);
+    const [notifications] = React.useState(MOCK_NOTIFICATIONS);
 
     // View states
     const [activeChatId, setActiveChatId] = React.useState<string | null>(null);
