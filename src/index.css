@@ -1,3 +1,4 @@
+
 :root {
     --primary-color: #004d40;
     --primary-color-dark: #00251a;
@@ -11,6 +12,8 @@
     --font-family: 'Roboto', sans-serif;
     --sent-bubble-color: #dcf8c6;
     --received-bubble-color: #ffffff;
+    --danger-color: #d32f2f;
+    --danger-color-dark: #c62828;
 
     /* Responsive Spacing System */
     --spacing-unit: 1rem;
@@ -291,11 +294,14 @@ html, body, #root {
     flex-grow: 1;
     overflow-y: auto;
 }
-.page-content h2 {
+.page-content h2, .page-content h3 {
     margin-bottom: var(--space-md);
     color: var(--primary-color);
-    font-size: var(--font-size-h2);
 }
+.page-content h2 { font-size: var(--font-size-h2); }
+.page-content h3 { font-size: var(--font-size-lg); }
+
+
 /* This ensures that when a page doesn't need to scroll, it still fills the space */
 .chat-list-page {
     padding-bottom: var(--space-md); /* Fab is covering this */
@@ -513,6 +519,22 @@ html, body, #root {
     border-top: 1px solid #ccc;
     margin-top: var(--space-md);
 }
+.vod-item {
+    gap: var(--space-sm);
+    text-decoration: none;
+    color: var(--text-color-dark);
+}
+.vod-info {
+    flex-grow: 1;
+}
+.vod-title {
+    font-weight: 500;
+}
+.vod-date {
+    font-size: var(--font-size-sm);
+    color: #757575;
+}
+
 
 /* Bible Page */
 .bible-section-container {
@@ -599,7 +621,7 @@ html, body, #root {
     text-overflow: ellipsis;
 }
 
-.conversation-page {
+.conversation-page, .admin-page {
     position: absolute;
     top: 0;
     left: 0;
@@ -611,7 +633,7 @@ html, body, #root {
     flex-direction: column;
     animation: slideInUp 0.3s ease-out;
 }
-.conversation-header {
+.conversation-header, .admin-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1154,6 +1176,77 @@ html, body, #root {
 .image-preview button .material-symbols-outlined {
     font-size: 20px;
 }
+
+/* --- Admin Panel Styles --- */
+.admin-tabs {
+    display: flex;
+    background-color: var(--card-background);
+    box-shadow: 0 1px 3px var(--shadow-color);
+    flex-shrink: 0;
+}
+.admin-tabs button {
+    flex-grow: 1;
+    padding: var(--space-md);
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: var(--font-size-base);
+    color: #757575;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+}
+.admin-tabs button.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    font-weight: 500;
+}
+.admin-content {
+    padding: var(--space-md);
+    overflow-y: auto;
+    flex-grow: 1;
+}
+.admin-content h3 {
+    font-size: var(--font-size-h2);
+    margin-bottom: var(--space-lg);
+}
+.admin-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+.admin-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--card-background);
+    padding: var(--space-md);
+    border-radius: 4px;
+    box-shadow: 0 1px 2px var(--shadow-color);
+}
+.admin-list-item > span {
+    font-weight: 500;
+}
+.admin-list-item > div {
+    display: flex;
+    gap: var(--space-sm);
+}
+.admin-button-sm {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: var(--font-size-sm);
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+.admin-button-sm.danger {
+    background-color: var(--danger-color);
+    color: white;
+    border-color: var(--danger-color);
+}
+.admin-button-sm.danger:hover {
+    background-color: var(--danger-color-dark);
+}
+
 
 /* --- Responsive Design --- */
 @media (max-width: 375px) {
