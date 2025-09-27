@@ -580,35 +580,39 @@ html, body, #root {
 
 
 /* Bible Page */
-.bible-section-container {
-    margin-bottom: var(--space-md);
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px var(--shadow-color);
-}
-
 .bible-card {
     cursor: pointer;
     transition: background-color 0.2s ease;
-    margin-bottom: 0;
-    border-radius: 8px;
-    box-shadow: none;
+    margin-bottom: var(--space-sm); /* Add space between cards */
 }
 .bible-card:hover {
     background-color: #f9f9f9;
 }
-
 .bible-card h3 {
     margin-bottom: var(--space-xs);
     font-size: var(--font-size-lg);
     font-weight: 500;
     color: var(--primary-color);
 }
-
 .bible-card p {
     color: #616161;
     font-size: var(--font-size-sm);
 }
+.bible-text-content {
+    max-height: 40vh;
+    overflow-y: auto;
+    text-align: left;
+    line-height: 1.8;
+    color: #424242;
+    padding: var(--space-md);
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    margin-bottom: var(--space-md);
+    white-space: pre-wrap; /* To respect newlines in the string */
+    animation: fadeIn 0.3s ease;
+}
+
 
 /* News Page */
 .news-item {
@@ -676,6 +680,12 @@ html, body, #root {
     flex-direction: column;
     animation: slideInUp 0.3s ease-out;
 }
+
+@keyframes slideInUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
 .conversation-header, .admin-header {
     display: flex;
     justify-content: space-between;
@@ -723,7 +733,8 @@ html, body, #root {
 }
 .message-text {
     margin: 0;
-    word-break: break-word;
+    word-wrap: break-word;
+    white-space: pre-wrap;
 }
 .message-timestamp {
     display: block;
@@ -736,10 +747,12 @@ html, body, #root {
 .message-image, .message-video {
     max-width: 100%;
     border-radius: 10px;
-    margin-bottom: var(--space-sm);
-    background-color: #000;
+    background-color: #e0e0e0;
     cursor: pointer;
+    display: block;
 }
+.message-bubble.sent .message-image, .message-bubble.sent .message-video { margin-bottom: var(--space-xs); }
+.message-bubble.received .message-image, .message-bubble.received .message-video { margin-bottom: var(--space-xs); }
 
 
 .message-input-area {
@@ -822,19 +835,6 @@ html, body, #root {
     text-align: center;
     margin-bottom: var(--space-md);
 }
-.modal-search-input {
-    width: 100%;
-    padding: var(--space-sm) var(--space-md);
-    margin-bottom: var(--space-md);
-    border: 1px solid #bdbdbd;
-    border-radius: 20px;
-    font-size: var(--font-size-base);
-}
-.modal-search-input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(0, 77, 64, 0.2);
-}
 .new-chat-options h4 {
     margin-top: var(--space-md);
     margin-bottom: var(--space-sm);
@@ -843,7 +843,7 @@ html, body, #root {
     padding-bottom: var(--space-xs);
 }
 .user-list {
-    max-height: 200px;
+    max-height: 250px;
     overflow-y: auto;
 }
 .user-list-item {
@@ -854,11 +854,7 @@ html, body, #root {
 .user-list-item:hover {
     background-color: #f0f0f0;
 }
-.no-results {
-    padding: var(--space-md);
-    text-align: center;
-    color: #757575;
-}
+
 
 /* Prayer Page */
 .prayer-item {
@@ -976,11 +972,6 @@ html, body, #root {
     flex-direction: column;
 }
 
-@keyframes slideInUp {
-    from { transform: translateY(50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
 .modal-close-button {
     position: absolute;
     top: var(--space-sm);
@@ -1031,46 +1022,6 @@ html, body, #root {
 }
 .copy-button .material-symbols-outlined { font-size: 1rem; }
 
-/* Bible Reading Modal */
-.bible-reading-modal-content {
-    text-align: center;
-}
-.bible-reading-modal-content h3 {
-    font-size: var(--font-size-h1);
-    font-weight: 500;
-    color: var(--primary-color);
-    margin-bottom: var(--space-sm);
-}
-.bible-reading-modal-content h4 {
-    font-size: var(--font-size-lg);
-    font-weight: bold;
-    color: var(--text-color-dark);
-    margin-bottom: var(--space-lg);
-}
-.bible-text-content {
-    max-height: 50vh;
-    overflow-y: auto;
-    text-align: left;
-    line-height: 1.8;
-    color: #424242;
-    padding: var(--space-md);
-    border: 1px solid #eee;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    margin-bottom: var(--space-lg);
-}
-.bible-text-content p {
-    white-space: pre-wrap; /* To respect newlines in the string */
-}
-.bible-prompt {
-    color: #616161;
-    line-height: 1.6;
-    margin-bottom: var(--space-lg);
-}
-.close-reading-button {
-    margin-top: var(--space-md);
-}
-
 /* Prayer Details Modal */
 .prayer-details-modal {
     flex-grow: 1;
@@ -1084,7 +1035,7 @@ html, body, #root {
 }
 .prayer-details-content h3 { font-size: var(--font-size-h2); margin-bottom: var(--space-xs); }
 .prayer-author { font-size: var(--font-size-sm); color: #757575; margin-bottom: var(--space-md); }
-.prayer-main-content { line-height: 1.6; }
+.prayer-main-content { line-height: 1.6; white-space: pre-wrap; }
 
 .prayer-comments-section {
     flex-grow: 1;
@@ -1144,7 +1095,7 @@ html, body, #root {
 }
 
 
-/* Modal Form */
+/* Modal Form (Add Prayer, Save Podcast) */
 .modal-form {
     display: flex;
     flex-direction: column;
@@ -1172,16 +1123,15 @@ html, body, #root {
 .modal-form button {
     align-self: center;
 }
-.form-field {
-    margin-bottom: var(--space-sm);
+.modal-search-input {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    margin-bottom: var(--space-md);
+    border: 1px solid #bdbdbd;
+    border-radius: 20px;
+    font-size: var(--font-size-base);
 }
-.form-label {
-    display: block;
-    font-size: var(--font-size-sm);
-    color: #616161;
-    margin-bottom: var(--space-xs);
-    font-weight: 500;
-}
+
 
 .image-upload-container {
     width: 100%;
@@ -1237,22 +1187,25 @@ html, body, #root {
     font-size: 20px;
 }
 
-/* --- Admin Panel Styles --- */
+/* Admin Page */
+.admin-page {
+    background-color: var(--secondary-color);
+}
 .admin-tabs {
     display: flex;
-    background-color: var(--card-background);
-    box-shadow: 0 1px 3px var(--shadow-color);
     flex-shrink: 0;
+    border-bottom: 1px solid #ccc;
+    background-color: var(--card-background);
 }
 .admin-tabs button {
-    flex-grow: 1;
-    padding: var(--space-md);
+    flex: 1;
+    padding: var(--space-md) var(--space-sm);
     border: none;
     background: none;
     cursor: pointer;
     font-size: var(--font-size-base);
-    color: #757575;
-    border-bottom: 2px solid transparent;
+    color: #616161;
+    border-bottom: 3px solid transparent;
     transition: color 0.2s, border-color 0.2s;
 }
 .admin-tabs button.active {
@@ -1265,48 +1218,38 @@ html, body, #root {
     overflow-y: auto;
     flex-grow: 1;
 }
-.admin-content h3 {
-    font-size: var(--font-size-h2);
-    margin-bottom: var(--space-lg);
-}
 .admin-list {
     display: flex;
     flex-direction: column;
     gap: var(--space-sm);
+    margin-top: var(--space-md);
 }
 .admin-list-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: var(--space-sm) var(--space-md);
     background-color: var(--card-background);
-    padding: var(--space-md);
     border-radius: 4px;
-    box-shadow: 0 1px 2px var(--shadow-color);
+    border: 1px solid #eee;
 }
-.admin-list-item > span {
-    font-weight: 500;
-}
-.admin-list-item > div {
-    display: flex;
-    gap: var(--space-sm);
+.admin-list-item span {
+    flex-grow: 1;
+    margin-right: var(--space-sm);
 }
 .admin-button-sm {
     padding: var(--space-xs) var(--space-sm);
-    font-size: var(--font-size-sm);
     border: 1px solid #ccc;
-    border-radius: 4px;
     background-color: #f0f0f0;
     cursor: pointer;
+    border-radius: 4px;
+    margin-left: var(--space-sm);
 }
 .admin-button-sm.danger {
     background-color: var(--danger-color);
     color: white;
-    border-color: var(--danger-color);
+    border-color: var(--danger-color-dark);
 }
-.admin-button-sm.danger:hover {
-    background-color: var(--danger-color-dark);
-}
-
 
 /* --- Responsive Design --- */
 @media (max-width: 375px) {
@@ -1317,7 +1260,7 @@ html, body, #root {
 
   /* Adjust nav bar for smaller space */
   .nav-item span {
-    font-size: 10px;
+    font-size: 0.7rem;
   }
 
   /* Adjust FAB button */
@@ -1327,10 +1270,4 @@ html, body, #root {
     bottom: 75px;
     right: 15px;
   }
-}
-
-@media (max-width: 340px) {
-    .nav-item span {
-        font-size: 9px;
-    }
 }
