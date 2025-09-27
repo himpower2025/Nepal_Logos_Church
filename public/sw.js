@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nepal-logos-church-v11'; // Increment version on significant changes
+const CACHE_NAME = 'nepal-logos-church-v12'; // Increment version on significant changes
 
 // These are cached on install for basic offline fallback.
 const APP_SHELL_URLS = [
@@ -15,8 +15,14 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(APP_SHELL_URLS))
-      .then(() => self.skipWaiting())
+      // Do not skipWaiting here. Let the user activate the new service worker.
   );
+});
+
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener('activate', event => {
