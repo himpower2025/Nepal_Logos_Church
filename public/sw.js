@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nepal-logos-church-v10'; // Increment version on significant changes
+const CACHE_NAME = 'nepal-logos-church-v11'; // Increment version on significant changes
 
 // These are cached on install for basic offline fallback.
 const APP_SHELL_URLS = [
