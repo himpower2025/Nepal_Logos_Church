@@ -11,8 +11,7 @@
     --font-family: 'Roboto', sans-serif;
     --sent-bubble-color: #dcf8c6;
     --received-bubble-color: #ffffff;
-    --danger-color: #d32f2f;
-    --danger-color-dark: #c62828;
+    --logo-background-color: #FAF7F2;
 
     /* Responsive Spacing System */
     --spacing-unit: 1rem;
@@ -46,85 +45,6 @@ html, body, #root {
     font-size: var(--font-size-base);
 }
 
-/* --- Loading Screen --- */
-.loading-screen {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    background-color: var(--primary-color-dark);
-}
-.loading-logo {
-    width: 120px;
-    height: 120px;
-    object-fit: contain;
-    animation: pulse 1.5s infinite ease-in-out;
-}
-@keyframes pulse {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.05); opacity: 0.8; }
-    100% { transform: scale(1); opacity: 1; }
-}
-
-
-/* --- Church Selection Screen --- */
-.church-selection-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-color-dark));
-}
-.church-selection-box {
-    background: var(--card-background);
-    padding: var(--space-xl) var(--space-lg);
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    width: 90%;
-    max-width: 400px;
-    animation: fadeIn 0.5s ease-in-out;
-}
-.church-selection-box h2 {
-    margin-bottom: var(--space-sm);
-    color: var(--primary-color);
-}
-.church-selection-box p {
-    margin-bottom: var(--space-lg);
-    color: #616161;
-}
-.church-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-md);
-}
-.church-list-item {
-    display: flex;
-    align-items: center;
-    gap: var(--space-md);
-    padding: var(--space-sm) var(--space-md);
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s, box-shadow 0.2s;
-    background-color: #fafafa;
-    text-align: left;
-    font-size: 1.1rem;
-    font-family: var(--font-family);
-    color: var(--text-color-dark);
-}
-.church-list-item:hover {
-    background-color: #f5f5f5;
-    box-shadow: 0 2px 5px var(--shadow-color);
-}
-.church-item-logo {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
-    border-radius: 4px;
-}
-
-
 /* --- Login Page --- */
 .login-container {
     display: flex;
@@ -156,7 +76,7 @@ html, body, #root {
     margin-bottom: var(--space-md);
     object-fit: contain;
     border-radius: 50%;
-    background-color: white;
+    background-color: var(--logo-background-color);
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     padding: 4px;
 }
@@ -242,7 +162,7 @@ html, body, #root {
     height: 48px;
     object-fit: contain;
     border-radius: 50%;
-    background-color: white;
+    background-color: var(--logo-background-color);
     padding: 2px;
 }
 
@@ -293,17 +213,13 @@ html, body, #root {
     flex-grow: 1;
     overflow-y: auto;
 }
-.page-content h2, .page-content h3 {
+.page-content h2 {
     margin-bottom: var(--space-md);
     color: var(--primary-color);
+    font-size: var(--font-size-h2);
 }
-.page-content h2 { font-size: var(--font-size-h2); }
-.page-content h3 { font-size: var(--font-size-lg); }
-
-
-/* This ensures that when a page doesn't need to scroll, it still fills the space */
 .chat-list-page {
-    padding-bottom: var(--space-md); /* Fab is covering this */
+    padding-bottom: var(--space-md); 
 }
 
 
@@ -327,9 +243,8 @@ html, body, #root {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex: 1; /* Use flex shorthand for equal distribution and shrinking */
-    min-width: 0; /* Allow items to shrink below their content width */
-    padding: var(--space-sm) 2px; /* Slightly reduce horizontal padding */
+    flex-grow: 1;
+    padding: var(--space-sm) 0;
     background: none;
     border: none;
     color: #757575;
@@ -342,10 +257,8 @@ html, body, #root {
     font-size: 24px;
 }
 .nav-item span {
-    font-size: 11px;
+    font-size: var(--font-size-sm);
     margin-top: var(--space-xs);
-    text-align: center;
-    line-height: 1.2;
 }
 
 .nav-item.active {
@@ -518,48 +431,57 @@ html, body, #root {
 .worship-offering-container {
     text-align: center;
     padding-top: var(--space-md);
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #eee;
     margin-top: var(--space-md);
 }
 .vod-item {
-    gap: var(--space-sm);
+    gap: var(--space-md);
     text-decoration: none;
     color: var(--text-color-dark);
 }
+.vod-item .material-symbols-outlined:first-child {
+    color: var(--primary-color);
+}
 .vod-info {
+    display: flex;
+    flex-direction: column;
     flex-grow: 1;
+    overflow: hidden;
+    white-space: nowrap;
 }
 .vod-title {
     font-weight: 500;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .vod-date {
     font-size: var(--font-size-sm);
+    color: #757575;
+}
+.vod-item .material-symbols-outlined:last-child {
     color: #757575;
 }
 
 /* Podcast Page */
 .podcast-controls {
     display: flex;
-    gap: var(--space-md);
     flex-wrap: wrap;
+    gap: var(--space-md);
     justify-content: center;
-    align-items: center;
-    padding-top: var(--space-sm);
+    margin-top: var(--space-sm);
 }
 .recording-indicator {
     text-align: center;
     margin-top: var(--space-md);
-    color: var(--danger-color);
+    color: #d32f2f;
     font-weight: 500;
-    animation: pulse 1.5s infinite ease-in-out;
 }
 .podcast-item {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
+    padding: var(--space-md);
 }
 .podcast-title {
     font-weight: 500;
+    margin-bottom: var(--space-sm);
 }
 .podcast-player {
     width: 100%;
@@ -568,13 +490,9 @@ html, body, #root {
     margin-bottom: var(--space-md);
     text-align: center;
 }
-.audio-preview p {
-    margin-bottom: var(--space-xs);
-    font-size: var(--font-size-sm);
-    color: var(--text-color-dark);
-}
 .audio-preview audio {
     width: 100%;
+    margin-top: var(--space-sm);
 }
 
 
@@ -582,7 +500,7 @@ html, body, #root {
 .bible-card {
     cursor: pointer;
     transition: background-color 0.2s ease;
-    margin-bottom: var(--space-sm); /* Add space between cards */
+    margin-bottom: var(--space-md);
 }
 .bible-card:hover {
     background-color: #f9f9f9;
@@ -598,20 +516,17 @@ html, body, #root {
     font-size: var(--font-size-sm);
 }
 .bible-text-content {
-    max-height: 40vh;
-    overflow-y: auto;
     text-align: left;
     line-height: 1.8;
     color: #424242;
-    padding: var(--space-md);
-    border: 1px solid #eee;
-    border-radius: 8px;
     background-color: #f9f9f9;
+    margin-top: calc(-1 * var(--space-sm));
     margin-bottom: var(--space-md);
-    white-space: pre-wrap; /* To respect newlines in the string */
-    animation: fadeIn 0.3s ease;
+    animation: fadeIn 0.3s;
 }
-
+.bible-text-content p {
+    white-space: pre-wrap; /* To respect newlines in the string */
+}
 
 /* News Page */
 .news-item {
@@ -667,7 +582,7 @@ html, body, #root {
     text-overflow: ellipsis;
 }
 
-.conversation-page, .admin-page {
+.conversation-page {
     position: absolute;
     top: 0;
     left: 0;
@@ -679,13 +594,7 @@ html, body, #root {
     flex-direction: column;
     animation: slideInUp 0.3s ease-out;
 }
-
-@keyframes slideInUp {
-    from { transform: translateY(50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-.conversation-header, .admin-header {
+.conversation-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -732,7 +641,7 @@ html, body, #root {
 }
 .message-text {
     margin: 0;
-    word-wrap: break-word;
+    word-break: break-word;
     white-space: pre-wrap;
 }
 .message-timestamp {
@@ -743,15 +652,13 @@ html, body, #root {
     margin-top: var(--space-xs);
     margin-left: var(--space-sm);
 }
-.message-image, .message-video {
+.message-bubble .message-image, .message-bubble .message-video {
     max-width: 100%;
     border-radius: 10px;
+    margin-bottom: 0;
     background-color: #e0e0e0;
     cursor: pointer;
-    display: block;
 }
-.message-bubble.sent .message-image, .message-bubble.sent .message-video { margin-bottom: var(--space-xs); }
-.message-bubble.received .message-image, .message-bubble.received .message-video { margin-bottom: var(--space-xs); }
 
 
 .message-input-area {
@@ -842,7 +749,7 @@ html, body, #root {
     padding-bottom: var(--space-xs);
 }
 .user-list {
-    max-height: 250px;
+    max-height: 200px;
     overflow-y: auto;
 }
 .user-list-item {
@@ -852,6 +759,19 @@ html, body, #root {
 }
 .user-list-item:hover {
     background-color: #f0f0f0;
+}
+.modal-search-input {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    margin-bottom: var(--space-md);
+    border: 1px solid #bdbdbd;
+    border-radius: 8px;
+    font-size: var(--font-size-base);
+}
+.no-results {
+    padding: var(--space-md);
+    text-align: center;
+    color: #757575;
 }
 
 
@@ -971,6 +891,11 @@ html, body, #root {
     flex-direction: column;
 }
 
+@keyframes slideInUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
 .modal-close-button {
     position: absolute;
     top: var(--space-sm);
@@ -1034,7 +959,7 @@ html, body, #root {
 }
 .prayer-details-content h3 { font-size: var(--font-size-h2); margin-bottom: var(--space-xs); }
 .prayer-author { font-size: var(--font-size-sm); color: #757575; margin-bottom: var(--space-md); }
-.prayer-main-content { line-height: 1.6; white-space: pre-wrap; }
+.prayer-main-content { line-height: 1.6; }
 
 .prayer-comments-section {
     flex-grow: 1;
@@ -1094,7 +1019,7 @@ html, body, #root {
 }
 
 
-/* Modal Form (Add Prayer, Save Podcast) */
+/* Modal Form */
 .modal-form {
     display: flex;
     flex-direction: column;
@@ -1122,20 +1047,10 @@ html, body, #root {
 .modal-form button {
     align-self: center;
 }
-.modal-search-input {
-    width: 100%;
-    padding: var(--space-sm) var(--space-md);
-    margin-bottom: var(--space-md);
-    border: 1px solid #bdbdbd;
-    border-radius: 20px;
-    font-size: var(--font-size-base);
-}
-
 
 .image-upload-container {
     width: 100%;
 }
-
 .image-upload-label {
     display: flex;
     align-items: center;
@@ -1148,24 +1063,20 @@ html, body, #root {
     color: #757575;
     transition: background-color 0.2s, border-color 0.2s;
 }
-
 .image-upload-label:hover {
     background-color: #f5f5f5;
     border-color: var(--primary-color);
 }
-
 .image-preview {
     position: relative;
     text-align: center;
 }
-
 .image-preview img {
     max-width: 100%;
     max-height: 200px;
     border-radius: 8px;
     border: 1px solid #eee;
 }
-
 .image-preview button {
     position: absolute;
     top: 5px;
@@ -1186,25 +1097,41 @@ html, body, #root {
     font-size: 20px;
 }
 
-/* Admin Page */
+/* --- Admin Page --- */
 .admin-page {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     background-color: var(--secondary-color);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    animation: slideInUp 0.3s ease-out;
+}
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-sm) var(--space-md);
+    background-color: var(--primary-color-dark);
+    color: var(--text-color-light);
+    flex-shrink: 0;
 }
 .admin-tabs {
     display: flex;
-    flex-shrink: 0;
-    border-bottom: 1px solid #ccc;
     background-color: var(--card-background);
+    box-shadow: 0 2px 4px var(--shadow-color);
+    flex-shrink: 0;
 }
 .admin-tabs button {
     flex: 1;
-    padding: var(--space-md) var(--space-sm);
+    padding: var(--space-md) 0;
     border: none;
     background: none;
     cursor: pointer;
-    font-size: var(--font-size-base);
-    color: #616161;
-    border-bottom: 3px solid transparent;
+    color: #757575;
+    font-size: 0.9rem;
+    border-bottom: 2px solid transparent;
     transition: color 0.2s, border-color 0.2s;
 }
 .admin-tabs button.active {
@@ -1217,52 +1144,47 @@ html, body, #root {
     overflow-y: auto;
     flex-grow: 1;
 }
+.admin-content h3 { margin-bottom: var(--space-md); }
 .admin-list {
     display: flex;
     flex-direction: column;
     gap: var(--space-sm);
-    margin-top: var(--space-md);
 }
 .admin-list-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--space-sm) var(--space-md);
     background-color: var(--card-background);
+    padding: var(--space-sm) var(--space-md);
     border-radius: 4px;
-    border: 1px solid #eee;
-}
-.admin-list-item span {
-    flex-grow: 1;
-    margin-right: var(--space-sm);
+    box-shadow: 0 1px 2px var(--shadow-color);
 }
 .admin-button-sm {
-    padding: var(--space-xs) var(--space-sm);
-    border: 1px solid #ccc;
-    background-color: #f0f0f0;
-    cursor: pointer;
+    padding: 4px 8px;
+    font-size: 0.8rem;
     border-radius: 4px;
-    margin-left: var(--space-sm);
+    border: 1px solid #ccc;
+    background: #f5f5f5;
+    cursor: pointer;
+    margin-left: 8px;
 }
 .admin-button-sm.danger {
-    background-color: var(--danger-color);
-    color: white;
-    border-color: var(--danger-color-dark);
+    color: #d32f2f;
+    border-color: #d32f2f;
+}
+.admin-list-item select {
+    padding: 4px;
+    border-radius: 4px;
 }
 
 /* --- Responsive Design --- */
 @media (max-width: 375px) {
-  /* Reduce overall padding for very small screens */
   :root {
     --space-md: calc(var(--spacing-unit) * 0.75); /* 12px */
   }
-
-  /* Adjust nav bar for smaller space */
   .nav-item span {
     font-size: 0.7rem;
   }
-
-  /* Adjust FAB button */
   .fab {
     width: 52px;
     height: 52px;
