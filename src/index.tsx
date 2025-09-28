@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -1025,23 +1026,11 @@ const App = () => {
     const [showGroupMembersModal, setShowGroupMembersModal] = React.useState(false);
     const [showAddPodcastModal, setShowAddPodcastModal] = React.useState(false);
 
-    // Update prompt state
-    const [showUpdatePrompt, setShowUpdatePrompt] = React.useState(false);
-    const swRegistrationRef = React.useRef<ServiceWorkerRegistration | null>(null);
 
     React.useEffect(() => {
-        // Handle service worker updates
-        const handleSWUpdate = (e: Event) => {
-            const registration = (e as CustomEvent).detail;
-            if (registration && registration.waiting) {
-                swRegistrationRef.current = registration;
-                setShowUpdatePrompt(true);
-            }
-        };
-        window.addEventListener('swUpdate', handleSWUpdate);
-
         // This listener will automatically reload the page when a new service worker takes control.
         const onControllerChange = () => {
+            console.log("New service worker has taken control, reloading page.");
             window.location.reload();
         };
         navigator.serviceWorker.addEventListener('controllerchange', onControllerChange);
@@ -1059,19 +1048,10 @@ const App = () => {
         }
 
         return () => {
-            window.removeEventListener('swUpdate', handleSWUpdate);
             navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
         };
     }, []);
 
-    const handleUpdate = () => {
-        setShowUpdatePrompt(false);
-        if (swRegistrationRef.current && swRegistrationRef.current.waiting) {
-            // Send a message to the waiting service worker to activate.
-            // The 'controllerchange' listener will then handle the reload.
-            swRegistrationRef.current.waiting.postMessage({ type: 'SKIP_WAITING' });
-        }
-    };
 
     const handleLogin = (loggedInUser: User, fromStorage: boolean = false) => {
         CURRENT_USER.id = loggedInUser.id;
@@ -1269,12 +1249,6 @@ const App = () => {
             </header>
             <main className="main-content">
                 {renderPage()}
-                {showUpdatePrompt && (
-                    <div className="update-prompt">
-                        <p>A new version is available.</p>
-                        <button onClick={handleUpdate}>Reload</button>
-                    </div>
-                )}
             </main>
             
             {showNotifications && <NotificationPanel notifications={notifications} onClose={() => setShowNotifications(false)} />}

@@ -136,7 +136,6 @@ html, body, #root {
     background-color: var(--secondary-color);
     box-shadow: 0 0 20px var(--shadow-color);
     position: relative;
-    overflow: hidden;
 }
 
 .app-header {
@@ -635,37 +634,6 @@ html, body, #root {
 .image-preview { position: relative; text-align: center; }
 .image-preview img { max-width: 100%; max-height: 200px; border-radius: 8px; border: 1px solid #eee; }
 .image-preview button { position: absolute; top: 5px; right: 5px; background-color: rgba(0, 0, 0, 0.6); color: white; border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; }
-
-/* --- Update Prompt --- */
-.update-prompt {
-    position: absolute;
-    bottom: 80px; /* Position above nav bar */
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: var(--primary-color-dark);
-    color: white;
-    padding: var(--space-sm) var(--space-md);
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    z-index: 1002;
-    display: flex;
-    align-items: center;
-    gap: var(--space-md);
-    animation: fadeIn 0.3s;
-}
-.update-prompt p {
-    margin: 0;
-    font-size: 0.9rem;
-}
-.update-prompt button {
-    background-color: var(--accent-color);
-    color: var(--text-color-dark);
-    border: none;
-    border-radius: 4px;
-    padding: var(--space-xs) var(--space-sm);
-    cursor: pointer;
-    font-weight: 500;
-}
 
 
 /* --- Responsive Design --- */
