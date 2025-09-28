@@ -1040,6 +1040,12 @@ const App = () => {
         };
         window.addEventListener('swUpdate', handleSWUpdate);
 
+        // This listener will automatically reload the page when a new service worker takes control.
+        const onControllerChange = () => {
+            window.location.reload();
+        };
+        navigator.serviceWorker.addEventListener('controllerchange', onControllerChange);
+
         // Check for persisted user
         try {
             const storedUser = localStorage.getItem('nepalLogosChurchUser');
@@ -1052,18 +1058,18 @@ const App = () => {
             localStorage.removeItem('nepalLogosChurchUser');
         }
 
-        return () => window.removeEventListener('swUpdate', handleSWUpdate);
+        return () => {
+            window.removeEventListener('swUpdate', handleSWUpdate);
+            navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
+        };
     }, []);
 
     const handleUpdate = () => {
+        setShowUpdatePrompt(false);
         if (swRegistrationRef.current && swRegistrationRef.current.waiting) {
-            const waitingServiceWorker = swRegistrationRef.current.waiting;
-            waitingServiceWorker.postMessage({ type: 'SKIP_WAITING' });
-            waitingServiceWorker.addEventListener('statechange', (e) => {
-                if ((e.target as ServiceWorker).state === 'activated') {
-                    window.location.reload();
-                }
-            });
+            // Send a message to the waiting service worker to activate.
+            // The 'controllerchange' listener will then handle the reload.
+            swRegistrationRef.current.waiting.postMessage({ type: 'SKIP_WAITING' });
         }
     };
 
