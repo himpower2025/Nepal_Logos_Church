@@ -437,17 +437,13 @@ const BiblePage = () => {
                 <p className="verse-text">“{MOCK_VERSES_OF_THE_DAY[dayOfYear % MOCK_VERSES_OF_THE_DAY.length].text}”</p>
                 <p className="verse-ref">- {MOCK_VERSES_OF_THE_DAY[dayOfYear % MOCK_VERSES_OF_THE_DAY.length].verse}</p>
             </div>
-            <div className="bible-section-container">
-                 <div className="card bible-card" onClick={handleShowReading}>
-                    <h3>बाइबल पढाइ योजना (NNRV)</h3>
-                    <p>दिन {dayOfYear}: {readingPlan}</p>
-                </div>
+            <div className="card bible-card" onClick={handleShowReading}>
+                <h3>बाइबल पढाइ योजना (NNRV)</h3>
+                <p>दिन {dayOfYear}: {readingPlan}</p>
             </div>
-            <div className="bible-section-container">
-                <div className="card bible-card" onClick={handleShowProverb}>
-                    <h3>दिनको हितोपदेश</h3>
-                    <p>महिनाको हरेक दिनको लागि एक हितोपदेश: हितोपदेश अध्याय {proverbsChapter}</p>
-                </div>
+            <div className="card bible-card" onClick={handleShowProverb}>
+                <h3>दिनको हितोपदेश</h3>
+                <p>महिनाको हरेक दिनको लागि एक हितोपदेश: हितोपदेश अध्याय {proverbsChapter}</p>
             </div>
 
             {readingData && (
@@ -497,7 +493,7 @@ const ChatListPage = ({ chats, onSelectChat, onCreateChat }: { chats: Chat[]; on
     });
     
     return (
-        <div className="page-content chat-list-page">
+        <div className="page-content">
             <h2>Fellowship</h2>
             <div className="list-container">
                 {sortedChats.map(chat => {
@@ -867,7 +863,7 @@ const NotificationPanel = ({ notifications, onClose }: { notifications: Notifica
 };
 
 const PodcastPage = ({ podcasts, onAddPodcast }: { podcasts: Podcast[]; onAddPodcast: () => void; }) => (
-    <div className="page-content podcast-page">
+    <div className="page-content">
         <h2>Podcast</h2>
         <div className="list-container">
             {podcasts.length > 0 ? podcasts.map(podcast => (
@@ -1029,8 +1025,22 @@ const App = () => {
     const [showGroupMembersModal, setShowGroupMembersModal] = React.useState(false);
     const [showAddPodcastModal, setShowAddPodcastModal] = React.useState(false);
 
+    // Update prompt state
+    const [showUpdatePrompt, setShowUpdatePrompt] = React.useState(false);
+    const swRegistrationRef = React.useRef<ServiceWorkerRegistration | null>(null);
 
     React.useEffect(() => {
+        // Handle service worker updates
+        const handleSWUpdate = (e: Event) => {
+            const registration = (e as CustomEvent).detail;
+            if (registration && registration.waiting) {
+                swRegistrationRef.current = registration;
+                setShowUpdatePrompt(true);
+            }
+        };
+        window.addEventListener('swUpdate', handleSWUpdate);
+
+        // Check for persisted user
         try {
             const storedUser = localStorage.getItem('nepalLogosChurchUser');
             if (storedUser) {
@@ -1041,7 +1051,21 @@ const App = () => {
             console.error("Failed to parse user from localStorage", error);
             localStorage.removeItem('nepalLogosChurchUser');
         }
+
+        return () => window.removeEventListener('swUpdate', handleSWUpdate);
     }, []);
+
+    const handleUpdate = () => {
+        if (swRegistrationRef.current && swRegistrationRef.current.waiting) {
+            const waitingServiceWorker = swRegistrationRef.current.waiting;
+            waitingServiceWorker.postMessage({ type: 'SKIP_WAITING' });
+            waitingServiceWorker.addEventListener('statechange', (e) => {
+                if ((e.target as ServiceWorker).state === 'activated') {
+                    window.location.reload();
+                }
+            });
+        }
+    };
 
     const handleLogin = (loggedInUser: User, fromStorage: boolean = false) => {
         CURRENT_USER.id = loggedInUser.id;
@@ -1237,7 +1261,15 @@ const App = () => {
                     </button>
                 </div>
             </header>
-            <main className="main-content">{renderPage()}</main>
+            <main className="main-content">
+                {renderPage()}
+                {showUpdatePrompt && (
+                    <div className="update-prompt">
+                        <p>A new version is available.</p>
+                        <button onClick={handleUpdate}>Reload</button>
+                    </div>
+                )}
+            </main>
             
             {showNotifications && <NotificationPanel notifications={notifications} onClose={() => setShowNotifications(false)} />}
             
