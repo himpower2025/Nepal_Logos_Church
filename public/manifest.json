@@ -1,21 +1,23 @@
 {
   "short_name": "Logos Church",
-  "name": "Logos Church, Nepal",
-  "description": "An application for the Logos Church, Nepal community for worship, fellowship, and prayer.",
+  "name": "Nepal Logos Church",
+  "description": "An application for the Nepal Logos Church community for worship, fellowship, and prayer.",
   "icons": [
     {
-      "src": "/logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
+      "src": "https://i.ibb.co/L5w2y9n/logos-church-new-logo.jpg",
+      "type": "image/jpeg",
+      "sizes": "192x192",
+      "purpose": "any maskable"
     },
     {
-      "src": "/logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "src": "https://i.ibb.co/L5w2y9n/logos-church-new-logo.jpg",
+      "type": "image/jpeg",
+      "sizes": "512x512",
+      "purpose": "any maskable"
     }
   ],
   "start_url": "/",
-  "background_color": "#FAF7F2",
+  "background_color": "#f5f5f5",
   "display": "standalone",
   "theme_color": "#004d40"
 }

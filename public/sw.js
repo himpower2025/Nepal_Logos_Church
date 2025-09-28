@@ -1,14 +1,12 @@
-const CACHE_NAME = 'nepal-logos-church-v12'; // Increment version on significant changes
+const CACHE_NAME = 'nepal-logos-church-v13'; // Increment version on significant changes
 
 // These are cached on install for basic offline fallback.
 const APP_SHELL_URLS = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/logo192.png',
-  '/logo512.png',
-  '/apple-touch-icon.png',
-  'https://i.ibb.co/9g0P5P3/logos-qr-code.png'
+  'https://i.ibb.co/L5w2y9n/logos-church-new-logo.jpg', // Main church logo
+  'https://i.ibb.co/9g0P5P3/logos-qr-code.png'     // Offering QR code
 ];
 
 self.addEventListener('install', event => {
