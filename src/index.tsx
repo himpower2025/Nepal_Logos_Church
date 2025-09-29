@@ -27,9 +27,9 @@ const CHURCHES: Church[] = [
     {
         id: 'nepal_logos',
         name: 'Logos Church, Nepal',
-        logo: 'https://i.postimg.cc/mD9t5xR3/logos-church-new-logo.jpg',
+        logo: '/logos-church-new-logo.jpg',
         offeringDetails: {
-            qrCodeUrl: 'https://i.ibb.co/9g0P5P3/logos-qr-code.png',
+            qrCodeUrl: '/logos-qr-code.png',
             bankName: 'Global IME Bank',
             accountHolder: 'YAM PRADHAN',
             accountNumber: '10507010042662'
@@ -1100,18 +1100,6 @@ const App = () => {
         };
         navigator.serviceWorker.addEventListener('controllerchange', onControllerChange);
 
-        // Mobile viewport height fix to ensure nav bar is always visible
-        const setVh = () => {
-            if (typeof window !== 'undefined') {
-                const vh = window.innerHeight * 0.01;
-                document.documentElement.style.setProperty('--vh', `${vh}px`);
-            }
-        };
-
-        window.addEventListener('resize', setVh);
-        window.addEventListener('orientationchange', setVh);
-        setVh(); // Set the initial value
-
         // Check for persisted user
         try {
             const storedUser = localStorage.getItem('nepalLogosChurchUser');
@@ -1127,8 +1115,6 @@ const App = () => {
         return () => {
             window.removeEventListener('swUpdate', handleSwUpdate);
             navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
-            window.removeEventListener('resize', setVh);
-            window.removeEventListener('orientationchange', setVh);
         };
     }, []);
 

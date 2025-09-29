@@ -12,7 +12,6 @@
     --sent-bubble-color: #dcf8c6;
     --received-bubble-color: #ffffff;
     --danger-color: #d32f2f;
-    --vh: 1vh; /* Fallback for browsers that don't support the JS fix */
 
     /* Responsive Spacing System */
     --spacing-unit: 1rem;
@@ -129,7 +128,7 @@ html, body, #root {
 .app-container {
     display: flex;
     flex-direction: column;
-    height: calc(var(--vh, 1vh) * 100); /* Use dynamic viewport height */
+    height: 100dvh; /* Use dynamic viewport height for perfect mobile sizing */
     width: 100%;
     max-width: 600px; /* Max-width for tablet-like view on desktop */
     margin: 0 auto;
