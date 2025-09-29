@@ -41,7 +41,6 @@ html, body, #root {
     font-family: var(--font-family);
     background-color: var(--background-color);
     color: var(--text-color-dark);
-    overflow: hidden; /* Prevent body scroll when app has its own scroll */
     font-size: var(--font-size-base);
 }
 
@@ -117,7 +116,7 @@ html, body, #root {
     font-size: var(--font-size-lg);
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color: 0.3s ease;
 }
 
 .login-button:hover {
@@ -129,7 +128,7 @@ html, body, #root {
 .app-container {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 100vh; /* Use viewport height for robust mobile sizing */
     width: 100%;
     max-width: 600px; /* Max-width for tablet-like view on desktop */
     margin: 0 auto;
@@ -226,6 +225,7 @@ html, body, #root {
     box-shadow: 0 -2px 5px var(--shadow-color);
     flex-shrink: 0;
     z-index: 10;
+    padding-bottom: env(safe-area-inset-bottom);
 }
 
 .nav-item {
@@ -538,6 +538,7 @@ html, body, #root {
     display: flex;
     flex-direction: column;
     animation: slideInUp 0.3s ease-out;
+    padding-bottom: env(safe-area-inset-bottom);
 }
 @keyframes slideInUp {
     from { transform: translateY(50px); opacity: 0; }
@@ -675,4 +676,149 @@ html, body, #root {
       margin-bottom: 0;
   }
   .fab { width: 52px; height: 52px; bottom: var(--space-sm); right: var(--space-sm); }
+}
+
+/* Offering Modal */
+.offering-modal-content {
+    text-align: center;
+}
+.offering-modal-content h3 {
+    margin-bottom: var(--space-md);
+    color: var(--primary-color);
+}
+.qr-code-img {
+    width: 100%;
+    max-width: 250px;
+    margin-bottom: var(--space-md);
+    border: 1px solid #eee;
+}
+.offering-details {
+    text-align: left;
+    display: inline-block;
+}
+.offering-details p {
+    margin-bottom: var(--space-sm);
+}
+.account-number-container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+.copy-button {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: var(--space-xs) calc(var(--space-xs) * 2);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+.copy-button .material-symbols-outlined { font-size: 1rem; }
+
+/* Bible Reading Modal */
+.bible-reading-modal-content {
+    text-align: center;
+}
+.bible-reading-modal-content h3 {
+    font-size: var(--font-size-h1);
+    font-weight: 500;
+    color: var(--primary-color);
+    margin-bottom: var(--space-sm);
+}
+.bible-reading-modal-content h4 {
+    font-size: var(--font-size-lg);
+    font-weight: bold;
+    color: var(--text-color-dark);
+    margin-bottom: var(--space-lg);
+}
+.bible-text-content {
+    max-height: 50vh;
+    overflow-y: auto;
+    text-align: left;
+    line-height: 1.8;
+    color: #424242;
+    padding: var(--space-md);
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    margin-bottom: var(--space-lg);
+}
+.bible-text-content p {
+    white-space: pre-wrap; /* To respect newlines in the string */
+}
+.close-reading-button {
+    margin-top: var(--space-md);
+}
+
+/* Prayer Details Modal */
+.prayer-details-modal {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+.prayer-details-content {
+    border-bottom: 1px solid #eee;
+    padding-bottom: var(--space-md);
+}
+.prayer-details-content h3 { font-size: var(--font-size-h2); margin-bottom: var(--space-xs); }
+.prayer-author { font-size: var(--font-size-sm); color: #757575; margin-bottom: var(--space-md); }
+.prayer-main-content { line-height: 1.6; }
+
+.prayer-comments-section {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100px;
+}
+.prayer-comments-section h4 {
+    margin-bottom: calc(var(--space-sm) * 1.5);
+    color: var(--primary-color);
+}
+.prayer-comment-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+.comment-item {
+    background: #f5f5f5;
+    padding: calc(var(--space-sm) * 1.5);
+    border-radius: 8px;
+}
+.comment-item p { font-size: 0.95rem; }
+.comment-timestamp { font-size: 0.75rem; color: #9e9e9e; text-align: right; }
+.no-comments { color: #757575; }
+
+.comment-form {
+    display: flex;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+    flex-shrink: 0;
+}
+.comment-form input {
+    flex-grow: 1;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-size-base);
+}
+.comment-form input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+.comment-form button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    flex-shrink: 0;
 }

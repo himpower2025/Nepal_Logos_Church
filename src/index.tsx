@@ -356,7 +356,7 @@ const LoginPage = ({ church, onLogin }: { church: Church; onLogin: (user: User) 
                     <input 
                         className="login-input" 
                         type="text" 
-                        placeholder="Enter your name" 
+                        placeholder="तपाईको नाम लेख्नुहोस्" 
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
@@ -903,7 +903,7 @@ const NotificationPanel = ({ notifications, onClose }: { notifications: Notifica
 
 const PodcastPage = ({ podcasts, onAddPodcast }: { podcasts: Podcast[]; onAddPodcast: () => void; }) => (
     <div className="page-content">
-        <h2>पोडकास्ट</h2>
+        <h2>Podcast</h2>
         <div className="list-container">
             {podcasts.length > 0 ? podcasts.map(podcast => (
                 <div key={podcast.id} className="card podcast-item">
@@ -1296,7 +1296,7 @@ const App = () => {
                     <span className="material-symbols-outlined">church</span><span>आरधना</span>
                 </button>
                 <button className={`nav-item ${activePage === 'podcast' ? 'active' : ''}`} onClick={() => { setActivePage('podcast'); setActiveChatId(null); }}>
-                    <span className="material-symbols-outlined">podcasts</span><span>पोडकास्ट</span>
+                    <span className="material-symbols-outlined">podcasts</span><span>Podcast</span>
                 </button>
                 <button className={`nav-item ${activePage === 'news' ? 'active' : ''}`} onClick={() => { setActivePage('news'); setActiveChatId(null); }}>
                     <span className="material-symbols-outlined">feed</span><span>सुचना</span>
