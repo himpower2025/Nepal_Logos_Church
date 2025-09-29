@@ -665,7 +665,7 @@ const GroupMembersModal = ({ members, onClose }: { members: User[]; onClose: () 
 const PrayerPage = ({ prayerRequests, onPray, onAddRequest, onSelectRequest }: { prayerRequests: PrayerRequest[]; onPray: (id:string) => void; onAddRequest: () => void; onSelectRequest: (req: PrayerRequest) => void; }) => {
     return (
         <div className="page-content">
-            <h2>प्रार्थना पर्खाल</h2>
+            <h2>प्रार्थना</h2>
             <div className="list-container">
                 {prayerRequests
                     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
@@ -1100,6 +1100,18 @@ const App = () => {
         };
         navigator.serviceWorker.addEventListener('controllerchange', onControllerChange);
 
+        // Mobile viewport height fix to ensure nav bar is always visible
+        const setVh = () => {
+            if (typeof window !== 'undefined') {
+                const vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
+            }
+        };
+
+        window.addEventListener('resize', setVh);
+        window.addEventListener('orientationchange', setVh);
+        setVh(); // Set the initial value
+
         // Check for persisted user
         try {
             const storedUser = localStorage.getItem('nepalLogosChurchUser');
@@ -1115,6 +1127,8 @@ const App = () => {
         return () => {
             window.removeEventListener('swUpdate', handleSwUpdate);
             navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
+            window.removeEventListener('resize', setVh);
+            window.removeEventListener('orientationchange', setVh);
         };
     }, []);
 
