@@ -202,7 +202,7 @@ const MOCK_PAST_SERVICES: PastService[] = [
 
 const MOCK_VERSES_OF_THE_DAY: Verse[] = [
     { verse: 'यूहन्ना ३:१६', text: 'किनभने परमेश्‍वरले संसारलाई यति साह्रो प्रेम गर्नुभयो, कि उहाँले आफ्‍ना एकमात्र पुत्र दिनुभयो, ताकि उहाँमाथि विश्‍वास गर्ने कोही पनि नाश नहोस्, तर त्‍यसले अनन्त जीवन पाओस्।' },
-    { verse: 'हितोपदेश ३:५-६', text: 'तेरो सारा भरोसा परमप्रभुमा राख्, र तेरो आफ्‍नै समझ-शक्‍तिमा भरोसा नगर्। आफूले गर्ने सबै कुरामा उहाँलाई सम्झी, र उहाँले तेरा मार्गहरू सोझो बनाउनुहुनेछ।' },
+    { verse: 'हितोपदेश ३:५-६', text: 'तेरो सारा भरोसा परमप्रभुमा राख्, र तेरो आफ्‍नै समझ-शक्‍तिमा भरोसा नगर्। आफूले गर्ने सबै कुरामा उहाँलाई सम्झी, र उहाँले तेरा मार्गहरू सोझो बनाउनuहुनेछ।' },
 ];
 
 const MOCK_NOTIFICATIONS: Notification[] = [
@@ -1085,6 +1085,19 @@ const App = () => {
 
 
     React.useEffect(() => {
+        // This function sets a CSS custom property (--vh) to the real viewport height.
+        // This is the most reliable way to handle the 100vh issue on mobile browsers
+        // where the address bar changes the viewport height dynamically.
+        const handleResize = () => {
+            document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+        };
+
+        // Set the value on initial load
+        handleResize();
+
+        // Add event listener for window resize
+        window.addEventListener('resize', handleResize);
+
         // Service Worker Update Listener
         const handleSwUpdate = (event: Event) => {
             const customEvent = event as CustomEvent<ServiceWorkerRegistration>;
@@ -1113,6 +1126,7 @@ const App = () => {
 
         // Cleanup
         return () => {
+            window.removeEventListener('resize', handleResize);
             window.removeEventListener('swUpdate', handleSwUpdate);
             navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
         };
