@@ -1,12 +1,12 @@
-const CACHE_NAME = 'nepal-logos-church-v27'; // Increment version on significant changes
+const CACHE_NAME = 'nepal-logos-church-v19'; // Increment version on significant changes
 
 // These are cached on install for basic offline fallback.
 const APP_SHELL_URLS = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/logos-church-new-logo.jpg', // Main church logo (local path)
-  '/logos-qr-code.png'          // Offering QR code (local path)
+  'https://i.postimg.cc/mD9t5xR3/logos-church-new-logo.jpg', // Main church logo
+  'https://i.ibb.co/9g0P5P3/logos-qr-code.png'     // Offering QR code
 ];
 
 self.addEventListener('install', event => {
@@ -15,12 +15,6 @@ self.addEventListener('install', event => {
       .then(cache => cache.addAll(APP_SHELL_URLS))
       .then(() => self.skipWaiting()) // Force the new service worker to activate immediately
   );
-});
-
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
 });
 
 self.addEventListener('activate', event => {
@@ -67,46 +61,4 @@ self.addEventListener('fetch', event => {
         })
     );
   }
-});
-
-self.addEventListener('push', event => {
-  const data = event.data ? event.data.json() : {
-      body: 'You have a new notification.',
-      url: '/'
-  };
-  const title = 'Logos Church, Nepal';
-  const options = {
-    body: data.body,
-    icon: '/logos-church-new-logo.jpg',
-    badge: '/logos-church-new-logo.jpg',
-    data: {
-      url: data.url
-    }
-  };
-
-  event.waitUntil(self.registration.showNotification(title, options));
-});
-
-self.addEventListener('notificationclick', event => {
-  event.notification.close();
-  const urlToOpen = new URL(event.notification.data.url || '/', self.location.origin).href;
-
-  event.waitUntil(
-    clients.matchAll({
-      type: 'window',
-      includeUncontrolled: true,
-    }).then(windowClients => {
-      // Check if a window is already open.
-      for(let i=0; i<windowClients.length; i++) {
-        const client = windowClients[i];
-        if (client.url === urlToOpen && 'focus' in client) {
-          return client.focus();
-        }
-      }
-      // If not, open a new window.
-      if (clients.openWindow) {
-        return clients.openWindow(urlToOpen);
-      }
-    })
-  );
 });
