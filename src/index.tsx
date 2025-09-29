@@ -1038,6 +1038,22 @@ const AddPodcastModal = ({ onClose, onAddPodcast }: { onClose: () => void; onAdd
     );
 };
 
+const UpdatePrompt = ({ registration }: { registration: ServiceWorkerRegistration }) => {
+    const handleUpdate = () => {
+        const worker = registration.waiting;
+        if (worker) {
+            worker.postMessage({ type: 'SKIP_WAITING' });
+        }
+    };
+
+    return (
+        <div className="update-prompt">
+            <span>A new version is available.</span>
+            <button onClick={handleUpdate}>Reload</button>
+        </div>
+    );
+};
+
 
 // --- Main App Component ---
 
@@ -1063,9 +1079,20 @@ const App = () => {
     const [showCreateChatModal, setShowCreateChatModal] = React.useState(false);
     const [showGroupMembersModal, setShowGroupMembersModal] = React.useState(false);
     const [showAddPodcastModal, setShowAddPodcastModal] = React.useState(false);
+    
+    // Update state
+    const [swRegistration, setSwRegistration] = React.useState<ServiceWorkerRegistration | null>(null);
 
 
     React.useEffect(() => {
+        // Listener for the custom event fired from index.html
+        const handleSwUpdate = (event: Event) => {
+            const customEvent = event as CustomEvent<ServiceWorkerRegistration>;
+            console.log('Service worker update found, prompting user.');
+            setSwRegistration(customEvent.detail);
+        };
+        window.addEventListener('swUpdate', handleSwUpdate);
+        
         // This listener will automatically reload the page when a new service worker takes control.
         const onControllerChange = () => {
             console.log("New service worker has taken control, reloading page.");
@@ -1086,6 +1113,7 @@ const App = () => {
         }
 
         return () => {
+            window.removeEventListener('swUpdate', handleSwUpdate);
             navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
         };
     }, []);
@@ -1270,6 +1298,7 @@ const App = () => {
 
     return (
         <div className="app-container">
+            {swRegistration && <UpdatePrompt registration={swRegistration} />}
             <header className="app-header">
                  <div className="header-content">
                     <img src={church.logo} alt="Church Logo" className="header-logo" />

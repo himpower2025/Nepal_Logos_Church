@@ -42,6 +42,7 @@ html, body, #root {
     background-color: var(--background-color);
     color: var(--text-color-dark);
     font-size: var(--font-size-base);
+    overflow: hidden; /* Prevent the body from scrolling, layout is handled by app-container */
 }
 
 /* --- Login Page --- */
@@ -128,7 +129,7 @@ html, body, #root {
 .app-container {
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Use viewport height for robust mobile sizing */
+    height: 100%; /* Fill the parent (#root) instead of using vh */
     width: 100%;
     max-width: 600px; /* Max-width for tablet-like view on desktop */
     margin: 0 auto;
@@ -821,4 +822,32 @@ html, body, #root {
     align-items: center;
     cursor: pointer;
     flex-shrink: 0;
+}
+
+/* Update Available Prompt */
+.update-prompt {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--primary-color-dark);
+    color: white;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.update-prompt button {
+    background-color: var(--accent-color);
+    color: var(--text-color-dark);
+    border: none;
+    border-radius: 5px;
+    padding: var(--space-xs) var(--space-sm);
+    cursor: pointer;
+    font-weight: 500;
 }

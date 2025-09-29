@@ -1,11 +1,11 @@
-const CACHE_NAME = 'nepal-logos-church-v17'; // Increment version on significant changes
+const CACHE_NAME = 'nepal-logos-church-v20'; // Increment version on significant changes
 
 // These are cached on install for basic offline fallback.
 const APP_SHELL_URLS = [
   '/',
   '/index.html',
   '/manifest.json',
-  'https://i.ibb.co/L5w2y9n/logos-church-new-logo.jpg', // Main church logo
+  'https://i.postimg.cc/mD9t5xR3/logos-church-new-logo.jpg', // Main church logo (URL corrected)
   'https://i.ibb.co/9g0P5P3/logos-qr-code.png'     // Offering QR code
 ];
 
@@ -74,11 +74,11 @@ self.addEventListener('push', event => {
       body: 'You have a new notification.',
       url: '/'
   };
-  const title = 'Nepal Logos Church';
+  const title = 'Logos Church, Nepal';
   const options = {
     body: data.body,
-    icon: '/logo192.png',
-    badge: '/logo192.png', // Badge should be monochrome, but this works for demo
+    icon: 'https://i.postimg.cc/mD9t5xR3/logos-church-new-logo.jpg',
+    badge: 'https://i.postimg.cc/mD9t5xR3/logos-church-new-logo.jpg',
     data: {
       url: data.url
     }
