@@ -1124,7 +1124,7 @@ const App = () => {
             console.error("Failed to parse user from localStorage", error);
             localStorage.removeItem('nepalLogosChurchUser');
         } finally {
-            setIsLoading(false);
+            setTimeout(() => setIsLoading(false), 500); // Simulate loading time
         }
 
         // --- Cleanup ---
