@@ -29,7 +29,7 @@ const CHURCHES: Church[] = [
     {
         id: 'nepal_logos',
         name: 'Nepal Logos Church',
-        logo: 'https://i.ibb.co/L5w2y9n/logos-church-new-logo.jpg',
+        logo: 'https://i.postimg.cc/mD9t5xR3/logos-church-new-logo.jpg',
         offeringDetails: {
             qrCodeUrl: 'https://i.ibb.co/9g0P5P3/logos-qr-code.png',
             bankName: 'Global IME Bank',
@@ -1257,14 +1257,14 @@ const App = () => {
                 <button className={`nav-item ${activePage === 'worship' ? 'active' : ''}`} onClick={() => { setActivePage('worship'); setActiveChatId(null); }}>
                     <span className="material-symbols-outlined">church</span><span>Worship</span>
                 </button>
+                <button className={`nav-item ${activePage === 'podcast' ? 'active' : ''}`} onClick={() => { setActivePage('podcast'); setActiveChatId(null); }}>
+                    <span className="material-symbols-outlined">podcasts</span><span>Podcast</span>
+                </button>
                 <button className={`nav-item ${activePage === 'news' ? 'active' : ''}`} onClick={() => { setActivePage('news'); setActiveChatId(null); }}>
                     <span className="material-symbols-outlined">feed</span><span>News</span>
                 </button>
                 <button className={`nav-item ${activePage === 'bible' ? 'active' : ''}`} onClick={() => { setActivePage('bible'); setActiveChatId(null); }}>
                     <span className="material-symbols-outlined">book_2</span><span>Bible</span>
-                </button>
-                <button className={`nav-item ${activePage === 'podcast' ? 'active' : ''}`} onClick={() => { setActivePage('podcast'); setActiveChatId(null); }}>
-                    <span className="material-symbols-outlined">podcasts</span><span>Podcast</span>
                 </button>
                  <button className={`nav-item ${activePage === 'fellowship' ? 'active' : ''}`} onClick={() => { setActivePage('fellowship'); setActiveChatId(null); }}>
                     <span className="material-symbols-outlined">groups</span><span>Fellowship</span>
