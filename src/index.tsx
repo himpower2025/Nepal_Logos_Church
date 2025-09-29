@@ -1111,21 +1111,10 @@ const App = () => {
             localStorage.removeItem('nepalLogosChurchUser');
         }
 
-        // Dynamic Viewport Height (vh) Fix for mobile browsers
-        const setVh = () => {
-            document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
-        };
-
-        window.addEventListener('resize', setVh);
-        window.addEventListener('orientationchange', setVh);
-        setVh(); // Set initial value
-
         // Cleanup
         return () => {
             window.removeEventListener('swUpdate', handleSwUpdate);
             navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
-            window.removeEventListener('resize', setVh);
-            window.removeEventListener('orientationchange', setVh);
         };
     }, []);
 
