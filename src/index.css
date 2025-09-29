@@ -482,7 +482,7 @@ html, body, #root {
 /* Bible Page */
 .bible-card {
     cursor: pointer;
-    transition: background-color: 0.2s ease;
+    transition: background-color 0.2s ease;
     margin-bottom: var(--space-md);
 }
 .bible-card:hover { background-color: #f9f9f9; }

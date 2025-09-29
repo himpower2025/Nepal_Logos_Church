@@ -1027,10 +1027,7 @@ const AddPodcastModal = ({ onClose, onAddPodcast }: { onClose: () => void; onAdd
         <Modal onClose={onClose}>
             <h3>Add Podcast</h3>
             <div className="add-podcast-options">
-                {/* For now, only admin (pastor) can record. This can be expanded with roles. */}
-                {CURRENT_USER.id === 'user3' && 
-                    <button className="action-button" onClick={() => setShowRecordModal(true)}>Record Live</button>
-                }
+                <button className="action-button" onClick={() => setShowRecordModal(true)}>Record Live</button>
                 <input type="file" accept="audio/*" ref={fileInputRef} onChange={handleFileChange} style={{display: 'none'}} />
                 <button className="action-button secondary" onClick={() => fileInputRef.current?.click()}>Upload Audio File</button>
             </div>
