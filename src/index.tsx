@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -28,7 +26,7 @@ type Church = {
 const CHURCHES: Church[] = [
     {
         id: 'nepal_logos',
-        name: 'Nepal Logos Church',
+        name: 'Logos Church, Nepal',
         logo: 'https://i.postimg.cc/mD9t5xR3/logos-church-new-logo.jpg',
         offeringDetails: {
             qrCodeUrl: 'https://i.ibb.co/9g0P5P3/logos-qr-code.png',
@@ -116,6 +114,14 @@ type Podcast = {
     createdAt: string;
 };
 
+type PastService = {
+    id: string;
+    title: string;
+    date: string;
+    url: string;
+};
+
+
 let CURRENT_USER: User = { id: 'user1', name: '', avatar: '' };
 
 const MOCK_USERS: User[] = [
@@ -171,6 +177,27 @@ const MOCK_NEWS: NewsItem[] = [
 const MOCK_PODCASTS: Podcast[] = [
     { id: 'podcast1', title: 'Sunday Sermon: The Good Shepherd', author: MOCK_USERS[2], audioUrl: '', createdAt: '2024-07-28T10:00:00Z' },
     { id: 'podcast2', title: 'Youth Fellowship: Living with Purpose', author: MOCK_USERS[1], audioUrl: '', createdAt: '2024-07-26T18:00:00Z' }
+];
+
+const MOCK_PAST_SERVICES: PastService[] = [
+    {
+        id: 'service3',
+        title: 'शनिबार आरधना',
+        date: 'अगस्ट १०, २०२४',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+    },
+    {
+        id: 'service2',
+        title: 'शनिबार आरधना',
+        date: 'अगस्ट ३, २०२४',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+    },
+    {
+        id: 'service1',
+        title: 'शनिबार आरधना',
+        date: 'जुलाई २७, २०२४',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+    }
 ];
 
 const MOCK_VERSES_OF_THE_DAY: Verse[] = [
@@ -356,7 +383,7 @@ const WorshipPage = ({ church }: { church: Church; }) => {
 
     return (
         <div className="page-content">
-            <h2>Worship</h2>
+            <h2>आरधना</h2>
             <div className="card">
                 <div className="twitch-container">
                     <iframe
@@ -374,6 +401,17 @@ const WorshipPage = ({ church }: { church: Church; }) => {
                     </button>
                 </div>
             </div>
+
+            <h3 className="section-title">विगतका आरधनाहरू</h3>
+            <div className="list-container">
+                {MOCK_PAST_SERVICES.map(service => (
+                    <a key={service.id} href={service.url} target="_blank" rel="noopener noreferrer" className="card past-service-item">
+                        <h4>{service.title}</h4>
+                        <p>{service.date}</p>
+                    </a>
+                ))}
+            </div>
+
 
             {showOfferingModal && (
                 <Modal onClose={() => setShowOfferingModal(false)}>
@@ -468,7 +506,7 @@ const NewsPage = () => {
     
     return (
         <div className="page-content">
-            <h2>News & Announcements</h2>
+            <h2>सुचना तथा घोषणाहरू</h2>
             <div className="list-container">
                 {sortedNews.map(item => (
                     <div key={item.id} className="card news-item">
@@ -495,7 +533,7 @@ const ChatListPage = ({ chats, onSelectChat, onCreateChat }: { chats: Chat[]; on
     
     return (
         <div className="page-content">
-            <h2>Fellowship</h2>
+            <h2>संगतीहरु</h2>
             <div className="list-container">
                 {sortedChats.map(chat => {
                     const lastMessage = chat.messages[chat.messages.length - 1];
@@ -627,7 +665,7 @@ const GroupMembersModal = ({ members, onClose }: { members: User[]; onClose: () 
 const PrayerPage = ({ prayerRequests, onPray, onAddRequest, onSelectRequest }: { prayerRequests: PrayerRequest[]; onPray: (id:string) => void; onAddRequest: () => void; onSelectRequest: (req: PrayerRequest) => void; }) => {
     return (
         <div className="page-content">
-            <h2>Prayer Wall</h2>
+            <h2>प्रार्थना पर्खाल</h2>
             <div className="list-container">
                 {prayerRequests
                     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
@@ -865,7 +903,7 @@ const NotificationPanel = ({ notifications, onClose }: { notifications: Notifica
 
 const PodcastPage = ({ podcasts, onAddPodcast }: { podcasts: Podcast[]; onAddPodcast: () => void; }) => (
     <div className="page-content">
-        <h2>Podcast</h2>
+        <h2>पोडकास्ट</h2>
         <div className="list-container">
             {podcasts.length > 0 ? podcasts.map(podcast => (
                 <div key={podcast.id} className="card podcast-item">
@@ -1255,22 +1293,22 @@ const App = () => {
             
             <nav className="bottom-nav six-items">
                 <button className={`nav-item ${activePage === 'worship' ? 'active' : ''}`} onClick={() => { setActivePage('worship'); setActiveChatId(null); }}>
-                    <span className="material-symbols-outlined">church</span><span>Worship</span>
+                    <span className="material-symbols-outlined">church</span><span>आरधना</span>
                 </button>
                 <button className={`nav-item ${activePage === 'podcast' ? 'active' : ''}`} onClick={() => { setActivePage('podcast'); setActiveChatId(null); }}>
-                    <span className="material-symbols-outlined">podcasts</span><span>Podcast</span>
+                    <span className="material-symbols-outlined">podcasts</span><span>पोडकास्ट</span>
                 </button>
                 <button className={`nav-item ${activePage === 'news' ? 'active' : ''}`} onClick={() => { setActivePage('news'); setActiveChatId(null); }}>
-                    <span className="material-symbols-outlined">feed</span><span>News</span>
+                    <span className="material-symbols-outlined">feed</span><span>सुचना</span>
                 </button>
                 <button className={`nav-item ${activePage === 'bible' ? 'active' : ''}`} onClick={() => { setActivePage('bible'); setActiveChatId(null); }}>
-                    <span className="material-symbols-outlined">book_2</span><span>Bible</span>
+                    <span className="material-symbols-outlined">book_2</span><span>बाइबल</span>
                 </button>
                  <button className={`nav-item ${activePage === 'fellowship' ? 'active' : ''}`} onClick={() => { setActivePage('fellowship'); setActiveChatId(null); }}>
-                    <span className="material-symbols-outlined">groups</span><span>Fellowship</span>
+                    <span className="material-symbols-outlined">groups</span><span>संगतीहरु</span>
                 </button>
                 <button className={`nav-item ${activePage === 'prayer' ? 'active' : ''}`} onClick={() => { setActivePage('prayer'); setActiveChatId(null); }}>
-                    <span className="material-symbols-outlined">volunteer_activism</span><span>Prayer</span>
+                    <span className="material-symbols-outlined">volunteer_activism</span><span>प्रार्थना</span>
                 </button>
             </nav>
             

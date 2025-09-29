@@ -424,6 +424,30 @@ html, body, #root {
 /* --- Page Specific Styles --- */
 
 /* Worship Page */
+.section-title {
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-sm);
+    font-size: var(--font-size-lg);
+    color: var(--primary-color);
+    padding-left: var(--space-xs);
+}
+
+.past-service-item {
+    display: block;
+    text-decoration: none;
+    color: var(--text-color-dark);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.past-service-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.past-service-item h4 {
+    margin-bottom: var(--space-xs);
+}
+
 .twitch-container {
     position: relative;
     width: 100%;
