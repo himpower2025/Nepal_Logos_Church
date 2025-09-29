@@ -128,7 +128,8 @@ html, body, #root {
 .app-container {
     display: flex;
     flex-direction: column;
-    height: 100dvh; /* Use dynamic viewport height for perfect mobile sizing */
+    height: 100vh; /* Fallback for browsers that don't support custom properties */
+    height: calc(var(--vh, 1vh) * 100); /* Use JS-calculated height */
     width: 100%;
     max-width: 600px; /* Max-width for tablet-like view on desktop */
     margin: 0 auto;
@@ -301,7 +302,7 @@ html, body, #root {
     color: var(--text-color-light);
     font-size: var(--font-size-base);
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color: 0.3s ease;
     width: 100%;
 }
 .action-button:hover {
@@ -480,7 +481,7 @@ html, body, #root {
 /* Bible Page */
 .bible-card {
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background-color: 0.2s ease;
     margin-bottom: var(--space-md);
 }
 .bible-card:hover { background-color: #f9f9f9; }

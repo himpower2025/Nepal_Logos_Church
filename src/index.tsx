@@ -1085,7 +1085,7 @@ const App = () => {
 
 
     React.useEffect(() => {
-        // Listener for the custom event fired from index.html
+        // Service Worker Update Listener
         const handleSwUpdate = (event: Event) => {
             const customEvent = event as CustomEvent<ServiceWorkerRegistration>;
             console.log('Service worker update found, prompting user.');
@@ -1093,14 +1093,13 @@ const App = () => {
         };
         window.addEventListener('swUpdate', handleSwUpdate);
         
-        // This listener will automatically reload the page when a new service worker takes control.
         const onControllerChange = () => {
             console.log("New service worker has taken control, reloading page.");
             window.location.reload();
         };
         navigator.serviceWorker.addEventListener('controllerchange', onControllerChange);
 
-        // Check for persisted user
+        // Persisted User Check
         try {
             const storedUser = localStorage.getItem('nepalLogosChurchUser');
             if (storedUser) {
@@ -1112,9 +1111,21 @@ const App = () => {
             localStorage.removeItem('nepalLogosChurchUser');
         }
 
+        // Dynamic Viewport Height (vh) Fix for mobile browsers
+        const setVh = () => {
+            document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+        };
+
+        window.addEventListener('resize', setVh);
+        window.addEventListener('orientationchange', setVh);
+        setVh(); // Set initial value
+
+        // Cleanup
         return () => {
             window.removeEventListener('swUpdate', handleSwUpdate);
             navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
+            window.removeEventListener('resize', setVh);
+            window.removeEventListener('orientationchange', setVh);
         };
     }, []);
 
