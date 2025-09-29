@@ -1089,7 +1089,17 @@ const App = () => {
 
 
     React.useEffect(() => {
-        // Service Worker Update Listener
+        // --- Viewport Height Fix ---
+        const setVh = () => {
+            if (typeof window !== 'undefined') {
+                const vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
+            }
+        };
+        setVh();
+        window.addEventListener('resize', setVh);
+    
+        // --- Service Worker Update Listener ---
         const handleSwUpdate = (event: Event) => {
             const customEvent = event as CustomEvent<ServiceWorkerRegistration>;
             console.log('Service worker update found, prompting user.');
@@ -1103,7 +1113,7 @@ const App = () => {
         };
         navigator.serviceWorker.addEventListener('controllerchange', onControllerChange);
 
-        // Persisted User Check
+        // --- Persisted User Check ---
         try {
             const storedUser = localStorage.getItem('nepalLogosChurchUser');
             if (storedUser) {
@@ -1117,8 +1127,9 @@ const App = () => {
             setIsLoading(false);
         }
 
-        // Cleanup
+        // --- Cleanup ---
         return () => {
+            window.removeEventListener('resize', setVh);
             window.removeEventListener('swUpdate', handleSwUpdate);
             navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
         };
