@@ -1085,19 +1085,6 @@ const App = () => {
 
 
     React.useEffect(() => {
-        // This function sets a CSS custom property (--vh) to the real viewport height.
-        // This is the most reliable way to handle the 100vh issue on mobile browsers
-        // where the address bar changes the viewport height dynamically.
-        const handleResize = () => {
-            document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
-        };
-
-        // Set the value on initial load
-        handleResize();
-
-        // Add event listener for window resize
-        window.addEventListener('resize', handleResize);
-
         // Service Worker Update Listener
         const handleSwUpdate = (event: Event) => {
             const customEvent = event as CustomEvent<ServiceWorkerRegistration>;
@@ -1126,7 +1113,6 @@ const App = () => {
 
         // Cleanup
         return () => {
-            window.removeEventListener('resize', handleResize);
             window.removeEventListener('swUpdate', handleSwUpdate);
             navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
         };

@@ -36,6 +36,7 @@
 }
 
 html, body, #root {
+    height: 100%;
     width: 100%;
     font-family: var(--font-family);
     background-color: var(--background-color);
@@ -49,8 +50,7 @@ html, body, #root {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Fallback for JS-disabled */
-    height: calc(var(--vh, 1vh) * 100);
+    height: 100%;
     background: linear-gradient(135deg, var(--primary-color), var(--primary-color-dark));
 }
 
@@ -129,8 +129,7 @@ html, body, #root {
 .app-container {
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Fallback */
-    height: calc(var(--vh, 1vh) * 100);
+    height: 100%;
     width: 100%;
     max-width: 600px; /* Max-width for tablet-like view on desktop */
     margin: 0 auto;
