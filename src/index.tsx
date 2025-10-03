@@ -2,26 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
-// --- Viewport Height Fix ---
-// This function sets a CSS variable (--vh) to the actual inner height of the window.
-// This is a common fix for mobile browsers where 100vh includes the browser's UI,
-// causing layout issues like the bottom nav being cut off.
-// By running this once at the top level, we ensure the value is set before React renders.
-const setVh = () => {
-    if (typeof window !== 'undefined') {
-        const vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
-    }
-};
-
-// Set the value on initial load
-setVh();
-
-// Re-calculate on resize and orientation change for responsive behavior
-window.addEventListener('resize', setVh);
-window.addEventListener('orientationchange', setVh);
-
-
 // --- Platform Configuration ---
 
 type OfferingDetails = {
