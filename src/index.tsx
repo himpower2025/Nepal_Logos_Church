@@ -285,12 +285,6 @@ const getBibleTextForPlan = (plan: string) => {
 };
 
 // --- Reusable Components ---
-const SplashScreen = ({ church }: { church: Church }) => (
-    <div className="splash-screen">
-        <img src={church.logo} alt={`${church.name} Logo`} className="login-logo" />
-    </div>
-);
-
 const Modal = ({ children, onClose }: React.PropsWithChildren<{ onClose: () => void; }>) => {
     const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
         if (e.target === e.currentTarget) {
@@ -1105,8 +1099,6 @@ const App = () => {
     
     // Update and Loading states
     const [swRegistration, setSwRegistration] = React.useState<ServiceWorkerRegistration | null>(null);
-    const [isLoading, setIsLoading] = React.useState(true);
-
 
     React.useEffect(() => {
         // --- Service Worker Update Listener ---
@@ -1133,9 +1125,6 @@ const App = () => {
         } catch (error) {
             console.error("Failed to parse user from localStorage", error);
             localStorage.removeItem('nepalLogosChurchUser');
-        } finally {
-            // FIX: Removed artificial delay to prevent flickering on startup.
-            setIsLoading(false);
         }
 
         // --- Cleanup ---
@@ -1317,10 +1306,6 @@ const App = () => {
         }
     };
     
-    if (isLoading) {
-        return <SplashScreen church={church} />;
-    }
-
     if (!user) {
         return <LoginPage church={church} onLogin={handleLogin} />;
     }
