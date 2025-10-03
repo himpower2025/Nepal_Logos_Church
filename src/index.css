@@ -35,15 +35,22 @@
     padding: 0;
 }
 
-html, body, #root {
+html, body {
     height: 100%;
     width: 100%;
     font-family: var(--font-family);
     background-color: var(--background-color);
     color: var(--text-color-dark);
     font-size: var(--font-size-base);
-    overflow: hidden; /* Prevent the body from scrolling, layout is handled by app-container */
+    overflow: hidden; /* Prevent the body from scrolling */
 }
+
+#root {
+    width: 100%;
+    /* DEFINITIVE FIX: Apply the calculated viewport height to the root container */
+    height: calc(var(--vh, 1vh) * 100);
+}
+
 
 /* --- Splash Screen --- */
 .splash-screen {
@@ -140,8 +147,8 @@ html, body, #root {
 .app-container {
     display: flex;
     flex-direction: column;
-    /* CRITICAL FIX: Use the JS-calculated height variable. Fallback to 1vh * 100 = 100vh. */
-    height: calc(var(--vh, 1vh) * 100);
+    /* Let the container fill its parent (#root), which now has the correct height */
+    height: 100%;
     width: 100%;
     max-width: 600px; /* Max-width for tablet-like view on desktop */
     margin: 0 auto;
