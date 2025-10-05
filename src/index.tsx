@@ -1081,17 +1081,30 @@ const App = () => {
     const [swRegistration, setSwRegistration] = React.useState<ServiceWorkerRegistration | null>(null);
 
     React.useEffect(() => {
+        // This effect dynamically sets the app's height to match the browser's visual viewport,
+        // which correctly handles mobile browser UI like the address bar appearing or hiding.
         const setAppHeight = () => {
-            // Set the value of --app-height to the window's inner height
-            document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
+            // visualViewport.height is the most reliable way to get the visible height.
+            // We fall back to innerHeight for browsers that don't support it.
+            const appHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+            document.documentElement.style.setProperty('--app-height', `${appHeight}px`);
         };
-        // Call the function on initial load
-        setAppHeight();
-        // Add event listener for resize to handle orientation changes or address bar hiding
-        window.addEventListener('resize', setAppHeight);
 
-        // Cleanup function to remove the event listener
-        return () => window.removeEventListener('resize', setAppHeight);
+        // Set the height on initial load.
+        setAppHeight();
+
+        // The visualViewport object might not exist, so we check for it.
+        const visualViewport = window.visualViewport;
+
+        if (visualViewport) {
+            // Listen for resize events on the visual viewport.
+            visualViewport.addEventListener('resize', setAppHeight);
+            return () => visualViewport.removeEventListener('resize', setAppHeight);
+        } else {
+            // Fallback for older browsers.
+            window.addEventListener('resize', setAppHeight);
+            return () => window.removeEventListener('resize', setAppHeight);
+        }
     }, []);
 
     React.useEffect(() => {
