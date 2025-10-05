@@ -1081,6 +1081,20 @@ const App = () => {
     const [swRegistration, setSwRegistration] = React.useState<ServiceWorkerRegistration | null>(null);
 
     React.useEffect(() => {
+        const setAppHeight = () => {
+            // Set the value of --app-height to the window's inner height
+            document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
+        };
+        // Call the function on initial load
+        setAppHeight();
+        // Add event listener for resize to handle orientation changes or address bar hiding
+        window.addEventListener('resize', setAppHeight);
+
+        // Cleanup function to remove the event listener
+        return () => window.removeEventListener('resize', setAppHeight);
+    }, []);
+
+    React.useEffect(() => {
         // --- Service Worker Update Listener ---
         const handleSwUpdate = (event: Event) => {
             const customEvent = event as CustomEvent<ServiceWorkerRegistration>;

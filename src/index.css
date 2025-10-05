@@ -129,7 +129,7 @@ html, body, #root {
 .app-container {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: var(--app-height, 100vh);
     width: 100%;
     max-width: 600px; /* Max-width for tablet-like view on desktop */
     margin: 0 auto;
