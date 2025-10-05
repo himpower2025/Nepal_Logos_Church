@@ -127,10 +127,9 @@ html, body, #root {
 
 /* --- Main App Layout --- */
 .app-container {
-    display: flex;
-    flex-direction: column;
-    /* Use dynamic viewport height to solve mobile browser UI issues. */
-    height: 100dvh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100%;
     width: 100%;
     max-width: 600px; /* Max-width for tablet-like view on desktop */
     margin: 0 auto;
@@ -147,7 +146,6 @@ html, body, #root {
     background-color: var(--primary-color);
     color: var(--text-color-light);
     box-shadow: 0 2px 4px var(--shadow-color);
-    flex-shrink: 0;
     z-index: 10;
 }
 
@@ -200,18 +198,14 @@ html, body, #root {
 }
 
 .main-content {
-    flex-grow: 1;
     overflow-y: auto;
-    display: flex;
-    flex-direction: column;
     position: relative; /* For FAB positioning */
-    min-height: 0; /* Prevents flexbox overflow issues */
+    min-height: 0; /* Prevents grid/flexbox overflow issues */
 }
 
 .page-content {
     animation: fadeIn 0.3s ease-in-out;
     padding: var(--space-md);
-    flex-grow: 1;
 }
 .page-content h2 {
     margin-bottom: var(--space-md);
@@ -226,7 +220,6 @@ html, body, #root {
     background-color: var(--card-background);
     border-top: 1px solid #e0e0e0;
     box-shadow: 0 -2px 5px var(--shadow-color);
-    flex-shrink: 0;
     z-index: 10;
     padding-bottom: env(safe-area-inset-bottom);
 }
