@@ -127,8 +127,8 @@ html, body, #root {
 
 /* --- Main App Layout --- */
 .app-container {
-    display: grid;
-    grid-template-rows: auto 1fr auto;
+    display: flex;
+    flex-direction: column;
     height: 100%;
     width: 100%;
     max-width: 600px; /* Max-width for tablet-like view on desktop */
@@ -147,6 +147,7 @@ html, body, #root {
     color: var(--text-color-light);
     box-shadow: 0 2px 4px var(--shadow-color);
     z-index: 10;
+    flex-shrink: 0;
 }
 
 .header-content {
@@ -198,6 +199,7 @@ html, body, #root {
 }
 
 .main-content {
+    flex-grow: 1;
     overflow-y: auto;
     position: relative; /* For FAB positioning */
     min-height: 0; /* Prevents grid/flexbox overflow issues */
@@ -222,6 +224,7 @@ html, body, #root {
     box-shadow: 0 -2px 5px var(--shadow-color);
     z-index: 10;
     padding-bottom: env(safe-area-inset-bottom);
+    flex-shrink: 0;
 }
 
 .nav-item {
