@@ -1081,29 +1081,36 @@ const App = () => {
     const [swRegistration, setSwRegistration] = React.useState<ServiceWorkerRegistration | null>(null);
 
     React.useEffect(() => {
+        // The handler that sets the CSS variable.
         const setAppHeight = () => {
-            // visualViewport is the most accurate source for the visible area,
-            // accounting for dynamic toolbars, keyboards, etc.
-            if (window.visualViewport) {
-                document.documentElement.style.setProperty('--app-height', `${window.visualViewport.height}px`);
-            }
+            // Use visualViewport for the most accurate height, fallback to innerHeight.
+            const height = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+            document.documentElement.style.setProperty('--app-height', `${height}px`);
         };
 
-        // We run the check multiple times on load to catch the final, stable height
-        // after browser UI elements (like the address bar) have settled.
-        setAppHeight(); // Run immediately
-        const timeouts = [100, 300, 1000].map(ms => setTimeout(setAppHeight, ms));
-
         const vv = window.visualViewport;
+
+        // Use the modern API if available, otherwise fallback to older events.
         if (vv) {
             vv.addEventListener('resize', setAppHeight);
+        } else {
+            window.addEventListener('resize', setAppHeight);
+            window.addEventListener('orientationchange', setAppHeight);
         }
 
-        // Cleanup
+        // Set the height initially. A requestAnimationFrame followed by a short timeout
+        // helps ensure the browser UI has settled after the first paint.
+        requestAnimationFrame(() => {
+            setTimeout(setAppHeight, 100);
+        });
+
+        // Cleanup function to remove the event listener.
         return () => {
-            timeouts.forEach(clearTimeout);
             if (vv) {
                 vv.removeEventListener('resize', setAppHeight);
+            } else {
+                window.removeEventListener('resize', setAppHeight);
+                window.removeEventListener('orientationchange', setAppHeight);
             }
         };
     }, []);

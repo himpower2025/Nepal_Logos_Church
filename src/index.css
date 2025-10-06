@@ -36,7 +36,6 @@
 }
 
 html, body, #root {
-    height: 100%;
     width: 100%;
     font-family: var(--font-family);
     background-color: var(--background-color);
@@ -137,6 +136,7 @@ html, body, #root {
     background-color: var(--secondary-color);
     box-shadow: 0 0 20px var(--shadow-color);
     position: relative;
+    overflow: hidden; /* Ensure nothing spills out */
 }
 
 .app-header {
