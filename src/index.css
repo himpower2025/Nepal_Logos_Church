@@ -42,7 +42,8 @@ html, body, #root {
     background-color: var(--background-color);
     color: var(--text-color-dark);
     font-size: var(--font-size-base);
-    overflow: hidden; /* Prevent the body from scrolling */
+    /* The overflow is now managed by the .app-container and .main-content,
+       which is a more robust pattern for mobile layouts. */
 }
 
 /* --- Login Page --- */

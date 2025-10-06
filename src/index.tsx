@@ -1081,30 +1081,37 @@ const App = () => {
     const [swRegistration, setSwRegistration] = React.useState<ServiceWorkerRegistration | null>(null);
 
     React.useEffect(() => {
-        // This effect dynamically sets the app's height to match the browser's visual viewport,
-        // which correctly handles mobile browser UI like the address bar appearing or hiding.
         const setAppHeight = () => {
-            // visualViewport.height is the most reliable way to get the visible height.
-            // We fall back to innerHeight for browsers that don't support it.
-            const appHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-            document.documentElement.style.setProperty('--app-height', `${appHeight}px`);
+            // Use the visual viewport height which accounts for on-screen keyboards, etc.
+            // Fallback to innerHeight for broader compatibility.
+            const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+            document.documentElement.style.setProperty('--app-height', `${vh}px`);
         };
 
-        // Set the height on initial load.
-        setAppHeight();
+        // Run the function initially, but wrapped in a timeout to ensure the DOM is ready.
+        // This helps prevent race conditions on initial load.
+        const timeoutId = setTimeout(setAppHeight, 0);
 
-        // The visualViewport object might not exist, so we check for it.
         const visualViewport = window.visualViewport;
 
+        // Add listeners for resize and orientation changes
         if (visualViewport) {
-            // Listen for resize events on the visual viewport.
             visualViewport.addEventListener('resize', setAppHeight);
-            return () => visualViewport.removeEventListener('resize', setAppHeight);
         } else {
-            // Fallback for older browsers.
             window.addEventListener('resize', setAppHeight);
-            return () => window.removeEventListener('resize', setAppHeight);
         }
+        window.addEventListener('orientationchange', setAppHeight);
+
+        // Cleanup function to remove listeners when the component unmounts
+        return () => {
+            clearTimeout(timeoutId);
+            if (visualViewport) {
+                visualViewport.removeEventListener('resize', setAppHeight);
+            } else {
+                window.removeEventListener('resize', setAppHeight);
+            }
+            window.removeEventListener('orientationchange', setAppHeight);
+        };
     }, []);
 
     React.useEffect(() => {
