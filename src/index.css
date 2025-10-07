@@ -533,7 +533,7 @@ html, body, #root {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100dvh; /* Use dvh for independent, reliable full-screen height */
     background-color: var(--background-color);
     z-index: 100;
     display: flex;
