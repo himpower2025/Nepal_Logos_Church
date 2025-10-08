@@ -219,15 +219,13 @@ html, body, #root {
 
 .bottom-nav {
     width: 100%;
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    display: flex; /* Use flexbox for robust distribution */
     background-color: var(--card-background);
     border-top: 1px solid #e0e0e0;
     box-shadow: 0 -2px 5px var(--shadow-color);
     z-index: 10;
     padding-bottom: env(safe-area-inset-bottom);
     flex-shrink: 0;
-    transform: translateZ(0); /* Optional safeguard for rendering */
 }
 
 .nav-item {
@@ -235,7 +233,14 @@ html, body, #root {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: var(--space-sm) 0;
+    
+    /* Explicitly define flex behavior for robust sizing */
+    flex: 1; 
+    min-width: 0; /* Prevents overflow with long text */
+
+    /* Increased padding to make the bar taller */
+    padding: 10px 4px; 
+
     background: none;
     border: none;
     color: #757575;
@@ -248,22 +253,14 @@ html, body, #root {
     font-size: 24px;
     margin-bottom: var(--space-xs);
 }
+
 .nav-item span {
-    font-size: var(--font-size-sm);
+    font-size: clamp(0.7rem, 1.8vw, 0.75rem); /* Slightly increased min size */
     white-space: nowrap;
-}
-
-.bottom-nav.six-items .nav-item {
-    padding-left: var(--space-xs);
-    padding-right: var(--space-xs);
-}
-
-.bottom-nav.six-items .nav-item span {
-    font-size: clamp(0.65rem, 1.8vw, 0.75rem);
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 100%; /* Ensure span doesn't overflow its flex container */
 }
-
 
 .nav-item.active {
     color: var(--primary-color);
@@ -670,14 +667,14 @@ html, body, #root {
 /* --- Responsive Design --- */
 @media (max-width: 375px) {
   :root { --space-md: calc(var(--spacing-unit) * 0.75); }
-  .bottom-nav.six-items .nav-item span {
+  .nav-item span {
       display: none; /* Hide text on very small screens */
   }
-  .bottom-nav.six-items .nav-item {
+  .nav-item {
       padding-top: var(--space-sm);
       padding-bottom: var(--space-sm);
   }
-   .bottom-nav.six-items .nav-item .material-symbols-outlined {
+   .nav-item .material-symbols-outlined {
       font-size: 26px; /* Make icon bigger when text is hidden */
       margin-bottom: 0;
   }

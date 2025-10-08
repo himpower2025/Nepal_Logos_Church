@@ -1316,7 +1316,7 @@ const App = () => {
             
             {showNotifications && <NotificationPanel notifications={notifications} onClose={() => setShowNotifications(false)} />}
             
-            <nav className="bottom-nav six-items">
+            <nav className="bottom-nav">
                 <button className={`nav-item ${activePage === 'worship' ? 'active' : ''}`} onClick={() => { setActivePage('worship'); setActiveChatId(null); }}>
                     <span className="material-symbols-outlined">church</span><span>आरधना</span>
                 </button>
