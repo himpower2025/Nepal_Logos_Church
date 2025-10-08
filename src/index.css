@@ -239,7 +239,7 @@ html, body, #root {
     min-width: 0; /* Prevents overflow with long text */
 
     /* Increased padding to make the bar taller */
-    padding: 10px 4px; 
+    padding: 14px 4px; 
 
     background: none;
     border: none;
@@ -255,11 +255,14 @@ html, body, #root {
 }
 
 .nav-item span {
-    font-size: clamp(0.7rem, 1.8vw, 0.75rem); /* Slightly increased min size */
+    font-size: 12px; /* Stable, predictable size */
+    font-weight: 500; /* Bolder for visibility */
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%; /* Ensure span doesn't overflow its flex container */
+    /* Removing overflow properties which might be causing issues on mobile. */
+    /* The labels are short enough that they shouldn't need ellipsis. */
+    max-width: 100%;
+    display: block; /* Helps with layout calculation */
+    transform: translateZ(0); /* Crucial fix for mobile rendering glitches */
 }
 
 .nav-item.active {
