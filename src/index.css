@@ -239,7 +239,7 @@ html, body, #root {
     min-width: 0; /* Prevents overflow with long text */
 
     /* Increased padding to make the bar taller */
-    padding: 14px 4px; 
+    padding: 18px 4px; 
 
     background: none;
     border: none;
@@ -252,17 +252,18 @@ html, body, #root {
 .nav-item .material-symbols-outlined {
     font-size: 24px;
     margin-bottom: var(--space-xs);
+    flex-shrink: 0; /* Prevents icon from being squished vertically */
 }
 
 .nav-item span {
     font-size: 12px; /* Stable, predictable size */
     font-weight: 500; /* Bolder for visibility */
     white-space: nowrap;
-    /* Removing overflow properties which might be causing issues on mobile. */
-    /* The labels are short enough that they shouldn't need ellipsis. */
     max-width: 100%;
     display: block; /* Helps with layout calculation */
     transform: translateZ(0); /* Crucial fix for mobile rendering glitches */
+    flex-shrink: 0; /* Prevents text from being squished vertically */
+    line-height: 1; /* Ensures predictable vertical space */
 }
 
 .nav-item.active {
@@ -666,23 +667,6 @@ html, body, #root {
 .image-preview img { max-width: 100%; max-height: 200px; border-radius: 8px; border: 1px solid #eee; }
 .image-preview button { position: absolute; top: 5px; right: 5px; background-color: rgba(0, 0, 0, 0.6); color: white; border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; }
 
-
-/* --- Responsive Design --- */
-@media (max-width: 375px) {
-  :root { --space-md: calc(var(--spacing-unit) * 0.75); }
-  .nav-item span {
-      display: none; /* Hide text on very small screens */
-  }
-  .nav-item {
-      padding-top: var(--space-sm);
-      padding-bottom: var(--space-sm);
-  }
-   .nav-item .material-symbols-outlined {
-      font-size: 26px; /* Make icon bigger when text is hidden */
-      margin-bottom: 0;
-  }
-  .fab { width: 52px; height: 52px; bottom: var(--space-sm); right: var(--space-sm); }
-}
 
 /* Offering Modal */
 .offering-modal-content {
