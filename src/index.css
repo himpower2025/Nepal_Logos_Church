@@ -36,13 +36,13 @@
 }
 
 html, body, #root {
-    height: 100%;
     width: 100%;
     font-family: var(--font-family);
     background-color: var(--background-color);
     color: var(--text-color-dark);
-    overflow: hidden; /* Prevent body scroll when app has its own scroll */
     font-size: var(--font-size-base);
+    /* The overflow is now managed by the .app-container and .main-content,
+       which is a more robust pattern for mobile layouts. */
 }
 
 /* --- Login Page --- */
@@ -50,7 +50,7 @@ html, body, #root {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
+    height: 100vh; /* Use vh for full-screen pages outside the main app layout */
     background: linear-gradient(135deg, var(--primary-color), var(--primary-color-dark));
 }
 
@@ -129,14 +129,14 @@ html, body, #root {
 .app-container {
     display: flex;
     flex-direction: column;
-    /* Use dynamic viewport height to solve mobile browser UI issues. */
-    height: 100dvh;
+    height: 100dvh; /* Use dynamic viewport height, the modern CSS solution. */
     width: 100%;
     max-width: 600px; /* Max-width for tablet-like view on desktop */
     margin: 0 auto;
     background-color: var(--secondary-color);
     box-shadow: 0 0 20px var(--shadow-color);
     position: relative;
+    overflow: hidden; /* Ensure nothing spills out */
 }
 
 .app-header {
@@ -147,8 +147,8 @@ html, body, #root {
     background-color: var(--primary-color);
     color: var(--text-color-light);
     box-shadow: 0 2px 4px var(--shadow-color);
-    flex-shrink: 0;
     z-index: 10;
+    flex-shrink: 0;
 }
 
 .header-content {
@@ -202,15 +202,14 @@ html, body, #root {
 .main-content {
     flex-grow: 1;
     overflow-y: auto;
-    display: flex;
-    flex-direction: column;
     position: relative; /* For FAB positioning */
+    min-height: 0; /* Prevents grid/flexbox overflow issues */
+    overscroll-behavior-y: contain; /* Prevents pull-to-refresh and scroll chaining */
 }
 
 .page-content {
     animation: fadeIn 0.3s ease-in-out;
     padding: var(--space-md);
-    flex-grow: 1;
 }
 .page-content h2 {
     margin-bottom: var(--space-md);
@@ -221,12 +220,14 @@ html, body, #root {
 .bottom-nav {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     background-color: var(--card-background);
     border-top: 1px solid #e0e0e0;
     box-shadow: 0 -2px 5px var(--shadow-color);
-    flex-shrink: 0;
     z-index: 10;
+    padding-bottom: env(safe-area-inset-bottom);
+    flex-shrink: 0;
+    transform: translateZ(0); /* Optional safeguard for rendering */
 }
 
 .nav-item {
@@ -423,6 +424,30 @@ html, body, #root {
 /* --- Page Specific Styles --- */
 
 /* Worship Page */
+.section-title {
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-sm);
+    font-size: var(--font-size-lg);
+    color: var(--primary-color);
+    padding-left: var(--space-xs);
+}
+
+.past-service-item {
+    display: block;
+    text-decoration: none;
+    color: var(--text-color-dark);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.past-service-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.past-service-item h4 {
+    margin-bottom: var(--space-xs);
+}
+
 .twitch-container {
     position: relative;
     width: 100%;
@@ -507,7 +532,7 @@ html, body, #root {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100dvh; /* Use dvh for independent, reliable full-screen height */
     background-color: var(--background-color);
     z-index: 100;
     display: flex;
@@ -556,7 +581,14 @@ html, body, #root {
 .message-container.received .message-bubble { background-color: var(--received-bubble-color); align-self: flex-start; border-bottom-left-radius: 4px; }
 .message-timestamp { display: block; font-size: 0.7rem; color: #616161; text-align: right; margin-top: var(--space-xs); margin-left: var(--space-sm); }
 
-.message-input-area { display: flex; flex-direction: column; background-color: var(--card-background); border-top: 1px solid #ccc; flex-shrink: 0; }
+.message-input-area { 
+    display: flex; 
+    flex-direction: column; 
+    background-color: var(--card-background); 
+    border-top: 1px solid #ccc; 
+    flex-shrink: 0; 
+    padding-bottom: env(safe-area-inset-bottom);
+}
 .media-preview-container {
     position: relative;
     padding: var(--space-sm);
@@ -795,4 +827,32 @@ html, body, #root {
     align-items: center;
     cursor: pointer;
     flex-shrink: 0;
+}
+
+/* Update Available Prompt */
+.update-prompt {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--primary-color-dark);
+    color: white;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.update-prompt button {
+    background-color: var(--accent-color);
+    color: var(--text-color-dark);
+    border: none;
+    border-radius: 5px;
+    padding: var(--space-xs) var(--space-sm);
+    cursor: pointer;
+    font-weight: 500;
 }
