@@ -228,7 +228,8 @@ html, body, #root {
     z-index: 10;
     padding-bottom: env(safe-area-inset-bottom);
     flex-shrink: 0;
-    isolation: isolate; /* Fix for rendering bug where content becomes invisible */
+    isolation: isolate; /* Create a new stacking context */
+    transform: translateZ(0); /* Force GPU rendering layer to fix visibility bug */
 }
 
 .nav-item {
@@ -591,7 +592,8 @@ html, body, #root {
     background-color: var(--card-background); 
     border-top: 1px solid #ccc; 
     flex-shrink: 0; 
-    isolation: isolate; /* Fix for rendering bug where content becomes invisible */
+    isolation: isolate; /* Create a new stacking context */
+    transform: translateZ(0); /* Force GPU rendering layer to fix visibility bug */
 }
 .media-preview-container {
     position: relative;
