@@ -228,6 +228,7 @@ html, body, #root {
     z-index: 10;
     padding-bottom: env(safe-area-inset-bottom);
     flex-shrink: 0;
+    isolation: isolate; /* Fix for rendering bug where content becomes invisible */
 }
 
 .nav-item {
@@ -584,7 +585,14 @@ html, body, #root {
 .message-container.received .message-bubble { background-color: var(--received-bubble-color); align-self: flex-start; border-bottom-left-radius: 4px; }
 .message-timestamp { display: block; font-size: 0.7rem; color: #616161; text-align: right; margin-top: var(--space-xs); margin-left: var(--space-sm); }
 
-.message-input-area { display: flex; flex-direction: column; background-color: var(--card-background); border-top: 1px solid #ccc; flex-shrink: 0; }
+.message-input-area { 
+    display: flex; 
+    flex-direction: column; 
+    background-color: var(--card-background); 
+    border-top: 1px solid #ccc; 
+    flex-shrink: 0; 
+    isolation: isolate; /* Fix for rendering bug where content becomes invisible */
+}
 .media-preview-container {
     position: relative;
     padding: var(--space-sm);
