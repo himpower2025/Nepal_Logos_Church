@@ -239,7 +239,7 @@ html, body, #root {
     min-width: 0; /* Prevents overflow with long text */
 
     /* Increased padding to make the bar taller */
-    padding: 18px 4px; 
+    padding: 16.5px 4px; 
 
     background: none;
     border: none;
