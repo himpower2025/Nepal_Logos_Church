@@ -1,3 +1,4 @@
+
 :root {
     --primary-color: #004d40;
     --primary-color-dark: #00251a;
@@ -122,6 +123,22 @@ html, body, #root {
 
 .login-button:hover {
     background-color: var(--primary-color-dark);
+}
+
+.login-error {
+    color: var(--danger-color);
+    margin-top: var(--space-md);
+    font-size: var(--font-size-sm);
+}
+
+.auth-toggle-link {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    text-decoration: underline;
+    cursor: pointer;
+    margin-top: var(--space-lg);
+    font-size: var(--font-size-sm);
 }
 
 

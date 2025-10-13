@@ -1,3 +1,4 @@
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -45,6 +46,7 @@ const CHURCHES: Church[] = [
 type User = {
     id: string;
     name: string;
+    username: string;
     avatar: string; // URL or initials
 };
 
@@ -122,12 +124,12 @@ type PastService = {
 };
 
 
-let CURRENT_USER: User = { id: 'user1', name: '', avatar: '' };
+let CURRENT_USER: User = { id: 'user1', name: '', username: '', avatar: '' };
 
 const MOCK_USERS: User[] = [
     CURRENT_USER,
-    { id: 'user2', name: 'Jane Smith', avatar: 'JS' },
-    { id: 'user3', name: 'Pastor Ramesh', avatar: 'PR' },
+    { id: 'user2', name: 'Jane Smith', username: 'janesmith', avatar: 'JS' },
+    { id: 'user3', name: 'Pastor Ramesh', username: 'pastorramesh', avatar: 'PR' },
 ];
 
 let MOCK_CHATS: Chat[] = [
@@ -331,19 +333,57 @@ const ImageUpload = ({ imagePreview, onImageChange, onImageRemove }: { imagePrev
 
 // --- Login Page ---
 const LoginPage = ({ church, onLogin }: { church: Church; onLogin: (user: User) => void; }) => {
-    const [name, setName] = React.useState('');
+    const [isLoginView, setIsLoginView] = React.useState(true);
+    const [fullName, setFullName] = React.useState('');
+    const [username, setUsername] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const [error, setError] = React.useState('');
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
-        if (name.trim() === '') return;
+        setError('');
+        const user = MOCK_USERS.find(u => u.username === username.trim());
+        // In a real app, you would also check the password.
+        if (user) {
+            onLogin(user);
+        } else {
+            setError('Username or password not found.');
+        }
+    };
+    
+    const handleSignUp = (e: React.FormEvent) => {
+        e.preventDefault();
+        setError('');
+
+        if (fullName.trim() === '' || username.trim() === '' || password.trim() === '') {
+            setError('Please fill in all fields.');
+            return;
+        }
         
-        const avatar = name.trim().split(' ').map(n => n[0]).join('').toUpperCase();
-        const user = {
-            id: 'user1', // Use a static ID for the current user
-            name: name.trim(),
+        const existingUser = MOCK_USERS.find(u => u.username === username.trim());
+        if (existingUser) {
+            setError('This username is already taken.');
+            return;
+        }
+
+        const avatar = fullName.trim().split(' ').map(n => n[0]).join('').toUpperCase();
+        const newUser: User = {
+            id: `user${Date.now()}`,
+            name: fullName.trim(),
+            username: username.trim(),
             avatar: avatar || '?'
         };
-        onLogin(user);
+
+        MOCK_USERS.push(newUser);
+        onLogin(newUser);
+    };
+
+    const toggleView = () => {
+        setIsLoginView(!isLoginView);
+        setError('');
+        setFullName('');
+        setUsername('');
+        setPassword('');
     };
 
     return (
@@ -351,18 +391,28 @@ const LoginPage = ({ church, onLogin }: { church: Church; onLogin: (user: User) 
             <div className="login-box">
                 <img src={church.logo} alt={`${church.name} Logo`} className="login-logo" />
                 <h2>{church.name}</h2>
-                <p>Login to join the community.</p>
-                <form onSubmit={handleLogin}>
-                    <input 
-                        className="login-input" 
-                        type="text" 
-                        placeholder="तपाईको नाम लेख्नुहोस्" 
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                    />
-                    <button className="login-button" type="submit">Login</button>
-                </form>
+                <p>{isLoginView ? 'Log in to join the community.' : 'Create an account to join.'}</p>
+                
+                {isLoginView ? (
+                    <form onSubmit={handleLogin}>
+                        <input className="login-input" type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
+                        <input className="login-input" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                        <button className="login-button" type="submit">Log In</button>
+                    </form>
+                ) : (
+                    <form onSubmit={handleSignUp}>
+                        <input className="login-input" type="text" placeholder="Full Name" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+                        <input className="login-input" type="text" placeholder="Username (for login)" value={username} onChange={(e) => setUsername(e.target.value)} required />
+                        <input className="login-input" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                        <button className="login-button" type="submit">Sign Up</button>
+                    </form>
+                )}
+                
+                {error && <p className="login-error">{error}</p>}
+
+                <button onClick={toggleView} className="auth-toggle-link">
+                    {isLoginView ? "Don't have an account? Sign Up" : 'Already have an account? Log In'}
+                </button>
             </div>
         </div>
     );
@@ -1118,14 +1168,24 @@ const App = () => {
     const handleLogin = (loggedInUser: User, fromStorage: boolean = false) => {
         CURRENT_USER.id = loggedInUser.id;
         CURRENT_USER.name = loggedInUser.name;
+        CURRENT_USER.username = loggedInUser.username;
         CURRENT_USER.avatar = loggedInUser.avatar;
-        // This is a mock data refresh. In a real app, this would be handled by API calls.
-        MOCK_PRAYER_REQUESTS.forEach(req => { req.comments.find(c => c.author.id === 'user1' && (c.author = CURRENT_USER)); });
+        
+        MOCK_PRAYER_REQUESTS.forEach(req => { 
+            const userComment = req.comments.find(c => c.author.id === 'user1');
+            if(userComment) userComment.author = CURRENT_USER;
+        });
+        
         MOCK_CHATS.forEach(chat => {
             const p = chat.participants.find(p => p.id === 'user1');
-            if (p) { p.name = CURRENT_USER.name; p.avatar = CURRENT_USER.avatar; }
+            if (p) { 
+                p.name = CURRENT_USER.name; 
+                p.username = CURRENT_USER.username;
+                p.avatar = CURRENT_USER.avatar; 
+            }
             chat.messages.forEach(msg => { if(msg.sender.id === 'user1') msg.sender = CURRENT_USER; });
         });
+
         setPrayerRequests([...MOCK_PRAYER_REQUESTS]);
         setChats([...MOCK_CHATS]);
         setUser(loggedInUser);
