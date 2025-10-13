@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -8,7 +9,8 @@ import {
     signInWithEmailAndPassword, 
     onAuthStateChanged,
     signOut,
-    type User as FirebaseUser
+    // FIX: Removed 'type' keyword to fix TS error "Cannot use namespace 'FirebaseUser' as a type."
+    User as FirebaseUser
 } from "https://esm.sh/firebase@10.12.2/auth";
 import { 
     collection, 
@@ -21,8 +23,10 @@ import {
     serverTimestamp,
     getDoc,
     setDoc,
-    type QuerySnapshot,
-    type QueryDocumentSnapshot
+    // FIX: Removed 'type' keyword to fix TS error "Cannot use namespace 'QuerySnapshot' as a type."
+    QuerySnapshot,
+    // FIX: Removed 'type' keyword to fix TS error "Cannot use namespace 'QueryDocumentSnapshot' as a type."
+    QueryDocumentSnapshot
 } from "https://esm.sh/firebase@10.12.2/firestore";
 import { ref, uploadBytes, getDownloadURL } from "https://esm.sh/firebase@10.12.2/storage";
 
