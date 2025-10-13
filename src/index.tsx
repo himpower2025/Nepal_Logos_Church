@@ -34,7 +34,7 @@ type UserRole = 'admin' | 'member' | 'news_contributor' | 'podcast_contributor';
 type User = { id: string; name: string; email: string; avatar: string; roles: UserRole[]; };
 type Church = { id: string; name: string; logo: string; offeringDetails: any; };
 type Comment = { id: string; author: User; content: string; createdAt: Timestamp; };
-type PrayerRequest = { id: string; author: User; title: string; content: string; image?: string; prayedBy: string[]; comments: Comment[]; createdAt: Timestamp; };
+type PrayerRequest = { id: string; authorId: string; author: User; title: string; content: string; image?: string; prayedBy: string[]; comments: Comment[]; createdAt: Timestamp; };
 type Podcast = { id: string; title: string; author: User; audioUrl: string; createdAt: Timestamp; };
 type NewsItem = { id: string; title: string; content: string; image?: string; createdAt: Timestamp; };
 type Verse = { verse: string; text: string; };
@@ -106,7 +106,7 @@ const MCHEYNE_READING_PLAN = [
     'लेवी ७, प्रेरित ८, भजनसंग्रह ३८, १ थिस्सलोनिकी ४', 'लेवी ८, प्रेरित ९, भजनसंग्रह ३९, १ थिस्सलोनिकी ५', 'लेवी ९, प्रेरित १०, भजनसंग्रह ४०-४१, २ थिस्सलोनिकी १', 'लेवी १०, प्रेरित ११, भजनसंग्रह ४२-४३, २ थिस्सलोनिकी २',
     'लेवी ११, प्रेरित १२, भजनसंग्रह ४४-४५, २ थिस्सलोनिकी ३', 'लेवी १२, प्रेरित १३, भजनसंग्रह ४६-४७, १ तिमोथी १', 'लेवी १३, प्रेरित १४, भजनसंग्रह ४८-४९, १ तिमोथी २', 'लेवी १४, प्रेरित १५, भजनसंग्रह ५०, १ तिमोथी ३',
     'लेवी १५, प्रेरित १६, भजनसंग्रह ५१, १ तिमोथी ४', 'लेवी १६, प्रेरित १७, भजनसंग्रह ५२-५४, १ तिमोथी ५', 'लेवी १७, प्रेरित १८, भजनसंग्रह ५५, १ तिमोथी ६', 'लेवी १८, प्रेरित १९, भजनसंग्रह ५६-५७, २ तिमोथी १',
-    'लेवी १९, प्रेरित २०, भजनसंग्रह ५८-५९, २ तिमोथी २', 'लेवी २०, प्रेरित २१, भजनसंग्रह ६०-६२, २ तिमोथी ३', 'लेवी २१, प्रेरित २२, भजनसंग्रह ६३-६५, २ तिमोथी ४', 'लेवी २२, प्रेरित २३, भजनसंग्रह ६६-६७, तीतस १',
+    'लेवी १९, प्रेरित २०, भजनसंग्रह ५८-५९, २ तिमोथी २', 'लेवी २०, प्रेरित २१, भजनसंग्रह ६०-६२, २ तिमोथी ३', 'लेवी २१, प्रेरित २२, भजनसंग्रह ६३-६५, २ तिмоथी ४', 'लेवी २२, प्रेरित २३, भजनसंग्रह ६६-६७, तीतस १',
     'लेवी ২৩, प्रेरित २४, भजनसंग्रह ६८, तीतस २', 'लेवी २४, प्रेरित २५, भजनसंग्रह ६९, तीतस ३', 'लेवी २५, प्रेरित २६, भजनसंग्रह ७०-७१, फिलेमोन', 'लेवी २६, प्रेरित २७, भजनसंग्रह ७２, हिब्रू १',
     'लेवी २७, प्रेरित २८, भजनसंग्रह ७३-७४, हिब्रू २', 'गन्ती १, रोमी १, भजनसंग्रह ७५-७६, हिब्रू ३', 'गन्ती २, रोमी २, भजनसंग्रह ७७, हिब्रू ४', 'गन्ती ३, रोमी ३, भजनसंग्रह ७८, हिब्रू ५',
     'गन्ती ४, रोमी ४, भजनसंग्रह ७९, हिब्रू ६', 'गन्ती ५, रोमी ५, भजनसंग्रह ८०, हिब्रू ७', 'गन्ती ६, रोमी ६, भजनसंग्रह ८१-८२, हिब्रू ८', 'गन्ती ७, रोमी ७, भजनसंग्रह ८३-८४, हिब्रू ९',
@@ -133,7 +133,7 @@ const MCHEYNE_READING_PLAN = [
     'यहोशू १८, हिब्रू १, यशैया १४, मर्कूस ६', 'यहोशू १९, हिब्रू २, यशैया १५, मर्कूस ७', 'यहोशू २०, हिब्रू ३, यशैया १६, मर्कूस ८', 'यहोशू २१, हिब्रू ४, यशैया १७, मर्कूस ९',
     'यहोशू २२, हिब्रू ५, यशैया १८, मर्कूस १०', 'यहोशू ২৩, हिब्रू ६, यशैया १९, मर्कूस ११', 'यहोशू २४, हिब्रू ७, यशैया २०, मर्कूस १२', 'न्यायकर्ता १, हिब्रू ८, यशैया २१, मर्कूस १३',
     'न्यायकर्ता २, हिब्रू ९, यशैया २２, मर्कूस १४', 'न्यायकर्ता ३, हिब्रू १०, यशैया २३, मर्कूस १५', 'न्यायकर्ता ४, हिब्रू ११, यशैया २४, मर्कूस १६', 'न्यायकर्ता ५, हिब्रू १२, यशैया २५, लूका १',
-    'न्यायकर्ता ६, हिब्रू १३, यशैया २६, लूका २', 'न्यायकर्ता ७, याकूब १, यशैया २७, लूका ३', 'न्यायकर्ता ८, याकूब २, यशैया २८, लूका ४', 'न्यायकर्ता ९, याकूब ३, यशैया २९, लूका ५',
+    'न्यायकर्ता ६, हिब्रू १३, यशैया २६, लूका २', 'न्यायकर्ता ७, याकूब १, यशैया २७, लूका ३', 'न्यायकर्ता ८, याकूब २, यशैया २८, लूका ४', 'न्यायकर्ता ९, याकוב ३, यशैया २९, लूका ५',
     'न्यायकर्ता १०, याकूब ४, यशैया ३०, लूका ६', 'न्यायकर्ता ११, याकूब ५, यशैया ३१, लूका ७', 'न्यायकर्ता १२, १ पत्रुस १, यशैया ३２, लूका ८', 'न्यायकर्ता १३, १ पत्रुस २, यशैया ३३, लूका ९',
     'न्यायकर्ता १४, १ पत्रुस ३, यशैया ३४, लूका १०', 'न्यायकर्ता १५, १ पत्रुस ४, यशैया ३५, लूका ११', 'न्यायकर्ता १६, १ पत्रुस ५, यशैया ३６, लूका १२', 'न्यायकर्ता १७, २ पत्रुस १, यशैया ३७, लूका १३',
     'न्यायकर्ता १८, २ पत्रुस २, यशैया ३８, लूका १४', 'न्यायकर्ता १९, २ पत्रुस ३, यशैया ३९, लूका १५', 'न्यायकर्ता २०, १ यूहन्ना १, यशैया ४०, लूका १६', 'न्यायकर्ता २१, १ यूहन्ना २, यशैया ४१, लूका १७',
@@ -176,7 +176,7 @@ const MCHEYNE_READING_PLAN = [
     '२ इतिहास १०, प्रेरित २८, होशे ३, हिब्रू २', '२ इतिहास ११, रोमी १, होशे ४, हिब्रू ३', '२ इतिहास १२, रोमी २, होशे ५, हिब्रू ४', '२ इतिहास १३, रोमी ३, होशे ६, हिब्रू ५',
     '२ इतिहास १४, रोमी ४, होशे ७, हिब्रू ६', '२ इतिहास १५, रोमी ५, होशे ८, हिब्रू ७', '२ इतिहास १६, रोमी ६, होशे ९, हिब्रू ८', '२ इतिहास १७, रोमी ७, होशे १०, हिब्रू ९',
     '२ इतिहास १८, रोमी ८, होशे ११, हिब्रू १०', '२ इतिहास १९, रोमी ९, होशे १२, हिब्रू ११', '२ इतिहास २०, रोमी १०, होशे १३, हिब्रू १२', '२ इतिहास २१, रोमी ११, होशे १४, हिब्रू १३',
-    '२ इतिहास २２, रोमी १२, योएल १, याकूब १', '२ इतिहास ২৩, रोमी १३, योएल २, याकूब २', '२ इतिहास २४, रोमी १४, योएल ३, याकूब ३', '२ इतिहास २५, रोमी १५, आमोस १, याकूब ४',
+    '२ इतिहास २２, रोमी १२, योएल १, याकוב १', '२ इतिहास ২৩, रोमी १३, योएल २, याकूब २', '२ इतिहास २४, रोमी १४, योएल ३, याकूब ३', '२ इतिहास २५, रोमी १५, आमोस १, याकूब ४',
     '२ इतिहास २६, रोमी १६, आमोस २, याकूब ५', '२ इतिहास २७, १ कोरिन्थी १, आमोस ३, १ पत्रुस १', '२ इतिहास २८, १ कोरिन्थी २, आमोस ४, १ पत्रुस २', '२ इतिहास २९, १ कोरिन्थी ३, आमोस ५, १ पत्रुस ३',
     '२ इतिहास ३०, १ कोरिन्थी ४, आमोस ६, १ पत्रुस ४', '२ इतिहास ३１, १ कोरिन्थी ५, आमोस ७, १ पत्रुस ५', '२ इतिहास ३２, १ कोरिन्थी ६, आमोस ८, २ पत्रुस १', '२ इतिहास ३３, १ कोरिन्थी ७, आमोस ९, २ पत्रुस २',
     '२ इतिहास ३４, १ कोरिन्थी ८, ओबदिया, २ पत्रुस ३', '२ इतिहास ३５, १ कोरिन्थी ९, योना १, १ यूहन्ना १', '२ इतिहास ३６, १ कोरिन्थी १०, योना २, १ यूहन्ना २', 'एज्रा १, १ कोरिन्थी ११, योना ३, १ यूहन्ना ३',
@@ -279,7 +279,7 @@ const ImageUpload = ({ imagePreview, onImageChange, onImageRemove }: { imagePrev
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => { e.target.files?.[0] && onImageChange(e.target.files[0]); };
     return (
         <div className="image-upload-container">
-            {!imagePreview ? (<><input type="file" accept="image/*" onChange={handleFileSelect} style={{ display: 'none' }} ref={fileInputRef} /><label onClick={() => fileInputRef.current?.click()} className="image-upload-label"><span className="material-symbols-outlined">add_photo_alternate</span><span>फोटो थप्नुहोस् (यदि तपाईं चाहनुहुन्छ भने)</span></label></>) : (<div className="image-preview"><img src={imagePreview} alt="Preview" /><button onClick={onImageRemove}><span className="material-symbols-outlined">delete</span></button></div>)}
+            {!imagePreview ? (<><input type="file" accept="image/*" onChange={handleFileSelect} style={{ display: 'none' }} ref={fileInputRef} /><label onClick={() => fileInputRef.current?.click()} className="image-upload-label"><span className="material-symbols-outlined">add_photo_alternate</span><span>फोटो थप्नुहोस् (यदि तपाईं चाहनुहुन्छ भने)</span></label></>) : (<div className="image-preview"><img src={imagePreview} alt="Preview" /><button type="button" onClick={onImageRemove}><span className="material-symbols-outlined">delete</span></button></div>)}
         </div>
     );
 };
@@ -435,7 +435,28 @@ const ConversationPage = ({ chat, onBack, onSendMessage, onShowMembers, currentU
     );
 };
 const PrayerPage = ({ prayerRequests, onPray, onAddRequest, onSelectRequest, currentUser }: { prayerRequests: PrayerRequest[]; onPray: (id: string) => void; onAddRequest: () => void; onSelectRequest: (req: PrayerRequest) => void; currentUser: User; }) => (
-    <div className="page-content"><h2>प्रार्थना</h2><div className="list-container">{prayerRequests.map(req => (<div key={req.id} className="card prayer-item" onClick={() => onSelectRequest(req)}>{req.image && <img src={req.image} alt={req.title} className="prayer-image"/>}<h4>{req.title}</h4><p className="prayer-content">{req.content}</p><div className="prayer-meta"><span>By {req.author.name}</span><div className="prayer-actions"><button className={`prayer-action-button ${req.prayedBy.includes(currentUser.id) ? 'prayed' : ''}`} onClick={(e) => { e.stopPropagation(); onPray(req.id); }}><span className="material-symbols-outlined">volunteer_activism</span><span>{req.prayedBy.length} 기도</span></button><div className="prayer-action-button comment-button"><span className="material-symbols-outlined">chat_bubble</span><span>{req.comments.length}</span></div></div></div></div>))}</div><button className="fab" onClick={onAddRequest} aria-label="नयाँ प्रार्थना अनुरोध"><span className="material-symbols-outlined">edit_note</span></button></div>
+    <div className="page-content"><h2>प्रार्थना</h2><div className="list-container">{prayerRequests.map(req => {
+        const isPrayed = req.prayedBy.includes(currentUser.id);
+        return (
+        <div key={req.id} className="card prayer-item" onClick={() => onSelectRequest(req)}>
+            {req.image && <img src={req.image} alt={req.title} className="prayer-image"/>}
+            <h4>{req.title}</h4>
+            <p className="prayer-content">{req.content}</p>
+            <div className="prayer-meta">
+                <span>By {req.author.name}</span>
+                <div className="prayer-actions">
+                    <button className={`prayer-action-button ${isPrayed ? 'prayed' : ''}`} onClick={(e) => { e.stopPropagation(); onPray(req.id); }}>
+                        <span className="material-symbols-outlined">volunteer_activism</span>
+                        <span>{isPrayed ? '기도함' : '기도하기'} ({req.prayedBy.length})</span>
+                    </button>
+                    <div className="prayer-action-button comment-button">
+                        <span className="material-symbols-outlined">chat_bubble</span>
+                        <span>{req.comments.length}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )})}</div><button className="fab" onClick={onAddRequest} aria-label="नयाँ प्रार्थना अनुरोध"><span className="material-symbols-outlined">edit_note</span></button></div>
 );
 const PodcastPage = ({ podcasts, onAddPodcast, user }: { podcasts: Podcast[]; onAddPodcast: () => void; user: User; }) => {
     const canPostPodcast = user.roles.includes('admin') || user.roles.includes('podcast_contributor');
@@ -445,26 +466,117 @@ const PodcastPage = ({ podcasts, onAddPodcast, user }: { podcasts: Podcast[]; on
 }
 
 // --- Modals ---
-const AddPrayerRequestModal = ({ onClose, onAddRequest, isSubmitting }: { onClose: () => void; onAddRequest: (data: { title: string; content: string; imageFile: File | null; }) => void; isSubmitting: boolean; }) => {
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
+const PrayerRequestFormModal = ({ onClose, onSubmit, isSubmitting, initialData }: { 
+    onClose: () => void; 
+    onSubmit: (data: any) => void;
+    isSubmitting: boolean; 
+    initialData?: PrayerRequest;
+}) => {
+    const [title, setTitle] = useState(initialData?.title || '');
+    const [content, setContent] = useState(initialData?.content || '');
     const [imageFile, setImageFile] = useState<File | null>(null);
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
-    const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); if (title.trim() && content.trim() && !isSubmitting) { onAddRequest({ title, content, imageFile }); } };
-    const handleImageChange = (file: File) => { setImageFile(file); setImagePreview(URL.createObjectURL(file)); };
-    const handleImageRemove = () => { setImageFile(null); setImagePreview(null); };
+    const [imagePreview, setImagePreview] = useState<string | null>(initialData?.image || null);
+    const [removeImage, setRemoveImage] = useState(false);
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (title.trim() && content.trim() && !isSubmitting) {
+            if (initialData) {
+                onSubmit({ reqId: initialData.id, title, content, imageFile, removeImage, oldImageUrl: initialData.image });
+            } else {
+                onSubmit({ title, content, imageFile });
+            }
+        }
+    };
+
+    const handleImageChange = (file: File) => {
+        setImageFile(file);
+        setImagePreview(URL.createObjectURL(file));
+        setRemoveImage(false);
+    };
+
+    const handleImageRemove = () => {
+        setImageFile(null);
+        setImagePreview(null);
+        if (initialData?.image) {
+            setRemoveImage(true);
+        }
+    };
+
+    const isEditing = !!initialData;
+
     return (
-        <Modal onClose={onClose}><form className="modal-form" onSubmit={handleSubmit}><h3>प्रार्थना अनुरोध</h3><input type="text" placeholder="शीर्षक" value={title} onChange={(e) => setTitle(e.target.value)} required /><textarea rows={5} placeholder="हामीले केको लागि प्रार्थना गर्नुपछ?" value={content} onChange={(e) => setContent(e.target.value)} required /><ImageUpload imagePreview={imagePreview} onImageChange={handleImageChange} onImageRemove={handleImageRemove} /><button type="submit" className="action-button" disabled={isSubmitting}>{isSubmitting ? "게시 중..." : "अनुरोध पोस्ट गर्नुहोस्"}</button></form></Modal>
+        <Modal onClose={onClose}>
+            <form className="modal-form" onSubmit={handleSubmit}>
+                <h3>{isEditing ? "기도 제목 수정" : "새 기도 제목"}</h3>
+                <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+                <textarea rows={5} placeholder="What should we pray for?" value={content} onChange={(e) => setContent(e.target.value)} required />
+                <ImageUpload imagePreview={imagePreview} onImageChange={handleImageChange} onImageRemove={handleImageRemove} />
+                <button type="submit" className="action-button" disabled={isSubmitting}>
+                    {isSubmitting ? (isEditing ? "저장 중..." : "게시 중...") : (isEditing ? "변경 사항 저장" : "요청 게시")}
+                </button>
+            </form>
+        </Modal>
     );
 };
-const PrayerDetailsModal = ({ request, onClose, onPray, onComment, currentUser }: { request: PrayerRequest; onClose: () => void; onPray: (id: string) => void; onComment: (id: string, text: string) => void; currentUser: User; }) => {
+
+const PrayerDetailsModal = ({ request, onClose, onPray, onComment, currentUser, onEdit, onDelete }: { 
+    request: PrayerRequest; 
+    onClose: () => void; 
+    onPray: (id: string) => void; 
+    onComment: (id: string, text: string) => void; 
+    currentUser: User;
+    onEdit: (req: PrayerRequest) => void;
+    onDelete: (reqId: string, image?: string) => void;
+}) => {
     const [comment, setComment] = useState('');
     const handleCommentSubmit = (e: React.FormEvent) => { e.preventDefault(); if (comment.trim()) { onComment(request.id, comment.trim()); setComment(''); } };
     const isPrayed = request.prayedBy.includes(currentUser.id);
+    const isOwner = currentUser.id === request.authorId;
+
+    const handleDelete = () => {
+        if (window.confirm("정말로 이 기도 요청을 삭제하시겠습니까?")) {
+            onDelete(request.id, request.image);
+        }
+    };
+
     return (
-        <Modal onClose={onClose}><div className="prayer-details-modal"><div className="prayer-details-content"><h3>{request.title}</h3><p className="prayer-author">By {request.author.name}</p>{request.image && <img src={request.image} alt={request.title} className="prayer-image" />}<p className="prayer-main-content">{request.content}</p><div className="prayer-meta"><div className="prayer-actions"><button className={`prayer-action-button ${isPrayed ? 'prayed' : ''}`} onClick={() => onPray(request.id)}><span className="material-symbols-outlined">volunteer_activism</span><span>{isPrayed ? '기도했습니다' : '기도하기'} ({request.prayedBy.length})</span></button></div></div></div><div className="prayer-comments-section"><h4>Comments ({request.comments.length})</h4><div className="prayer-comment-list">{request.comments.length > 0 ? [...request.comments].reverse().map(c => (<div key={c.id} className="comment-item"><p><strong>{c.author.name}:</strong> {c.content}</p></div>)) : <p className="no-comments">No comments yet.</p>}</div><form className="comment-form" onSubmit={handleCommentSubmit}><input type="text" placeholder="Add a comment..." value={comment} onChange={(e) => setComment(e.target.value)} /><button type="submit"><span className="material-symbols-outlined">send</span></button></form></div></div></Modal>
+        <Modal onClose={onClose}>
+            <div className="prayer-details-modal">
+                <div className="prayer-details-content">
+                    {isOwner && (
+                        <div className="prayer-owner-actions">
+                            <button onClick={() => onEdit(request)}>
+                                <span className="material-symbols-outlined">edit</span> 수정
+                            </button>
+                            <button className="delete-btn" onClick={handleDelete}>
+                                <span className="material-symbols-outlined">delete</span> 삭제
+                            </button>
+                        </div>
+                    )}
+                    <h3>{request.title}</h3>
+                    <p className="prayer-author">By {request.author.name}</p>
+                    {request.image && <img src={request.image} alt={request.title} className="prayer-image" />}
+                    <p className="prayer-main-content">{request.content}</p>
+                    <div className="prayer-meta">
+                        <div className="prayer-actions">
+                            <button className={`prayer-action-button ${isPrayed ? 'prayed' : ''}`} onClick={() => onPray(request.id)}>
+                                <span className="material-symbols-outlined">volunteer_activism</span>
+                                <span>{isPrayed ? '기도했습니다' : '기도하기'} ({request.prayedBy.length})</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div className="prayer-comments-section">
+                    <h4>댓글 ({request.comments.length})</h4>
+                    <div className="prayer-comment-list">{request.comments.length > 0 ? [...request.comments].reverse().map(c => (<div key={c.id} className="comment-item"><p><strong>{c.author.name}:</strong> {c.content}</p></div>)) : <p className="no-comments">댓글이 없습니다.</p>}</div>
+                    <form className="comment-form" onSubmit={handleCommentSubmit}><input type="text" placeholder="댓글 추가..." value={comment} onChange={(e) => setComment(e.target.value)} /><button type="submit"><span className="material-symbols-outlined">send</span></button></form>
+                </div>
+            </div>
+        </Modal>
     );
 };
+
 const CreateChatModal = ({ onClose, onStartChat, allUsers, currentUser }: { onClose: () => void; onStartChat: (userIds: string[]) => void; allUsers: User[]; currentUser: User }) => {
     const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
     const handleToggleUser = (id: string) => setSelectedUserIds(prev => prev.includes(id) ? prev.filter(uid => uid !== id) : [...prev, id]);
@@ -604,6 +716,7 @@ const App = () => {
     // View states
     const [activeChatId, setActiveChatId] = useState<string | null>(null);
     const [selectedPrayerRequest, setSelectedPrayerRequest] = useState<PrayerRequest | null>(null);
+    const [editingPrayer, setEditingPrayer] = useState<PrayerRequest | null>(null);
     const [showNotifications, setShowNotifications] = useState(false);
     const [hasUnread, setHasUnread] = useState(true);
     
@@ -623,7 +736,7 @@ const App = () => {
     useEffect(() => {
         if (!user) return;
         const prayerQ = query(collection(db, "prayerRequests"), orderBy("createdAt", "desc"));
-        const unsubPrayer = onSnapshot(prayerQ, async (snap) => setPrayerRequests(await Promise.all(snap.docs.map(async d => ({ ...d.data(), id: d.id, author: await fetchUser(d.data().authorId), comments: await Promise.all((d.data().comments || []).map(async (c: any) => ({...c, id: Math.random().toString(), author: await fetchUser(c.authorId)}))), prayedBy: d.data().prayedBy || [] } as PrayerRequest)))));
+        const unsubPrayer = onSnapshot(prayerQ, async (snap) => setPrayerRequests(await Promise.all(snap.docs.map(async d => ({ ...d.data(), id: d.id, authorId: d.data().authorId, author: await fetchUser(d.data().authorId), comments: await Promise.all((d.data().comments || []).map(async (c: any) => ({...c, id: Math.random().toString(), author: await fetchUser(c.authorId)}))), prayedBy: d.data().prayedBy || [] } as PrayerRequest)))));
         const podcastQ = query(collection(db, "podcasts"), orderBy("createdAt", "desc"));
         const unsubPodcast = onSnapshot(podcastQ, async (snap) => setPodcasts(await Promise.all(snap.docs.map(async d => ({ ...d.data(), id: d.id, author: await fetchUser(d.data().authorId) } as Podcast)))));
         const chatQ = query(collection(db, "chats"), where("participantIds", "array-contains", user.id), orderBy("lastMessageTimestamp", "desc"));
@@ -653,15 +766,62 @@ const App = () => {
         try {
             const imageUrl = data.imageFile ? await uploadFile(data.imageFile, 'prayerImages') : '';
             await addDoc(collection(db, "prayerRequests"), { authorId: user.id, title: data.title, content: data.content, image: imageUrl, prayedBy: [], comments: [], createdAt: serverTimestamp() });
+            setModal(null);
         } catch (error) {
             console.error("Error adding prayer request: ", error);
             alert("기도 요청을 게시하지 못했습니다. 다시 시도해 주세요.");
         } finally {
             setIsSubmitting(false);
-            setModal(null);
         }
     };
     
+    const handleUpdatePrayerRequest = async (data: { reqId: string; title: string; content: string; imageFile: File | null; removeImage: boolean; oldImageUrl?: string; }) => {
+        if (!user || isSubmitting) return;
+        setIsSubmitting(true);
+        try {
+            let imageUrl = data.oldImageUrl || '';
+            // Case 1: Remove existing image
+            if (data.removeImage && data.oldImageUrl) {
+                await deleteObject(ref(storage, data.oldImageUrl));
+                imageUrl = '';
+            }
+            // Case 2: Upload a new image (replacing old one if it exists)
+            if (data.imageFile) {
+                if (data.oldImageUrl) {
+                    await deleteObject(ref(storage, data.oldImageUrl));
+                }
+                imageUrl = await uploadFile(data.imageFile, 'prayerImages');
+            }
+            
+            await updateDoc(doc(db, "prayerRequests", data.reqId), {
+                title: data.title,
+                content: data.content,
+                image: imageUrl
+            });
+            setEditingPrayer(null);
+        } catch(e) { 
+            console.error("Error updating prayer request: ", e);
+            alert("기도 요청을 업데이트하지 못했습니다.");
+        }
+        finally {
+            setIsSubmitting(false);
+        }
+    };
+    
+    const handleDeletePrayerRequest = async (reqId: string, imageUrl?: string) => {
+        try {
+            if (imageUrl) {
+                const imageRef = ref(storage, imageUrl);
+                await deleteObject(imageRef);
+            }
+            await deleteDoc(doc(db, "prayerRequests", reqId));
+            setSelectedPrayerRequest(null); // Close the details modal
+        } catch (error) {
+            console.error("Error deleting prayer request: ", error);
+            alert("Failed to delete request.");
+        }
+    };
+
     const handleAddNews = async (data: { title: string; content: string; imageFile: File | null; }) => {
         if (!user) return;
         const imageUrl = data.imageFile ? await uploadFile(data.imageFile, 'newsImages') : '';
@@ -705,7 +865,9 @@ const App = () => {
             case 'worship': return <WorshipPage church={CHURCH} user={user} services={worshipServices} onManageServices={() => setModal('manageWorship')} />;
             case 'news': return <NewsPage user={user} onAddNews={() => setModal('addNews')} />;
             case 'bible': return <BiblePage />;
-            case 'fellowship': return <ChatListPage chats={chats} onSelectChat={setActiveChatId} onCreateChat={() => setModal('createChat')} currentUser={user} />;
+            case 'fellowship': 
+                if (activeChatId) return null;
+                return <ChatListPage chats={chats} onSelectChat={setActiveChatId} onCreateChat={() => setModal('createChat')} currentUser={user} />;
             case 'prayer': return <PrayerPage prayerRequests={prayerRequests} onPray={handlePray} onAddRequest={() => setModal('addPrayer')} onSelectRequest={setSelectedPrayerRequest} currentUser={user} />;
             case 'podcast': return <PodcastPage podcasts={podcasts} onAddPodcast={() => setModal('addPodcast')} user={user} />;
             default: return <WorshipPage church={CHURCH} user={user} services={worshipServices} onManageServices={() => setModal('manageWorship')} />;
@@ -740,9 +902,30 @@ const App = () => {
             </nav>
             
             {activeChat && <ConversationPage chat={activeChat} onBack={() => setActiveChatId(null)} onSendMessage={handleSendMessage} onShowMembers={() => setModal('chatMembers')} currentUser={user} />}
-            {openPrayer && <PrayerDetailsModal request={openPrayer} onClose={() => setSelectedPrayerRequest(null)} onPray={handlePray} onComment={handleComment} currentUser={user} />}
+            {openPrayer && <PrayerDetailsModal 
+                request={openPrayer} 
+                onClose={() => setSelectedPrayerRequest(null)} 
+                onPray={handlePray} 
+                onComment={handleComment} 
+                currentUser={user}
+                onEdit={(req) => {
+                    setSelectedPrayerRequest(null);
+                    setEditingPrayer(req);
+                }}
+                onDelete={handleDeletePrayerRequest}
+             />}
             
-            {modal === 'addPrayer' && <AddPrayerRequestModal onClose={() => setModal(null)} onAddRequest={handleAddPrayerRequest} isSubmitting={isSubmitting} />}
+            {modal === 'addPrayer' && <PrayerRequestFormModal 
+                onClose={() => setModal(null)} 
+                onSubmit={handleAddPrayerRequest} 
+                isSubmitting={isSubmitting} 
+            />}
+            {editingPrayer && <PrayerRequestFormModal 
+                onClose={() => setEditingPrayer(null)}
+                onSubmit={handleUpdatePrayerRequest}
+                isSubmitting={isSubmitting}
+                initialData={editingPrayer}
+            />}
             {modal === 'createChat' && <CreateChatModal onClose={() => setModal(null)} onStartChat={handleStartChat} allUsers={allUsers} currentUser={user} />}
             {modal === 'addPodcast' && <AddPodcastModal onClose={() => setModal(null)} onAddPodcast={handleAddPodcast} />}
             {modal === 'chatMembers' && activeChat && <ChatMembersModal chat={activeChat} allUsers={allUsers} onClose={() => setModal(null)} onAddMembers={handleAddMembers} />}

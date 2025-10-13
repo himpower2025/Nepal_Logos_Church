@@ -593,10 +593,16 @@ html, body, #root {
 
 /* Prayer Details Modal */
 .prayer-details-modal { flex-grow: 1; display: flex; flex-direction: column; gap: var(--space-md); }
-.prayer-details-content { border-bottom: 1px solid #eee; padding-bottom: var(--space-md); }
+.prayer-details-content { position: relative; border-bottom: 1px solid #eee; padding-bottom: var(--space-md); }
 .prayer-details-content h3 { font-size: var(--font-size-h2); margin-bottom: var(--space-xs); }
 .prayer-author { font-size: var(--font-size-sm); color: #757575; margin-bottom: var(--space-md); }
 .prayer-main-content { line-height: 1.6; }
+.prayer-owner-actions { position: absolute; top: -8px; right: -8px; display: flex; gap: var(--space-sm); }
+.prayer-owner-actions button { background: none; border: none; color: var(--text-color-dark); cursor: pointer; font-size: var(--font-size-sm); padding: var(--space-xs); display: flex; align-items: center; gap: 4px; border-radius: 4px; }
+.prayer-owner-actions button .material-symbols-outlined { font-size: 1rem; }
+.prayer-owner-actions button:hover { background-color: #f0f0f0; color: var(--primary-color); }
+.prayer-owner-actions button.delete-btn:hover { color: var(--danger-color); }
+
 
 .prayer-comments-section { flex-grow: 1; display: flex; flex-direction: column; min-height: 100px; }
 .prayer-comments-section h4 { margin-bottom: calc(var(--space-sm) * 1.5); color: var(--primary-color); }
