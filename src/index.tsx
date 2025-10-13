@@ -9,7 +9,7 @@ import {
     onAuthStateChanged,
     signOut,
     type User as FirebaseUser
-} from "firebase/auth";
+} from "https://esm.sh/firebase@10.12.2/auth";
 import { 
     collection, 
     addDoc, 
@@ -23,8 +23,8 @@ import {
     setDoc,
     type QuerySnapshot,
     type QueryDocumentSnapshot
-} from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+} from "https://esm.sh/firebase@10.12.2/firestore";
+import { ref, uploadBytes, getDownloadURL } from "https://esm.sh/firebase@10.12.2/storage";
 
 // --- Platform Configuration ---
 // ... (This section remains largely the same, but we can simplify the Church type)
