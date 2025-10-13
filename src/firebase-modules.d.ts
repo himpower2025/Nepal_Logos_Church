@@ -6,13 +6,10 @@
 // The ideal solution is to use a package manager (like npm) to install
 // Firebase as a dependency, which would provide full type support.
 
-declare module 'https://esm.sh/firebase@10.12.2/app';
-declare module 'https://esm.sh/firebase@10.12.2/auth';
-declare module 'https://esm.sh/firebase@10.12.2/firestore';
-declare module 'https://esm.sh/firebase@10.12.2/storage';
+// The `declare module` lines below have been removed as they were preventing
+// TypeScript from loading the proper type definitions from the esm.sh CDN.
 
-// FIX: Add type definitions for Vite environment variables to resolve
-// "Property 'env' does not exist on type 'ImportMeta'" errors in src/firebase.ts.
+// Type definitions for Vite environment variables
 interface ImportMetaEnv {
   readonly VITE_FIREBASE_API_KEY: string;
   readonly VITE_FIREBASE_AUTH_DOMAIN: string;

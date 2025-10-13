@@ -1,11 +1,8 @@
 
-
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import { auth, db, storage } from './firebase';
-// FIX: Consolidate Firebase type imports with value imports to resolve TS errors.
 import { 
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
@@ -25,7 +22,9 @@ import {
     getDoc,
     setDoc,
     arrayUnion,
-    type QuerySnapshot, type QueryDocumentSnapshot, type Timestamp
+    Timestamp,
+    type QuerySnapshot, 
+    type QueryDocumentSnapshot
 } from "https://esm.sh/firebase@10.12.2/firestore";
 
 import { ref, uploadBytes, getDownloadURL } from "https://esm.sh/firebase@10.12.2/storage";
@@ -122,14 +121,6 @@ type Verse = {
     text: string;
 };
 
-type Notification = {
-    id: string;
-    icon: string;
-    message: string;
-    timestamp: string;
-};
-
-
 // --- Mock Data for non-Firebase pages ---
 
 // The current user will be populated by Firebase auth, but we need a placeholder for mock chats.
@@ -162,7 +153,6 @@ const MOCK_VERSES_OF_THE_DAY: Verse[] = [
 ];
 
 const BIBLE_READING_PLAN_NNRV = ['उत्पत्ति १, मत्ती १', 'उत्पत्ति २, मत्ती २', 'उत्पत्ति ३, मत्ती ३']; // Truncated for brevity
-const PROVERBS_NNRV: { [key: number]: string } = { 23: `१ जब तँ शासकसँग खान बस्छस्, तेरो सामुन्ने को छ, सो होशियारसित विचार गर्।` }; // Truncated
 const BIBLE_TEXT_NNRV: { [key: string]: { [key: string]: string } } = { 'उत्पत्ति': { '1': `१ आदिमा परमेश्‍वरले आकाश र पृथ्‍वी सृष्‍टि गर्नुभयो।` } }; // Truncated
 
 // --- Helper Functions ---
