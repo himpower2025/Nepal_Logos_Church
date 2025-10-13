@@ -6,8 +6,7 @@ import {
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
     onAuthStateChanged,
-    signOut,
-    type User as FirebaseUser
+    signOut
 } from "firebase/auth";
 import { 
     collection, 
@@ -26,18 +25,25 @@ import {
     getDocs,
     arrayRemove
 } from "firebase/firestore";
-import { ref, uploadString, getDownloadURL, uploadBytes } from "firebase/storage";
+import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 
 // --- Types ---
 type User = { id: string; name: string; email: string; avatar: string; };
 type Church = { id: string; name: string; logo: string; offeringDetails: any; streamingInfo: any; };
 type Comment = { id: string; author: User; content: string; createdAt: Timestamp; };
-type PrayerRequest = { id: string; author: User; title: string; content: string; image?: string; prayedBy: string[]; comments: any[]; createdAt: Timestamp; };
+type PrayerRequest = { id: string; author: User; title: string; content: string; image?: string; prayedBy: string[]; comments: Comment[]; createdAt: Timestamp; };
 type Podcast = { id: string; title: string; author: User; audioUrl: string; createdAt: Timestamp; };
 type NewsItem = { id: string; title: string; date: string; content: string; image?: string; };
 type Verse = { verse: string; text: string; };
 type Message = { id: string; senderId: string; sender?: User; content: string; type: 'text' | 'image'; mediaUrl?: string; createdAt: Timestamp; };
 type Chat = { id: string; participantIds: string[]; participants: User[]; messages: Message[]; lastMessageTimestamp: Timestamp; };
+type Notification = {
+    id: string;
+    icon: string; // material symbol name
+    message: string;
+    timestamp: string;
+};
+
 
 // --- Static Config & Data ---
 const CHURCH: Church = {
@@ -52,6 +58,11 @@ const MOCK_NEWS: NewsItem[] = [
 const MOCK_VERSES_OF_THE_DAY: Verse[] = [
     { verse: 'यूहन्ना ३:१६', text: 'किनभने परमेश्‍वरले संसारलाई यति साह्रो प्रेम गर्नुभयो, कि उहाँले आफ्‍ना एकमात्र पुत्र दिनुभयो, ताकि उहाँमाथि विश्‍वास गर्ने कोही पनि नाश नहोस्, तर त्‍यसले अनन्त जीवन पाओस्।' },
     { verse: 'फिलिप्पी ४:१३', text: 'जसले मलाई शक्ति दिनuहुन्छ, उहाँमा म सब कुरा गर्न सक्छु।' }
+];
+const MOCK_NOTIFICATIONS: Notification[] = [
+    { id: 'n1', icon: 'chat_bubble', message: 'Pastor Ramesh commented on your prayer request.', timestamp: '2 hours ago' },
+    { id: 'n2', icon: 'podcasts', message: 'New podcast episode "Faith in Action" is available.', timestamp: '1 day ago' },
+    { id: 'n3', icon: 'volunteer_activism', message: 'Jane Smith is praying for your request "Family Health".', timestamp: '3 days ago' },
 ];
 const BIBLE_READING_PLAN_NNRV = [ 'उत्पत्ति १, मत्ती १', 'उत्पत्ति २, मत्ती २', 'उत्पत्ति ३, मत्ती ३', 'उत्पत्ति ४, मत्ती ४', 'उत्पत्ति ५, मत्ती ५', 'उत्पत्ति ६, मत्ती ६', 'उत्पत्ति ७, मत्ती ७', 'उत्पत्ति ८, मत्ती ८', 'उत्पत्ति ९-१०, मत्ती ९' ];
 const PROVERBS_NNRV: { [key: number]: string } = { 23: `१ जब तँ शासकसँग खान बस्छस्, तेरो सामुन्ने को छ, सो होशियारसित विचार गर्।` };
@@ -104,6 +115,45 @@ const ImageUpload = ({ imagePreview, onImageChange, onImageRemove }: { imagePrev
     );
 };
 
+const NotificationPanel = ({ notifications, onClose }: { notifications: Notification[]; onClose: () => void; }) => {
+    const panelRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (panelRef.current && !panelRef.current.contains(event.target as Node)) {
+                if (!(event.target as Element).closest('.header-button.notifications')) {
+                    onClose();
+                }
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [onClose]);
+
+    return (
+        <div className="notification-panel" ref={panelRef}>
+            <div className="notification-header"><h4>Notifications</h4></div>
+            <div className="notification-list">
+                {notifications.length > 0 ? (
+                    notifications.map(notif => (
+                        <div key={notif.id} className="notification-item">
+                            <span className="material-symbols-outlined notification-icon">{notif.icon}</span>
+                            <div className="notification-content">
+                                <p>{notif.message}</p>
+                                <span className="notification-timestamp">{notif.timestamp}</span>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <p className="no-notifications">No new notifications.</p>
+                )}
+            </div>
+        </div>
+    );
+};
+
 // --- Auth Page ---
 const LoginPage = ({ church }: { church: Church }) => {
     const [isLoginView, setIsLoginView] = useState(true);
@@ -141,11 +191,11 @@ const WorshipPage = ({ church }: { church: Church; }) => {
     const [showOfferingModal, setShowOfferingModal] = useState(false);
     const copyToClipboard = (text: string) => navigator.clipboard.writeText(text).then(() => alert("Account number copied."));
     return (
-        <div className="page-content"><h2>Worship</h2><div className="card"><div className="twitch-container"><iframe src={`https://player.twitch.tv/?channel=${church.streamingInfo.twitchChannel}&parent=${window.location.hostname}`} height="100%" width="100%" allowFullScreen></iframe></div><p className="twitch-info-text">Join the live worship.</p><div className="worship-offering-container"><button className="action-button" onClick={() => setShowOfferingModal(true)}><span className="material-symbols-outlined">volunteer_activism</span>Online Offering</button></div></div>{showOfferingModal && (<Modal onClose={() => setShowOfferingModal(false)}><div className="offering-modal-content"><h3>Online Offering</h3><img src={church.offeringDetails.qrCodeUrl} alt="QR Code" className="qr-code-img" /><div className="offering-details"><p><strong>Bank:</strong> {church.offeringDetails.bankName}</p><p><strong>Account Holder:</strong> {church.offeringDetails.accountHolder}</p><div className="account-number-container"><p><strong>Account Number:</strong> {church.offeringDetails.accountNumber}</p><button className="copy-button" onClick={() => copyToClipboard(church.offeringDetails.accountNumber)}><span className="material-symbols-outlined">content_copy</span>Copy</button></div></div></div></Modal>)}</div>
+        <div className="page-content"><h2>आरधना</h2><div className="card"><div className="twitch-container"><iframe src={`https://player.twitch.tv/?channel=${church.streamingInfo.twitchChannel}&parent=${window.location.hostname}`} height="100%" width="100%" allowFullScreen></iframe></div><p className="twitch-info-text">Join the live worship.</p><div className="worship-offering-container"><button className="action-button" onClick={() => setShowOfferingModal(true)}><span className="material-symbols-outlined">volunteer_activism</span>Online Offering</button></div></div>{showOfferingModal && (<Modal onClose={() => setShowOfferingModal(false)}><div className="offering-modal-content"><h3>Online Offering</h3><img src={church.offeringDetails.qrCodeUrl} alt="QR Code" className="qr-code-img" /><div className="offering-details"><p><strong>Bank:</strong> {church.offeringDetails.bankName}</p><p><strong>Account Holder:</strong> {church.offeringDetails.accountHolder}</p><div className="account-number-container"><p><strong>Account Number:</strong> {church.offeringDetails.accountNumber}</p><button className="copy-button" onClick={() => copyToClipboard(church.offeringDetails.accountNumber)}><span className="material-symbols-outlined">content_copy</span>Copy</button></div></div></div></Modal>)}</div>
     );
 };
 const NewsPage = () => (
-    <div className="page-content"><h2>News & Announcements</h2><div className="list-container">{[...MOCK_NEWS].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map(item => (<div key={item.id} className="card news-item">{item.image && <img src={item.image} alt={item.title} className="news-image"/>}<div className="news-content"><h3>{item.title}</h3><p className="news-meta">{item.date}</p><p>{item.content}</p></div></div>))}</div></div>
+    <div className="page-content"><h2>सुचना</h2><div className="list-container">{[...MOCK_NEWS].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map(item => (<div key={item.id} className="card news-item">{item.image && <img src={item.image} alt={item.title} className="news-image"/>}<div className="news-content"><h3>{item.title}</h3><p className="news-meta">{item.date}</p><p>{item.content}</p></div></div>))}</div></div>
 );
 const BiblePage = () => {
     const [readingData, setReadingData] = useState<{title: string; plan: string; text: string} | null>(null);
@@ -164,7 +214,7 @@ const BiblePage = () => {
 const ChatListPage = ({ chats, onSelectChat, onCreateChat, currentUser }: { chats: Chat[]; onSelectChat: (id: string) => void; onCreateChat: () => void; currentUser: User; }) => {
     const getOtherParticipant = (chat: Chat) => chat.participants.find(p => p.id !== currentUser.id);
     return (
-        <div className="page-content chat-list-page"><h2>Fellowship</h2><div className="list-container">{chats.map(chat => { const other = getOtherParticipant(chat); if (!other) return null; const lastMsg = chat.messages[chat.messages.length - 1]; return (<div key={chat.id} className="list-item chat-item" onClick={() => onSelectChat(chat.id)}><div className="chat-avatar">{other.avatar}</div><div className="chat-info"><span className="chat-name">{other.name}</span><span className="chat-last-message">{lastMsg ? lastMsg.content : 'No messages.'}</span></div></div>); })}</div><button className="fab" onClick={onCreateChat} aria-label="New Chat"><span className="material-symbols-outlined">edit</span></button></div>
+        <div className="page-content chat-list-page"><h2>संगतिहरु</h2><div className="list-container">{chats.map(chat => { const other = getOtherParticipant(chat); if (!other) return null; const lastMsg = chat.messages[chat.messages.length - 1]; return (<div key={chat.id} className="list-item chat-item" onClick={() => onSelectChat(chat.id)}><div className="chat-avatar">{other.avatar}</div><div className="chat-info"><span className="chat-name">{other.name}</span><span className="chat-last-message">{lastMsg ? lastMsg.content : 'No messages.'}</span></div></div>); })}</div><button className="fab" onClick={onCreateChat} aria-label="New Chat"><span className="material-symbols-outlined">edit</span></button></div>
     );
 };
 const ConversationPage = ({ chat, onBack, onSendMessage, currentUser }: { chat: Chat; onBack: () => void; onSendMessage: (chatId: string, content: string) => void; currentUser: User }) => {
@@ -178,7 +228,7 @@ const ConversationPage = ({ chat, onBack, onSendMessage, currentUser }: { chat: 
     );
 };
 const PrayerPage = ({ prayerRequests, onPray, onAddRequest, onSelectRequest, currentUser }: { prayerRequests: PrayerRequest[]; onPray: (id: string) => void; onAddRequest: () => void; onSelectRequest: (req: PrayerRequest) => void; currentUser: User; }) => (
-    <div className="page-content"><h2>Prayer Wall</h2><div className="list-container">{prayerRequests.map(req => (<div key={req.id} className="card prayer-item" onClick={() => onSelectRequest(req)}>{req.image && <img src={req.image} alt={req.title} className="prayer-image"/>}<h4>{req.title}</h4><p className="prayer-content">{req.content}</p><div className="prayer-meta"><span>By {req.author.name}</span><div className="prayer-actions"><button className={`prayer-action-button ${req.prayedBy.includes(currentUser.id) ? 'prayed' : ''}`} onClick={(e) => { e.stopPropagation(); onPray(req.id); }}><span className="material-symbols-outlined">volunteer_activism</span><span>{req.prayedBy.length}</span></button><div className="prayer-action-button comment-button"><span className="material-symbols-outlined">chat_bubble</span><span>{req.comments.length}</span></div></div></div></div>))}</div><button className="fab" onClick={onAddRequest}><span className="material-symbols-outlined">add</span></button></div>
+    <div className="page-content"><h2>प्रार्थना</h2><div className="list-container">{prayerRequests.map(req => (<div key={req.id} className="card prayer-item" onClick={() => onSelectRequest(req)}>{req.image && <img src={req.image} alt={req.title} className="prayer-image"/>}<h4>{req.title}</h4><p className="prayer-content">{req.content}</p><div className="prayer-meta"><span>By {req.author.name}</span><div className="prayer-actions"><button className={`prayer-action-button ${req.prayedBy.includes(currentUser.id) ? 'prayed' : ''}`} onClick={(e) => { e.stopPropagation(); onPray(req.id); }}><span className="material-symbols-outlined">volunteer_activism</span><span>{req.prayedBy.length}</span></button><div className="prayer-action-button comment-button"><span className="material-symbols-outlined">chat_bubble</span><span>{req.comments.length}</span></div></div></div></div>))}</div><button className="fab" onClick={onAddRequest}><span className="material-symbols-outlined">add</span></button></div>
 );
 const PodcastPage = ({ podcasts, onAddPodcast }: { podcasts: Podcast[]; onAddPodcast: () => void; }) => (
     <div className="page-content"><h2>Podcast</h2><div className="list-container">{podcasts.length > 0 ? podcasts.map(p => (<div key={p.id} className="card podcast-item"><div className="podcast-info"><div><h4 className="podcast-title">{p.title}</h4><p className="podcast-author">By {p.author.name}</p></div></div><audio controls className="podcast-player" src={p.audioUrl}></audio></div>)) : <p>No podcasts available yet.</p>}</div><button className="fab" onClick={onAddPodcast} aria-label="New Podcast"><span className="material-symbols-outlined">mic</span></button></div>
@@ -251,6 +301,9 @@ const App = () => {
     const [showAddPrayerModal, setShowAddPrayerModal] = useState(false);
     const [showCreateChatModal, setShowCreateChatModal] = useState(false);
     const [showAddPodcastModal, setShowAddPodcastModal] = useState(false);
+    const [notifications, setNotifications] = useState<Notification[]>(MOCK_NOTIFICATIONS);
+    const [showNotifications, setShowNotifications] = useState(false);
+    const [hasUnread, setHasUnread] = useState(true);
     
     useEffect(() => {
         onAuthStateChanged(auth, async (fbUser) => {
@@ -331,6 +384,12 @@ const App = () => {
         }
         setShowCreateChatModal(false);
     };
+     const handleNotificationToggle = () => {
+        setShowNotifications(prev => !prev);
+        if (hasUnread) {
+            setHasUnread(false);
+        }
+    };
     
     if (user === undefined) return <div className="login-container"><div>Loading...</div></div>;
     if (user === null) return <LoginPage church={CHURCH} />;
@@ -350,19 +409,37 @@ const App = () => {
 
     const activeChat = chats.find(c => c.id === activeChatId);
     const openPrayer = prayerRequests.find(r => r.id === selectedPrayerRequest?.id);
+    
+    const TRANSLATIONS: { [key: string]: string } = {
+        worship: 'आरधना',
+        podcast: 'Podcast',
+        news: 'सुचना',
+        bible: 'बाइबल',
+        fellowship: 'संगतिहरु',
+        prayer: 'प्रार्थना',
+    };
+    const NAV_ORDER = ['worship', 'podcast', 'news', 'bible', 'fellowship', 'prayer'];
 
     return (
         <div className="app-container">
             <header className="app-header">
                  <div className="header-content"><img src={CHURCH.logo} alt="Logo" className="header-logo" /><h1>{CHURCH.name}</h1></div>
-                 <div className="header-actions"><button className="header-button" onClick={handleLogout} aria-label="Log Out"><span className="material-symbols-outlined">logout</span></button></div>
+                 <div className="header-actions">
+                    <button className="header-button notifications" onClick={handleNotificationToggle} aria-label="Notifications">
+                        <span className="material-symbols-outlined">notifications</span>
+                        {hasUnread && <div className="notification-dot"></div>}
+                    </button>
+                    <button className="header-button" onClick={handleLogout} aria-label="Log Out"><span className="material-symbols-outlined">logout</span></button>
+                </div>
             </header>
             <main className="main-content">{renderPage()}</main>
             
+            {showNotifications && <NotificationPanel notifications={notifications} onClose={() => setShowNotifications(false)} />}
+
             <nav className="bottom-nav">
-                {['worship', 'news', 'bible', 'fellowship', 'prayer', 'podcast'].map(page => {
+                {NAV_ORDER.map(page => {
                     const icons: { [key: string]: string } = { worship: 'church', news: 'feed', bible: 'book_2', fellowship: 'groups', prayer: 'volunteer_activism', podcast: 'podcasts' };
-                    return (<button key={page} className={`nav-item ${activePage === page ? 'active' : ''}`} onClick={() => { setActivePage(page); setActiveChatId(null); }}><span className="material-symbols-outlined">{icons[page]}</span><span>{page.charAt(0).toUpperCase() + page.slice(1)}</span></button>);
+                    return (<button key={page} className={`nav-item ${activePage === page ? 'active' : ''}`} onClick={() => { setActivePage(page); setActiveChatId(null); }}><span className="material-symbols-outlined">{icons[page]}</span><span>{TRANSLATIONS[page]}</span></button>);
                 })}
             </nav>
             
