@@ -435,7 +435,7 @@ const ConversationPage = ({ chat, onBack, onSendMessage, onShowMembers, currentU
     );
 };
 const PrayerPage = ({ prayerRequests, onPray, onAddRequest, onSelectRequest, currentUser }: { prayerRequests: PrayerRequest[]; onPray: (id: string) => void; onAddRequest: () => void; onSelectRequest: (req: PrayerRequest) => void; currentUser: User; }) => (
-    <div className="page-content"><h2>प्रार्थना</h2><div className="list-container">{prayerRequests.map(req => (<div key={req.id} className="card prayer-item" onClick={() => onSelectRequest(req)}>{req.image && <img src={req.image} alt={req.title} className="prayer-image"/>}<h4>{req.title}</h4><p className="prayer-content">{req.content}</p><div className="prayer-meta"><span>By {req.author.name}</span><div className="prayer-actions"><button className={`prayer-action-button ${req.prayedBy.includes(currentUser.id) ? 'prayed' : ''}`} onClick={(e) => { e.stopPropagation(); onPray(req.id); }}><span className="material-symbols-outlined">volunteer_activism</span><span>{req.prayedBy.length}</span></button><div className="prayer-action-button comment-button"><span className="material-symbols-outlined">chat_bubble</span><span>{req.comments.length}</span></div></div></div></div>))}</div><button className="fab" onClick={onAddRequest} aria-label="नयाँ प्रार्थना अनुरोध"><span className="material-symbols-outlined">edit_note</span></button></div>
+    <div className="page-content"><h2>प्रार्थना</h2><div className="list-container">{prayerRequests.map(req => (<div key={req.id} className="card prayer-item" onClick={() => onSelectRequest(req)}>{req.image && <img src={req.image} alt={req.title} className="prayer-image"/>}<h4>{req.title}</h4><p className="prayer-content">{req.content}</p><div className="prayer-meta"><span>By {req.author.name}</span><div className="prayer-actions"><button className={`prayer-action-button ${req.prayedBy.includes(currentUser.id) ? 'prayed' : ''}`} onClick={(e) => { e.stopPropagation(); onPray(req.id); }}><span className="material-symbols-outlined">volunteer_activism</span><span>{req.prayedBy.length} 기도</span></button><div className="prayer-action-button comment-button"><span className="material-symbols-outlined">chat_bubble</span><span>{req.comments.length}</span></div></div></div></div>))}</div><button className="fab" onClick={onAddRequest} aria-label="नयाँ प्रार्थना अनुरोध"><span className="material-symbols-outlined">edit_note</span></button></div>
 );
 const PodcastPage = ({ podcasts, onAddPodcast, user }: { podcasts: Podcast[]; onAddPodcast: () => void; user: User; }) => {
     const canPostPodcast = user.roles.includes('admin') || user.roles.includes('podcast_contributor');
@@ -445,16 +445,16 @@ const PodcastPage = ({ podcasts, onAddPodcast, user }: { podcasts: Podcast[]; on
 }
 
 // --- Modals ---
-const AddPrayerRequestModal = ({ onClose, onAddRequest }: { onClose: () => void; onAddRequest: (data: { title: string; content: string; imageFile: File | null; }) => void; }) => {
+const AddPrayerRequestModal = ({ onClose, onAddRequest, isSubmitting }: { onClose: () => void; onAddRequest: (data: { title: string; content: string; imageFile: File | null; }) => void; isSubmitting: boolean; }) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
-    const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); if (title.trim() && content.trim()) { onAddRequest({ title, content, imageFile }); } };
+    const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); if (title.trim() && content.trim() && !isSubmitting) { onAddRequest({ title, content, imageFile }); } };
     const handleImageChange = (file: File) => { setImageFile(file); setImagePreview(URL.createObjectURL(file)); };
     const handleImageRemove = () => { setImageFile(null); setImagePreview(null); };
     return (
-        <Modal onClose={onClose}><form className="modal-form" onSubmit={handleSubmit}><h3>प्रार्थना अनुरोध</h3><input type="text" placeholder="शीर्षक" value={title} onChange={(e) => setTitle(e.target.value)} required /><textarea rows={5} placeholder="हामीले केको लागि प्रार्थना गर्नुपछ?" value={content} onChange={(e) => setContent(e.target.value)} required /><ImageUpload imagePreview={imagePreview} onImageChange={handleImageChange} onImageRemove={handleImageRemove} /><button type="submit" className="action-button">अनुरोध पोस्ट गर्नुहोस्</button></form></Modal>
+        <Modal onClose={onClose}><form className="modal-form" onSubmit={handleSubmit}><h3>प्रार्थना अनुरोध</h3><input type="text" placeholder="शीर्षक" value={title} onChange={(e) => setTitle(e.target.value)} required /><textarea rows={5} placeholder="हामीले केको लागि प्रार्थना गर्नुपछ?" value={content} onChange={(e) => setContent(e.target.value)} required /><ImageUpload imagePreview={imagePreview} onImageChange={handleImageChange} onImageRemove={handleImageRemove} /><button type="submit" className="action-button" disabled={isSubmitting}>{isSubmitting ? "게시 중..." : "अनुरोध पोस्ट गर्नुहोस्"}</button></form></Modal>
     );
 };
 const PrayerDetailsModal = ({ request, onClose, onPray, onComment, currentUser }: { request: PrayerRequest; onClose: () => void; onPray: (id: string) => void; onComment: (id: string, text: string) => void; currentUser: User; }) => {
@@ -462,7 +462,7 @@ const PrayerDetailsModal = ({ request, onClose, onPray, onComment, currentUser }
     const handleCommentSubmit = (e: React.FormEvent) => { e.preventDefault(); if (comment.trim()) { onComment(request.id, comment.trim()); setComment(''); } };
     const isPrayed = request.prayedBy.includes(currentUser.id);
     return (
-        <Modal onClose={onClose}><div className="prayer-details-modal"><div className="prayer-details-content"><h3>{request.title}</h3><p className="prayer-author">By {request.author.name}</p>{request.image && <img src={request.image} alt={request.title} className="prayer-image" />}<p className="prayer-main-content">{request.content}</p><div className="prayer-meta"><div className="prayer-actions"><button className={`prayer-action-button ${isPrayed ? 'prayed' : ''}`} onClick={() => onPray(request.id)}><span className="material-symbols-outlined">volunteer_activism</span><span>{request.prayedBy.length} I prayed</span></button></div></div></div><div className="prayer-comments-section"><h4>Comments ({request.comments.length})</h4><div className="prayer-comment-list">{request.comments.length > 0 ? [...request.comments].reverse().map(c => (<div key={c.id} className="comment-item"><p><strong>{c.author.name}:</strong> {c.content}</p></div>)) : <p className="no-comments">No comments yet.</p>}</div><form className="comment-form" onSubmit={handleCommentSubmit}><input type="text" placeholder="Add a comment..." value={comment} onChange={(e) => setComment(e.target.value)} /><button type="submit"><span className="material-symbols-outlined">send</span></button></form></div></div></Modal>
+        <Modal onClose={onClose}><div className="prayer-details-modal"><div className="prayer-details-content"><h3>{request.title}</h3><p className="prayer-author">By {request.author.name}</p>{request.image && <img src={request.image} alt={request.title} className="prayer-image" />}<p className="prayer-main-content">{request.content}</p><div className="prayer-meta"><div className="prayer-actions"><button className={`prayer-action-button ${isPrayed ? 'prayed' : ''}`} onClick={() => onPray(request.id)}><span className="material-symbols-outlined">volunteer_activism</span><span>{isPrayed ? '기도했습니다' : '기도하기'} ({request.prayedBy.length})</span></button></div></div></div><div className="prayer-comments-section"><h4>Comments ({request.comments.length})</h4><div className="prayer-comment-list">{request.comments.length > 0 ? [...request.comments].reverse().map(c => (<div key={c.id} className="comment-item"><p><strong>{c.author.name}:</strong> {c.content}</p></div>)) : <p className="no-comments">No comments yet.</p>}</div><form className="comment-form" onSubmit={handleCommentSubmit}><input type="text" placeholder="Add a comment..." value={comment} onChange={(e) => setComment(e.target.value)} /><button type="submit"><span className="material-symbols-outlined">send</span></button></form></div></div></Modal>
     );
 };
 const CreateChatModal = ({ onClose, onStartChat, allUsers, currentUser }: { onClose: () => void; onStartChat: (userIds: string[]) => void; allUsers: User[]; currentUser: User }) => {
@@ -609,6 +609,7 @@ const App = () => {
     
     // Modal states
     const [modal, setModal] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     
     useEffect(() => {
         onAuthStateChanged(auth, async (fbUser) => {
@@ -647,10 +648,18 @@ const App = () => {
     };
 
     const handleAddPrayerRequest = async (data: { title: string; content: string; imageFile: File | null; }) => {
-        if (!user) return;
-        const imageUrl = data.imageFile ? await uploadFile(data.imageFile, 'prayerImages') : '';
-        await addDoc(collection(db, "prayerRequests"), { authorId: user.id, title: data.title, content: data.content, image: imageUrl, prayedBy: [], comments: [], createdAt: serverTimestamp() });
-        setModal(null);
+        if (!user || isSubmitting) return;
+        setIsSubmitting(true);
+        try {
+            const imageUrl = data.imageFile ? await uploadFile(data.imageFile, 'prayerImages') : '';
+            await addDoc(collection(db, "prayerRequests"), { authorId: user.id, title: data.title, content: data.content, image: imageUrl, prayedBy: [], comments: [], createdAt: serverTimestamp() });
+        } catch (error) {
+            console.error("Error adding prayer request: ", error);
+            alert("기도 요청을 게시하지 못했습니다. 다시 시도해 주세요.");
+        } finally {
+            setIsSubmitting(false);
+            setModal(null);
+        }
     };
     
     const handleAddNews = async (data: { title: string; content: string; imageFile: File | null; }) => {
@@ -692,7 +701,6 @@ const App = () => {
     if (user === null) return <LoginPage church={CHURCH} />;
     
     const renderPage = () => {
-        if (activePage === 'fellowship' && activeChatId) return null;
         switch (activePage) {
             case 'worship': return <WorshipPage church={CHURCH} user={user} services={worshipServices} onManageServices={() => setModal('manageWorship')} />;
             case 'news': return <NewsPage user={user} onAddNews={() => setModal('addNews')} />;
@@ -734,7 +742,7 @@ const App = () => {
             {activeChat && <ConversationPage chat={activeChat} onBack={() => setActiveChatId(null)} onSendMessage={handleSendMessage} onShowMembers={() => setModal('chatMembers')} currentUser={user} />}
             {openPrayer && <PrayerDetailsModal request={openPrayer} onClose={() => setSelectedPrayerRequest(null)} onPray={handlePray} onComment={handleComment} currentUser={user} />}
             
-            {modal === 'addPrayer' && <AddPrayerRequestModal onClose={() => setModal(null)} onAddRequest={handleAddPrayerRequest} />}
+            {modal === 'addPrayer' && <AddPrayerRequestModal onClose={() => setModal(null)} onAddRequest={handleAddPrayerRequest} isSubmitting={isSubmitting} />}
             {modal === 'createChat' && <CreateChatModal onClose={() => setModal(null)} onStartChat={handleStartChat} allUsers={allUsers} currentUser={user} />}
             {modal === 'addPodcast' && <AddPodcastModal onClose={() => setModal(null)} onAddPodcast={handleAddPodcast} />}
             {modal === 'chatMembers' && activeChat && <ChatMembersModal chat={activeChat} allUsers={allUsers} onClose={() => setModal(null)} onAddMembers={handleAddMembers} />}
