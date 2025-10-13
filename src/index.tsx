@@ -508,12 +508,12 @@ const PrayerRequestFormModal = ({ onClose, onSubmit, isSubmitting, initialData }
     return (
         <Modal onClose={onClose}>
             <form className="modal-form" onSubmit={handleSubmit}>
-                <h3>{isEditing ? "기도 제목 수정" : "새 기도 제목"}</h3>
-                <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
-                <textarea rows={5} placeholder="What should we pray for?" value={content} onChange={(e) => setContent(e.target.value)} required />
+                <h3>{isEditing ? "기도 제목 수정" : "प्रार्थना अनुरोध"}</h3>
+                <input type="text" placeholder="शीर्षक" value={title} onChange={(e) => setTitle(e.target.value)} required />
+                <textarea rows={5} placeholder="हामीले केको लागि प्रार्थना गर्नुपर्छ?" value={content} onChange={(e) => setContent(e.target.value)} required />
                 <ImageUpload imagePreview={imagePreview} onImageChange={handleImageChange} onImageRemove={handleImageRemove} />
                 <button type="submit" className="action-button" disabled={isSubmitting}>
-                    {isSubmitting ? (isEditing ? "저장 중..." : "게시 중...") : (isEditing ? "변경 사항 저장" : "요청 게시")}
+                    {isSubmitting ? (isEditing ? "저장 중..." : "게시 중...") : (isEditing ? "변경 사항 저장" : "प्रार्थना अनुरोध पठाउनुहोस्")}
                 </button>
             </form>
         </Modal>
@@ -866,7 +866,6 @@ const App = () => {
             case 'news': return <NewsPage user={user} onAddNews={() => setModal('addNews')} />;
             case 'bible': return <BiblePage />;
             case 'fellowship': 
-                if (activeChatId) return null;
                 return <ChatListPage chats={chats} onSelectChat={setActiveChatId} onCreateChat={() => setModal('createChat')} currentUser={user} />;
             case 'prayer': return <PrayerPage prayerRequests={prayerRequests} onPray={handlePray} onAddRequest={() => setModal('addPrayer')} onSelectRequest={setSelectedPrayerRequest} currentUser={user} />;
             case 'podcast': return <PodcastPage podcasts={podcasts} onAddPodcast={() => setModal('addPodcast')} user={user} />;
