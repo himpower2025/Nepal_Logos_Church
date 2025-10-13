@@ -9,7 +9,7 @@ import {
     onAuthStateChanged,
     signOut,
     type User as FirebaseUser
-} from "https://esm.sh/firebase@10.12.2/auth";
+} from "firebase/auth";
 import { 
     collection, 
     addDoc, 
@@ -25,9 +25,9 @@ import {
     Timestamp,
     type QuerySnapshot, 
     type QueryDocumentSnapshot
-} from "https://esm.sh/firebase@10.12.2/firestore";
+} from "firebase/firestore";
 
-import { ref, uploadBytes, getDownloadURL } from "https://esm.sh/firebase@10.12.2/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 // --- Platform Configuration ---
 type OfferingDetails = {
@@ -586,7 +586,7 @@ const App = () => {
         const newComment = {
             author: { id: user.id, name: user.name, avatar: user.avatar },
             content: commentText,
-            createdAt: new Date() // Using client time for simplicity, can be replaced with serverTimestamp
+            createdAt: Timestamp.now()
         };
         await updateDoc(requestRef, { comments: arrayUnion(newComment) });
     };

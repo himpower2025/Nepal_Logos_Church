@@ -9,48 +9,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="manifest" href="/manifest.json">
-    <!-- Add Apple Touch Icon for iOS home screen icon -->
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="apple-touch-icon" href="/logos-church-new-logo.jpg">
     <meta name="theme-color" content="#004d40">
 <script type="importmap">
 {
   "imports": {
-    "react": "https://aistudiocdn.com/react@^19.1.1",
-    "react/": "https://aistudiocdn.com/react@^19.1.1/",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/"
+    "firebase/": "https://aistudiocdn.com/firebase@^12.4.0/",
+    "vite": "https://aistudiocdn.com/vite@^7.1.9",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.0.4"
   }
 }
 </script>
 </head>
 <body>
     <div id="root"></div>
-
-    <!-- Vite will automatically inject the compiled JavaScript here. -->
     <script type="module" src="/src/index.tsx"></script>
-    
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js').then(registration => {
-            console.log('SW registered.');
-            registration.onupdatefound = () => {
-              const installingWorker = registration.installing;
-              if (installingWorker) {
-                installingWorker.onstatechange = () => {
-                  if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                    // New update available. Dispatch a custom event that the React app can listen for.
-                    console.log('A new service worker is installed and waiting.');
-                    const event = new CustomEvent('swUpdate', { detail: registration });
-                    window.dispatchEvent(event);
-                  }
-                };
-              }
-            };
-          }).catch(error => {
-            console.log('Service Worker registration failed: ', error);
-          });
-        });
-      }
-    </script>
 </body>
 </html>

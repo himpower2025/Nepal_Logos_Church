@@ -1,19 +1,17 @@
-
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "https://esm.sh/firebase@10.12.2/app";
-import { getAuth } from "https://esm.sh/firebase@10.12.2/auth";
-import { getFirestore } from "https://esm.sh/firebase@10.12.2/firestore";
-import { getStorage } from "https://esm.sh/firebase@10.12.2/storage";
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration using Vite environment variables
 const firebaseConfig = {
-  apiKey: "AIzaSyD3iY_LJZxOp1Y3i1Z_ZFWU0gk04TKfa-o",
-  authDomain: "logos-church-nepal.firebaseapp.com",
-  projectId: "logos-church-nepal",
-  storageBucket: "logos-church-nepal.firebasestorage.app",
-  messagingSenderId: "869546960167",
-  appId: "1:869546960167:web:19a41c46ef253617683502",
-  measurementId: "G-6DQ7BDJ8GX"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 // Initialize Firebase
