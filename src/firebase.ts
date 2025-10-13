@@ -1,10 +1,11 @@
+
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://esm.sh/firebase@10.12.2/app";
 import { getAuth } from "https://esm.sh/firebase@10.12.2/auth";
 import { getFirestore } from "https://esm.sh/firebase@10.12.2/firestore";
 import { getStorage } from "https://esm.sh/firebase@10.12.2/storage";
 
-// TODO: Add your own Firebase configuration from your Firebase project settings
+// Your web app's Firebase configuration using Vite environment variables
 const firebaseConfig = {
   apiKey: "AIzaSyD3iY_LJZxOp1Y3i1Z_ZFWU0gk04TKfa-o",
   authDomain: "logos-church-nepal.firebaseapp.com",
