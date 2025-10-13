@@ -444,6 +444,53 @@ html, body, #root {
 .news-content { padding: var(--space-md); }
 .news-meta { font-size: var(--font-size-sm); color: #757575; margin-bottom: var(--space-sm); }
 
+/* Offering Modal */
+.offering-modal-content {
+    text-align: center;
+}
+.offering-modal-content h3 {
+    margin-bottom: var(--space-md);
+    color: var(--primary-color);
+}
+.qr-code-img {
+    width: 80%;
+    max-width: 220px; /* Adjusted for better balance */
+    height: auto;
+    margin: 0 auto var(--space-md) auto;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    display: block;
+}
+.offering-details {
+    text-align: left;
+    display: inline-block;
+}
+.offering-details p {
+    margin-bottom: var(--space-sm);
+}
+.account-number-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* To push copy button to the right */
+    gap: var(--space-sm);
+}
+.copy-button {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: var(--space-xs) calc(var(--space-xs) * 2);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--font-size-sm);
+    color: var(--text-color-dark);
+}
+.copy-button:hover {
+    background-color: #f0f0f0;
+}
+.copy-button .material-symbols-outlined { font-size: 1rem; }
+
 /* Chat Page */
 .chat-item { gap: var(--space-md); }
 .chat-avatar { width: 48px; height: 48px; border-radius: 50%; background-color: var(--primary-color-dark); color: white; display: flex; align-items: center; justify-content: center; font-weight: 500; flex-shrink: 0; }
