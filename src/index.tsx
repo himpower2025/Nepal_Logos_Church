@@ -46,7 +46,7 @@ const CHURCHES: Church[] = [
 type User = {
     id: string;
     name: string;
-    username: string;
+    username: string; // Kept for structural consistency, will mirror `name`
     avatar: string; // URL or initials
 };
 
@@ -128,8 +128,8 @@ let CURRENT_USER: User = { id: 'user1', name: '', username: '', avatar: '' };
 
 const MOCK_USERS: User[] = [
     CURRENT_USER,
-    { id: 'user2', name: 'Jane Smith', username: 'janesmith', avatar: 'JS' },
-    { id: 'user3', name: 'Pastor Ramesh', username: 'pastorramesh', avatar: 'PR' },
+    { id: 'user2', name: 'Jane Smith', username: 'Jane Smith', avatar: 'JS' },
+    { id: 'user3', name: 'Pastor Ramesh', username: 'Pastor Ramesh', avatar: 'PR' },
 ];
 
 let MOCK_CHATS: Chat[] = [
@@ -334,20 +334,19 @@ const ImageUpload = ({ imagePreview, onImageChange, onImageRemove }: { imagePrev
 // --- Login Page ---
 const LoginPage = ({ church, onLogin }: { church: Church; onLogin: (user: User) => void; }) => {
     const [isLoginView, setIsLoginView] = React.useState(true);
-    const [fullName, setFullName] = React.useState('');
-    const [username, setUsername] = React.useState('');
-    const [password, setPassword] = React.useState('');
+    const [name, setName] = React.useState('');
+    const [pin, setPin] = React.useState('');
     const [error, setError] = React.useState('');
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
-        const user = MOCK_USERS.find(u => u.username === username.trim());
-        // In a real app, you would also check the password.
+        // In a real app, you'd check the PIN. Here we just check the name.
+        const user = MOCK_USERS.find(u => u.name.toLowerCase() === name.trim().toLowerCase());
         if (user) {
             onLogin(user);
         } else {
-            setError('Username or password not found.');
+            setError('Name or PIN not found.');
         }
     };
     
@@ -355,22 +354,22 @@ const LoginPage = ({ church, onLogin }: { church: Church; onLogin: (user: User) 
         e.preventDefault();
         setError('');
 
-        if (fullName.trim() === '' || username.trim() === '' || password.trim() === '') {
+        if (name.trim() === '' || pin.trim() === '') {
             setError('Please fill in all fields.');
             return;
         }
         
-        const existingUser = MOCK_USERS.find(u => u.username === username.trim());
+        const existingUser = MOCK_USERS.find(u => u.name.toLowerCase() === name.trim().toLowerCase());
         if (existingUser) {
-            setError('This username is already taken.');
+            setError('This name is already taken.');
             return;
         }
 
-        const avatar = fullName.trim().split(' ').map(n => n[0]).join('').toUpperCase();
+        const avatar = name.trim().split(' ').map(n => n[0]).join('').toUpperCase();
         const newUser: User = {
             id: `user${Date.now()}`,
-            name: fullName.trim(),
-            username: username.trim(),
+            name: name.trim(),
+            username: name.trim(), // Keep username same as name for consistency
             avatar: avatar || '?'
         };
 
@@ -381,10 +380,18 @@ const LoginPage = ({ church, onLogin }: { church: Church; onLogin: (user: User) 
     const toggleView = () => {
         setIsLoginView(!isLoginView);
         setError('');
-        setFullName('');
-        setUsername('');
-        setPassword('');
+        setName('');
+        setPin('');
     };
+    
+    const handlePinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        // Allow only numbers
+        if (/^\d*$/.test(value)) {
+            setPin(value);
+        }
+    };
+
 
     return (
         <div className="login-container">
@@ -395,15 +402,14 @@ const LoginPage = ({ church, onLogin }: { church: Church; onLogin: (user: User) 
                 
                 {isLoginView ? (
                     <form onSubmit={handleLogin}>
-                        <input className="login-input" type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
-                        <input className="login-input" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                        <input className="login-input" type="text" placeholder="Your Full Name" value={name} onChange={(e) => setName(e.target.value)} required />
+                        <input className="login-input" type="password" placeholder="Numeric PIN" value={pin} onChange={handlePinChange} required inputMode="numeric" pattern="[0-9]*" />
                         <button className="login-button" type="submit">Log In</button>
                     </form>
                 ) : (
                     <form onSubmit={handleSignUp}>
-                        <input className="login-input" type="text" placeholder="Full Name" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
-                        <input className="login-input" type="text" placeholder="Username (for login)" value={username} onChange={(e) => setUsername(e.target.value)} required />
-                        <input className="login-input" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                        <input className="login-input" type="text" placeholder="Your Full Name" value={name} onChange={(e) => setName(e.target.value)} required />
+                        <input className="login-input" type="password" placeholder="Numeric PIN (Numbers only)" value={pin} onChange={handlePinChange} required inputMode="numeric" pattern="[0-9]*" />
                         <button className="login-button" type="submit">Sign Up</button>
                     </form>
                 )}
