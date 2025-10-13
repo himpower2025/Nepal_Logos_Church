@@ -36,7 +36,16 @@ type Podcast = { id: string; title: string; author: User; audioUrl: string; crea
 type NewsItem = { id: string; title: string; date: string; content: string; image?: string; };
 type Verse = { verse: string; text: string; };
 type Message = { id: string; senderId: string; sender?: User; content: string; type: 'text' | 'image'; mediaUrl?: string; createdAt: Timestamp; };
-type Chat = { id: string; participantIds: string[]; participants: User[]; messages: Message[]; lastMessageTimestamp: Timestamp; };
+type Chat = { 
+    id: string; 
+    participantIds: string[]; 
+    participants: User[]; 
+    messages: Message[]; 
+    lastMessageTimestamp: Timestamp; 
+    isGroup: boolean;
+    name?: string;
+    groupAvatar?: string;
+};
 type Notification = {
     id: string;
     icon: string; // material symbol name
@@ -99,7 +108,7 @@ const MCHEYNE_READING_PLAN = [
     'गन्ती २०, १ कोरिन्थी ४, भजनसंग्रह १०७, १ पत्रुस ४', 'गन्ती २१, १ कोरिन्थी ५, भजनसंग्रह १०८-१०९, १ पत्रुस ५', 'गन्ती २२, १ कोरिन्थी ६, भजनसंग्रह ११०-१११, २ पत्रुस १', 'गन्ती २३, १ कोरिन्थी ७, भजनसंग्रह ११२-११४, २ पत्रुस २',
     'गन्ती २४, १ कोरिन्थी ८, भजनसंग्रह ११५-११६, २ पत्रुस ३', 'गन्ती २५, १ कोरिन्थी ९, भजनसंग्रह ११७-११८, १ यूहन्ना १', 'गन्ती २६, १ कोरिन्थी १०, भजनसंग्रह ११९:१-२४, १ यूहन्ना २', 'गन्ती २७, १ कोरिन्थी ११, भजनसंग्रह ११९:२५-४८, १ यूहन्ना ३',
     'गन्ती २८, १ कोरिन्थी १२, भजनसंग्रह ११९:४९-७२, १ यूहन्ना ४', 'गन्ती २९, १ कोरिन्थी १३, भजनसंग्रह ११९:७३-९६, १ यूहन्ना ५', 'गन्ती ३०, १ कोरिन्थी १४, भजनसंग्रह ११९:९७-१२०, २ यूहन्ना', 'गन्ती ३१, १ कोरिन्थी १५, भजनसंग्रह ११९:१२१-१४४, ३ यूहन्ना',
-    'गन्ती ३२, १ कोरिन्थी १६, भजनसंग्रह ११९:१४५-१७६, यहूदा', 'गन्ती ३३, २ कोरिन्थी १, भजनसंग्रह १२०-१२२, प्रकाश १', 'गन्ती ३४, २ कोरिन्थी २, भजनसंग्रह १२३-१२५, प्रकाश २', 'गन्ती ३५, २ कोरिन्थी ३, भजनसंग्रह १२६-१२८, प्रकाश ३',
+    'गन्ती ३２, १ कोरिन्थी १६, भजनसंग्रह ११९:१४५-१७६, यहूदा', 'गन्ती ३३, २ कोरिन्थी १, भजनसंग्रह १२०-१२२, प्रकाश १', 'गन्ती ३४, २ कोरिन्थी २, भजनसंग्रह १२३-१२५, प्रकाश २', 'गन्ती ३५, २ कोरिन्थी ३, भजनसंग्रह १२६-१२८, प्रकाश ३',
     'गन्ती ३६, २ कोरिन्थी ४, भजनसंग्रह १२९-१३१, प्रकाश ४', 'व्यवस्था १, २ कोरिन्थी ५, भजनसंग्रह १३२-१३४, प्रकाश ५', 'व्यवस्था २, २ कोरिन्थी ६, भजनसंग्रह १३५-१३६, प्रकाश ६', 'व्यवस्था ३, २ कोरिन्थी ७, भजनसंग्रह १३७-१३८, प्रकाश ७',
     'व्यवस्था ४, २ कोरिन्थी ८, भजनसंग्रह १३९, प्रकाश ८', 'व्यवस्था ५, २ कोरिन्थी ९, भजनसंग्रह १४०-१४१, प्रकाश ९', 'व्यवस्था ६, २ कोरिन्थी १०, भजनसंग्रह १४२-१४३, प्रकाश १०', 'व्यवस्था ७, २ कोरिन्थी ११, भजनसंग्रह १४४-१४५, प्रकाश ११',
     'व्यवस्था ८, २ कोरिन्थी १२, भजनसंग्रह १४६-१४७, प्रकाश १२', 'व्यवस्था ९, २ कोरिन्थी १३, भजनसंग्रह १४८-१५०, प्रकाश १३', 'व्यवस्था १०, गलाती १, हितोपदेश १, प्रकाश १४', 'व्यवस्था ११, गलाती २, हितोपदेश २, प्रकाश १५',
@@ -108,7 +117,7 @@ const MCHEYNE_READING_PLAN = [
     'व्यवस्था २०, एफिसी ५, उपदेशक २, मत्ती २', 'व्यवस्था २१, एफिसी ६, उपदेशक ३, मत्ती ३', 'व्यवस्था २२, फिलिप्पी १, उपदेशक ४, मत्ती ४', 'व्यवस्था २३, फिलिप्पी २, उपदेशक ५, मत्ती ५',
     'व्यवस्था २४, फिलिप्पी ३, उपदेशक ६, मत्ती ६', 'व्यवस्था २५, फिलिप्पी ४, उपदेशक ७, मत्ती ७', 'व्यवस्था २६, कलस्सी १, उपदेशक ८, मत्ती ८', 'व्यवस्था २७, कलस्सी २, उपदेशक ९, मत्ती ९',
     'व्यवस्था २८, कलस्सी ३, उपदेशक १०, मत्ती १०', 'व्यवस्था २९, कलस्सी ४, उपदेशक ११, मत्ती ११', 'व्यवस्था ३०, १ थिस्सलोनिकी १, उपदेशक १२, मत्ती १२', 'व्यवस्था ३१, १ थिस्सलोनिकी २, श्रेष्ठगीत १, मत्ती १३',
-    'व्यवस्था ३२, १ थिस्सलोनिकी ३, श्रेष्ठगीत २, मत्ती १४', 'व्यवस्था ३३, १ थिस्सलोनिकी ४, श्रेष्ठगीत ३, मत्ती १५', 'व्यवस्था ३४, १ थिस्सलोनिकी ५, श्रेष्ठगीत ४, मत्ती १६', 'यहोशू १, २ थिस्सलोनिकी १, श्रेष्ठगीत ५, मत्ती १७',
+    'व्यवस्था ३２, १ थिस्सलोनिकी ३, श्रेष्ठगीत २, मत्ती १४', 'व्यवस्था ३३, १ थिस्सलोनिकी ४, श्रेष्ठगीत ३, मत्ती १५', 'व्यवस्था ३४, १ थिस्सलोनिकी ५, श्रेष्ठगीत ४, मत्ती १६', 'यहोशू १, २ थिस्सलोनिकी १, श्रेष्ठगीत ५, मत्ती १७',
     'यहोशू २, २ थिस्सलोनिकी २, श्रेष्ठगीत ६, मत्ती १८', 'यहोशू ३, २ थिस्सलोनिकी ३, श्रेष्ठगीत ७, मत्ती १९', 'यहोशू ४, १ तिमोथी १, श्रेष्ठगीत ८, मत्ती २०', 'यहोशू ५, १ तिमोथी २, यशैया १, मत्ती २१',
     'यहोशू ६, १ तिमोथी ३, यशैया २, मत्ती २२', 'यहोशू ७, १ तिमोथी ४, यशैया ३, मत्ती २३', 'यहोशू ८, १ तिमोथी ५, यशैया ४, मत्ती २४', 'यहोशू ९, १ तिमोथी ६, यशैया ५, मत्ती २५',
     'यहोशू १०, २ तिमोथी १, यशैया ६, मत्ती २६', 'यहोशू ११, २ तिमोथी २, यशैया ७, मत्ती २७', 'यहोशू १२, २ तिमोथी ३, यशैया ८, मत्ती २८', 'यहोशू १३, २ तिमोथी ४, यशैया ९, मर्कूस १',
@@ -131,35 +140,35 @@ const MCHEYNE_READING_PLAN = [
     '१ शमूएल २९, मत्ती ५, यर्मिया ८, प्रेरित ५', '१ शमूएल ३०, मत्ती ६, यर्मिया ९, प्रेरित ६', '१ शमूएल ३१, मत्ती ७, यर्मिया १०, प्रेरित ७', '२ शमूएल १, मत्ती ८, यर्मिया ११, प्रेरित ८',
     '२ शमूएल २, मत्ती ९, यर्मिया १२, प्रेरित ९', '२ शमूएल ३, मत्ती १०, यर्मिया १३, प्रेरित १०', '२ शमूएल ४, मत्ती ११, यर्मिया १४, प्रेरित ११', '२ शमूएल ५, मत्ती १२, यर्मिया १५, प्रेरित १२',
     '२ शमूएल ६, मत्ती १३, यर्मिया १६, प्रेरित १३', '२ शमूएल ७, मत्ती १४, यर्मिया १७, प्रेरित १४', '२ शमूएल ८, मत्ती १५, यर्मिया १८, प्रेरित १५', '२ शमूएल ९, मत्ती १६, यर्मिया १९, प्रेरित १६',
-    '२ शमूएल १०, मत्ती १७, यर्मिया २०, प्रेरित १७', '२ शमूएल ११, मत्ती १८, यर्मिया २१, प्रेरित १८', '२ शमूएल १२, मत्ती १९, यर्मिया २२, प्रेरित १९', '२ शमूएल १३, मत्ती २०, यर्मिया २३, प्रेरित २०',
-    '२ शमूएल १४, मत्ती २१, यर्मिया २४, प्रेरित २१', '२ शमूएल १५, मत्ती २२, यर्मिया २५, प्रेरित २२', '२ शमूएल १६, मत्ती २३, यर्मिया २६, प्रेरित २३', '२ शमूएल १७, मत्ती २४, यर्मिया २७, प्रेरित २४',
+    '२ शमूएल १०, मत्ती १७, यर्मिया २०, प्रेरित १७', '२ शमूएल ११, मत्ती १८, यर्मिया २१, प्रेरित १८', '२ शमूएल १२, मत्ती १९, यर्मिया २２, प्रेरित १९', '२ शमूएल १३, मत्ती २०, यर्मिया २३, प्रेरित २०',
+    '२ शमूएल १४, मत्ती २१, यर्मिया २४, प्रेरित २१', '२ शमूएल १५, मत्ती २２, यर्मिया २५, प्रेरित २२', '२ शमूएल १६, मत्ती २३, यर्मिया २६, प्रेरित २३', '२ शमूएल १७, मत्ती २४, यर्मिया २७, प्रेरित २४',
     '२ शमूएल १८, मत्ती २५, यर्मिया २८, प्रेरित २५', '२ शमूएल १९, मत्ती २६, यर्मिया २९, प्रेरित २६', '२ शमूएल २०, मत्ती २७, यर्मिया ३०, प्रेरित २७', '२ शमूएल २१, मत्ती २८, यर्मिया ३१, प्रेरित २८',
-    '२ शमूएल २२, मर्कूस १, यर्मिया ३२, रोमी १', '२ शमूएल २३, मर्कूस २, यर्मिया ३३, रोमी २', '२ शमूएल २४, मर्कूस ३, यर्मिया ३४, रोमी ३', '१ राजा १, मर्कूस ४, यर्मिया ३५, रोमी ४',
+    '२ शमूएल २２, मर्कूस १, यर्मिया ३２, रोमी १', '२ शमूएल २३, मर्कूस २, यर्मिया ३३, रोमी २', '२ शमूएल २४, मर्कूस ३, यर्मिया ३४, रोमी ३', '१ राजा १, मर्कूस ४, यर्मिया ३५, रोमी ४',
     '१ राजा २, मर्कूस ५, यर्मिया ३६, रोमी ५', '१ राजा ३, मर्कूस ६, यर्मिया ३७, रोमी ६', '१ राजा ४, मर्कूस ७, यर्मिया ३८, रोमी ७', '१ राजा ५, मर्कूस ८, यर्मिया ३९, रोमी ८',
-    '१ राजा ६, मर्कूस ९, यर्मिया ४०, रोमी ९', '१ राजा ७, मर्कूस १०, यर्मिया ४１, रोमी १०', '१ राजा ८, मर्कूस ११, यर्मिया ४२, रोमी ११', '१ राजा ९, मर्कूस १२, यर्मिया ४३, रोमी १२',
+    '१ राजा ६, मर्कूस ९, यर्मिया ४०, रोमी ९', '१ राजा ७, मर्कूस १०, यर्मिया ४１, रोमी १०', '१ राजा ८, मर्कूस ११, यर्मिया ४２, रोमी ११', '१ राजा ९, मर्कूस १२, यर्मिया ४३, रोमी १२',
     '१ राजा १०, मर्कूस १३, यर्मिया ४४, रोमी १३', '१ राजा ११, मर्कूस १४, यर्मिया ४५, रोमी १४', '१ राजा १२, मर्कूस १५, यर्मिया ४६, रोमी १५', '१ राजा १३, मर्कूस १६, यर्मिया ४७, रोमी १६',
     '१ राजा १४, लूका १, यर्मिया ४८, १ कोरिन्थी १', '१ राजा १५, लूका २, यर्मिया ४९, १ कोरिन्थी २', '१ राजा १६, लूका ३, यर्मिया ५०, १ कोरिन्थी ३', '१ राजा १७, लूका ४, यर्मिया ५१, १ कोरिन्थी ४',
     '१ राजा १८, लूका ५, यर्मिया ५२, १ कोरिन्थी ५', '१ राजा १९, लूका ६, विलाप १, १ कोरिन्थी ६', '१ राजा २०, लूका ७, विलाप २, १ कोरिन्थी ७', '१ राजा २१, लूका ८, विलाप ३, १ कोरिन्थी ८',
-    '१ राजा २२, लूका ९, विलाप ४, १ कोरिन्थी ९', '२ राजा १, लूका १०, विलाप ५, १ कोरिन्थी १०', '२ राजा २, लूका ११, इजकिएल १, १ कोरिन्थी ११', '२ राजा ३, लूका १२, इजकिएल २, १ कोरिन्थी १२',
+    '१ राजा २２, लूका ९, विलाप ४, १ कोरिन्थी ९', '२ राजा १, लूका १०, विलाप ५, १ कोरिन्थी १०', '२ राजा २, लूका ११, इजकिएल १, १ कोरिन्थी ११', '२ राजा ३, लूका १२, इजकिएल २, १ कोरिन्थी १२',
     '२ राजा ४, लूका १३, इजकिएल ३, १ कोरिन्थी १३', '२ राजा ५, लूका १४, इजकिएल ४, १ कोरिन्थी १४', '२ राजा ६, लूका १५, इजकिएल ५, १ कोरिन्थी १५', '२ राजा ७, लूका १६, इजकिएल ६, १ कोरिन्थी १६',
     '२ राजा ८, लूका १७, इजकिएल ७, २ कोरिन्थी १', '२ राजा ९, लूका १८, इजकिएल ८, २ कोरिन्थी २', '२ राजा १०, लूका १९, इजकिएल ९, २ कोरिन्थी ३', '२ राजा ११, लूका २०, इजकिएल १०, २ कोरिन्थी ४',
-    '२ राजा १२, लूका २१, इजकिएल ११, २ कोरिन्थी ५', '२ राजा १३, लूका २२, इजकिएल १२, २ कोरिन्थी ६', '२ राजा १४, लूका २३, इजकिएल १३, २ कोरिन्थी ७', '२ राजा १५, लूका २४, इजकिएल १४, २ कोरिन्थी ८',
+    '२ राजा १२, लूका २१, इजकिएल ११, २ कोरिन्थी ५', '२ राजा १३, लूका २２, इजकिएल १२, २ कोरिन्थी ६', '२ राजा १४, लूका २३, इजकिएल १३, २ कोरिन्थी ७', '२ राजा १५, लूका २४, इजकिएल १४, २ कोरिन्थी ८',
     '२ राजा १६, यूहन्ना १, इजकिएल १५, २ कोरिन्थी ९', '२ राजा १७, यूहन्ना २, इजकिएल १६, २ कोरिन्थी १०', '२ राजा १८, यूहन्ना ३, इजकिएल १७, २ कोरिन्थी ११', '२ राजा १९, यूहन्ना ४, इजकिएल १८, २ कोरिन्थी १२',
-    '२ राजा २०, यूहन्ना ५, इजकिएल १९, २ कोरिन्थी १३', '२ राजा २१, यूहन्ना ६, इजकिएल २०, गलाती १', '२ राजा २२, यूहन्ना ७, इजकिएल २१, गलाती २', '२ राजा २३, यूहन्ना ८, इजकिएल २२, गलाती ३',
+    '२ राजा २०, यूहन्ना ५, इजकिएल १९, २ कोरिन्थी १३', '२ राजा २१, यूहन्ना ६, इजकिएल २०, गलाती १', '२ राजा २２, यूहन्ना ७, इजकिएल २१, गलाती २', '२ राजा २३, यूहन्ना ८, इजकिएल २２, गलाती ३',
     '२ राजा २४, यूहन्ना ९, इजकिएल २३, गलाती ४', '२ राजा २५, यूहन्ना १०, इजकिएल २४, गलाती ५', '१ इतिहास १, यूहन्ना ११, इजकिएल २५, गलाती ६', '१ इतिहास २, यूहन्ना १२, इजकिएल २६, एफिसी १',
     '१ इतिहास ३, यूहन्ना १३, इजकिएल २७, एफिसी २', '१ इतिहास ४, यूहन्ना १४, इजकिएल २८, एफिसी ३', '१ इतिहास ५, यूहन्ना १५, इजकिएल २९, एफिसी ४', '१ इतिहास ६, यूहन्ना १६, इजकिएल ३०, एफिसी ५',
     '१ इतिहास ७, यूहन्ना १७, इजकिएल ३１, एफिसी ६', '१ इतिहास ८, यूहन्ना १८, इजकिएल ३２, फिलिप्पी १', '१ इतिहास ९, यूहन्ना १९, इजकिएल ३３, फिलिप्पी २', '१ इतिहास १०, यूहन्ना २०, इजकिएल ३４, फिलिप्पी ३',
     '१ इतिहास ११, यूहन्ना २१, इजकिएल ३５, फिलिप्पी ४', '१ इतिहास १२, प्रेरित १, इजकिएल ३６, कलस्सी १', '१ इतिहास १३, प्रेरित २, इजकिएल ३７, कलस्सी २', '१ इतिहास १४, प्रेरित ३, इजकिएल ३８, कलस्सी ३',
     '१ इतिहास १५, प्रेरित ४, इजकिएल ३９, कलस्सी ४', '१ इतिहास १६, प्रेरित ५, इजकिएल ४０, १ थिस्सलोनिकी १', '१ इतिहास १७, प्रेरित ६, इजकिएल ४１, १ थिस्सलोनिकी २', '१ इतिहास १८, प्रेरित ७, इजकिएल ४２, १ थिस्सलोनिकी ३',
-    '१ इतिहास १९, प्रेरित ८, इजकिएल ४３, १ थिस्सलोनिकी ४', '१ इतिहास २०, प्रेरित ९, इजकिएल ४４, १ थिस्सलोनिकी ५', '१ इतिहास २१, प्रेरित १०, इजकिएल ४５, २ थिस्सलोनिकी १', '१ इतिहास २२, प्रेरित ११, इजकिएल ४６, २ थिस्सलोनिकी २',
+    '१ इतिहास १९, प्रेरित ८, इजकिएल ४３, १ थिस्सलोनिकी ४', '१ इतिहास २०, प्रेरित ९, इजकिएल ४４, १ थिस्सलोनिकी ५', '१ इतिहास २१, प्रेरित १०, इजकिएल ४５, २ थिस्सलोनिकी १', '१ इतिहास २２, प्रेरित ११, इजकिएल ४６, २ थिस्सलोनिकी २',
     '१ इतिहास २३, प्रेरित १२, इजकिएल ४７, २ थिस्सलोनिकी ३', '१ इतिहास २४, प्रेरित १३, इजकिएल ४８, १ तिमोथी १', '१ इतिहास २५, प्रेरित १४, दानिएल १, १ तिमोथी २', '१ इतिहास २६, प्रेरित १५, दानिएल २, १ तिमोथी ३',
     '१ इतिहास २७, प्रेरित १६, दानिएल ३, १ तिमोथी ४', '१ इतिहास २८, प्रेरित १७, दानिएल ४, १ तिमोथी ५', '१ इतिहास २९, प्रेरित १८, दानिएल ५, १ तिमोथी ६', '२ इतिहास १, प्रेरित १९, दानिएल ६, २ तिमोथी १',
-    '२ इतिहास २, प्रेरित २०, दानिएल ७, २ तिमोथी २', '२ इतिहास ३, प्रेरित २१, दानिएल ८, २ तिमोथी ३', '२ इतिहास ४, प्रेरित २२, दानिएल ९, २ तिमोथी ४', '२ इतिहास ५, प्रेरित २३, दानिएल १०, तीतस १',
+    '२ इतिहास २, प्रेरित २०, दानिएल ७, २ तिमोथी २', '२ इतिहास ३, प्रेरित २१, दानिएल ८, २ तिमोथी ३', '२ इतिहास ४, प्रेरित २２, दानिएल ९, २ तिमोथी ४', '२ इतिहास ५, प्रेरित २३, दानिएल १०, तीतस १',
     '२ इतिहास ६, प्रेरित २४, दानिएल ११, तीतस २', '२ इतिहास ७, प्रेरित २५, दानिएल १२, तीतस ३', '२ इतिहास ८, प्रेरित २६, होशे १, फिलेमोन', '२ इतिहास ९, प्रेरित २७, होशे २, हिब्रू १',
     '२ इतिहास १०, प्रेरित २८, होशे ३, हिब्रू २', '२ इतिहास ११, रोमी १, होशे ४, हिब्रू ३', '२ इतिहास १२, रोमी २, होशे ५, हिब्रू ४', '२ इतिहास १३, रोमी ३, होशे ६, हिब्रू ५',
     '२ इतिहास १४, रोमी ४, होशे ७, हिब्रू ६', '२ इतिहास १५, रोमी ५, होशे ८, हिब्रू ७', '२ इतिहास १६, रोमी ६, होशे ९, हिब्रू ८', '२ इतिहास १७, रोमी ७, होशे १०, हिब्रू ९',
     '२ इतिहास १८, रोमी ८, होशे ११, हिब्रू १०', '२ इतिहास १९, रोमी ९, होशे १२, हिब्रू ११', '२ इतिहास २०, रोमी १०, होशे १३, हिब्रू १२', '२ इतिहास २१, रोमी ११, होशे १४, हिब्रू १३',
-    '२ इतिहास २२, रोमी १२, योएल १, याकूब १', '२ इतिहास २३, रोमी १३, योएल २, याकूब २', '२ इतिहास २४, रोमी १४, योएल ३, याकूब ३', '२ इतिहास २५, रोमी १५, आमोस १, याकूब ४',
+    '२ इतिहास २２, रोमी १२, योएल १, याकूब १', '२ इतिहास २३, रोमी १३, योएल २, याकूब २', '२ इतिहास २४, रोमी १४, योएल ३, याकूब ३', '२ इतिहास २५, रोमी १५, आमोस १, याकूब ४',
     '२ इतिहास २६, रोमी १६, आमोस २, याकूब ५', '२ इतिहास २७, १ कोरिन्थी १, आमोस ३, १ पत्रुस १', '२ इतिहास २८, १ कोरिन्थी २, आमोस ४, १ पत्रुस २', '२ इतिहास २९, १ कोरिन्थी ३, आमोस ५, १ पत्रुस ३',
     '२ इतिहास ३०, १ कोरिन्थी ४, आमोस ६, १ पत्रुस ४', '२ इतिहास ३१, १ कोरिन्थी ५, आमोस ७, १ पत्रुस ५', '२ इतिहास ३２, १ कोरिन्थी ६, आमोस ८, २ पत्रुस १', '२ इतिहास ३３, १ कोरिन्थी ७, आमोस ९, २ पत्रुस २',
     '२ इतिहास ३４, १ कोरिन्थी ८, ओबदिया, २ पत्रुस ३', '२ इतिहास ३５, १ कोरिन्थी ९, योना १, १ यूहन्ना १', '२ इतिहास ३６, १ कोरिन्थी १०, योना २, १ यूहन्ना २', 'एज्रा १, १ कोरिन्थी ११, योना ३, १ यूहन्ना ३',
@@ -411,19 +420,73 @@ const BiblePage = () => {
     );
 };
 const ChatListPage = ({ chats, onSelectChat, onCreateChat, currentUser }: { chats: Chat[]; onSelectChat: (id: string) => void; onCreateChat: () => void; currentUser: User; }) => {
-    const getOtherParticipant = (chat: Chat) => chat.participants.find(p => p.id !== currentUser.id);
     return (
-        <div className="page-content chat-list-page"><h2>संगतिहरु</h2><div className="list-container">{chats.map(chat => { const other = getOtherParticipant(chat); if (!other) return null; const lastMsg = chat.messages[chat.messages.length - 1]; return (<div key={chat.id} className="list-item chat-item" onClick={() => onSelectChat(chat.id)}><div className="chat-avatar">{other.avatar}</div><div className="chat-info"><span className="chat-name">{other.name}</span><span className="chat-last-message">{lastMsg ? lastMsg.content : 'No messages.'}</span></div></div>); })}</div><button className="fab" onClick={onCreateChat} aria-label="नयाँ कुराकानी"><span className="material-symbols-outlined">add_comment</span></button></div>
+        <div className="page-content chat-list-page"><h2>संगतिहरु</h2><div className="list-container">{chats.map(chat => { 
+            const lastMsg = chat.messages[chat.messages.length - 1];
+            let avatar: React.ReactNode;
+            let name: string;
+
+            if (chat.isGroup) {
+                avatar = <div className="chat-avatar group-avatar"><span className="material-symbols-outlined">groups</span></div>;
+                name = chat.name || 'Group Chat';
+            } else {
+                const other = chat.participants.find(p => p.id !== currentUser.id);
+                if (!other) return null;
+                avatar = <div className="chat-avatar">{other.avatar}</div>;
+                name = other.name;
+            }
+            
+            return (
+                <div key={chat.id} className="list-item chat-item" onClick={() => onSelectChat(chat.id)}>
+                    {avatar}
+                    <div className="chat-info">
+                        <span className="chat-name">{name}</span>
+                        <span className="chat-last-message">{lastMsg ? lastMsg.content : 'No messages.'}</span>
+                    </div>
+                    {chat.isGroup && (
+                        <div className="chat-participant-count">
+                            <span className="material-symbols-outlined">group</span>
+                            <span>{chat.participants.length}</span>
+                        </div>
+                    )}
+                </div>); 
+        })}</div><button className="fab" onClick={onCreateChat} aria-label="नयाँ कुराकानी"><span className="material-symbols-outlined">add_comment</span></button></div>
     );
 };
-const ConversationPage = ({ chat, onBack, onSendMessage, currentUser }: { chat: Chat; onBack: () => void; onSendMessage: (chatId: string, content: string) => void; currentUser: User }) => {
+const ConversationPage = ({ chat, onBack, onSendMessage, onShowMembers, currentUser }: { chat: Chat; onBack: () => void; onSendMessage: (chatId: string, content: string) => void; onShowMembers: () => void; currentUser: User }) => {
     const [newMessage, setNewMessage] = useState('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
     useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [chat.messages]);
     const handleSend = () => { if (newMessage.trim()) { onSendMessage(chat.id, newMessage.trim()); setNewMessage(''); } };
-    const otherParticipant = chat.participants.find(p => p.id !== currentUser.id);
+    
+    let chatName: string;
+    let otherParticipant: User | undefined;
+    if (chat.isGroup) {
+        chatName = chat.name || 'Group Chat';
+    } else {
+        otherParticipant = chat.participants.find(p => p.id !== currentUser.id);
+        chatName = otherParticipant?.name || 'Chat';
+    }
+    
     return (
-        <div className="conversation-page"><header className="conversation-header"><button className="back-button" onClick={onBack}><span className="material-symbols-outlined">arrow_back</span></button><h3>{otherParticipant?.name}</h3><div style={{width: 40}}></div></header><div className="message-list">{chat.messages.map(msg => (<div key={msg.id} className={`message-bubble ${msg.senderId === currentUser.id ? 'sent' : 'received'}`}>{msg.content}</div>))}<div ref={messagesEndRef} /></div><div className="message-input-container"><input type="text" placeholder="Type a message..." value={newMessage} onChange={(e) => setNewMessage(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && handleSend()} /><button className="send-button" onClick={handleSend}><span className="material-symbols-outlined">send</span></button></div></div>
+        <div className="conversation-page">
+             <header className={`conversation-header ${chat.isGroup ? 'is-group' : ''}`} onClick={chat.isGroup ? onShowMembers : undefined}>
+                <button className="back-button" onClick={onBack}><span className="material-symbols-outlined">arrow_back</span></button>
+                <h3>{chatName}</h3>
+                {chat.isGroup ? <button className="header-button info-button"><span className="material-symbols-outlined">info</span></button> : <div style={{width: 40}}></div>}
+            </header>
+            <div className="message-list">{chat.messages.map(msg => {
+                const sender = chat.participants.find(p => p.id === msg.senderId);
+                const isSent = msg.senderId === currentUser.id;
+                return (
+                    <div key={msg.id} className={`message-container ${isSent ? 'sent' : 'received'}`}>
+                        {chat.isGroup && !isSent && <div className="sender-name">{sender?.name || '...'}</div>}
+                        <div className="message-bubble">{msg.content}</div>
+                    </div>
+                );
+            })}<div ref={messagesEndRef} /></div>
+            <div className="message-input-container"><input type="text" placeholder="Type a message..." value={newMessage} onChange={(e) => setNewMessage(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && handleSend()} /><button className="send-button" onClick={handleSend}><span className="material-symbols-outlined">send</span></button></div>
+        </div>
     );
 };
 const PrayerPage = ({ prayerRequests, onPray, onAddRequest, onSelectRequest, currentUser }: { prayerRequests: PrayerRequest[]; onPray: (id: string) => void; onAddRequest: () => void; onSelectRequest: (req: PrayerRequest) => void; currentUser: User; }) => (
@@ -454,9 +517,35 @@ const PrayerDetailsModal = ({ request, onClose, onPray, onComment, currentUser }
         <Modal onClose={onClose}><div className="prayer-details-modal"><div className="prayer-details-content"><h3>{request.title}</h3><p className="prayer-author">By {request.author.name}</p>{request.image && <img src={request.image} alt={request.title} className="prayer-image" />}<p className="prayer-main-content">{request.content}</p><div className="prayer-meta"><div className="prayer-actions"><button className={`prayer-action-button ${isPrayed ? 'prayed' : ''}`} onClick={() => onPray(request.id)}><span className="material-symbols-outlined">volunteer_activism</span><span>{request.prayedBy.length} I prayed</span></button></div></div></div><div className="prayer-comments-section"><h4>Comments ({request.comments.length})</h4><div className="prayer-comment-list">{request.comments.length > 0 ? [...request.comments].reverse().map(c => (<div key={c.id} className="comment-item"><p><strong>{c.author.name}:</strong> {c.content}</p></div>)) : <p className="no-comments">No comments yet.</p>}</div><form className="comment-form" onSubmit={handleCommentSubmit}><input type="text" placeholder="Add a comment..." value={comment} onChange={(e) => setComment(e.target.value)} /><button type="submit"><span className="material-symbols-outlined">send</span></button></form></div></div></Modal>
     );
 };
-const CreateChatModal = ({ onClose, onStartChat, allUsers, currentUser }: { onClose: () => void; onStartChat: (userId: string) => void; allUsers: User[]; currentUser: User }) => (
-    <Modal onClose={onClose}><div className="create-chat-modal"><h3>Start a conversation</h3><div className="user-list">{allUsers.filter(u => u.id !== currentUser.id).map(user => (<div key={user.id} className="user-list-item" onClick={() => onStartChat(user.id)}><div className="chat-avatar">{user.avatar}</div><span className="user-name">{user.name}</span></div>))}</div></div></Modal>
-);
+const CreateChatModal = ({ onClose, onStartChat, allUsers, currentUser }: { onClose: () => void; onStartChat: (userIds: string[]) => void; allUsers: User[]; currentUser: User }) => {
+    const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
+    const handleToggleUser = (id: string) => {
+        setSelectedUserIds(prev => prev.includes(id) ? prev.filter(uid => uid !== id) : [...prev, id]);
+    };
+    const handleCreate = () => { if (selectedUserIds.length > 0) onStartChat(selectedUserIds); };
+    return (
+        <Modal onClose={onClose}>
+            <div className="create-chat-modal">
+                <h3>Start a conversation</h3>
+                <div className="user-list">
+                    {allUsers.filter(u => u.id !== currentUser.id).map(user => {
+                        const isSelected = selectedUserIds.includes(user.id);
+                        return (
+                             <div key={user.id} className={`user-list-item selectable ${isSelected ? 'selected' : ''}`} onClick={() => handleToggleUser(user.id)}>
+                                <div className="chat-avatar">{user.avatar}</div>
+                                <span className="user-name">{user.name}</span>
+                                <span className={`material-symbols-outlined checkbox-icon ${isSelected ? 'checked' : ''}`}>{isSelected ? 'check_box' : 'check_box_outline_blank'}</span>
+                            </div>
+                        )
+                    })}
+                </div>
+                 <button className="action-button" onClick={handleCreate} disabled={selectedUserIds.length === 0}>
+                    {selectedUserIds.length > 1 ? 'Create Group Chat' : 'Start Chat'}
+                </button>
+            </div>
+        </Modal>
+    );
+};
 const AddPodcastModal = ({ onClose, onAddPodcast }: { onClose: () => void; onAddPodcast: (data: { title: string; audioFile: File; }) => void; }) => {
     const [title, setTitle] = useState('');
     const [audioFile, setAudioFile] = useState<File | null>(null);
@@ -486,6 +575,69 @@ const AddPodcastModal = ({ onClose, onAddPodcast }: { onClose: () => void; onAdd
         <Modal onClose={onClose}><form className="modal-form" onSubmit={handleSubmit}><h3>New Podcast</h3><input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required /><div className="recording-ui">{!audioFile && (<><h4>Record Audio</h4><button type="button" onClick={isRecording ? handleStopRecording : handleStartRecording} className={`record-button ${isRecording ? 'stop' : ''}`}>{isRecording && <div className="recording-dot"></div>}</button><p>{isRecording ? "Recording..." : "Tap to record"}</p></>)}{audioPreview && (<div className="audio-preview"><h4>Preview</h4><audio src={audioPreview} controls /><button type="button" className="action-button secondary" onClick={() => { setAudioFile(null); setAudioPreview(null); }}>Record Again</button></div>)}</div><button type="submit" className="action-button" disabled={!title || !audioFile}>Upload Podcast</button></form></Modal>
     );
 };
+const ChatMembersModal = ({ chat, allUsers, onClose, onAddMembers }: { chat: Chat; allUsers: User[]; onClose: () => void; onAddMembers: (chatId: string, userIds: string[]) => void; }) => {
+    const [isAdding, setIsAdding] = useState(false);
+    const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
+    
+    const usersToAdd = allUsers.filter(u => !chat.participantIds.includes(u.id));
+
+    const handleToggleUser = (id: string) => {
+        setSelectedUserIds(prev => prev.includes(id) ? prev.filter(uid => uid !== id) : [...prev, id]);
+    };
+
+    const handleConfirmAdd = () => {
+        if (selectedUserIds.length > 0) {
+            onAddMembers(chat.id, selectedUserIds);
+        }
+        setIsAdding(false);
+        setSelectedUserIds([]);
+    };
+    
+    return (
+        <Modal onClose={onClose}>
+            <div className="chat-members-modal">
+                <h3>대화 정보</h3>
+                {!isAdding ? (
+                    <>
+                        <h4>참여자 ({chat.participants.length})</h4>
+                        <div className="user-list">
+                            {chat.participants.map(user => (
+                                <div key={user.id} className="user-list-item">
+                                    <div className="chat-avatar">{user.avatar}</div>
+                                    <span className="user-name">{user.name}</span>
+                                </div>
+                            ))}
+                        </div>
+                        <button className="action-button" onClick={() => setIsAdding(true)}>
+                            <span className="material-symbols-outlined">person_add</span>
+                            참여자 추가
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <h4>Add to conversation</h4>
+                         <div className="user-list">
+                            {usersToAdd.map(user => {
+                                const isSelected = selectedUserIds.includes(user.id);
+                                return (
+                                    <div key={user.id} className={`user-list-item selectable ${isSelected ? 'selected' : ''}`} onClick={() => handleToggleUser(user.id)}>
+                                        <div className="chat-avatar">{user.avatar}</div>
+                                        <span className="user-name">{user.name}</span>
+                                        <span className={`material-symbols-outlined checkbox-icon ${isSelected ? 'checked' : ''}`}>{isSelected ? 'check_box' : 'check_box_outline_blank'}</span>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                        <button className="action-button" onClick={handleConfirmAdd} disabled={selectedUserIds.length === 0}>
+                            Add ({selectedUserIds.length})
+                        </button>
+                        <button className="action-button secondary" onClick={() => setIsAdding(false)}>Cancel</button>
+                    </>
+                )}
+            </div>
+        </Modal>
+    );
+};
 
 // --- Main App Component ---
 const App = () => {
@@ -503,6 +655,7 @@ const App = () => {
     const [notifications, setNotifications] = useState<Notification[]>(MOCK_NOTIFICATIONS);
     const [showNotifications, setShowNotifications] = useState(false);
     const [hasUnread, setHasUnread] = useState(true);
+    const [showMembersModal, setShowMembersModal] = useState(false);
     
     useEffect(() => {
         onAuthStateChanged(auth, async (fbUser) => {
@@ -572,17 +725,40 @@ const App = () => {
         const now = Timestamp.now();
         await updateDoc(doc(db, "chats", chatId), { messages: arrayUnion({ senderId: user.id, content, type: 'text', createdAt: now }), lastMessageTimestamp: now });
     };
-    const handleStartChat = async (otherUserId: string) => {
-        if (!user) return;
-        const existingChat = chats.find(c => c.participantIds.includes(otherUserId));
-        if (existingChat) {
-            setActiveChatId(existingChat.id);
+    const handleStartChat = async (otherUserIds: string[]) => {
+        if (!user || otherUserIds.length === 0) return;
+
+        const isGroup = otherUserIds.length > 1;
+        const participantIds = [user.id, ...otherUserIds].sort();
+
+        // Check for existing chat
+        const chatQuery = query(collection(db, "chats"), where("participantIds", "==", participantIds));
+        const existingChats = await getDocs(chatQuery);
+        if (!existingChats.empty) {
+            setActiveChatId(existingChats.docs[0].id);
         } else {
-            const newChatRef = await addDoc(collection(db, "chats"), { participantIds: [user.id, otherUserId], messages: [], lastMessageTimestamp: serverTimestamp() });
+             // Create a new chat
+            let chatName = '';
+            if (isGroup) {
+                const participants = await fetchUsers(otherUserIds);
+                chatName = `${participants.map(p => p.name.split(' ')[0]).join(', ')}, and ${user.name.split(' ')[0]}`;
+            }
+            const newChatRef = await addDoc(collection(db, "chats"), { 
+                participantIds, 
+                messages: [], 
+                lastMessageTimestamp: serverTimestamp(),
+                isGroup,
+                name: isGroup ? chatName : '',
+                groupAvatar: isGroup ? 'groups' : '',
+            });
             setActiveChatId(newChatRef.id);
         }
         setShowCreateChatModal(false);
     };
+    const handleAddMembers = async (chatId: string, newUserIds: string[]) => {
+        await updateDoc(doc(db, "chats", chatId), { participantIds: arrayUnion(...newUserIds) });
+    };
+
      const handleNotificationToggle = () => {
         setShowNotifications(prev => !prev);
         if (hasUnread) {
@@ -642,11 +818,12 @@ const App = () => {
                 })}
             </nav>
             
-            {activeChat && <ConversationPage chat={activeChat} onBack={() => setActiveChatId(null)} onSendMessage={handleSendMessage} currentUser={user} />}
+            {activeChat && <ConversationPage chat={activeChat} onBack={() => setActiveChatId(null)} onSendMessage={handleSendMessage} onShowMembers={() => setShowMembersModal(true)} currentUser={user} />}
             {showAddPrayerModal && <AddPrayerRequestModal onClose={() => setShowAddPrayerModal(false)} onAddRequest={handleAddPrayerRequest} />}
             {openPrayer && <PrayerDetailsModal request={openPrayer} onClose={() => setSelectedPrayerRequest(null)} onPray={handlePray} onComment={handleComment} currentUser={user} />}
             {showCreateChatModal && <CreateChatModal onClose={() => setShowCreateChatModal(false)} onStartChat={handleStartChat} allUsers={allUsers} currentUser={user} />}
             {showAddPodcastModal && <AddPodcastModal onClose={() => setShowAddPodcastModal(false)} onAddPodcast={handleAddPodcast} />}
+            {showMembersModal && activeChat && <ChatMembersModal chat={activeChat} allUsers={allUsers} onClose={() => setShowMembersModal(false)} onAddMembers={handleAddMembers} />}
         </div>
     );
 };
