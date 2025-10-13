@@ -23,17 +23,19 @@ import {
     Timestamp,
     where,
     getDocs,
-    arrayRemove
+    arrayRemove,
+    deleteDoc,
+    limit
 } from "firebase/firestore";
-import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
+import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
 
 // --- Types ---
-type User = { id: string; name: string; email: string; avatar: string; };
-type Church = { id: string; name: string; logo: string; offeringDetails: any; streamingInfo: any; };
+type User = { id: string; name: string; email: string; avatar: string; role: 'admin' | 'member'; };
+type Church = { id: string; name: string; logo: string; offeringDetails: any; };
 type Comment = { id: string; author: User; content: string; createdAt: Timestamp; };
 type PrayerRequest = { id: string; author: User; title: string; content: string; image?: string; prayedBy: string[]; comments: Comment[]; createdAt: Timestamp; };
 type Podcast = { id: string; title: string; author: User; audioUrl: string; createdAt: Timestamp; };
-type NewsItem = { id: string; title: string; date: string; content: string; image?: string; };
+type NewsItem = { id: string; title: string; content: string; image?: string; createdAt: Timestamp; };
 type Verse = { verse: string; text: string; };
 type Message = { id: string; senderId: string; sender?: User; content: string; type: 'text' | 'image'; mediaUrl?: string; createdAt: Timestamp; };
 type Chat = { 
@@ -52,15 +54,20 @@ type Notification = {
     message: string;
     timestamp: string;
 };
+type WorshipService = {
+    id: string;
+    title: string;
+    videoUrl: string;
+    createdAt: Timestamp;
+};
 
 
 // --- Static Config & Data ---
 const CHURCH: Church = {
     id: 'nepal_logos', name: 'Logos Church, Nepal', logo: '/logos-church-new-logo.jpg',
     offeringDetails: { qrCodeUrl: '/logos-qr-code.png', bankName: 'Global IME Bank', accountHolder: 'YAM PRADHAN', accountNumber: '10507010042662' },
-    streamingInfo: { twitchChannel: 'logostvcnepal' }
 };
-const MOCK_NEWS: NewsItem[] = [];
+
 const MOCK_VERSES_OF_THE_DAY: Verse[] = [
     { verse: 'यूहन्ना ३:१६', text: 'किनभने परमेश्‍वरले संसारलाई यति साह्रो प्रेम गर्नुभयो, कि उहाँले आफ्‍ना एकमात्र पुत्र दिनुभयो, ताकि उहाँमाथि विश्‍वास गर्ने कोही पनि नाश नहोस्, तर त्‍यसले अनन्त जीवन पाओस्।' },
     { verse: 'फिलिप्पी ४:१३', text: 'जसले मलाई शक्ति दिनuहुन्छ, उहाँमा म सब कुरा गर्न सक्छु।' }
@@ -87,7 +94,7 @@ const MCHEYNE_READING_PLAN = [
     'प्रस्थान ३, लूका ९, अय्यूब २०, १ कोरिन्थी ९', 'प्रस्थान ४, लूका १०, अय्यूब २१, १ कोरिन्थी १०', 'प्रस्थान ५, लूका ११, अय्यूब २२, १ कोरिन्थी ११', 'प्रस्थान ६, लूका १२, अय्यूब २३, १ कोरिन्थी १२',
     'प्रस्थान ७, लूका १३, अय्यूब २४, १ कोरिन्थी १३', 'प्रस्थान ८, लूका १४, अय्यूब २५, १ कोरिन्थी १४', 'प्रस्थान ९, लूका १५, अय्यूब २६, १ कोरिन्थी १५', 'प्रस्थान १०, लूका १६, अय्यूब २७, १ कोरिन्थी १६',
     'प्रस्थान ११, लूका १७, अय्यूब २८, २ कोरिन्थी १', 'प्रस्थान १२, लूका १८, अय्यूब २९, २ कोरिन्थी २', 'प्रस्थान १३, लूका १९, अय्यूब ३०, २ कोरिन्थी ३', 'प्रस्थान १४, लूका २०, अय्यूब ३१, २ कोरिन्थी ४',
-    'प्रस्थान १५, लूका २१, अय्यूब ३२, २ कोरिन्थी ५', 'प्रस्थान १६, लूका २२, अय्यूब ३३, २ कोरिन्थी ६', 'प्रस्थान १७, लूका २३, अय्यूब ३४, २ कोरिन्थी ७', 'प्रस्थान १८, लूका २४, अय्यूब ३५, २ कोरिन्थी ८',
+    'प्रस्थान १५, लूका २१, अय्यूब ३２, २ कोरिन्थी ५', 'प्रस्थान १६, लूका २२, अय्यूब ३३, २ कोरिन्थी ६', 'प्रस्थान १७, लूका २३, अय्यूब ३४, २ कोरिन्थी ७', 'प्रस्थान १८, लूका २४, अय्यूब ३५, २ कोरिन्थी ८',
     'प्रस्थान १९, यूहन्ना १, अय्यूब ३६, २ कोरिन्थी ९', 'प्रस्थान २०, यूहन्ना २, अय्यूब ३७, २ कोरिन्थी १०', 'प्रस्थान २१, यूहन्ना ३, अय्यूब ३८, २ कोरिन्थी ११', 'प्रस्थान २२, यूहन्ना ४, अय्यूब ३९, २ कोरिन्थी १२',
     'प्रस्थान २३, यूहन्ना ५, अय्यूब ४०, २ कोरिन्थी १३', 'प्रस्थान २४, यूहन्ना ६, अय्यूब ४१, गलाती १', 'प्रस्थान २५, यूहन्ना ७, अय्यूब ४२, गलाती २', 'प्रस्थान २६, यूहन्ना ८, भजनसंग्रह १-४, गलाती ३',
     'प्रस्थान २७, यूहन्ना ९, भजनसंग्रह ५-७, गलाती ४', 'प्रस्थान २८, यूहन्ना १०, भजनसंग्रह ८-९, गलाती ५', 'प्रस्थान २९, यूहन्ना ११, भजनसंग्रह १०-११, गलाती ६', 'प्रस्थान ३०, यूहन्ना १२, भजनसंग्रह १२-१४, एफिसी १',
@@ -124,39 +131,39 @@ const MCHEYNE_READING_PLAN = [
     'यहोशू १४, तीतस १, यशैया १०, मर्कूस २', 'यहोशू १५, तीतस २, यशैया ११, मर्कूस ३', 'यहोशू १६, तीतस ३, यशैया १२, मर्कूस ४', 'यहोशू १७, फिलेमोन, यशैया १३, मर्कूस ५',
     'यहोशू १८, हिब्रू १, यशैया १४, मर्कूस ६', 'यहोशू १९, हिब्रू २, यशैया १५, मर्कूस ७', 'यहोशू २०, हिब्रू ३, यशैया १६, मर्कूस ८', 'यहोशू २१, हिब्रू ४, यशैया १७, मर्कूस ९',
     'यहोशू २२, हिब्रू ५, यशैया १८, मर्कूस १०', 'यहोशू २३, हिब्रू ६, यशैया १९, मर्कूस ११', 'यहोशू २४, हिब्रू ७, यशैया २०, मर्कूस १२', 'न्यायकर्ता १, हिब्रू ८, यशैया २१, मर्कूस १३',
-    'न्यायकर्ता २, हिब्रू ९, यशैया २२, मर्कूस १४', 'न्यायकर्ता ३, हिब्रू १०, यशैया २३, मर्कूस १५', 'न्यायकर्ता ४, हिब्रू ११, यशैया २४, मर्कूस १६', 'न्यायकर्ता ५, हिब्रू १२, यशैया २५, लूका १',
+    'न्यायकर्ता २, हिब्रू ९, यशैया २２, मर्कूस १४', 'न्यायकर्ता ३, हिब्रू १०, यशैया २३, मर्कूस १५', 'न्यायकर्ता ४, हिब्रू ११, यशैया २४, मर्कूस १६', 'न्यायकर्ता ५, हिब्रू १२, यशैया २५, लूका १',
     'न्यायकर्ता ६, हिब्रू १३, यशैया २६, लूका २', 'न्यायकर्ता ७, याकूब १, यशैया २७, लूका ३', 'न्यायकर्ता ८, याकूब २, यशैया २८, लूका ४', 'न्यायकर्ता ९, याकूब ३, यशैया २९, लूका ५',
-    'न्यायकर्ता १०, याकूब ४, यशैया ३०, लूका ६', 'न्यायकर्ता ११, याकूब ५, यशैया ३१, लूका ७', 'न्यायकर्ता १२, १ पत्रुस १, यशैया ३२, लूका ८', 'न्यायकर्ता १३, १ पत्रुस २, यशैया ३३, लूका ९',
+    'न्यायकर्ता १०, याकूब ४, यशैया ३०, लूका ६', 'न्यायकर्ता ११, याकूब ५, यशैया ३१, लूका ७', 'न्यायकर्ता १२, १ पत्रुस १, यशैया ३２, लूका ८', 'न्यायकर्ता १३, १ पत्रुस २, यशैया ३३, लूका ९',
     'न्यायकर्ता १४, १ पत्रुस ३, यशैया ३४, लूका १०', 'न्यायकर्ता १५, १ पत्रुस ४, यशैया ३५, लूका ११', 'न्यायकर्ता १६, १ पत्रुस ५, यशैया ३६, लूका १२', 'न्यायकर्ता १७, २ पत्रुस १, यशैया ३७, लूका १३',
-    'न्यायकर्ता १८, २ पत्रुस २, यशैया ३८, लूका १४', 'न्यायकर्ता १९, २ पत्रुस ३, यशैया ३९, लूका १५', 'न्यायकर्ता २०, १ यूहन्ना १, यशैया ४०, लूका १६', 'न्यायकर्ता २१, १ यूहन्ना २, यशैया ४१, लूका १७',
+    'न्यायकर्ता १८, २ पत्रुस २, यशैया ३８, लूका १४', 'न्यायकर्ता १९, २ पत्रुस ३, यशैया ३९, लूका १५', 'न्यायकर्ता २०, १ यूहन्ना १, यशैया ४०, लूका १६', 'न्यायकर्ता २१, १ यूहन्ना २, यशैया ४१, लूका १७',
     'रूथ १, १ यूहन्ना ३, यशैया ४२, लूका १८', 'रूथ २, १ यूहन्ना ४, यशैया ४३, लूका १९', 'रूथ ३, १ यूहन्ना ५, यशैया ४४, लूका २०', 'रूथ ४, २ यूहन्ना, यशैया ४५, लूका २१',
-    '१ शमूएल १, ३ यूहन्ना, यशैया ४६, लूका २२', '१ शमूएल २, यहूदा, यशैया ४७, लूका २३', '१ शमूएल ३, प्रकाश १, यशैया ४८, लूका २४', '१ शमूएल ४, प्रकाश २, यशैया ४९, यूहन्ना १',
+    '१ शमूएल १, ३ यूहन्ना, यशैया ४६, लूका २२', '१ शमूएल २, यहूदा, यशैया ४७, लूका २३', '१ शमूएल ३, प्रकाश १, यशैया ४８, लूका २४', '१ शमूएल ४, प्रकाश २, यशैया ४९, यूहन्ना १',
     '१ शमूएल ५, प्रकाश ३, यशैया ५०, यूहन्ना २', '१ शमूएल ६, प्रकाश ४, यशैया ५१, यूहन्ना ३', '१ शमूएल ७, प्रकाश ५, यशैया ५२, यूहन्ना ४', '१ शमूएल ८, प्रकाश ६, यशैया ५३, यूहन्ना ५',
-    '१ शमूएल ९, प्रकाश ७, यशैया ५४, यूहन्ना ६', '१ शमूएल १०, प्रकाश ८, यशैया ५५, यूहन्ना ७', '१ शमूएल ११, प्रकाश ९, यशैया ५६, यूहन्ना ८', '१ शमूएल १२, प्रकाश १०, यशैया ५७, यूहन्ना ९',
-    '१ शमूएल १३, प्रकाश ११, यशैया ५८, यूहन्ना १०', '१ शमूएल १४, प्रकाश १२, यशैया ५९, यूहन्ना ११', '१ शमूएल १५, प्रकाश १३, यशैया ६०, यूहन्ना १२', '१ शमूएल १६, प्रकाश १४, यशैया ६१, यूहन्ना १३',
-    '१ शमूएल १७, प्रकाश १५, यशैया ६२, यूहन्ना १४', '१ शमूएल १८, प्रकाश १६, यशैया ६३, यूहन्ना १५', '१ शमूएल १९, प्रकाश १७, यशैया ६४, यूहन्ना १६', '१ शमूएल २०, प्रकाश १८, यशैया ६५, यूहन्ना १७',
-    '१ शमूएल २१, प्रकाश १९, यशैया ६६, यूहन्ना १८', '१ शमूएल २२, प्रकाश २०, यर्मिया १, यूहन्ना १९', '१ शमूएल २३, प्रकाश २१, यर्मिया २, यूहन्ना २०', '१ शमूएल २४, प्रकाश २२, यर्मिया ३, यूहन्ना २१',
+    '१ शमूएल ९, प्रकाश ७, यशैया ५４, यूहन्ना ६', '१ शमूएल १०, प्रकाश ८, यशैया ५५, यूहन्ना ७', '१ शमूएल ११, प्रकाश ९, यशैया ५６, यूहन्ना ८', '१ शमूएल १२, प्रकाश १०, यशैया ५７, यूहन्ना ९',
+    '१ शमूएल १३, प्रकाश ११, यशैया ५８, यूहन्ना १०', '१ शमूएल १४, प्रकाश १२, यशैया ५９, यूहन्ना ११', '१ शमूएल १५, प्रकाश १३, यशैया ६०, यूहन्ना १२', '१ शमूएल १६, प्रकाश १४, यशैया ६１, यूहन्ना १३',
+    '१ शमूएल १७, प्रकाश १५, यशैया ६２, यूहन्ना १४', '१ शमूएल १८, प्रकाश १६, यशैया ६３, यूहन्ना १५', '१ शमूएल १९, प्रकाश १७, यशैया ६４, यूहन्ना १६', '१ शमूएल २०, प्रकाश १८, यशैया ६５, यूहन्ना १७',
+    '१ शमूएल २१, प्रकाश १९, यशैया ६６, यूहन्ना १८', '१ शमूएल २२, प्रकाश २०, यर्मिया १, यूहन्ना १९', '१ शमूएल २३, प्रकाश २१, यर्मिया २, यूहन्ना २०', '१ शमूएल २४, प्रकाश २२, यर्मिया ३, यूहन्ना २१',
     '१ शमूएल २५, मत्ती १, यर्मिया ४, प्रेरित १', '१ शमूएल २६, मत्ती २, यर्मिया ५, प्रेरित २', '१ शमूएल २७, मत्ती ३, यर्मिया ६, प्रेरित ३', '१ शमूएल २८, मत्ती ४, यर्मिया ७, प्रेरित ४',
     '१ शमूएल २९, मत्ती ५, यर्मिया ८, प्रेरित ५', '१ शमूएल ३०, मत्ती ६, यर्मिया ९, प्रेरित ६', '१ शमूएल ३१, मत्ती ७, यर्मिया १०, प्रेरित ७', '२ शमूएल १, मत्ती ८, यर्मिया ११, प्रेरित ८',
     '२ शमूएल २, मत्ती ९, यर्मिया १२, प्रेरित ९', '२ शमूएल ३, मत्ती १०, यर्मिया १३, प्रेरित १०', '२ शमूएल ४, मत्ती ११, यर्मिया १४, प्रेरित ११', '२ शमूएल ५, मत्ती १२, यर्मिया १५, प्रेरित १२',
     '२ शमूएल ६, मत्ती १३, यर्मिया १६, प्रेरित १३', '२ शमूएल ७, मत्ती १४, यर्मिया १७, प्रेरित १४', '२ शमूएल ८, मत्ती १५, यर्मिया १८, प्रेरित १५', '२ शमूएल ९, मत्ती १६, यर्मिया १९, प्रेरित १६',
     '२ शमूएल १०, मत्ती १७, यर्मिया २०, प्रेरित १७', '२ शमूएल ११, मत्ती १८, यर्मिया २१, प्रेरित १८', '२ शमूएल १२, मत्ती १९, यर्मिया २２, प्रेरित १९', '२ शमूएल १३, मत्ती २०, यर्मिया २३, प्रेरित २०',
     '२ शमूएल १४, मत्ती २१, यर्मिया २४, प्रेरित २१', '२ शमूएल १५, मत्ती २２, यर्मिया २५, प्रेरित २२', '२ शमूएल १६, मत्ती २३, यर्मिया २६, प्रेरित २३', '२ शमूएल १७, मत्ती २४, यर्मिया २७, प्रेरित २४',
-    '२ शमूएल १८, मत्ती २५, यर्मिया २८, प्रेरित २५', '२ शमूएल १९, मत्ती २६, यर्मिया २९, प्रेरित २६', '२ शमूएल २०, मत्ती २७, यर्मिया ३०, प्रेरित २७', '२ शमूएल २१, मत्ती २८, यर्मिया ३१, प्रेरित २८',
-    '२ शमूएल २２, मर्कूस १, यर्मिया ३２, रोमी १', '२ शमूएल २३, मर्कूस २, यर्मिया ३३, रोमी २', '२ शमूएल २४, मर्कूस ३, यर्मिया ३४, रोमी ३', '१ राजा १, मर्कूस ४, यर्मिया ३५, रोमी ४',
-    '१ राजा २, मर्कूस ५, यर्मिया ३६, रोमी ५', '१ राजा ३, मर्कूस ६, यर्मिया ३७, रोमी ६', '१ राजा ४, मर्कूस ७, यर्मिया ३८, रोमी ७', '१ राजा ५, मर्कूस ८, यर्मिया ३९, रोमी ८',
+    '२ शमूएल १८, मत्ती २५, यर्मिया २८, प्रेरित २५', '२ शमूएल १९, मत्ती २६, यर्मिया २९, प्रेरित २६', '२ शमूएल २०, मत्ती २७, यर्मिया ३०, प्रेरित २७', '२ शमूएल २१, मत्ती २८, यर्मिया ३１, प्रेरित २८',
+    '२ शमूएल २２, मर्कूस १, यर्मिया ३２, रोमी १', '२ शमूएल २३, मर्कूस २, यर्मिया ३३, रोमी २', '२ शमूएल २४, मर्कूस ३, यर्मिया ३４, रोमी ३', '१ राजा १, मर्कूस ४, यर्मिया ३５, रोमी ४',
+    '१ राजा २, मर्कूस ५, यर्मिया ३６, रोमी ५', '१ राजा ३, मर्कूस ६, यर्मिया ३７, रोमी ६', '१ राजा ४, मर्कूस ७, यर्मिया ३８, रोमी ७', '१ राजा ५, मर्कूस ८, यर्मिया ३９, रोमी ८',
     '१ राजा ६, मर्कूस ९, यर्मिया ४०, रोमी ९', '१ राजा ७, मर्कूस १०, यर्मिया ४１, रोमी १०', '१ राजा ८, मर्कूस ११, यर्मिया ४２, रोमी ११', '१ राजा ९, मर्कूस १२, यर्मिया ४३, रोमी १२',
-    '१ राजा १०, मर्कूस १३, यर्मिया ४४, रोमी १३', '१ राजा ११, मर्कूस १४, यर्मिया ४५, रोमी १४', '१ राजा १२, मर्कूस १५, यर्मिया ४६, रोमी १५', '१ राजा १३, मर्कूस १६, यर्मिया ४७, रोमी १६',
-    '१ राजा १४, लूका १, यर्मिया ४८, १ कोरिन्थी १', '१ राजा १५, लूका २, यर्मिया ४९, १ कोरिन्थी २', '१ राजा १६, लूका ३, यर्मिया ५०, १ कोरिन्थी ३', '१ राजा १७, लूका ४, यर्मिया ५१, १ कोरिन्थी ४',
-    '१ राजा १८, लूका ५, यर्मिया ५२, १ कोरिन्थी ५', '१ राजा १९, लूका ६, विलाप १, १ कोरिन्थी ६', '१ राजा २०, लूका ७, विलाप २, १ कोरिन्थी ७', '१ राजा २१, लूका ८, विलाप ३, १ कोरिन्थी ८',
+    '१ राजा १०, मर्कूस १३, यर्मिया ४４, रोमी १३', '१ राजा ११, मर्कूस १४, यर्मिया ४５, रोमी १४', '१ राजा १२, मर्कूस १५, यर्मिया ४６, रोमी १५', '१ राजा १३, मर्कूस १६, यर्मिया ४７, रोमी १६',
+    '१ राजा १४, लूका १, यर्मिया ४８, १ कोरिन्थी १', '१ राजा १५, लूका २, यर्मिया ४９, १ कोरिन्थी २', '१ राजा १६, लूका ३, यर्मिया ५०, १ कोरिन्थी ३', '१ राजा १७, लूका ४, यर्मिया ५１, १ कोरिन्थी ४',
+    '१ राजा १८, लूका ५, यर्मिया ५２, १ कोरिन्थी ५', '१ राजा १९, लूका ६, विलाप १, १ कोरिन्थी ६', '१ राजा २०, लूका ७, विलाप २, १ कोरिन्थी ७', '१ राजा २१, लूका ८, विलाप ३, १ कोरिन्थी ८',
     '१ राजा २２, लूका ९, विलाप ४, १ कोरिन्थी ९', '२ राजा १, लूका १०, विलाप ५, १ कोरिन्थी १०', '२ राजा २, लूका ११, इजकिएल १, १ कोरिन्थी ११', '२ राजा ३, लूका १२, इजकिएल २, १ कोरिन्थी १२',
     '२ राजा ४, लूका १३, इजकिएल ३, १ कोरिन्थी १३', '२ राजा ५, लूका १४, इजकिएल ४, १ कोरिन्थी १४', '२ राजा ६, लूका १५, इजकिएल ५, १ कोरिन्थी १५', '२ राजा ७, लूका १६, इजकिएल ६, १ कोरिन्थी १६',
     '२ राजा ८, लूका १७, इजकिएल ७, २ कोरिन्थी १', '२ राजा ९, लूका १८, इजकिएल ८, २ कोरिन्थी २', '२ राजा १०, लूका १९, इजकिएल ९, २ कोरिन्थी ३', '२ राजा ११, लूका २०, इजकिएल १०, २ कोरिन्थी ४',
     '२ राजा १२, लूका २१, इजकिएल ११, २ कोरिन्थी ५', '२ राजा १३, लूका २２, इजकिएल १२, २ कोरिन्थी ६', '२ राजा १४, लूका २३, इजकिएल १३, २ कोरिन्थी ७', '२ राजा १५, लूका २४, इजकिएल १४, २ कोरिन्थी ८',
     '२ राजा १६, यूहन्ना १, इजकिएल १५, २ कोरिन्थी ९', '२ राजा १७, यूहन्ना २, इजकिएल १६, २ कोरिन्थी १०', '२ राजा १८, यूहन्ना ३, इजकिएल १७, २ कोरिन्थी ११', '२ राजा १९, यूहन्ना ४, इजकिएल १८, २ कोरिन्थी १२',
     '२ राजा २०, यूहन्ना ५, इजकिएल १९, २ कोरिन्थी १३', '२ राजा २१, यूहन्ना ६, इजकिएल २०, गलाती १', '२ राजा २２, यूहन्ना ७, इजकिएल २१, गलाती २', '२ राजा २३, यूहन्ना ८, इजकिएल २２, गलाती ३',
-    '२ राजा २४, यूहन्ना ९, इजकिएल २३, गलाती ४', '२ राजा २५, यूहन्ना १०, इजकिएल २४, गलाती ५', '१ इतिहास १, यूहन्ना ११, इजकिएल २५, गलाती ६', '१ इतिहास २, यूहन्ना १२, इजकिएल २६, एफिसी १',
-    '१ इतिहास ३, यूहन्ना १३, इजकिएल २७, एफिसी २', '१ इतिहास ४, यूहन्ना १४, इजकिएल २८, एफिसी ३', '१ इतिहास ५, यूहन्ना १५, इजकिएल २९, एफिसी ४', '१ इतिहास ६, यूहन्ना १६, इजकिएल ३०, एफिसी ५',
+    '२ राजा २४, यूहन्ना ९, इजकिएल २३, गलाती ४', '२ राजा २५, यूहन्ना १०, इजकिएल २४, गलाती ५', '१ इतिहास १, यूहन्ना ११, इजकिएल २५, गलाती ६', '१ इतिहास २, यूहन्ना १२, इजकिएल २６, एफिसी १',
+    '१ इतिहास ३, यूहन्ना १३, इजकिएल २７, एफिसी २', '१ इतिहास ४, यूहन्ना १४, इजकिएल २８, एफिसी ३', '१ इतिहास ५, यूहन्ना १५, इजकिएल २９, एफिसी ४', '१ इतिहास ६, यूहन्ना १६, इजकिएल ३०, एफिसी ५',
     '१ इतिहास ७, यूहन्ना १७, इजकिएल ३１, एफिसी ६', '१ इतिहास ८, यूहन्ना १८, इजकिएल ३２, फिलिप्पी १', '१ इतिहास ९, यूहन्ना १९, इजकिएल ३３, फिलिप्पी २', '१ इतिहास १०, यूहन्ना २०, इजकिएल ३４, फिलिप्पी ३',
     '१ इतिहास ११, यूहन्ना २१, इजकिएल ३５, फिलिप्पी ४', '१ इतिहास १२, प्रेरित १, इजकिएल ३６, कलस्सी १', '१ इतिहास १३, प्रेरित २, इजकिएल ३７, कलस्सी २', '१ इतिहास १४, प्रेरित ३, इजकिएल ३８, कलस्सी ३',
     '१ इतिहास १५, प्रेरित ४, इजकिएल ३９, कलस्सी ४', '१ इतिहास १६, प्रेरित ५, इजकिएल ४０, १ थिस्सलोनिकी १', '१ इतिहास १७, प्रेरित ६, इजकिएल ४１, १ थिस्सलोनिकी २', '१ इतिहास १८, प्रेरित ७, इजकिएल ४２, १ थिस्सलोनिकी ३',
@@ -170,7 +177,7 @@ const MCHEYNE_READING_PLAN = [
     '२ इतिहास १८, रोमी ८, होशे ११, हिब्रू १०', '२ इतिहास १९, रोमी ९, होशे १२, हिब्रू ११', '२ इतिहास २०, रोमी १०, होशे १३, हिब्रू १२', '२ इतिहास २१, रोमी ११, होशे १४, हिब्रू १३',
     '२ इतिहास २２, रोमी १२, योएल १, याकूब १', '२ इतिहास २३, रोमी १३, योएल २, याकूब २', '२ इतिहास २४, रोमी १४, योएल ३, याकूब ३', '२ इतिहास २५, रोमी १५, आमोस १, याकूब ४',
     '२ इतिहास २६, रोमी १६, आमोस २, याकूब ५', '२ इतिहास २७, १ कोरिन्थी १, आमोस ३, १ पत्रुस १', '२ इतिहास २८, १ कोरिन्थी २, आमोस ४, १ पत्रुस २', '२ इतिहास २९, १ कोरिन्थी ३, आमोस ५, १ पत्रुस ३',
-    '२ इतिहास ३०, १ कोरिन्थी ४, आमोस ६, १ पत्रुस ४', '२ इतिहास ३१, १ कोरिन्थी ५, आमोस ७, १ पत्रुस ५', '२ इतिहास ३２, १ कोरिन्थी ६, आमोस ८, २ पत्रुस १', '२ इतिहास ३３, १ कोरिन्थी ७, आमोस ९, २ पत्रुस २',
+    '२ इतिहास ३०, १ कोरिन्थी ४, आमोस ६, १ पत्रुस ४', '२ इतिहास ३１, १ कोरिन्थी ५, आमोस ७, १ पत्रुस ५', '२ इतिहास ३２, १ कोरिन्थी ६, आमोस ८, २ पत्रुस १', '२ इतिहास ३３, १ कोरिन्थी ७, आमोस ९, २ पत्रुस २',
     '२ इतिहास ३４, १ कोरिन्थी ८, ओबदिया, २ पत्रुस ३', '२ इतिहास ३５, १ कोरिन्थी ९, योना १, १ यूहन्ना १', '२ इतिहास ३６, १ कोरिन्थी १०, योना २, १ यूहन्ना २', 'एज्रा १, १ कोरिन्थी ११, योना ३, १ यूहन्ना ३',
     'एज्रा २, १ कोरिन्थी १२, योना ४, १ यूहन्ना ४', 'एज्रा ३, १ कोरिन्थी १३, मीका १, १ यूहन्ना ५', 'एज्रा ४, १ कोरिन्थी १४, मीका २, २ यूहन्ना', 'एज्रा ५, १ कोरिन्थी १५, मीका ३, ३ यूहन्ना',
     'एज्रा ६, १ कोरिन्थी १६, मीका ४, यहूदा', 'एज्रा ७, २ कोरिन्थी १, मीका ५, प्रकाश १', 'एज्रा ८, २ कोरिन्थी २, मीका ६, प्रकाश २', 'एज्रा ९, २ कोरिन्थी ३, मीका ७, प्रकाश ३',
@@ -202,7 +209,7 @@ const PROVERBS_NNRV: { [key: number]: string } = {
 १६ हरेक विवेकी मानिसले ज्ञानमा काम गर्छ, तर मूर्खले आफ्‍नो मूर्खता प्रकट गर्छ।
 १७ एक जना दुष्‍ट दूतले कष्‍टमा पार्छ, तर एक जना विश्‍वासी दूतले आरोग्यता ल्‍याउँछ।
 १८ अनुशासनलाई बेवास्ता गर्ने मानिस गरीबी र लाजमा पर्छ, तर हप्कीलाई वास्ता गर्नेको आदर हुन्‍छ।
-१९ इच्‍छा पूरा हुँदा प्राणलाई मीठो लाग्‍छ, तर दुष्‍टताबाट अलग रहनुचाहिँ मूर्खहरूको निम्‍ति घिनलाग्‍दो कुरा हो।
+१९ इच्‍छा पूरा हुँदा प्राणलाई मीठो लाग्‍छ, तर दुष्‍टताबाट अलग रहनुचाहिँ मूर्खहरूको निम्‍ति घिनलाग्दो कुरा हो।
 २० बुद्धिमान् मानिसहरूको सङ्गत गर्, र तँ बुद्धिमान् हुनेछस्, तर मूर्खहरूको साथीलेचाहिँ हानि भोग्‍छ।
 २१ पापीहरूलाई विपत्तिले खेद्‌छ, तर धर्मीहरूलाई इनाममा समृद्धि दिइन्‍छ।
 २२ एक जना असल मानिसले आफ्‍ना नाति-नातिनाको निम्‍ति उत्तराधिकार छोड्‌छ, तर पापीको धन-सम्‍पत्तिचाहिँ धर्मीको निम्‍ति थुपारिन्छ।
@@ -214,26 +221,43 @@ const PROVERBS_NNRV: { [key: number]: string } = {
 // --- Helper Functions ---
 const getDayOfYear = () => {
     const now = new Date();
-    // Create a date for the start of the year in the local timezone
     const start = new Date(now.getFullYear(), 0, 1);
-    // Calculate the difference in milliseconds and convert to days
     const diff = now.getTime() - start.getTime();
     const oneDay = 1000 * 60 * 60 * 24;
     return Math.ceil(diff / oneDay);
 };
 
+const getEmbedUrl = (url: string): string | null => {
+    try {
+        const urlObj = new URL(url);
+        if (urlObj.hostname.includes('youtube.com') || urlObj.hostname.includes('youtu.be')) {
+            const videoId = urlObj.hostname.includes('youtu.be') ? urlObj.pathname.slice(1) : urlObj.searchParams.get('v');
+            return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+        }
+        if (urlObj.hostname.includes('twitch.tv')) {
+            if (urlObj.pathname.includes('/videos/')) {
+                const videoId = urlObj.pathname.split('/videos/')[1];
+                return `https://player.twitch.tv/?video=${videoId}&parent=${window.location.hostname}&autoplay=false`;
+            }
+            const channel = urlObj.pathname.slice(1);
+            return channel ? `https://player.twitch.tv/?channel=${channel}&parent=${window.location.hostname}` : null;
+        }
+        return url;
+    } catch (e) { return null; }
+};
+
 
 const userCache: { [key: string]: User } = {};
 const fetchUser = async (uid: string): Promise<User> => {
-    if (!uid) return { id: 'unknown', name: 'Unknown', email: '', avatar: '?' };
+    if (!uid) return { id: 'unknown', name: 'Unknown', email: '', avatar: '?', role: 'member' };
     if (userCache[uid]) return userCache[uid];
     const userDoc = await getDoc(doc(db, 'users', uid));
     if (userDoc.exists()) {
-        const user = { id: uid, ...userDoc.data() } as User;
+        const user = { id: uid, ...userDoc.data(), role: userDoc.data().role || 'member' } as User;
         userCache[uid] = user;
         return user;
     }
-    return { id: uid, name: 'Unknown User', email: '', avatar: '?' };
+    return { id: uid, name: 'Unknown User', email: '', avatar: '?', role: 'member' };
 };
 const fetchUsers = async (uids: string[]): Promise<User[]> => Promise.all(uids.map(uid => fetchUser(uid)));
 
@@ -310,6 +334,7 @@ const LoginPage = ({ church }: { church: Church }) => {
         e.preventDefault();
         setError('');
         setIsLoading(true);
+        const ADMIN_EMAIL = "your-admin-email@example.com"; // TODO: Replace with the actual admin's email address.
         try {
             if (type === 'login') {
                 await signInWithEmailAndPassword(auth, email, password);
@@ -317,7 +342,8 @@ const LoginPage = ({ church }: { church: Church }) => {
                 if (fullName.trim() === '') throw new Error('Please enter your full name.');
                 const cred = await createUserWithEmailAndPassword(auth, email, password);
                 const avatar = fullName.trim().split(' ').map(n => n[0]).join('').toUpperCase() || '?';
-                await setDoc(doc(db, "users", cred.user.uid), { name: fullName.trim(), email: cred.user.email, avatar });
+                const role = cred.user.email === ADMIN_EMAIL ? 'admin' : 'member';
+                await setDoc(doc(db, "users", cred.user.uid), { name: fullName.trim(), email: cred.user.email, avatar, role });
             }
         } catch (err: any) {
             setError(err.message || 'An error occurred.');
@@ -331,169 +357,88 @@ const LoginPage = ({ church }: { church: Church }) => {
 };
 
 // --- Main App Pages ---
-const WorshipPage = ({ church }: { church: Church; }) => {
+const WorshipPage = ({ church, user, services, onManageServices }: { church: Church; user: User; services: WorshipService[]; onManageServices: () => void; }) => {
     const [showOfferingModal, setShowOfferingModal] = useState(false);
     const copyToClipboard = (text: string) => navigator.clipboard.writeText(text).then(() => alert("Account number copied."));
+    const latestService = services[0];
+    const pastServices = services.slice(1);
+    const latestEmbedUrl = latestService ? getEmbedUrl(latestService.videoUrl) : null;
     return (
-        <div className="page-content"><h2>आरधना</h2><div className="card"><div className="twitch-container"><iframe src={`https://player.twitch.tv/?channel=${church.streamingInfo.twitchChannel}&parent=${window.location.hostname}`} height="100%" width="100%" allowFullScreen></iframe></div><p className="twitch-info-text">Join the live worship.</p><div className="worship-offering-container"><button className="action-button" onClick={() => setShowOfferingModal(true)}><span className="material-symbols-outlined">volunteer_activism</span>Online Offering</button></div></div>{showOfferingModal && (<Modal onClose={() => setShowOfferingModal(false)}><div className="offering-modal-content"><h3>Online Offering</h3><img src={church.offeringDetails.qrCodeUrl} alt="QR Code" className="qr-code-img" /><div className="offering-details"><p><strong>Bank:</strong> {church.offeringDetails.bankName}</p><p><strong>Account Holder:</strong> {church.offeringDetails.accountHolder}</p><div className="account-number-container"><p><strong>Account Number:</strong> {church.offeringDetails.accountNumber}</p><button className="copy-button" onClick={() => copyToClipboard(church.offeringDetails.accountNumber)}><span className="material-symbols-outlined">content_copy</span>Copy</button></div></div></div></Modal>)}</div>
+        <div className="page-content"><h2>आरधना</h2><div className="card">
+            {latestService && latestEmbedUrl ? (<><div className="twitch-container"><iframe src={latestEmbedUrl} height="100%" width="100%" allowFullScreen></iframe></div><h4>{latestService.title}</h4></>) : <p>No worship service available at the moment.</p>}
+            <div className="worship-actions">
+                <button className="action-button" onClick={() => setShowOfferingModal(true)}><span className="material-symbols-outlined">volunteer_activism</span>Online Offering</button>
+                {user.role === 'admin' && <button className="action-button secondary" onClick={onManageServices}><span className="material-symbols-outlined">settings</span>Manage Services</button>}
+            </div>
+        </div>
+        {pastServices.length > 0 && (<div className="card"><h3>Past Services</h3><div className="list-container">{pastServices.map(service => (<div key={service.id} className="list-item worship-list-item"><span>{service.title}</span><a href={service.videoUrl} target="_blank" rel="noopener noreferrer">Watch</a></div>))}</div></div>)}
+        {showOfferingModal && (<Modal onClose={() => setShowOfferingModal(false)}><div className="offering-modal-content"><h3>Online Offering</h3><img src={church.offeringDetails.qrCodeUrl} alt="QR Code" className="qr-code-img" /><div className="offering-details"><p><strong>Bank:</strong> {church.offeringDetails.bankName}</p><p><strong>Account Holder:</strong> {church.offeringDetails.accountHolder}</p><div className="account-number-container"><p><strong>Account Number:</strong> {church.offeringDetails.accountNumber}</p><button className="copy-button" onClick={() => copyToClipboard(church.offeringDetails.accountNumber)}><span className="material-symbols-outlined">content_copy</span>Copy</button></div></div></div></Modal>)}
+        </div>
     );
 };
-const NewsPage = () => (
-    <div className="page-content">
-        <h2>सुचना</h2>
-        <div className="list-container">
-            {MOCK_NEWS.length > 0 ? (
-                [...MOCK_NEWS].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map(item => (
-                    <div key={item.id} className="card news-item">
-                        {item.image && <img src={item.image} alt={item.title} className="news-image"/>}
-                        <div className="news-content">
-                            <h3>{item.title}</h3>
-                            <p className="news-meta">{item.date}</p>
-                            <p>{item.content}</p>
-                        </div>
-                    </div>
-                ))
-            ) : (
-                <div className="card">
-                    <p>अहिलेसम्म कुनै समाचार वा घोषणाहरू छैनन्।</p>
-                </div>
-            )}
-        </div>
-    </div>
-);
+const NewsPage = ({ user, onAddNews }: { user: User; onAddNews: () => void; }) => {
+    const [news, setNews] = useState<NewsItem[]>([]);
+    useEffect(() => {
+        const q = query(collection(db, "news"), orderBy("createdAt", "desc"));
+        const unsub = onSnapshot(q, snap => {
+            setNews(snap.docs.map(d => ({ ...d.data(), id: d.id } as NewsItem)));
+        });
+        return () => unsub();
+    }, []);
+    return (
+        <div className="page-content"><h2>सुचना</h2><div className="list-container">
+            {news.length > 0 ? news.map(item => (
+                <div key={item.id} className="card news-item">
+                    {item.image && <img src={item.image} alt={item.title} className="news-image"/>}
+                    <div className="news-content"><h3>{item.title}</h3><p className="news-meta">{item.createdAt.toDate().toLocaleDateString()}</p><p>{item.content}</p></div>
+                </div>)) : <div className="card"><p>अहिलेसम्म कुनै समाचार वा घोषणाहरू छैनन्।</p></div>}
+        </div>{user.role === 'admin' && <button className="fab" onClick={onAddNews} aria-label="Add News"><span className="material-symbols-outlined">add</span></button>}</div>
+    );
+};
 const BiblePage = () => {
     const [readingData, setReadingData] = useState<{title: string; plan: string; text: string} | null>(null);
-    
     const dayOfYear = getDayOfYear();
     const mcheyneReading = MCHEYNE_READING_PLAN[dayOfYear - 1] || 'आजको लागि कुनै पढ्ने योजना छैन।';
-
-    const today = new Date();
-    const proverbsChapter = today.getDate();
+    const proverbsChapter = new Date().getDate();
     const proverbsText = PROVERBS_NNRV[proverbsChapter] || 'यस अध्यायको लागि हितोपदेशको पाठ एपमा उपलब्ध छैन।';
-    
     const verse = MOCK_VERSES_OF_THE_DAY[dayOfYear % MOCK_VERSES_OF_THE_DAY.length];
-
-    const handleShowMcheyne = () => {
-        setReadingData({
-            title: `म्याकचेन योजना: दिन ${dayOfYear}`,
-            plan: mcheyneReading,
-            text: "यो पढाइ योजना अनुसार व्यक्तिगत बाइबल अध्ययन गर्नुहोस्।"
-        });
-    };
-    
-    const handleShowProverb = () => {
-        setReadingData({
-            title: `हितोपदेश ${proverbsChapter}`,
-            plan: `अध्याय ${proverbsChapter}`,
-            text: proverbsText
-        });
-    };
-
+    const handleShowMcheyne = () => setReadingData({ title: `म्याकचेन योजना: दिन ${dayOfYear}`, plan: mcheyneReading, text: "यो पढाइ योजना अनुसार व्यक्तिगत बाइबल अध्ययन गर्नुहोस्।"});
+    const handleShowProverb = () => setReadingData({ title: `हितोपदेश ${proverbsChapter}`, plan: `अध्याय ${proverbsChapter}`, text: proverbsText });
     return (
-        <div className="page-content">
-            <h2>बाइबल</h2>
-            <div className="card verse-card">
-                <h3>दिनको पद</h3>
-                <p className="verse-text">“{verse.text}”</p>
-                <p className="verse-ref">- {verse.verse}</p>
-            </div>
-            <div className="card bible-card" onClick={handleShowMcheyne}>
-                <h3>म्याकचेन बाइबल पढाइ योजना</h3>
-                <p>आजको पढाइ: {mcheyneReading}</p>
-            </div>
-            <div className="card bible-card" onClick={handleShowProverb}>
-                <h3>आजको हितोपदेश</h3>
-                <p>आजको मिति अनुसार हितोपदेश अध्याय {proverbsChapter} पढ्नुहोस्।</p>
-            </div>
-            {readingData && (
-                <Modal onClose={() => setReadingData(null)}>
-                    <div className="bible-reading-modal-content">
-                        <h3>{readingData.title}</h3>
-                        <h4>{readingData.plan}</h4>
-                        <div className="bible-text-content">
-                            <p>{readingData.text}</p>
-                        </div>
-                    </div>
-                </Modal>
-            )}
-        </div>
+        <div className="page-content"><h2>बाइबल</h2><div className="card verse-card"><h3>दिनको पद</h3><p className="verse-text">“{verse.text}”</p><p className="verse-ref">- {verse.verse}</p></div><div className="card bible-card" onClick={handleShowMcheyne}><h3>म्याकचेन बाइबल पढाइ योजना</h3><p>आजको पढाइ: {mcheyneReading}</p></div><div className="card bible-card" onClick={handleShowProverb}><h3>आजको हितोपदेश</h3><p>आजको मिति अनुसार हितोपदेश अध्याय {proverbsChapter} पढ्नुहोस्।</p></div>{readingData && <Modal onClose={() => setReadingData(null)}><div className="bible-reading-modal-content"><h3>{readingData.title}</h3><h4>{readingData.plan}</h4><div className="bible-text-content"><p>{readingData.text}</p></div></div></Modal>}</div>
     );
 };
-const ChatListPage = ({ chats, onSelectChat, onCreateChat, currentUser }: { chats: Chat[]; onSelectChat: (id: string) => void; onCreateChat: () => void; currentUser: User; }) => {
-    return (
-        <div className="page-content chat-list-page"><h2>संगतिहरु</h2><div className="list-container">{chats.map(chat => { 
-            const lastMsg = chat.messages[chat.messages.length - 1];
-            let avatar: React.ReactNode;
-            let name: string;
-
-            if (chat.isGroup) {
-                avatar = <div className="chat-avatar group-avatar"><span className="material-symbols-outlined">groups</span></div>;
-                name = chat.name || 'Group Chat';
-            } else {
-                const other = chat.participants.find(p => p.id !== currentUser.id);
-                if (!other) return null;
-                avatar = <div className="chat-avatar">{other.avatar}</div>;
-                name = other.name;
-            }
-            
-            return (
-                <div key={chat.id} className="list-item chat-item" onClick={() => onSelectChat(chat.id)}>
-                    {avatar}
-                    <div className="chat-info">
-                        <span className="chat-name">{name}</span>
-                        <span className="chat-last-message">{lastMsg ? lastMsg.content : 'No messages.'}</span>
-                    </div>
-                    {chat.isGroup && (
-                        <div className="chat-participant-count">
-                            <span className="material-symbols-outlined">group</span>
-                            <span>{chat.participants.length}</span>
-                        </div>
-                    )}
-                </div>); 
-        })}</div><button className="fab" onClick={onCreateChat} aria-label="नयाँ कुराकानी"><span className="material-symbols-outlined">add_comment</span></button></div>
-    );
-};
+const ChatListPage = ({ chats, onSelectChat, onCreateChat, currentUser }: { chats: Chat[]; onSelectChat: (id: string) => void; onCreateChat: () => void; currentUser: User; }) => (
+    <div className="page-content chat-list-page"><h2>संगतिहरु</h2><div className="list-container">{chats.map(chat => { 
+        const lastMsg = chat.messages[chat.messages.length - 1];
+        let avatar: React.ReactNode, name: string;
+        if (chat.isGroup) {
+            avatar = <div className="chat-avatar group-avatar"><span className="material-symbols-outlined">groups</span></div>;
+            name = chat.name || 'Group Chat';
+        } else {
+            const other = chat.participants.find(p => p.id !== currentUser.id);
+            if (!other) return null;
+            avatar = <div className="chat-avatar">{other.avatar}</div>;
+            name = other.name;
+        }
+        return (<div key={chat.id} className="list-item chat-item" onClick={() => onSelectChat(chat.id)}>{avatar}<div className="chat-info"><span className="chat-name">{name}</span><span className="chat-last-message">{lastMsg ? lastMsg.content : 'No messages.'}</span></div>{chat.isGroup && <div className="chat-participant-count"><span className="material-symbols-outlined">group</span><span>{chat.participants.length}</span></div>}</div>); 
+    })}</div><button className="fab" onClick={onCreateChat} aria-label="नयाँ कुराकानी"><span className="material-symbols-outlined">add_comment</span></button></div>
+);
 const ConversationPage = ({ chat, onBack, onSendMessage, onShowMembers, currentUser }: { chat: Chat; onBack: () => void; onSendMessage: (chatId: string, content: string) => void; onShowMembers: () => void; currentUser: User }) => {
     const [newMessage, setNewMessage] = useState('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
     useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [chat.messages]);
     const handleSend = () => { if (newMessage.trim()) { onSendMessage(chat.id, newMessage.trim()); setNewMessage(''); } };
-    
-    let chatName: string;
-    let otherParticipant: User | undefined;
-    if (chat.isGroup) {
-        chatName = chat.name || 'Group Chat';
-    } else {
-        otherParticipant = chat.participants.find(p => p.id !== currentUser.id);
-        chatName = otherParticipant?.name || 'Chat';
-    }
-    
+    const chatName = chat.isGroup ? chat.name || 'Group Chat' : chat.participants.find(p => p.id !== currentUser.id)?.name || 'Chat';
     return (
-        <div className="conversation-page">
-             <header className={`conversation-header ${chat.isGroup ? 'is-group' : ''}`} onClick={chat.isGroup ? onShowMembers : undefined}>
-                <button className="back-button" onClick={onBack}><span className="material-symbols-outlined">arrow_back</span></button>
-                <h3>{chatName}</h3>
-                {chat.isGroup ? <button className="header-button info-button"><span className="material-symbols-outlined">info</span></button> : <div style={{width: 40}}></div>}
-            </header>
-            <div className="message-list">{chat.messages.map(msg => {
-                const sender = chat.participants.find(p => p.id === msg.senderId);
-                const isSent = msg.senderId === currentUser.id;
-                return (
-                    <div key={msg.id} className={`message-container ${isSent ? 'sent' : 'received'}`}>
-                        {chat.isGroup && !isSent && <div className="sender-name">{sender?.name || '...'}</div>}
-                        <div className="message-bubble">{msg.content}</div>
-                    </div>
-                );
-            })}<div ref={messagesEndRef} /></div>
-            <div className="message-input-container"><input type="text" placeholder="Type a message..." value={newMessage} onChange={(e) => setNewMessage(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && handleSend()} /><button className="send-button" onClick={handleSend}><span className="material-symbols-outlined">send</span></button></div>
-        </div>
+        <div className="conversation-page"><header className={`conversation-header ${chat.isGroup ? 'is-group' : ''}`} onClick={chat.isGroup ? onShowMembers : undefined}><button className="back-button" onClick={onBack}><span className="material-symbols-outlined">arrow_back</span></button><h3>{chatName}</h3>{chat.isGroup ? <button className="header-button info-button"><span className="material-symbols-outlined">info</span></button> : <div style={{width: 40}}></div>}</header><div className="message-list">{chat.messages.map(msg => { const sender = chat.participants.find(p => p.id === msg.senderId), isSent = msg.senderId === currentUser.id; return (<div key={msg.id} className={`message-container ${isSent ? 'sent' : 'received'}`}>{chat.isGroup && !isSent && <div className="sender-name">{sender?.name || '...'}</div>}<div className="message-bubble">{msg.content}</div></div>);})}<div ref={messagesEndRef} /></div><div className="message-input-container"><input type="text" placeholder="Type a message..." value={newMessage} onChange={(e) => setNewMessage(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && handleSend()} /><button className="send-button" onClick={handleSend}><span className="material-symbols-outlined">send</span></button></div></div>
     );
 };
 const PrayerPage = ({ prayerRequests, onPray, onAddRequest, onSelectRequest, currentUser }: { prayerRequests: PrayerRequest[]; onPray: (id: string) => void; onAddRequest: () => void; onSelectRequest: (req: PrayerRequest) => void; currentUser: User; }) => (
     <div className="page-content"><h2>प्रार्थना</h2><div className="list-container">{prayerRequests.map(req => (<div key={req.id} className="card prayer-item" onClick={() => onSelectRequest(req)}>{req.image && <img src={req.image} alt={req.title} className="prayer-image"/>}<h4>{req.title}</h4><p className="prayer-content">{req.content}</p><div className="prayer-meta"><span>By {req.author.name}</span><div className="prayer-actions"><button className={`prayer-action-button ${req.prayedBy.includes(currentUser.id) ? 'prayed' : ''}`} onClick={(e) => { e.stopPropagation(); onPray(req.id); }}><span className="material-symbols-outlined">volunteer_activism</span><span>{req.prayedBy.length}</span></button><div className="prayer-action-button comment-button"><span className="material-symbols-outlined">chat_bubble</span><span>{req.comments.length}</span></div></div></div></div>))}</div><button className="fab" onClick={onAddRequest} aria-label="नयाँ प्रार्थना अनुरोध"><span className="material-symbols-outlined">edit_note</span></button></div>
 );
-const PodcastPage = ({ podcasts, onAddPodcast }: { podcasts: Podcast[]; onAddPodcast: () => void; }) => (
-    <div className="page-content"><h2>Podcast</h2><div className="list-container">{podcasts.length > 0 ? podcasts.map(p => (<div key={p.id} className="card podcast-item"><div className="podcast-info"><div><h4 className="podcast-title">{p.title}</h4><p className="podcast-author">By {p.author.name}</p></div></div><audio controls className="podcast-player" src={p.audioUrl}></audio></div>)) : <p>No podcasts available yet.</p>}</div><button className="fab" onClick={onAddPodcast} aria-label="New Podcast"><span className="material-symbols-outlined">mic</span></button></div>
+const PodcastPage = ({ podcasts, onAddPodcast, user }: { podcasts: Podcast[]; onAddPodcast: () => void; user: User; }) => (
+    <div className="page-content"><h2>Podcast</h2><div className="list-container">{podcasts.length > 0 ? podcasts.map(p => (<div key={p.id} className="card podcast-item"><div className="podcast-info"><div><h4 className="podcast-title">{p.title}</h4><p className="podcast-author">By {p.author.name}</p></div></div><audio controls className="podcast-player" src={p.audioUrl}></audio></div>)) : <p>No podcasts available yet.</p>}</div>{user.role === 'admin' && <button className="fab" onClick={onAddPodcast} aria-label="New Podcast"><span className="material-symbols-outlined">mic</span></button>}</div>
 );
 
 // --- Modals ---
@@ -506,7 +451,7 @@ const AddPrayerRequestModal = ({ onClose, onAddRequest }: { onClose: () => void;
     const handleImageChange = (file: File) => { setImageFile(file); setImagePreview(URL.createObjectURL(file)); };
     const handleImageRemove = () => { setImageFile(null); setImagePreview(null); };
     return (
-        <Modal onClose={onClose}><form className="modal-form" onSubmit={handleSubmit}><h3>प्रार्थना अनुरोध</h3><input type="text" placeholder="शीर्षक" value={title} onChange={(e) => setTitle(e.target.value)} required /><textarea rows={5} placeholder="हामीले केको लागि प्रार्थना गर्नुपर्छ?" value={content} onChange={(e) => setContent(e.target.value)} required /><ImageUpload imagePreview={imagePreview} onImageChange={handleImageChange} onImageRemove={handleImageRemove} /><button type="submit" className="action-button">अनुरोध पोस्ट गर्नुहोस्</button></form></Modal>
+        <Modal onClose={onClose}><form className="modal-form" onSubmit={handleSubmit}><h3>प्रार्थना अनुरोध</h3><input type="text" placeholder="शीर्षक" value={title} onChange={(e) => setTitle(e.target.value)} required /><textarea rows={5} placeholder="हामीले केको लागि प्रार्थना गर्नुपछ?" value={content} onChange={(e) => setContent(e.target.value)} required /><ImageUpload imagePreview={imagePreview} onImageChange={handleImageChange} onImageRemove={handleImageRemove} /><button type="submit" className="action-button">अनुरोध पोस्ट गर्नुहोस्</button></form></Modal>
     );
 };
 const PrayerDetailsModal = ({ request, onClose, onPray, onComment, currentUser }: { request: PrayerRequest; onClose: () => void; onPray: (id: string) => void; onComment: (id: string, text: string) => void; currentUser: User; }) => {
@@ -519,31 +464,10 @@ const PrayerDetailsModal = ({ request, onClose, onPray, onComment, currentUser }
 };
 const CreateChatModal = ({ onClose, onStartChat, allUsers, currentUser }: { onClose: () => void; onStartChat: (userIds: string[]) => void; allUsers: User[]; currentUser: User }) => {
     const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
-    const handleToggleUser = (id: string) => {
-        setSelectedUserIds(prev => prev.includes(id) ? prev.filter(uid => uid !== id) : [...prev, id]);
-    };
+    const handleToggleUser = (id: string) => setSelectedUserIds(prev => prev.includes(id) ? prev.filter(uid => uid !== id) : [...prev, id]);
     const handleCreate = () => { if (selectedUserIds.length > 0) onStartChat(selectedUserIds); };
     return (
-        <Modal onClose={onClose}>
-            <div className="create-chat-modal">
-                <h3>Start a conversation</h3>
-                <div className="user-list">
-                    {allUsers.filter(u => u.id !== currentUser.id).map(user => {
-                        const isSelected = selectedUserIds.includes(user.id);
-                        return (
-                             <div key={user.id} className={`user-list-item selectable ${isSelected ? 'selected' : ''}`} onClick={() => handleToggleUser(user.id)}>
-                                <div className="chat-avatar">{user.avatar}</div>
-                                <span className="user-name">{user.name}</span>
-                                <span className={`material-symbols-outlined checkbox-icon ${isSelected ? 'checked' : ''}`}>{isSelected ? 'check_box' : 'check_box_outline_blank'}</span>
-                            </div>
-                        )
-                    })}
-                </div>
-                 <button className="action-button" onClick={handleCreate} disabled={selectedUserIds.length === 0}>
-                    {selectedUserIds.length > 1 ? 'Create Group Chat' : 'Start Chat'}
-                </button>
-            </div>
-        </Modal>
+        <Modal onClose={onClose}><div className="create-chat-modal"><h3>Start a conversation</h3><div className="user-list">{allUsers.filter(u => u.id !== currentUser.id).map(user => { const isSelected = selectedUserIds.includes(user.id); return (<div key={user.id} className={`user-list-item selectable ${isSelected ? 'selected' : ''}`} onClick={() => handleToggleUser(user.id)}><div className="chat-avatar">{user.avatar}</div><span className="user-name">{user.name}</span><span className={`material-symbols-outlined checkbox-icon ${isSelected ? 'checked' : ''}`}>{isSelected ? 'check_box' : 'check_box_outline_blank'}</span></div>)})}</div><button className="action-button" onClick={handleCreate} disabled={selectedUserIds.length === 0}>{selectedUserIds.length > 1 ? 'Create Group Chat' : 'Start Chat'}</button></div></Modal>
     );
 };
 const AddPodcastModal = ({ onClose, onAddPodcast }: { onClose: () => void; onAddPodcast: (data: { title: string; audioFile: File; }) => void; }) => {
@@ -553,24 +477,9 @@ const AddPodcastModal = ({ onClose, onAddPodcast }: { onClose: () => void; onAdd
     const [isRecording, setIsRecording] = useState(false);
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const audioChunksRef = useRef<Blob[]>([]);
-
-    const handleStartRecording = async () => {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorderRef.current = new MediaRecorder(stream);
-        mediaRecorderRef.current.ondataavailable = event => audioChunksRef.current.push(event.data);
-        mediaRecorderRef.current.onstop = () => {
-            const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-            const audioUrl = URL.createObjectURL(audioBlob);
-            setAudioFile(new File([audioBlob], "recording.webm", { type: 'audio/webm' }));
-            setAudioPreview(audioUrl);
-            audioChunksRef.current = [];
-        };
-        mediaRecorderRef.current.start();
-        setIsRecording(true);
-    };
+    const handleStartRecording = async () => { const stream = await navigator.mediaDevices.getUserMedia({ audio: true }); mediaRecorderRef.current = new MediaRecorder(stream); mediaRecorderRef.current.ondataavailable = event => audioChunksRef.current.push(event.data); mediaRecorderRef.current.onstop = () => { const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' }); const audioUrl = URL.createObjectURL(audioBlob); setAudioFile(new File([audioBlob], "recording.webm", { type: 'audio/webm' })); setAudioPreview(audioUrl); audioChunksRef.current = []; }; mediaRecorderRef.current.start(); setIsRecording(true); };
     const handleStopRecording = () => { mediaRecorderRef.current?.stop(); setIsRecording(false); };
     const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); if (title.trim() && audioFile) onAddPodcast({ title, audioFile }); };
-
     return (
         <Modal onClose={onClose}><form className="modal-form" onSubmit={handleSubmit}><h3>New Podcast</h3><input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required /><div className="recording-ui">{!audioFile && (<><h4>Record Audio</h4><button type="button" onClick={isRecording ? handleStopRecording : handleStartRecording} className={`record-button ${isRecording ? 'stop' : ''}`}>{isRecording && <div className="recording-dot"></div>}</button><p>{isRecording ? "Recording..." : "Tap to record"}</p></>)}{audioPreview && (<div className="audio-preview"><h4>Preview</h4><audio src={audioPreview} controls /><button type="button" className="action-button secondary" onClick={() => { setAudioFile(null); setAudioPreview(null); }}>Record Again</button></div>)}</div><button type="submit" className="action-button" disabled={!title || !audioFile}>Upload Podcast</button></form></Modal>
     );
@@ -578,64 +487,50 @@ const AddPodcastModal = ({ onClose, onAddPodcast }: { onClose: () => void; onAdd
 const ChatMembersModal = ({ chat, allUsers, onClose, onAddMembers }: { chat: Chat; allUsers: User[]; onClose: () => void; onAddMembers: (chatId: string, userIds: string[]) => void; }) => {
     const [isAdding, setIsAdding] = useState(false);
     const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
-    
     const usersToAdd = allUsers.filter(u => !chat.participantIds.includes(u.id));
-
-    const handleToggleUser = (id: string) => {
-        setSelectedUserIds(prev => prev.includes(id) ? prev.filter(uid => uid !== id) : [...prev, id]);
-    };
-
-    const handleConfirmAdd = () => {
-        if (selectedUserIds.length > 0) {
-            onAddMembers(chat.id, selectedUserIds);
-        }
-        setIsAdding(false);
-        setSelectedUserIds([]);
-    };
-    
+    const handleToggleUser = (id: string) => setSelectedUserIds(prev => prev.includes(id) ? prev.filter(uid => uid !== id) : [...prev, id]);
+    const handleConfirmAdd = () => { if (selectedUserIds.length > 0) onAddMembers(chat.id, selectedUserIds); setIsAdding(false); setSelectedUserIds([]); };
     return (
-        <Modal onClose={onClose}>
-            <div className="chat-members-modal">
-                <h3>대화 정보</h3>
-                {!isAdding ? (
-                    <>
-                        <h4>참여자 ({chat.participants.length})</h4>
-                        <div className="user-list">
-                            {chat.participants.map(user => (
-                                <div key={user.id} className="user-list-item">
-                                    <div className="chat-avatar">{user.avatar}</div>
-                                    <span className="user-name">{user.name}</span>
-                                </div>
-                            ))}
-                        </div>
-                        <button className="action-button" onClick={() => setIsAdding(true)}>
-                            <span className="material-symbols-outlined">person_add</span>
-                            참여자 추가
-                        </button>
-                    </>
-                ) : (
-                    <>
-                        <h4>Add to conversation</h4>
-                         <div className="user-list">
-                            {usersToAdd.map(user => {
-                                const isSelected = selectedUserIds.includes(user.id);
-                                return (
-                                    <div key={user.id} className={`user-list-item selectable ${isSelected ? 'selected' : ''}`} onClick={() => handleToggleUser(user.id)}>
-                                        <div className="chat-avatar">{user.avatar}</div>
-                                        <span className="user-name">{user.name}</span>
-                                        <span className={`material-symbols-outlined checkbox-icon ${isSelected ? 'checked' : ''}`}>{isSelected ? 'check_box' : 'check_box_outline_blank'}</span>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                        <button className="action-button" onClick={handleConfirmAdd} disabled={selectedUserIds.length === 0}>
-                            Add ({selectedUserIds.length})
-                        </button>
-                        <button className="action-button secondary" onClick={() => setIsAdding(false)}>Cancel</button>
-                    </>
-                )}
-            </div>
-        </Modal>
+        <Modal onClose={onClose}><div className="chat-members-modal"><h3>대화 정보</h3>{!isAdding ? (<><h4>참여자 ({chat.participants.length})</h4><div className="user-list">{chat.participants.map(user => (<div key={user.id} className="user-list-item"><div className="chat-avatar">{user.avatar}</div><span className="user-name">{user.name}</span></div>))}</div><button className="action-button" onClick={() => setIsAdding(true)}><span className="material-symbols-outlined">person_add</span>참여자 추가</button></>) : (<><h4>Add to conversation</h4><div className="user-list">{usersToAdd.map(user => { const isSelected = selectedUserIds.includes(user.id); return (<div key={user.id} className={`user-list-item selectable ${isSelected ? 'selected' : ''}`} onClick={() => handleToggleUser(user.id)}><div className="chat-avatar">{user.avatar}</div><span className="user-name">{user.name}</span><span className={`material-symbols-outlined checkbox-icon ${isSelected ? 'checked' : ''}`}>{isSelected ? 'check_box' : 'check_box_outline_blank'}</span></div>)})}</div><button className="action-button" onClick={handleConfirmAdd} disabled={selectedUserIds.length === 0}>Add ({selectedUserIds.length})</button><button className="action-button secondary" onClick={() => setIsAdding(false)}>Cancel</button></>)}</div></Modal>
+    );
+};
+const AddNewsModal = ({ onClose, onAddNews }: { onClose: () => void; onAddNews: (data: { title: string; content: string; imageFile: File | null; }) => void; }) => {
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+    const [imageFile, setImageFile] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); if (title.trim() && content.trim()) onAddNews({ title, content, imageFile }); };
+    const handleImageChange = (file: File) => { setImageFile(file); setImagePreview(URL.createObjectURL(file)); };
+    return (
+        <Modal onClose={onClose}><form className="modal-form" onSubmit={handleSubmit}><h3>New Announcement</h3><input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required /><textarea rows={5} placeholder="Content" value={content} onChange={(e) => setContent(e.target.value)} required /><ImageUpload imagePreview={imagePreview} onImageChange={handleImageChange} onImageRemove={() => { setImageFile(null); setImagePreview(null); }} /><button type="submit" className="action-button">Post News</button></form></Modal>
+    );
+};
+const ManageWorshipModal = ({ services, onClose, onAdd, onUpdate, onDelete }: { services: WorshipService[], onClose: () => void, onAdd: (s: Omit<WorshipService, 'id'|'createdAt'>) => void, onUpdate: (id: string, data: Partial<WorshipService>) => void, onDelete: (id: string) => void}) => {
+    const [isEditing, setIsEditing] = useState<WorshipService | null>(null);
+    const [newTitle, setNewTitle] = useState('');
+    const [newUrl, setNewUrl] = useState('');
+
+    useEffect(() => {
+        if (isEditing) {
+            setNewTitle(isEditing.title);
+            setNewUrl(isEditing.videoUrl);
+        } else {
+            setNewTitle('');
+            setNewUrl('');
+        }
+    }, [isEditing]);
+
+    const handleSave = () => {
+        if (isEditing) {
+            onUpdate(isEditing.id, { title: newTitle, videoUrl: newUrl });
+        } else {
+            onAdd({ title: newTitle, videoUrl: newUrl });
+        }
+        setIsEditing(null);
+    };
+
+    return (
+        <Modal onClose={onClose}><div className="manage-worship-modal"><h3>Manage Worship Services</h3><div className="list-container service-list-admin">{services.map(s => (<div key={s.id} className="list-item"><span>{s.title}</span><div><button onClick={() => setIsEditing(s)}><span className="material-symbols-outlined">edit</span></button><button onClick={() => onDelete(s.id)}><span className="material-symbols-outlined">delete</span></button></div></div>))}</div><div className="modal-form"><h4>{isEditing ? 'Edit Service' : 'Add New Service'}</h4><input type="text" placeholder="Service Title" value={newTitle} onChange={e => setNewTitle(e.target.value)} /><input type="text" placeholder="YouTube or Twitch URL" value={newUrl} onChange={e => setNewUrl(e.target.value)} /><button className="action-button" onClick={handleSave}>Save</button>{isEditing && <button className="action-button secondary" onClick={() => setIsEditing(null)}>Cancel Edit</button>}</div></div></Modal>
     );
 };
 
@@ -647,15 +542,16 @@ const App = () => {
     const [podcasts, setPodcasts] = useState<Podcast[]>([]);
     const [chats, setChats] = useState<Chat[]>([]);
     const [allUsers, setAllUsers] = useState<User[]>([]);
+    const [worshipServices, setWorshipServices] = useState<WorshipService[]>([]);
+    
+    // View states
     const [activeChatId, setActiveChatId] = useState<string | null>(null);
     const [selectedPrayerRequest, setSelectedPrayerRequest] = useState<PrayerRequest | null>(null);
-    const [showAddPrayerModal, setShowAddPrayerModal] = useState(false);
-    const [showCreateChatModal, setShowCreateChatModal] = useState(false);
-    const [showAddPodcastModal, setShowAddPodcastModal] = useState(false);
-    const [notifications, setNotifications] = useState<Notification[]>(MOCK_NOTIFICATIONS);
     const [showNotifications, setShowNotifications] = useState(false);
     const [hasUnread, setHasUnread] = useState(true);
-    const [showMembersModal, setShowMembersModal] = useState(false);
+    
+    // Modal states
+    const [modal, setModal] = useState<string | null>(null);
     
     useEffect(() => {
         onAuthStateChanged(auth, async (fbUser) => {
@@ -664,135 +560,98 @@ const App = () => {
                 setUser(userDoc);
                 const usersQuery = await getDocs(collection(db, "users"));
                 setAllUsers(usersQuery.docs.map(doc => ({ id: doc.id, ...doc.data() } as User)));
-            } else {
-                setUser(null);
-            }
+            } else setUser(null);
         });
     }, []);
 
     useEffect(() => {
         if (!user) return;
         const prayerQ = query(collection(db, "prayerRequests"), orderBy("createdAt", "desc"));
-        const unsubPrayer = onSnapshot(prayerQ, async (snap) => {
-            const reqs = await Promise.all(snap.docs.map(async (d) => {
-                const data = d.data();
-                const author = await fetchUser(data.authorId);
-                const comments = await Promise.all((data.comments || []).map(async (c: any) => ({...c, id: Math.random().toString(), author: await fetchUser(c.authorId)})));
-                return { ...data, id: d.id, author, comments, prayedBy: data.prayedBy || [], createdAt: data.createdAt } as PrayerRequest;
-            }));
-            setPrayerRequests(reqs);
-        });
+        const unsubPrayer = onSnapshot(prayerQ, async (snap) => setPrayerRequests(await Promise.all(snap.docs.map(async d => ({ ...d.data(), id: d.id, author: await fetchUser(d.data().authorId), comments: await Promise.all((d.data().comments || []).map(async (c: any) => ({...c, id: Math.random().toString(), author: await fetchUser(c.authorId)}))), prayedBy: d.data().prayedBy || [] } as PrayerRequest))));
         const podcastQ = query(collection(db, "podcasts"), orderBy("createdAt", "desc"));
-        const unsubPodcast = onSnapshot(podcastQ, async (snap) => {
-            const pods = await Promise.all(snap.docs.map(async (d) => ({ ...d.data(), id: d.id, author: await fetchUser(d.data().authorId) } as Podcast)));
-            setPodcasts(pods);
-        });
+        const unsubPodcast = onSnapshot(podcastQ, async (snap) => setPodcasts(await Promise.all(snap.docs.map(async d => ({ ...d.data(), id: d.id, author: await fetchUser(d.data().authorId) } as Podcast)))));
         const chatQ = query(collection(db, "chats"), where("participantIds", "array-contains", user.id), orderBy("lastMessageTimestamp", "desc"));
-        const unsubChat = onSnapshot(chatQ, async (snap) => {
-            const chs = await Promise.all(snap.docs.map(async (d) => {
-                const data = d.data();
-                return { ...data, id: d.id, participants: await fetchUsers(data.participantIds), messages: (data.messages || []) } as Chat;
-            }));
-            setChats(chs);
-        });
-        return () => { unsubPrayer(); unsubPodcast(); unsubChat(); };
+        const unsubChat = onSnapshot(chatQ, async (snap) => setChats(await Promise.all(snap.docs.map(async d => ({ ...d.data(), id: d.id, participants: await fetchUsers(d.data().participantIds), messages: (d.data().messages || []) } as Chat)))));
+        const worshipQ = query(collection(db, "worshipServices"), orderBy("createdAt", "desc"), limit(4));
+        const unsubWorship = onSnapshot(worshipQ, snap => setWorshipServices(snap.docs.map(d => ({ ...d.data(), id: d.id } as WorshipService))));
+        return () => { unsubPrayer(); unsubPodcast(); unsubChat(); unsubWorship(); };
     }, [user]);
 
+    // --- Handlers ---
     const handleLogout = () => signOut(auth);
     const handlePray = async (reqId: string) => { if (user) await updateDoc(doc(db, "prayerRequests", reqId), { prayedBy: prayerRequests.find(r => r.id === reqId)?.prayedBy.includes(user.id) ? arrayRemove(user.id) : arrayUnion(user.id) }); };
-    const handleAddPrayerRequest = async ({ title, content, imageFile }: { title: string; content: string; imageFile: File | null; }) => {
-        if (!user) return;
-        let imageUrl = '';
-        if (imageFile) {
-            const storageRef = ref(storage, `prayerImages/${Date.now()}_${imageFile.name}`);
-            const snapshot = await uploadBytes(storageRef, imageFile);
-            imageUrl = await getDownloadURL(snapshot.ref);
-        }
-        await addDoc(collection(db, "prayerRequests"), { authorId: user.id, title, content, image: imageUrl, prayedBy: [], comments: [], createdAt: serverTimestamp() });
-        setShowAddPrayerModal(false);
-    };
     const handleComment = async (reqId: string, text: string) => { if (user) await updateDoc(doc(db, "prayerRequests", reqId), { comments: arrayUnion({ authorId: user.id, content: text, createdAt: Timestamp.now() }) }); };
-    const handleAddPodcast = async ({ title, audioFile }: { title: string; audioFile: File }) => {
-        if(!user) return;
-        const storageRef = ref(storage, `podcasts/${Date.now()}_${audioFile.name}`);
-        const snapshot = await uploadBytes(storageRef, audioFile);
-        const audioUrl = await getDownloadURL(snapshot.ref);
-        await addDoc(collection(db, 'podcasts'), { title, authorId: user.id, audioUrl, createdAt: serverTimestamp() });
-        setShowAddPodcastModal(false);
+    const handleSendMessage = async (chatId: string, content: string) => { if (user) { const now = Timestamp.now(); await updateDoc(doc(db, "chats", chatId), { messages: arrayUnion({ senderId: user.id, content, type: 'text', createdAt: now }), lastMessageTimestamp: now }); }};
+    const handleAddMembers = async (chatId: string, newUserIds: string[]) => await updateDoc(doc(db, "chats", chatId), { participantIds: arrayUnion(...newUserIds) });
+
+    const uploadFile = async (file: File, path: string) => {
+        const storageRef = ref(storage, `${path}/${Date.now()}_${file.name}`);
+        const snapshot = await uploadBytes(storageRef, file);
+        return getDownloadURL(snapshot.ref);
     };
-    const handleSendMessage = async (chatId: string, content: string) => {
+
+    const handleAddPrayerRequest = async (data: { title: string; content: string; imageFile: File | null; }) => {
         if (!user) return;
-        const now = Timestamp.now();
-        await updateDoc(doc(db, "chats", chatId), { messages: arrayUnion({ senderId: user.id, content, type: 'text', createdAt: now }), lastMessageTimestamp: now });
-    };
-    const handleStartChat = async (otherUserIds: string[]) => {
-        if (!user || otherUserIds.length === 0) return;
-
-        const isGroup = otherUserIds.length > 1;
-        const participantIds = [user.id, ...otherUserIds].sort();
-
-        // Check for existing chat
-        const chatQuery = query(collection(db, "chats"), where("participantIds", "==", participantIds));
-        const existingChats = await getDocs(chatQuery);
-        if (!existingChats.empty) {
-            setActiveChatId(existingChats.docs[0].id);
-        } else {
-             // Create a new chat
-            let chatName = '';
-            if (isGroup) {
-                const participants = await fetchUsers(otherUserIds);
-                chatName = `${participants.map(p => p.name.split(' ')[0]).join(', ')}, and ${user.name.split(' ')[0]}`;
-            }
-            const newChatRef = await addDoc(collection(db, "chats"), { 
-                participantIds, 
-                messages: [], 
-                lastMessageTimestamp: serverTimestamp(),
-                isGroup,
-                name: isGroup ? chatName : '',
-                groupAvatar: isGroup ? 'groups' : '',
-            });
-            setActiveChatId(newChatRef.id);
-        }
-        setShowCreateChatModal(false);
-    };
-    const handleAddMembers = async (chatId: string, newUserIds: string[]) => {
-        await updateDoc(doc(db, "chats", chatId), { participantIds: arrayUnion(...newUserIds) });
-    };
-
-     const handleNotificationToggle = () => {
-        setShowNotifications(prev => !prev);
-        if (hasUnread) {
-            setHasUnread(false);
-        }
+        const imageUrl = data.imageFile ? await uploadFile(data.imageFile, 'prayerImages') : '';
+        await addDoc(collection(db, "prayerRequests"), { authorId: user.id, title: data.title, content: data.content, image: imageUrl, prayedBy: [], comments: [], createdAt: serverTimestamp() });
+        setModal(null);
     };
     
+    const handleAddNews = async (data: { title: string; content: string; imageFile: File | null; }) => {
+        if (!user) return;
+        const imageUrl = data.imageFile ? await uploadFile(data.imageFile, 'newsImages') : '';
+        await addDoc(collection(db, "news"), { authorId: user.id, title: data.title, content: data.content, image: imageUrl, createdAt: serverTimestamp() });
+        setModal(null);
+    };
+
+    const handleAddPodcast = async ({ title, audioFile }: { title: string; audioFile: File }) => {
+        if(!user) return;
+        const audioUrl = await uploadFile(audioFile, 'podcasts');
+        await addDoc(collection(db, 'podcasts'), { title, authorId: user.id, audioUrl, createdAt: serverTimestamp() });
+        setModal(null);
+    };
+
+    const handleStartChat = async (otherUserIds: string[]) => {
+        if (!user || otherUserIds.length === 0) return;
+        const participantIds = [...new Set([user.id, ...otherUserIds])].sort();
+        const existingChatQ = query(collection(db, "chats"), where("participantIds", "==", participantIds));
+        const existingChats = await getDocs(existingChatQ);
+        if (!existingChats.empty) setActiveChatId(existingChats.docs[0].id);
+        else {
+            const isGroup = participantIds.length > 2;
+            const participants = await fetchUsers(otherUserIds);
+            const chatName = isGroup ? `${participants.map(p=>p.name).join(', ')}` : '';
+            const newChatRef = await addDoc(collection(db, "chats"), { participantIds, messages: [], lastMessageTimestamp: serverTimestamp(), isGroup, name: chatName });
+            setActiveChatId(newChatRef.id);
+        }
+        setModal(null);
+    };
+
+    const handleAddWorship = async (service: Omit<WorshipService, 'id'|'createdAt'>) => await addDoc(collection(db, 'worshipServices'), { ...service, createdAt: serverTimestamp() });
+    const handleUpdateWorship = async (id: string, data: Partial<WorshipService>) => await updateDoc(doc(db, 'worshipServices', id), data);
+    const handleDeleteWorship = async (id: string) => await deleteDoc(doc(db, 'worshipServices', id));
+    
+    // --- Render Logic ---
     if (user === undefined) return <div className="login-container"><div>Loading...</div></div>;
     if (user === null) return <LoginPage church={CHURCH} />;
     
     const renderPage = () => {
-        if (activePage === 'fellowship' && activeChatId) return null; // Hide list on mobile when convo is open
+        if (activePage === 'fellowship' && activeChatId) return null;
         switch (activePage) {
-            case 'worship': return <WorshipPage church={CHURCH} />;
-            case 'news': return <NewsPage />;
+            case 'worship': return <WorshipPage church={CHURCH} user={user} services={worshipServices} onManageServices={() => setModal('manageWorship')} />;
+            case 'news': return <NewsPage user={user} onAddNews={() => setModal('addNews')} />;
             case 'bible': return <BiblePage />;
-            case 'fellowship': return <ChatListPage chats={chats} onSelectChat={setActiveChatId} onCreateChat={() => setShowCreateChatModal(true)} currentUser={user} />;
-            case 'prayer': return <PrayerPage prayerRequests={prayerRequests} onPray={handlePray} onAddRequest={() => setShowAddPrayerModal(true)} onSelectRequest={setSelectedPrayerRequest} currentUser={user} />;
-            case 'podcast': return <PodcastPage podcasts={podcasts} onAddPodcast={() => setShowAddPodcastModal(true)} />;
-            default: return <WorshipPage church={CHURCH} />;
+            case 'fellowship': return <ChatListPage chats={chats} onSelectChat={setActiveChatId} onCreateChat={() => setModal('createChat')} currentUser={user} />;
+            case 'prayer': return <PrayerPage prayerRequests={prayerRequests} onPray={handlePray} onAddRequest={() => setModal('addPrayer')} onSelectRequest={setSelectedPrayerRequest} currentUser={user} />;
+            case 'podcast': return <PodcastPage podcasts={podcasts} onAddPodcast={() => setModal('addPodcast')} user={user} />;
+            default: return <WorshipPage church={CHURCH} user={user} services={worshipServices} onManageServices={() => setModal('manageWorship')} />;
         }
     };
 
     const activeChat = chats.find(c => c.id === activeChatId);
     const openPrayer = prayerRequests.find(r => r.id === selectedPrayerRequest?.id);
     
-    const TRANSLATIONS: { [key: string]: string } = {
-        worship: 'आरधना',
-        podcast: 'Podcast',
-        news: 'सुचना',
-        bible: 'बाइबल',
-        fellowship: 'संगतिहरु',
-        prayer: 'प्रार्थना',
-    };
+    const TRANSLATIONS: { [key: string]: string } = { worship: 'आरधना', podcast: 'Podcast', news: 'सुचना', bible: 'बाइबल', fellowship: 'संगतिहरु', prayer: 'प्रार्थना' };
     const NAV_ORDER = ['worship', 'podcast', 'news', 'bible', 'fellowship', 'prayer'];
 
     return (
@@ -800,16 +659,13 @@ const App = () => {
             <header className="app-header">
                  <div className="header-content"><img src={CHURCH.logo} alt="Logo" className="header-logo" /><h1>{CHURCH.name}</h1></div>
                  <div className="header-actions">
-                    <button className="header-button notifications" onClick={handleNotificationToggle} aria-label="Notifications">
-                        <span className="material-symbols-outlined">notifications</span>
-                        {hasUnread && <div className="notification-dot"></div>}
-                    </button>
+                    <button className="header-button notifications" onClick={() => setShowNotifications(s => !s)} aria-label="Notifications">{hasUnread && <div className="notification-dot"></div>}<span className="material-symbols-outlined">notifications</span></button>
                     <button className="header-button" onClick={handleLogout} aria-label="Log Out"><span className="material-symbols-outlined">logout</span></button>
                 </div>
             </header>
             <main className="main-content">{renderPage()}</main>
             
-            {showNotifications && <NotificationPanel notifications={notifications} onClose={() => setShowNotifications(false)} />}
+            {showNotifications && <NotificationPanel notifications={[]} onClose={() => setShowNotifications(false)} />}
 
             <nav className="bottom-nav">
                 {NAV_ORDER.map(page => {
@@ -818,12 +674,15 @@ const App = () => {
                 })}
             </nav>
             
-            {activeChat && <ConversationPage chat={activeChat} onBack={() => setActiveChatId(null)} onSendMessage={handleSendMessage} onShowMembers={() => setShowMembersModal(true)} currentUser={user} />}
-            {showAddPrayerModal && <AddPrayerRequestModal onClose={() => setShowAddPrayerModal(false)} onAddRequest={handleAddPrayerRequest} />}
+            {activeChat && <ConversationPage chat={activeChat} onBack={() => setActiveChatId(null)} onSendMessage={handleSendMessage} onShowMembers={() => setModal('chatMembers')} currentUser={user} />}
             {openPrayer && <PrayerDetailsModal request={openPrayer} onClose={() => setSelectedPrayerRequest(null)} onPray={handlePray} onComment={handleComment} currentUser={user} />}
-            {showCreateChatModal && <CreateChatModal onClose={() => setShowCreateChatModal(false)} onStartChat={handleStartChat} allUsers={allUsers} currentUser={user} />}
-            {showAddPodcastModal && <AddPodcastModal onClose={() => setShowAddPodcastModal(false)} onAddPodcast={handleAddPodcast} />}
-            {showMembersModal && activeChat && <ChatMembersModal chat={activeChat} allUsers={allUsers} onClose={() => setShowMembersModal(false)} onAddMembers={handleAddMembers} />}
+            
+            {modal === 'addPrayer' && <AddPrayerRequestModal onClose={() => setModal(null)} onAddRequest={handleAddPrayerRequest} />}
+            {modal === 'createChat' && <CreateChatModal onClose={() => setModal(null)} onStartChat={handleStartChat} allUsers={allUsers} currentUser={user} />}
+            {modal === 'addPodcast' && <AddPodcastModal onClose={() => setModal(null)} onAddPodcast={handleAddPodcast} />}
+            {modal === 'chatMembers' && activeChat && <ChatMembersModal chat={activeChat} allUsers={allUsers} onClose={() => setModal(null)} onAddMembers={handleAddMembers} />}
+            {modal === 'addNews' && <AddNewsModal onClose={() => setModal(null)} onAddNews={handleAddNews} />}
+            {modal === 'manageWorship' && <ManageWorshipModal services={worshipServices} onClose={() => setModal(null)} onAdd={handleAddWorship} onUpdate={handleUpdateWorship} onDelete={handleDeleteWorship} />}
         </div>
     );
 };
