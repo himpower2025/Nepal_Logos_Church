@@ -502,8 +502,14 @@ html, body, #root {
 .chat-participant-count { display: flex; align-items: center; gap: 2px; color: #757575; font-size: var(--font-size-sm); }
 .chat-participant-count .material-symbols-outlined { font-size: 1.1rem; }
 
-.conversation-page { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--background-color); z-index: 100; display: flex; flex-direction: column; animation: slideInUp 0.3s ease-out; }
-@keyframes slideInUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.conversation-page {
+    flex-grow: 1; /* Fills parent flex container */
+    width: 100%;
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    animation: fadeIn 0.3s ease-out;
+}
 .conversation-header { display: flex; justify-content: space-between; align-items: center; padding: var(--space-sm) var(--space-md); background-color: var(--primary-color); color: var(--text-color-light); flex-shrink: 0; }
 .conversation-header.is-group { cursor: pointer; }
 .back-button { background: none; border: none; color: white; padding: var(--space-sm); margin-left: calc(-1 * var(--space-sm)); cursor: pointer; }
