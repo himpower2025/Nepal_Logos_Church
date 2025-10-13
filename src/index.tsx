@@ -7,7 +7,8 @@ import {
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
     onAuthStateChanged,
-    signOut
+    signOut,
+    type User as FirebaseUser
 } from "firebase/auth";
 import { 
     collection, 
@@ -20,8 +21,8 @@ import {
     serverTimestamp,
     getDoc,
     setDoc,
-    where,
-    getDocs
+    type QuerySnapshot,
+    type QueryDocumentSnapshot
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
@@ -79,7 +80,13 @@ type PrayerRequest = {
     createdAt: any; // Firestore Timestamp
 };
 
-// ... All other types (Message, Chat, Comment, etc.) remain structurally similar
+type Comment = {
+    id: string;
+    author: User;
+    content: string;
+    timestamp: string;
+};
+
 
 // Helper to fetch user data
 const userCache: { [key: string]: User } = {};
@@ -264,7 +271,7 @@ const App = () => {
 
     React.useEffect(() => {
         // Firebase Auth state listener
-        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
             if (firebaseUser) {
                 const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
                 if (userDoc.exists()) {
@@ -286,10 +293,10 @@ const App = () => {
 
         // Prayer Requests real-time listener
         const q = query(collection(db, "prayerRequests"), orderBy("createdAt", "desc"));
-        const unsubscribe = onSnapshot(q, async (querySnapshot) => {
+        const unsubscribe = onSnapshot(q, async (querySnapshot: QuerySnapshot) => {
             const requests: PrayerRequest[] = [];
             // Use Promise.all to fetch author data concurrently
-            await Promise.all(querySnapshot.docs.map(async (docData) => {
+            await Promise.all(querySnapshot.docs.map(async (docData: QueryDocumentSnapshot) => {
                 const data = docData.data();
                 const author = await fetchUser(data.authorId);
                 requests.push({
@@ -360,7 +367,7 @@ const App = () => {
                             prayerRequests={prayerRequests} 
                             onPray={handlePray}
                             onAddRequest={() => setShowAddPrayerModal(true)}
-                            onSelectRequest={(req) => {/* TODO */}}
+                            onSelectRequest={(_req) => {/* TODO */}}
                         />;
             // Other pages would be implemented similarly
             default:
