@@ -1,11 +1,11 @@
 
 
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import { auth, db, storage } from './firebase';
-// FIX: Consolidate Firebase auth imports and use `type` keyword for type-only imports
-// to resolve "Cannot use namespace 'FirebaseUser' as a type" error.
+// FIX: Consolidate Firebase type imports with value imports to resolve TS errors.
 import { 
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
@@ -13,8 +13,6 @@ import {
     signOut,
     type User as FirebaseUser
 } from "https://esm.sh/firebase@10.12.2/auth";
-// FIX: Consolidate Firebase firestore imports and use `type` keyword for type-only imports
-// to resolve "Cannot use namespace 'Timestamp' as a type" and similar errors.
 import { 
     collection, 
     addDoc, 
@@ -161,11 +159,6 @@ const MOCK_NEWS: NewsItem[] = [
 const MOCK_VERSES_OF_THE_DAY: Verse[] = [
     { verse: 'यूहन्ना ३:१६', text: 'किनभने परमेश्‍वरले संसारलाई यति साह्रो प्रेम गर्नुभयो, कि उहाँले आफ्‍ना एकमात्र पुत्र दिनुभयो, ताकि उहाँमाथि विश्‍वास गर्ने कोही पनि नाश नहोस्, तर त्‍यसले अनन्त जीवन पाओस्।' },
     { verse: 'फिलिप्पी ४:१३', text: 'जसले मलाई शक्ति दिनuहुन्छ, उहाँमा म सब कुरा गर्न सक्छु।' }
-];
-
-const MOCK_NOTIFICATIONS: Notification[] = [
-    { id: 'n1', icon: 'chat_bubble', message: 'Pastor Ramesh commented on your prayer request.', timestamp: '2 hours ago' },
-    { id: 'n2', icon: 'feed', message: 'New announcement posted: Youth Camp 2024.', timestamp: '1 day ago' }
 ];
 
 const BIBLE_READING_PLAN_NNRV = ['उत्पत्ति १, मत्ती १', 'उत्पत्ति २, मत्ती २', 'उत्पत्ति ३, मत्ती ३']; // Truncated for brevity
@@ -323,8 +316,6 @@ const BiblePage = () => {
     const [readingData, setReadingData] = React.useState<{title: string; plan: string; text: string} | null>(null);
     const dayOfYear = getDayOfYear();
     const readingPlan = BIBLE_READING_PLAN_NNRV[dayOfYear - 1] || 'No plan for today.';
-    const proverbsChapter = dayOfYear % 31 === 0 ? 31 : dayOfYear % 31;
-    const proverbsText = PROVERBS_NNRV[proverbsChapter] || 'Proverb not available.';
 
     const handleShowReading = () => {
         const text = getBibleTextForPlan(readingPlan);
