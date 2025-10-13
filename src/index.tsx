@@ -136,7 +136,7 @@ const MCHEYNE_READING_PLAN = [
     '२ शमूएल १८, मत्ती २५, यर्मिया २८, प्रेरित २५', '२ शमूएल १९, मत्ती २६, यर्मिया २९, प्रेरित २६', '२ शमूएल २०, मत्ती २७, यर्मिया ३०, प्रेरित २७', '२ शमूएल २१, मत्ती २८, यर्मिया ३१, प्रेरित २८',
     '२ शमूएल २२, मर्कूस १, यर्मिया ३२, रोमी १', '२ शमूएल २३, मर्कूस २, यर्मिया ३३, रोमी २', '२ शमूएल २४, मर्कूस ३, यर्मिया ३४, रोमी ३', '१ राजा १, मर्कूस ४, यर्मिया ३५, रोमी ४',
     '१ राजा २, मर्कूस ५, यर्मिया ३६, रोमी ५', '१ राजा ३, मर्कूस ६, यर्मिया ३७, रोमी ६', '१ राजा ४, मर्कूस ७, यर्मिया ३८, रोमी ७', '१ राजा ५, मर्कूस ८, यर्मिया ३९, रोमी ८',
-    '१ राजा ६, मर्कूस ९, यर्मिया ४०, रोमी ९', '१ राजा ७, मर्कूस १०, यर्मिया ४१, रोमी १०', '१ राजा ८, मर्कूस ११, यर्मिया ४२, रोमी ११', '१ राजा ९, मर्कूस १२, यर्मिया ४३, रोमी १२',
+    '१ राजा ६, मर्कूस ९, यर्मिया ४०, रोमी ९', '१ राजा ७, मर्कूस १०, यर्मिया ४１, रोमी १०', '१ राजा ८, मर्कूस ११, यर्मिया ४२, रोमी ११', '१ राजा ९, मर्कूस १२, यर्मिया ४३, रोमी १२',
     '१ राजा १०, मर्कूस १३, यर्मिया ४४, रोमी १३', '१ राजा ११, मर्कूस १४, यर्मिया ४५, रोमी १४', '१ राजा १२, मर्कूस १५, यर्मिया ४६, रोमी १५', '१ राजा १३, मर्कूस १६, यर्मिया ४७, रोमी १६',
     '१ राजा १४, लूका १, यर्मिया ४८, १ कोरिन्थी १', '१ राजा १५, लूका २, यर्मिया ४९, १ कोरिन्थी २', '१ राजा १६, लूका ३, यर्मिया ५०, १ कोरिन्थी ३', '१ राजा १७, लूका ४, यर्मिया ५१, १ कोरिन्थी ४',
     '१ राजा १८, लूका ५, यर्मिया ५२, १ कोरिन्थी ५', '१ राजा १९, लूका ६, विलाप १, १ कोरिन्थी ६', '१ राजा २०, लूका ७, विलाप २, १ कोरिन्थी ७', '१ राजा २१, लूका ८, विलाप ३, १ कोरिन्थी ८',
@@ -199,20 +199,20 @@ const PROVERBS_NNRV: { [key: number]: string } = {
 २२ एक जना असल मानिसले आफ्‍ना नाति-नातिनाको निम्‍ति उत्तराधिकार छोड्‌छ, तर पापीको धन-सम्‍पत्तिचाहिँ धर्मीको निम्‍ति थुपारिन्छ।
 २३ गरीब मानिसको नखनेको जमिनले धेरै अन्‍न उब्‍जाउँछ, तर अन्‍यायले गर्दा त्‍यो सखाप हुन्‍छ।
 २४ लट्ठी प्रयोग नगर्नेले आफ्‍नो छोरालाई घृणा गर्छ, तर त्‍यसलाई प्रेम गर्नेले होशियारीसाथ अनुशासनमा राख्‍छ।
-२५ धर्मी मानिसले पेटभरि खान्‍छ, तर दुष्‍टहरूको पेटचाहिँ खाली रहन्‍छ।`,
-    23: `१ जब तँ शासकसँग खान बस्छस्, तेरो सामुन्ने को छ, सो होशियारसित विचार गर्।`
+२५ धर्मी मानिसले पेटभरि खान्‍छ, तर दुष्‍टहरूको पेटचाहिँ खाली रहन्‍छ।`
 };
-const BIBLE_TEXT_NNRV: { [key: string]: { [key: string]: string } } = { 'उत्पत्ति': { '1': `१ आदिमा परमेश्‍वरले आकाश र पृथ्‍वी सृष्‍टि गर्नुभयो।` } };
-
 
 // --- Helper Functions ---
 const getDayOfYear = () => {
     const now = new Date();
-    const start = new Date(now.getFullYear(), 0, 0);
-    const diff = (now.getTime() - start.getTime()) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
+    // Create a date for the start of the year in the local timezone
+    const start = new Date(now.getFullYear(), 0, 1);
+    // Calculate the difference in milliseconds and convert to days
+    const diff = now.getTime() - start.getTime();
     const oneDay = 1000 * 60 * 60 * 24;
-    return Math.floor(diff / oneDay);
+    return Math.ceil(diff / oneDay);
 };
+
 
 const userCache: { [key: string]: User } = {};
 const fetchUser = async (uid: string): Promise<User> => {
@@ -227,7 +227,6 @@ const fetchUser = async (uid: string): Promise<User> => {
     return { id: uid, name: 'Unknown User', email: '', avatar: '?' };
 };
 const fetchUsers = async (uids: string[]): Promise<User[]> => Promise.all(uids.map(uid => fetchUser(uid)));
-const getBibleTextForPlan = (plan: string) => plan ? BIBLE_TEXT_NNRV['उत्पत्ति']?.['1'] : undefined; // Simplified for brevity
 
 // --- Reusable Components ---
 const Modal = ({ children, onClose }: React.PropsWithChildren<{ onClose: () => void; }>) => {
@@ -356,16 +355,13 @@ const NewsPage = () => (
 const BiblePage = () => {
     const [readingData, setReadingData] = useState<{title: string; plan: string; text: string} | null>(null);
     
-    // For M'Cheyne Plan
     const dayOfYear = getDayOfYear();
     const mcheyneReading = MCHEYNE_READING_PLAN[dayOfYear - 1] || 'आजको लागि कुनै पढ्ने योजना छैन।';
 
-    // For Daily Proverb
     const today = new Date();
     const proverbsChapter = today.getDate();
     const proverbsText = PROVERBS_NNRV[proverbsChapter] || 'यस अध्यायको लागि हितोपदेशको पाठ एपमा उपलब्ध छैन।';
     
-    // For Verse of the day
     const verse = MOCK_VERSES_OF_THE_DAY[dayOfYear % MOCK_VERSES_OF_THE_DAY.length];
 
     const handleShowMcheyne = () => {
