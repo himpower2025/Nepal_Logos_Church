@@ -30,7 +30,8 @@ import {
 import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
 
 // --- Types ---
-type User = { id: string; name: string; email: string; avatar: string; role: 'admin' | 'member'; };
+type UserRole = 'admin' | 'member' | 'news_contributor' | 'podcast_contributor';
+type User = { id: string; name: string; email: string; avatar: string; roles: UserRole[]; };
 type Church = { id: string; name: string; logo: string; offeringDetails: any; };
 type Comment = { id: string; author: User; content: string; createdAt: Timestamp; };
 type PrayerRequest = { id: string; author: User; title: string; content: string; image?: string; prayedBy: string[]; comments: Comment[]; createdAt: Timestamp; };
@@ -96,7 +97,7 @@ const MCHEYNE_READING_PLAN = [
     'प्रस्थान ११, लूका १७, अय्यूब २८, २ कोरिन्थी १', 'प्रस्थान १२, लूका १८, अय्यूब २९, २ कोरिन्थी २', 'प्रस्थान १३, लूका १९, अय्यूब ३०, २ कोरिन्थी ३', 'प्रस्थान १४, लूका २०, अय्यूब ३१, २ कोरिन्थी ४',
     'प्रस्थान १५, लूका २१, अय्यूब ३２, २ कोरिन्थी ५', 'प्रस्थान १६, लूका २२, अय्यूब ३३, २ कोरिन्थी ६', 'प्रस्थान १७, लूका २३, अय्यूब ३४, २ कोरिन्थी ७', 'प्रस्थान १८, लूका २४, अय्यूब ३५, २ कोरिन्थी ८',
     'प्रस्थान १९, यूहन्ना १, अय्यूब ३६, २ कोरिन्थी ९', 'प्रस्थान २०, यूहन्ना २, अय्यूब ३७, २ कोरिन्थी १०', 'प्रस्थान २१, यूहन्ना ३, अय्यूब ३८, २ कोरिन्थी ११', 'प्रस्थान २२, यूहन्ना ४, अय्यूब ३९, २ कोरिन्थी १२',
-    'प्रस्थान २३, यूहन्ना ५, अय्यूब ४०, २ कोरिन्थी १३', 'प्रस्थान २४, यूहन्ना ६, अय्यूब ४१, गलाती १', 'प्रस्थान २५, यूहन्ना ७, अय्यूब ४२, गलाती २', 'प्रस्थान २६, यूहन्ना ८, भजनसंग्रह १-४, गलाती ३',
+    'प्रस्थान ২৩, यूहन्ना ५, अय्यूब ४०, २ कोरिन्थी १३', 'प्रस्थान २४, यूहन्ना ६, अय्यूब ४१, गलाती १', 'प्रस्थान २५, यूहन्ना ७, अय्यूब ४२, गलाती २', 'प्रस्थान २६, यूहन्ना ८, भजनसंग्रह १-४, गलाती ३',
     'प्रस्थान २७, यूहन्ना ९, भजनसंग्रह ५-७, गलाती ४', 'प्रस्थान २८, यूहन्ना १०, भजनसंग्रह ८-९, गलाती ५', 'प्रस्थान २९, यूहन्ना ११, भजनसंग्रह १०-११, गलाती ६', 'प्रस्थान ३०, यूहन्ना १२, भजनसंग्रह १२-१४, एफिसी १',
     'प्रस्थान ३१, यूहन्ना १३, भजनसंग्रह १५-१६, एफिसी २', 'प्रस्थान ३２, यूहन्ना १४, भजनसंग्रह १७, एफिसी ३', 'प्रस्थान ३३, यूहन्ना १५, भजनसंग्रह १८, एफिसी ४', 'प्रस्थान ३४, यूहन्ना १६, भजनसंग्रह १९, एफिसी ५',
     'प्रस्थान ३५, यूहन्ना १७, भजनसंग्रह २०-२१, एफिसी ६', 'प्रस्थान ३६, यूहन्ना १८, भजनसंग्रह २२, फिलिप्पी १', 'प्रस्थान ३७, यूहन्ना १९, भजनसंग्रह २३-२४, फिलिप्पी २', 'प्रस्थान ३८, यूहन्ना २०, भजनसंग्रह २५-२६, फिलिप्पी ३',
@@ -106,7 +107,7 @@ const MCHEYNE_READING_PLAN = [
     'लेवी ११, प्रेरित १२, भजनसंग्रह ४४-४५, २ थिस्सलोनिकी ३', 'लेवी १२, प्रेरित १३, भजनसंग्रह ४६-४७, १ तिमोथी १', 'लेवी १३, प्रेरित १४, भजनसंग्रह ४८-४९, १ तिमोथी २', 'लेवी १४, प्रेरित १५, भजनसंग्रह ५०, १ तिमोथी ३',
     'लेवी १५, प्रेरित १६, भजनसंग्रह ५१, १ तिमोथी ४', 'लेवी १६, प्रेरित १७, भजनसंग्रह ५२-५४, १ तिमोथी ५', 'लेवी १७, प्रेरित १८, भजनसंग्रह ५५, १ तिमोथी ६', 'लेवी १८, प्रेरित १९, भजनसंग्रह ५६-५७, २ तिमोथी १',
     'लेवी १९, प्रेरित २०, भजनसंग्रह ५८-५९, २ तिमोथी २', 'लेवी २०, प्रेरित २१, भजनसंग्रह ६०-६२, २ तिमोथी ३', 'लेवी २१, प्रेरित २२, भजनसंग्रह ६३-६५, २ तिमोथी ४', 'लेवी २२, प्रेरित २३, भजनसंग्रह ६६-६७, तीतस १',
-    'लेवी २३, प्रेरित २४, भजनसंग्रह ६८, तीतस २', 'लेवी २४, प्रेरित २५, भजनसंग्रह ६९, तीतस ३', 'लेवी २५, प्रेरित २६, भजनसंग्रह ७०-७१, फिलेमोन', 'लेवी २६, प्रेरित २७, भजनसंग्रह ७２, हिब्रू १',
+    'लेवी ২৩, प्रेरित २४, भजनसंग्रह ६८, तीतस २', 'लेवी २४, प्रेरित २५, भजनसंग्रह ६९, तीतस ३', 'लेवी २५, प्रेरित २६, भजनसंग्रह ७०-७१, फिलेमोन', 'लेवी २६, प्रेरित २७, भजनसंग्रह ७２, हिब्रू १',
     'लेवी २७, प्रेरित २८, भजनसंग्रह ७३-७४, हिब्रू २', 'गन्ती १, रोमी १, भजनसंग्रह ७५-७६, हिब्रू ३', 'गन्ती २, रोमी २, भजनसंग्रह ७७, हिब्रू ४', 'गन्ती ३, रोमी ३, भजनसंग्रह ७८, हिब्रू ५',
     'गन्ती ४, रोमी ४, भजनसंग्रह ७९, हिब्रू ६', 'गन्ती ५, रोमी ५, भजनसंग्रह ८०, हिब्रू ७', 'गन्ती ६, रोमी ६, भजनसंग्रह ८१-८२, हिब्रू ८', 'गन्ती ७, रोमी ७, भजनसंग्रह ८३-८४, हिब्रू ९',
     'गन्ती ८, रोमी ८, भजनसंग्रह ८५-८६, हिब्रू १०', 'गन्ती ९, रोमी ९, भजनसंग्रह ८७-८८, हिब्रू ११', 'गन्ती १०, रोमी १०, भजनसंग्रह ८९, हिब्रू १२', 'गन्ती ११, रोमी ११, भजनसंग्रह ९०-९१, हिब्रू १३',
@@ -130,7 +131,7 @@ const MCHEYNE_READING_PLAN = [
     'यहोशू १०, २ तिमोथी १, यशैया ६, मत्ती २६', 'यहोशू ११, २ तिमोथी २, यशैया ७, मत्ती २७', 'यहोशू १२, २ तिमोथी ३, यशैया ८, मत्ती २८', 'यहोशू १३, २ तिमोथी ४, यशैया ९, मर्कूस १',
     'यहोशू १४, तीतस १, यशैया १०, मर्कूस २', 'यहोशू १५, तीतस २, यशैया ११, मर्कूस ३', 'यहोशू १६, तीतस ३, यशैया १२, मर्कूस ४', 'यहोशू १७, फिलेमोन, यशैया १३, मर्कूस ५',
     'यहोशू १८, हिब्रू १, यशैया १४, मर्कूस ६', 'यहोशू १९, हिब्रू २, यशैया १५, मर्कूस ७', 'यहोशू २०, हिब्रू ३, यशैया १६, मर्कूस ८', 'यहोशू २१, हिब्रू ४, यशैया १७, मर्कूस ९',
-    'यहोशू २२, हिब्रू ५, यशैया १८, मर्कूस १०', 'यहोशू २३, हिब्रू ६, यशैया १९, मर्कूस ११', 'यहोशू २४, हिब्रू ७, यशैया २०, मर्कूस १२', 'न्यायकर्ता १, हिब्रू ८, यशैया २१, मर्कूस १३',
+    'यहोशू २२, हिब्रू ५, यशैया १८, मर्कूस १०', 'यहोशू ২৩, हिब्रू ६, यशैया १९, मर्कूस ११', 'यहोशू २४, हिब्रू ७, यशैया २०, मर्कूस १२', 'न्यायकर्ता १, हिब्रू ८, यशैया २१, मर्कूस १३',
     'न्यायकर्ता २, हिब्रू ९, यशैया २２, मर्कूस १४', 'न्यायकर्ता ३, हिब्रू १०, यशैया २३, मर्कूस १५', 'न्यायकर्ता ४, हिब्रू ११, यशैया २४, मर्कूस १६', 'न्यायकर्ता ५, हिब्रू १२, यशैया २५, लूका १',
     'न्यायकर्ता ६, हिब्रू १३, यशैया २६, लूका २', 'न्यायकर्ता ७, याकूब १, यशैया २७, लूका ३', 'न्यायकर्ता ८, याकूब २, यशैया २८, लूका ४', 'न्यायकर्ता ९, याकूब ३, यशैया २९, लूका ५',
     'न्यायकर्ता १०, याकूब ४, यशैया ३०, लूका ६', 'न्यायकर्ता ११, याकूब ५, यशैया ३१, लूका ७', 'न्यायकर्ता १२, १ पत्रुस १, यशैया ३２, लूका ८', 'न्यायकर्ता १३, १ पत्रुस २, यशैया ३३, लूका ९',
@@ -142,15 +143,15 @@ const MCHEYNE_READING_PLAN = [
     '१ शमूएल ९, प्रकाश ७, यशैया ५４, यूहन्ना ६', '१ शमूएल १०, प्रकाश ८, यशैया ५५, यूहन्ना ७', '१ शमूएल ११, प्रकाश ९, यशैया ५６, यूहन्ना ८', '१ शमूएल १२, प्रकाश १०, यशैया ५７, यूहन्ना ९',
     '१ शमूएल १३, प्रकाश ११, यशैया ५８, यूहन्ना १०', '१ शमूएल १४, प्रकाश १२, यशैया ५９, यूहन्ना ११', '१ शमूएल १५, प्रकाश १३, यशैया ६०, यूहन्ना १२', '१ शमूएल १६, प्रकाश १४, यशैया ६１, यूहन्ना १३',
     '१ शमूएल १७, प्रकाश १५, यशैया ६２, यूहन्ना १४', '१ शमूएल १८, प्रकाश १६, यशैया ६３, यूहन्ना १५', '१ शमूएल १९, प्रकाश १७, यशैया ६４, यूहन्ना १६', '१ शमूएल २०, प्रकाश १८, यशैया ६５, यूहन्ना १७',
-    '१ शमूएल २१, प्रकाश १९, यशैया ६６, यूहन्ना १८', '१ शमूएल २२, प्रकाश २०, यर्मिया १, यूहन्ना १९', '१ शमूएल २३, प्रकाश २१, यर्मिया २, यूहन्ना २०', '१ शमूएल २४, प्रकाश २२, यर्मिया ३, यूहन्ना २१',
+    '१ शमूएल २१, प्रकाश १९, यशैया ६６, यूहन्ना १८', '१ शमूएल २२, प्रकाश २०, यर्मिया १, यूहन्ना १९', '१ शमूएल ২৩, प्रकाश २१, यर्मिया २, यूहन्ना २०', '१ शमूएल २४, प्रकाश २२, यर्मिया ३, यूहन्ना २१',
     '१ शमूएल २५, मत्ती १, यर्मिया ४, प्रेरित १', '१ शमूएल २६, मत्ती २, यर्मिया ५, प्रेरित २', '१ शमूएल २७, मत्ती ३, यर्मिया ६, प्रेरित ३', '१ शमूएल २८, मत्ती ४, यर्मिया ७, प्रेरित ४',
     '१ शमूएल २९, मत्ती ५, यर्मिया ८, प्रेरित ५', '१ शमूएल ३०, मत्ती ६, यर्मिया ९, प्रेरित ६', '१ शमूएल ३１, मत्ती ७, यर्मिया १०, प्रेरित ७', '२ शमूएल १, मत्ती ८, यर्मिया ११, प्रेरित ८',
     '२ शमूएल २, मत्ती ९, यर्मिया १२, प्रेरित ९', '२ शमूएल ३, मत्ती १०, यर्मिया १३, प्रेरित १०', '२ शमूएल ४, मत्ती ११, यर्मिया १४, प्रेरित ११', '२ शमूएल ५, मत्ती १२, यर्मिया १५, प्रेरित १२',
     '२ शमूएल ६, मत्ती १३, यर्मिया १६, प्रेरित १३', '२ शमूएल ७, मत्ती १४, यर्मिया १७, प्रेरित १४', '२ शमूएल ८, मत्ती १५, यर्मिया १८, प्रेरित १५', '२ शमूएल ९, मत्ती १६, यर्मिया १९, प्रेरित १६',
-    '२ शमूएल १०, मत्ती १७, यर्मिया २०, प्रेरित १७', '२ शमूएल ११, मत्ती १८, यर्मिया २१, प्रेरित १८', '२ शमूएल १२, मत्ती १९, यर्मिया २２, प्रेरित १९', '२ शमूएल १३, मत्ती २०, यर्मिया २३, प्रेरित २०',
-    '२ शमूएल १४, मत्ती २१, यर्मिया २४, प्रेरित २१', '२ शमूएल १५, मत्ती २２, यर्मिया २५, प्रेरित २२', '२ शमूएल १६, मत्ती २३, यर्मिया २६, प्रेरित २३', '२ शमूएल १७, मत्ती २४, यर्मिया २७, प्रेरित २४',
+    '२ शमूएल १०, मत्ती १७, यर्मिया २०, प्रेरित १७', '२ शमूएल ११, मत्ती १८, यर्मिया २१, प्रेरित १८', '२ शमूएल १२, मत्ती १९, यर्मिया २２, प्रेरित १९', '२ शमूएल १३, मत्ती २०, यर्मिया ২৩, प्रेरित २०',
+    '२ शमूएल १४, मत्ती २१, यर्मिया २४, प्रेरित २१', '२ शमूएल १५, मत्ती २２, यर्मिया २५, प्रेरित २२', '२ शमूएल १६, मत्ती ২৩, यर्मिया २६, प्रेरित ২৩', '२ शमूएल १७, मत्ती २४, यर्मिया २७, प्रेरित २४',
     '२ शमूएल १८, मत्ती २५, यर्मिया २८, प्रेरित २५', '२ शमूएल १९, मत्ती २६, यर्मिया २९, प्रेरित २६', '२ शमूएल २०, मत्ती २७, यर्मिया ३०, प्रेरित २७', '२ शमूएल २१, मत्ती २८, यर्मिया ३１, प्रेरित २८',
-    '२ शमूएल २２, मर्कूस १, यर्मिया ३２, रोमी १', '२ शमूएल २३, मर्कूस २, यर्मिया ३３, रोमी २', '२ शमूएल २४, मर्कूस ३, यर्मिया ३４, रोमी ३', '१ राजा १, मर्कूस ४, यर्मिया ३５, रोमी ४',
+    '२ शमूएल २２, मर्कूस १, यर्मिया ३２, रोमी १', '२ शमूएल ২৩, मर्कूस २, यर्मिया ३３, रोमी २', '२ शमूएल २४, मर्कूस ३, यर्मिया ३４, रोमी ३', '१ राजा १, मर्कूस ४, यर्मिया ३５, रोमी ४',
     '१ राजा २, मर्कूस ५, यर्मिया ३６, रोमी ५', '१ राजा ३, मर्कूस ६, यर्मिया ३７, रोमी ६', '१ राजा ४, मर्कूस ७, यर्मिया ३８, रोमी ७', '१ राजा ५, मर्कूस ८, यर्मिया ३９, रोमी ८',
     '१ राजा ६, मर्कूस ९, यर्मिया ४०, रोमी ९', '१ राजा ७, मर्कूस १०, यर्मिया ४１, रोमी १०', '१ राजा ८, मर्कूस ११, यर्मिया ४２, रोमी ११', '१ राजा ९, मर्कूस १२, यर्मिया ४३, रोमी १२',
     '१ राजा १०, मर्कूस १३, यर्मिया ४４, रोमी १३', '१ राजा ११, मर्कूस १४, यर्मिया ४５, रोमी १४', '१ राजा १२, मर्कूस १५, यर्मिया ४６, रोमी १५', '१ राजा १३, मर्कूस १६, यर्मिया ४７, रोमी १६',
@@ -159,23 +160,23 @@ const MCHEYNE_READING_PLAN = [
     '१ राजा २２, लूका ९, विलाप ४, १ कोरिन्थी ९', '२ राजा १, लूका १०, विलाप ५, १ कोरिन्थी १०', '२ राजा २, लूका ११, इजकिएल १, १ कोरिन्थी ११', '२ राजा ३, लूका १२, इजकिएल २, १ कोरिन्थी १२',
     '२ राजा ४, लूका १३, इजकिएल ३, १ कोरिन्थी १३', '२ राजा ५, लूका १४, इजकिएल ४, १ कोरिन्थी १४', '२ राजा ६, लूका १५, इजकिएल ५, १ कोरिन्थी १५', '२ राजा ७, लूका १६, इजकिएल ६, १ कोरिन्थी १६',
     '२ राजा ८, लूका १७, इजकिएल ७, २ कोरिन्थी १', '२ राजा ९, लूका १८, इजकिएल ८, २ कोरिन्थी २', '२ राजा १०, लूका १९, इजकिएल ९, २ कोरिन्थी ३', '२ राजा ११, लूका २०, इजकिएल १०, २ कोरिन्थी ४',
-    '२ राजा १२, लूका २१, इजकिएल ११, २ कोरिन्थी ५', '२ राजा १३, लूका २２, इजकिएल १२, २ कोरिन्थी ६', '२ राजा १४, लूका २३, इजकिएल १३, २ कोरिन्थी ७', '२ राजा १५, लूका २४, इजकिएल १४, २ कोरिन्थी ८',
+    '२ राजा १२, लूका २१, इजकिएल ११, २ कोरिन्थी ५', '२ राजा १३, लूका २２, इजकिएल १२, २ कोरिन्थी ६', '२ राजा १४, लूका ২৩, इजकिएल १३, २ कोरिन्थी ७', '२ राजा १५, लूका २४, इजकिएल १४, २ कोरिन्थी ८',
     '२ राजा १६, यूहन्ना १, इजकिएल १५, २ कोरिन्थी ९', '२ राजा १७, यूहन्ना २, इजकिएल १६, २ कोरिन्थी १०', '२ राजा १८, यूहन्ना ३, इजकिएल १७, २ कोरिन्थी ११', '२ राजा १९, यूहन्ना ४, इजकिएल १८, २ कोरिन्थी १२',
-    '२ राजा २०, यूहन्ना ५, इजकिएल १९, २ कोरिन्थी १३', '२ राजा २१, यूहन्ना ६, इजकिएल २०, गलाती १', '२ राजा २２, यूहन्ना ७, इजकिएल २१, गलाती २', '२ राजा २३, यूहन्ना ८, इजकिएल २２, गलाती ३',
-    '२ राजा २४, यूहन्ना ९, इजकिएल २३, गलाती ४', '२ राजा २५, यूहन्ना १०, इजकिएल २४, गलाती ५', '१ इतिहास १, यूहन्ना ११, इजकिएल २५, गलाती ६', '१ इतिहास २, यूहन्ना १२, इजकिएल २６, एफिसी १',
+    '२ राजा २०, यूहन्ना ५, इजकिएल १९, २ कोरिन्थी १३', '२ राजा २१, यूहन्ना ६, इजकिएल २०, गलाती १', '२ राजा २２, यूहन्ना ७, इजकिएल २१, गलाती २', '२ राजा ২৩, यूहन्ना ८, इजकिएल २２, गलाती ३',
+    '२ राजा २४, यूहन्ना ९, इजकिएल ২৩, गलाती ४', '२ राजा २५, यूहन्ना १०, इजकिएल २४, गलाती ५', '१ इतिहास १, यूहन्ना ११, इजकिएल २५, गलाती ६', '१ इतिहास २, यूहन्ना १२, इजकिएल २６, एफिसी १',
     '१ इतिहास ३, यूहन्ना १३, इजकिएल २７, एफिसी २', '१ इतिहास ४, यूहन्ना १४, इजकिएल २８, एफिसी ३', '१ इतिहास ५, यूहन्ना १५, इजकिएल २９, एफिसी ४', '१ इतिहास ६, यूहन्ना १६, इजकिएल ३०, एफिसी ५',
     '१ इतिहास ७, यूहन्ना १७, इजकिएल ३１, एफिसी ६', '१ इतिहास ८, यूहन्ना १८, इजकिएल ३２, फिलिप्पी १', '१ इतिहास ९, यूहन्ना १९, इजकिएल ३３, फिलिप्पी २', '१ इतिहास १०, यूहन्ना २०, इजकिएल ३４, फिलिप्पी ३',
     '१ इतिहास ११, यूहन्ना २१, इजकिएल ३５, फिलिप्पी ४', '१ इतिहास १२, प्रेरित १, इजकिएल ३６, कलस्सी १', '१ इतिहास १३, प्रेरित २, इजकिएल ३７, कलस्सी २', '१ इतिहास १४, प्रेरित ३, इजकिएल ३８, कलस्सी ३',
     '१ इतिहास १५, प्रेरित ४, इजकिएल ३９, कलस्सी ४', '१ इतिहास १६, प्रेरित ५, इजकिएल ४０, १ थिस्सलोनिकी १', '१ इतिहास १७, प्रेरित ६, इजकिएल ४１, १ थिस्सलोनिकी २', '१ इतिहास १८, प्रेरित ७, इजकिएल ४２, १ थिस्सलोनिकी ३',
     '१ इतिहास १९, प्रेरित ८, इजकिएल ४３, १ थिस्सलोनिकी ४', '१ इतिहास २०, प्रेरित ९, इजकिएल ४４, १ थिस्सलोनिकी ५', '१ इतिहास २१, प्रेरित १०, इजकिएल ४５, २ थिस्सलोनिकी १', '१ इतिहास २２, प्रेरित ११, इजकिएल ४６, २ थिस्सलोनिकी २',
-    '१ इतिहास २३, प्रेरित १२, इजकिएल ४７, २ थिस्सलोनिकी ३', '१ इतिहास २४, प्रेरित १३, इजकिएल ४８, १ तिमोथी १', '१ इतिहास २५, प्रेरित १४, दानिएल १, १ तिमोथी २', '१ इतिहास २६, प्रेरित १५, दानिएल २, १ तिमोथी ३',
+    '१ इतिहास ২৩, प्रेरित १२, इजकिएल ४７, २ थिस्सलोनिकी ३', '१ इतिहास २४, प्रेरित १३, इजकिएल ४８, १ तिमोथी १', '१ इतिहास २५, प्रेरित १४, दानिएल १, १ तिमोथी २', '१ इतिहास २६, प्रेरित १५, दानिएल २, १ तिमोथी ३',
     '१ इतिहास २७, प्रेरित १६, दानिएल ३, १ तिमोथी ४', '१ इतिहास २८, प्रेरित १७, दानिएल ४, १ तिमोथी ५', '१ इतिहास २९, प्रेरित १८, दानिएल ५, १ तिमोथी ६', '२ इतिहास १, प्रेरित १९, दानिएल ६, २ तिमोथी १',
-    '२ इतिहास २, प्रेरित २०, दानिएल ७, २ तिमोथी २', '२ इतिहास ३, प्रेरित २१, दानिएल ८, २ तिमोथी ३', '२ इतिहास ४, प्रेरित २２, दानिएल ९, २ तिमोथी ४', '२ इतिहास ५, प्रेरित २३, दानिएल १०, तीतस १',
+    '२ इतिहास २, प्रेरित २०, दानिएल ७, २ तिमोथी २', '२ इतिहास ३, प्रेरित २१, दानिएल ८, २ तिमोथी ३', '२ इतिहास ४, प्रेरित २２, दानिएल ९, २ तिमोथी ४', '२ इतिहास ५, प्रेरित ২৩, दानिएल १०, तीतस १',
     '२ इतिहास ६, प्रेरित २४, दानिएल ११, तीतस २', '२ इतिहास ७, प्रेरित २५, दानिएल १२, तीतस ३', '२ इतिहास ८, प्रेरित २६, होशे १, फिलेमोन', '२ इतिहास ९, प्रेरित २७, होशे २, हिब्रू १',
     '२ इतिहास १०, प्रेरित २८, होशे ३, हिब्रू २', '२ इतिहास ११, रोमी १, होशे ४, हिब्रू ३', '२ इतिहास १२, रोमी २, होशे ५, हिब्रू ४', '२ इतिहास १३, रोमी ३, होशे ६, हिब्रू ५',
     '२ इतिहास १४, रोमी ४, होशे ७, हिब्रू ६', '२ इतिहास १५, रोमी ५, होशे ८, हिब्रू ७', '२ इतिहास १६, रोमी ६, होशे ९, हिब्रू ८', '२ इतिहास १७, रोमी ७, होशे १०, हिब्रू ९',
     '२ इतिहास १८, रोमी ८, होशे ११, हिब्रू १०', '२ इतिहास १९, रोमी ९, होशे १२, हिब्रू ११', '२ इतिहास २०, रोमी १०, होशे १३, हिब्रू १२', '२ इतिहास २१, रोमी ११, होशे १४, हिब्रू १३',
-    '२ इतिहास २２, रोमी १२, योएल १, याकूब १', '२ इतिहास २३, रोमी १३, योएल २, याकूब २', '२ इतिहास २४, रोमी १४, योएल ३, याकूब ३', '२ इतिहास २५, रोमी १५, आमोस १, याकूब ४',
+    '२ इतिहास २２, रोमी १२, योएल १, याकूब १', '२ इतिहास ২৩, रोमी १३, योएल २, याकूब २', '२ इतिहास २४, रोमी १४, योएल ३, याकूब ३', '२ इतिहास २५, रोमी १५, आमोस १, याकूब ४',
     '२ इतिहास २६, रोमी १६, आमोस २, याकूब ५', '२ इतिहास २७, १ कोरिन्थी १, आमोस ३, १ पत्रुस १', '२ इतिहास २८, १ कोरिन्थी २, आमोस ४, १ पत्रुस २', '२ इतिहास २९, १ कोरिन्थी ३, आमोस ५, १ पत्रुस ३',
     '२ इतिहास ३०, १ कोरिन्थी ४, आमोस ६, १ पत्रुस ४', '२ इतिहास ३１, १ कोरिन्थी ५, आमोस ७, १ पत्रुस ५', '२ इतिहास ३２, १ कोरिन्थी ६, आमोस ८, २ पत्रुस १', '२ इतिहास ३３, १ कोरिन्थी ७, आमोस ९, २ पत्रुस २',
     '२ इतिहास ३４, १ कोरिन्थी ८, ओबदिया, २ पत्रुस ३', '२ इतिहास ३５, १ कोरिन्थी ९, योना १, १ यूहन्ना १', '२ इतिहास ३６, १ कोरिन्थी १०, योना २, १ यूहन्ना २', 'एज्रा १, १ कोरिन्थी ११, योना ३, १ यूहन्ना ३',
@@ -249,15 +250,15 @@ const getEmbedUrl = (url: string): string | null => {
 
 const userCache: { [key: string]: User } = {};
 const fetchUser = async (uid: string): Promise<User> => {
-    if (!uid) return { id: 'unknown', name: 'Unknown', email: '', avatar: '?', role: 'member' };
+    if (!uid) return { id: 'unknown', name: 'Unknown', email: '', avatar: '?', roles: ['member'] };
     if (userCache[uid]) return userCache[uid];
     const userDoc = await getDoc(doc(db, 'users', uid));
     if (userDoc.exists()) {
-        const user = { id: uid, ...userDoc.data(), role: userDoc.data().role || 'member' } as User;
+        const user = { id: uid, ...userDoc.data(), roles: userDoc.data().roles || ['member'] } as User;
         userCache[uid] = user;
         return user;
     }
-    return { id: uid, name: 'Unknown User', email: '', avatar: '?', role: 'member' };
+    return { id: uid, name: 'Unknown User', email: '', avatar: '?', roles: ['member'] };
 };
 const fetchUsers = async (uids: string[]): Promise<User[]> => Promise.all(uids.map(uid => fetchUser(uid)));
 
@@ -334,7 +335,6 @@ const LoginPage = ({ church }: { church: Church }) => {
         e.preventDefault();
         setError('');
         setIsLoading(true);
-        const ADMIN_EMAIL = "your-admin-email@example.com"; // TODO: Replace with the actual admin's email address.
         try {
             if (type === 'login') {
                 await signInWithEmailAndPassword(auth, email, password);
@@ -342,8 +342,7 @@ const LoginPage = ({ church }: { church: Church }) => {
                 if (fullName.trim() === '') throw new Error('Please enter your full name.');
                 const cred = await createUserWithEmailAndPassword(auth, email, password);
                 const avatar = fullName.trim().split(' ').map(n => n[0]).join('').toUpperCase() || '?';
-                const role = cred.user.email === ADMIN_EMAIL ? 'admin' : 'member';
-                await setDoc(doc(db, "users", cred.user.uid), { name: fullName.trim(), email: cred.user.email, avatar, role });
+                await setDoc(doc(db, "users", cred.user.uid), { name: fullName.trim(), email: cred.user.email, avatar, roles: ['member'] });
             }
         } catch (err: any) {
             setError(err.message || 'An error occurred.');
@@ -361,14 +360,14 @@ const WorshipPage = ({ church, user, services, onManageServices }: { church: Chu
     const [showOfferingModal, setShowOfferingModal] = useState(false);
     const copyToClipboard = (text: string) => navigator.clipboard.writeText(text).then(() => alert("Account number copied."));
     const latestService = services[0];
-    const pastServices = services.slice(1);
+    const pastServices = services.slice(1, 5);
     const latestEmbedUrl = latestService ? getEmbedUrl(latestService.videoUrl) : null;
     return (
         <div className="page-content"><h2>आरधना</h2><div className="card">
             {latestService && latestEmbedUrl ? (<><div className="twitch-container"><iframe src={latestEmbedUrl} height="100%" width="100%" allowFullScreen></iframe></div><h4>{latestService.title}</h4></>) : <p>No worship service available at the moment.</p>}
             <div className="worship-actions">
                 <button className="action-button" onClick={() => setShowOfferingModal(true)}><span className="material-symbols-outlined">volunteer_activism</span>Online Offering</button>
-                {user.role === 'admin' && <button className="action-button secondary" onClick={onManageServices}><span className="material-symbols-outlined">settings</span>Manage Services</button>}
+                {user.roles.includes('admin') && <button className="action-button secondary" onClick={onManageServices}><span className="material-symbols-outlined">settings</span>Manage Services</button>}
             </div>
         </div>
         {pastServices.length > 0 && (<div className="card"><h3>Past Services</h3><div className="list-container">{pastServices.map(service => (<div key={service.id} className="list-item worship-list-item"><span>{service.title}</span><a href={service.videoUrl} target="_blank" rel="noopener noreferrer">Watch</a></div>))}</div></div>)}
@@ -385,6 +384,7 @@ const NewsPage = ({ user, onAddNews }: { user: User; onAddNews: () => void; }) =
         });
         return () => unsub();
     }, []);
+    const canPostNews = user.roles.includes('admin') || user.roles.includes('news_contributor');
     return (
         <div className="page-content"><h2>सुचना</h2><div className="list-container">
             {news.length > 0 ? news.map(item => (
@@ -392,7 +392,7 @@ const NewsPage = ({ user, onAddNews }: { user: User; onAddNews: () => void; }) =
                     {item.image && <img src={item.image} alt={item.title} className="news-image"/>}
                     <div className="news-content"><h3>{item.title}</h3><p className="news-meta">{item.createdAt.toDate().toLocaleDateString()}</p><p>{item.content}</p></div>
                 </div>)) : <div className="card"><p>अहिलेसम्म कुनै समाचार वा घोषणाहरू छैनन्।</p></div>}
-        </div>{user.role === 'admin' && <button className="fab" onClick={onAddNews} aria-label="Add News"><span className="material-symbols-outlined">add</span></button>}</div>
+        </div>{canPostNews && <button className="fab" onClick={onAddNews} aria-label="Add News"><span className="material-symbols-outlined">add</span></button>}</div>
     );
 };
 const BiblePage = () => {
@@ -437,9 +437,12 @@ const ConversationPage = ({ chat, onBack, onSendMessage, onShowMembers, currentU
 const PrayerPage = ({ prayerRequests, onPray, onAddRequest, onSelectRequest, currentUser }: { prayerRequests: PrayerRequest[]; onPray: (id: string) => void; onAddRequest: () => void; onSelectRequest: (req: PrayerRequest) => void; currentUser: User; }) => (
     <div className="page-content"><h2>प्रार्थना</h2><div className="list-container">{prayerRequests.map(req => (<div key={req.id} className="card prayer-item" onClick={() => onSelectRequest(req)}>{req.image && <img src={req.image} alt={req.title} className="prayer-image"/>}<h4>{req.title}</h4><p className="prayer-content">{req.content}</p><div className="prayer-meta"><span>By {req.author.name}</span><div className="prayer-actions"><button className={`prayer-action-button ${req.prayedBy.includes(currentUser.id) ? 'prayed' : ''}`} onClick={(e) => { e.stopPropagation(); onPray(req.id); }}><span className="material-symbols-outlined">volunteer_activism</span><span>{req.prayedBy.length}</span></button><div className="prayer-action-button comment-button"><span className="material-symbols-outlined">chat_bubble</span><span>{req.comments.length}</span></div></div></div></div>))}</div><button className="fab" onClick={onAddRequest} aria-label="नयाँ प्रार्थना अनुरोध"><span className="material-symbols-outlined">edit_note</span></button></div>
 );
-const PodcastPage = ({ podcasts, onAddPodcast, user }: { podcasts: Podcast[]; onAddPodcast: () => void; user: User; }) => (
-    <div className="page-content"><h2>Podcast</h2><div className="list-container">{podcasts.length > 0 ? podcasts.map(p => (<div key={p.id} className="card podcast-item"><div className="podcast-info"><div><h4 className="podcast-title">{p.title}</h4><p className="podcast-author">By {p.author.name}</p></div></div><audio controls className="podcast-player" src={p.audioUrl}></audio></div>)) : <p>No podcasts available yet.</p>}</div>{user.role === 'admin' && <button className="fab" onClick={onAddPodcast} aria-label="New Podcast"><span className="material-symbols-outlined">mic</span></button>}</div>
+const PodcastPage = ({ podcasts, onAddPodcast, user }: { podcasts: Podcast[]; onAddPodcast: () => void; user: User; }) => {
+    const canPostPodcast = user.roles.includes('admin') || user.roles.includes('podcast_contributor');
+    return (
+    <div className="page-content"><h2>Podcast</h2><div className="list-container">{podcasts.length > 0 ? podcasts.map(p => (<div key={p.id} className="card podcast-item"><div className="podcast-info"><div><h4 className="podcast-title">{p.title}</h4><p className="podcast-author">By {p.author.name}</p></div></div><audio controls className="podcast-player" src={p.audioUrl}></audio></div>)) : <p>No podcasts available yet.</p>}</div>{canPostPodcast && <button className="fab" onClick={onAddPodcast} aria-label="New Podcast"><span className="material-symbols-outlined">mic</span></button>}</div>
 );
+}
 
 // --- Modals ---
 const AddPrayerRequestModal = ({ onClose, onAddRequest }: { onClose: () => void; onAddRequest: (data: { title: string; content: string; imageFile: File | null; }) => void; }) => {
@@ -533,6 +536,60 @@ const ManageWorshipModal = ({ services, onClose, onAdd, onUpdate, onDelete }: { 
         <Modal onClose={onClose}><div className="manage-worship-modal"><h3>Manage Worship Services</h3><div className="list-container service-list-admin">{services.map(s => (<div key={s.id} className="list-item"><span>{s.title}</span><div><button onClick={() => setIsEditing(s)}><span className="material-symbols-outlined">edit</span></button><button onClick={() => onDelete(s.id)}><span className="material-symbols-outlined">delete</span></button></div></div>))}</div><div className="modal-form"><h4>{isEditing ? 'Edit Service' : 'Add New Service'}</h4><input type="text" placeholder="Service Title" value={newTitle} onChange={e => setNewTitle(e.target.value)} /><input type="text" placeholder="YouTube or Twitch URL" value={newUrl} onChange={e => setNewUrl(e.target.value)} /><button className="action-button" onClick={handleSave}>Save</button>{isEditing && <button className="action-button secondary" onClick={() => setIsEditing(null)}>Cancel Edit</button>}</div></div></Modal>
     );
 };
+const ManageUsersModal = ({ allUsers, onClose, currentUser }: { allUsers: User[], onClose: () => void, currentUser: User }) => {
+    const [users, setUsers] = useState<User[]>(allUsers);
+
+    const handleRoleChange = async (userId: string, role: 'news_contributor' | 'podcast_contributor', checked: boolean) => {
+        const userToUpdate = users.find(u => u.id === userId);
+        if (!userToUpdate) return;
+        
+        let newRoles = [...userToUpdate.roles];
+        if (checked) {
+            if (!newRoles.includes(role)) newRoles.push(role);
+        } else {
+            newRoles = newRoles.filter(r => r !== role);
+        }
+        
+        try {
+            await updateDoc(doc(db, "users", userId), { roles: newRoles });
+        } catch (error) {
+            console.error("Error updating roles: ", error);
+            alert("Failed to update roles.");
+        }
+    };
+
+    useEffect(() => {
+        setUsers(allUsers);
+    }, [allUsers]);
+
+    return (
+        <Modal onClose={onClose}>
+            <div className="manage-users-modal">
+                <h3>사용자 관리</h3>
+                <div className="user-list">
+                    {users.filter(u => !u.roles.includes('admin')).map(user => (
+                        <div key={user.id} className="user-list-item manage-user-item">
+                            <div className="user-info">
+                                <div className="chat-avatar">{user.avatar}</div>
+                                <span className="user-name">{user.name}</span>
+                            </div>
+                            <div className="user-roles">
+                                <label>
+                                    <input type="checkbox" checked={user.roles.includes('news_contributor')} onChange={(e) => handleRoleChange(user.id, 'news_contributor', e.target.checked)} />
+                                    뉴스
+                                </label>
+                                <label>
+                                    <input type="checkbox" checked={user.roles.includes('podcast_contributor')} onChange={(e) => handleRoleChange(user.id, 'podcast_contributor', e.target.checked)} />
+                                    팟캐스트
+                                </label>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </Modal>
+    );
+};
 
 // --- Main App Component ---
 const App = () => {
@@ -558,8 +615,6 @@ const App = () => {
             if (fbUser) {
                 const userDoc = await fetchUser(fbUser.uid);
                 setUser(userDoc);
-                const usersQuery = await getDocs(collection(db, "users"));
-                setAllUsers(usersQuery.docs.map(doc => ({ id: doc.id, ...doc.data() } as User)));
             } else setUser(null);
         });
     }, []);
@@ -572,9 +627,10 @@ const App = () => {
         const unsubPodcast = onSnapshot(podcastQ, async (snap) => setPodcasts(await Promise.all(snap.docs.map(async d => ({ ...d.data(), id: d.id, author: await fetchUser(d.data().authorId) } as Podcast)))));
         const chatQ = query(collection(db, "chats"), where("participantIds", "array-contains", user.id), orderBy("lastMessageTimestamp", "desc"));
         const unsubChat = onSnapshot(chatQ, async (snap) => setChats(await Promise.all(snap.docs.map(async d => ({ ...d.data(), id: d.id, participants: await fetchUsers(d.data().participantIds), messages: (d.data().messages || []) } as Chat)))));
-        const worshipQ = query(collection(db, "worshipServices"), orderBy("createdAt", "desc"), limit(4));
+        const worshipQ = query(collection(db, "worshipServices"), orderBy("createdAt", "desc"), limit(5));
         const unsubWorship = onSnapshot(worshipQ, snap => setWorshipServices(snap.docs.map(d => ({ ...d.data(), id: d.id } as WorshipService))));
-        return () => { unsubPrayer(); unsubPodcast(); unsubChat(); unsubWorship(); };
+        const unsubUsers = onSnapshot(collection(db, "users"), (snap) => setAllUsers(snap.docs.map(d => ({ ...d.data(), id: d.id } as User))));
+        return () => { unsubPrayer(); unsubPodcast(); unsubChat(); unsubWorship(); unsubUsers(); };
     }, [user]);
 
     // --- Handlers ---
@@ -659,6 +715,7 @@ const App = () => {
             <header className="app-header">
                  <div className="header-content"><img src={CHURCH.logo} alt="Logo" className="header-logo" /><h1>{CHURCH.name}</h1></div>
                  <div className="header-actions">
+                    {user.roles.includes('admin') && <button className="header-button" onClick={() => setModal('manageUsers')} aria-label="Manage Users"><span className="material-symbols-outlined">manage_accounts</span></button>}
                     <button className="header-button notifications" onClick={() => setShowNotifications(s => !s)} aria-label="Notifications">{hasUnread && <div className="notification-dot"></div>}<span className="material-symbols-outlined">notifications</span></button>
                     <button className="header-button" onClick={handleLogout} aria-label="Log Out"><span className="material-symbols-outlined">logout</span></button>
                 </div>
@@ -683,6 +740,7 @@ const App = () => {
             {modal === 'chatMembers' && activeChat && <ChatMembersModal chat={activeChat} allUsers={allUsers} onClose={() => setModal(null)} onAddMembers={handleAddMembers} />}
             {modal === 'addNews' && <AddNewsModal onClose={() => setModal(null)} onAddNews={handleAddNews} />}
             {modal === 'manageWorship' && <ManageWorshipModal services={worshipServices} onClose={() => setModal(null)} onAdd={handleAddWorship} onUpdate={handleUpdateWorship} onDelete={handleDeleteWorship} />}
+            {modal === 'manageUsers' && <ManageUsersModal allUsers={allUsers} currentUser={user} onClose={() => setModal(null)} />}
         </div>
     );
 };
