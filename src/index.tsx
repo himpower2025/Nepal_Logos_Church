@@ -125,7 +125,7 @@ const MCHEYNE_READING_PLAN = [
     'व्यवस्था २०, एफिसी ५, उपदेशक २, मत्ती २', 'व्यवस्था २१, एफिसी ६, उपदेशक ३, मत्ती ३', 'व्यवस्था २२, फिलिप्पी १, उपदेशक ४, मत्ती ४', 'व्यवस्था ২৩, फिलिप्पी २, उपदेशक ५, मत्ती ५',
     'व्यवस्था २४, फिलिप्पी ३, उपदेशक ६, मत्ती ६', 'व्यवस्था २५, फिलिप्पी ४, उपदेशक ७, मत्ती ७', 'व्यवस्था २६, कलस्सी १, उपदेशक ८, मत्ती ८', 'व्यवस्था २७, कलस्सी २, उपदेशक ९, मत्ती ९',
     'व्यवस्था २८, कलस्सी ३, उपदेशक १०, मत्ती १०', 'व्यवस्था २९, कलस्सी ४, उपदेशक ११, मत्ती ११', 'व्यवस्था ३०, १ थिस्सलोनिकी १, उपदेशक १२, मत्ती १२', 'व्यवस्था ३१, १ थिस्सलोनिकी २, श्रेष्ठगीत १, मत्ती १३',
-    'व्यवस्था ३２, १ थिस्सलोनिकी ३, श्रेष्ठगीत २, मत्ती १४', 'व्यवस्था ३३, १ थिस्सलोनिकी ४, श्रेष्ठगीत ३, मत्ती १५', 'व्यवस्था ३४, १ थिस्सलोनिकी ५, श्रेष्ठगीत ४, मत्ती १६', 'यहोशू १, २ थिस्सलोनिकी १, श्रेष्ठगीत ५, मत्ती १७',
+    'व्यवस्था ३２, १ थिस्सलोनिकी ३, श्रेष्ठगीत २, मत्ती १४', 'व्यवस्था ३３, १ थिस्सलोनिकी ४, श्रेष्ठगीत ३, मत्ती १५', 'व्यवस्था ३४, १ थिस्सलोनिकी ५, श्रेष्ठगीत ४, मत्ती १६', 'यहोशू १, २ थिस्सलोनिकी १, श्रेष्ठगीत ५, मत्ती १७',
     'यहोशू २, २ थिस्सलोनिकी २, श्रेष्ठगीत ६, मत्ती १८', 'यहोशू ३, २ थिस्सलोनिकी ३, श्रेष्ठगीत ७, मत्ती १९', 'यहोशू ४, १ तिमोथी १, श्रेष्ठगीत ८, मत्ती २०', 'यहोशू ५, १ तिमोथी २, यशैया १, मत्ती २१',
     'यहोशू ६, १ तिमोथी ३, यशैया २, मत्ती २२', 'यहोशू ७, १ तिमोथी ४, यशैया ३, मत्ती ২৩', 'यहोशू ८, १ तिमोथी ५, यशैया ४, मत्ती २४', 'यहोशू ९, १ तिमोथी ६, यशैया ५, मत्ती २५',
     'यहोशू १०, २ तिमोथी १, यशैया ६, मत्ती २६', 'यहोशू ११, २ तिमोथी २, यशैया ७, मत्ती २७', 'यहोशू १२, २ तिमोथी ३, यशैया ८, मत्ती २८', 'यहोशू १३, २ तिमोथी ४, यशैया ९, मर्कूस १',
@@ -427,11 +427,14 @@ const ChatListPage = ({ chats, onSelectChat, onCreateChat, currentUser }: { chat
 const ConversationPage = ({ chat, onBack, onSendMessage, onShowMembers, currentUser }: { chat: Chat; onBack: () => void; onSendMessage: (chatId: string, content: string) => void; onShowMembers: () => void; currentUser: User }) => {
     const [newMessage, setNewMessage] = useState('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
-    useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [chat.messages]);
+    const participants = chat.participants || [];
+    const messages = chat.messages || [];
+
+    useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
     const handleSend = () => { if (newMessage.trim()) { onSendMessage(chat.id, newMessage.trim()); setNewMessage(''); } };
-    const chatName = chat.isGroup ? chat.name || 'Group Chat' : chat.participants.find(p => p.id !== currentUser.id)?.name || 'Chat';
+    const chatName = chat.isGroup ? chat.name || 'Group Chat' : participants.find(p => p.id !== currentUser.id)?.name || 'Chat';
     return (
-        <div className="conversation-page"><header className={`conversation-header ${chat.isGroup ? 'is-group' : ''}`} onClick={chat.isGroup ? onShowMembers : undefined}><button className="back-button" onClick={onBack}><span className="material-symbols-outlined">arrow_back</span></button><h3>{chatName}</h3>{chat.isGroup ? <button className="header-button info-button"><span className="material-symbols-outlined">info</span></button> : <div style={{width: 40}}></div>}</header><div className="message-list">{chat.messages.map(msg => { const sender = chat.participants.find(p => p.id === msg.senderId), isSent = msg.senderId === currentUser.id; return (<div key={msg.id} className={`message-container ${isSent ? 'sent' : 'received'}`}>{chat.isGroup && !isSent && <div className="sender-name">{sender?.name || '...'}</div>}<div className="message-bubble">{msg.content}</div></div>);})}<div ref={messagesEndRef} /></div><div className="message-input-container"><input type="text" placeholder="Type a message..." value={newMessage} onChange={(e) => setNewMessage(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && handleSend()} /><button className="send-button" onClick={handleSend}><span className="material-symbols-outlined">send</span></button></div></div>
+        <div className="conversation-page"><header className={`conversation-header ${chat.isGroup ? 'is-group' : ''}`} onClick={chat.isGroup ? onShowMembers : undefined}><button className="back-button" onClick={onBack}><span className="material-symbols-outlined">arrow_back</span></button><h3>{chatName}</h3>{chat.isGroup ? <button className="header-button info-button"><span className="material-symbols-outlined">info</span></button> : <div style={{width: 40}}></div>}</header><div className="message-list">{messages.map((msg, index) => { const sender = participants.find(p => p.id === msg.senderId); const isSent = msg.senderId === currentUser.id; return (<div key={msg.createdAt?.toMillis() || index} className={`message-container ${isSent ? 'sent' : 'received'}`}>{chat.isGroup && !isSent && <div className="sender-name">{sender?.name || '...'}</div>}<div className="message-bubble">{msg.content}</div></div>);})}<div ref={messagesEndRef} /></div><div className="message-input-container"><input type="text" placeholder="Type a message..." value={newMessage} onChange={(e) => setNewMessage(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && handleSend()} /><button className="send-button" onClick={handleSend}><span className="material-symbols-outlined">send</span></button></div></div>
     );
 };
 const PrayerPage = ({ prayerRequests, onPray, onAddRequest, onSelectRequest, currentUser }: { prayerRequests: PrayerRequest[]; onPray: (id: string) => void; onAddRequest: () => void; onSelectRequest: (req: PrayerRequest) => void; currentUser: User; }) => (
@@ -740,7 +743,7 @@ const App = () => {
         const podcastQ = query(collection(db, "podcasts"), orderBy("createdAt", "desc"));
         const unsubPodcast = onSnapshot(podcastQ, async (snap) => setPodcasts(await Promise.all(snap.docs.map(async d => ({ ...d.data(), id: d.id, author: await fetchUser(d.data().authorId) } as Podcast)))));
         const chatQ = query(collection(db, "chats"), where("participantIds", "array-contains", user.id), orderBy("lastMessageTimestamp", "desc"));
-        const unsubChat = onSnapshot(chatQ, async (snap) => setChats(await Promise.all(snap.docs.map(async d => ({ ...d.data(), id: d.id, participants: await fetchUsers(d.data().participantIds), messages: (d.data().messages || []) } as Chat)))));
+        const unsubChat = onSnapshot(chatQ, async (snap) => setChats(await Promise.all(snap.docs.map(async (d) => { const data = d.data(); return ({ ...data, id: d.id, participants: await fetchUsers(data.participantIds || []), messages: (data.messages || []) } as Chat); }))));
         const worshipQ = query(collection(db, "worshipServices"), orderBy("createdAt", "desc"), limit(5));
         const unsubWorship = onSnapshot(worshipQ, snap => setWorshipServices(snap.docs.map(d => ({ ...d.data(), id: d.id } as WorshipService))));
         const unsubUsers = onSnapshot(collection(db, "users"), (snap) => setAllUsers(snap.docs.map(d => ({ ...d.data(), id: d.id } as User))));
