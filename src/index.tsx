@@ -106,11 +106,11 @@ const MCHEYNE_READING_PLAN = [
     'लेवी ३, प्रेरित ४, भजनसंग्रह ३４, कलस्सी ४', 'लेवी ४, प्रेरित ५, भजनसंग्रह ३５, १ थिस्सलोनिकी १', 'लेवी ५, प्रेरित ६, भजनसंग्रह ३６, १ थिस्सलोनिकी २', 'लेवी ६, प्रेरित ७, भजनसंग्रह ३７, १ थिस्सलोनिकी ३',
     'लेवी ७, प्रेरित ८, भजनसंग्रह ३８, १ थिस्सलोनिकी ४', 'लेवी ८, प्रेरित ९, भजनसंग्रह ३９, १ थिस्सलोनिकी ५', 'लेवी ९, प्रेरित १०, भजनसंग्रह ४०-४१, २ थिस्सलोनिकी १', 'लेवी १०, प्रेरित ११, भजनसंग्रह ४２-४३, २ थिस्सलोनिकी २',
     'लेवी ११, प्रेरित १२, भजनसंग्रह ४४-४५, २ थिस्सलोनिकी ३', 'लेवी १२, प्रेरित १३, भजनसंग्रह ४６-४७, १ तिमोथी १', 'लेवी १३, प्रेरित १४, भजनसंग्रह ४８-४９, १ तिमोथी २', 'लेवी १४, प्रेरित १५, भजनसंग्रह ५０, १ तिमोथी ३',
-    'लेवी १५, प्रेरित १६, भजनसंग्रह ५１, १ तिमोथी ४', 'लेवी १६, प्रेरित १७, भजनसंग्रह ५２-५４, १ तिमोथी ५', 'लेवी १७, प्रेरित १८, भजनसंग्रह ५５, १ तिमोथी ६', 'लेवी १८, प्रेरित १९, भजनसंग्रह ५６-५７, २ तिमोथी १',
+    'लेवी १५, प्रेरित १६, भजनसंग्रह ५１, १ तिमोथी ४', 'लेवी १६, प्रेरित १७, भजनसंग्रह ५２-५४, १ तिमोथी ५', 'लेवी १७, प्रेरित १८, भजनसंग्रह ५５, १ तिमोथी ६', 'लेवी १८, प्रेरित १९, भजनसंग्रह ५６-५７, २ तिमोथी १',
     'लेवी १९, प्रेरित २०, भजनसंग्रह ५８-५９, २ तिमोथी २', 'लेवी २०, प्रेरित २१, भजनसंग्रह ६０-６２, २ तिमोथी ३', 'लेवी २१, प्रेरित २२, भजनसंग्रह ६３-६５, २ तिмоथी ४', 'लेवी २२, प्रेरित ২৩, भजनसंग्रह ६６-६７, तीतस १',
     'लेवी ২৩, प्रेरित २४, भजनसंग्रह ६８, तीतस २', 'लेवी २४, प्रेरित २५, भजनसंग्रह ६９, तीतस ३', 'लेवी २५, प्रेरित २६, भजनसंग्रह ७０-७１, फिलेमोन', 'लेवी २६, प्रेरित २७, भजनसंग्रह ७２, हिब्रू १',
-    'लेवी २७, प्रेरित २८, भजनसंग्रह ७３-७４, हिब्रू २', 'गन्ती १, रोमी १, भजनसंग्रह ७５-७６, हिब्रू ३', 'गन्ती २, रोमी २, भजनसंग्रह ७７, हिब्रू ४', 'गन्ती ३, रोमी ३, भजनसंग्रह ७８, हिब्रू ५',
-    'गन्ती ४, रोमी ४, भजनसंग्रह ७９, हिब्रू ६', 'गन्ती ५, रोमी ५, भजनसंग्रह ८०, हिब्रू ७', 'गन्ती ६, रोमी ६, भजनसंग्रह ८１-８２, हिब्रू ८', 'गन्ती ७, रोमी ७, भजनसंग्रह ८３-८４, हिब्रू ९',
+    'लेवी २७, प्रेरित २८, भजनसंग्रह ७３-७४, हिब्रू २', 'गन्ती १, रोमी १, भजनसंग्रह ७５-७６, हिब्रू ३', 'गन्ती २, रोमी २, भजनसंग्रह ७７, हिब्रू ४', 'गन्ती ३, रोमी ३, भजनसंग्रह ७８, हिब्रू ५',
+    'गन्ती ४, रोमी ४, भजनसंग्रह ७９, हिब्रू ६', 'गन्ती ५, रोमी ५, भजनसंग्रह ८०, हिब्रू ७', 'गन्ती ६, रोमी ६, भजनसंग्रह ८１-８２, हिब्रू ८', 'गन्ती ७, रोमी ७, भजनसंग्रह ८３-८४, हिब्रू ९',
     'गन्ती ८, रोमी ८, भजनसंग्रह ८５-८６, हिब्रू १०', 'गन्ती ९, रोमी ९, भजनसंग्रह ८７-८८, हिब्रू ११', 'गन्ती १०, रोमी १०, भजनसंग्रह ८９, हिब्रू १२', 'गन्ती ११, रोमी ११, भजनसंग्रह ९０-९１, हिब्रू १३',
     'गन्ती १२, रोमी १२, भजनसंग्रह ९２-९４, याकूब १', 'गन्ती १३, रोमी १३, भजनसंग्रह ९５-९６, याकूब २', 'गन्ती १४, रोमी १४, भजनसंग्रह ९７-९９, याकूब ३', 'गन्ती १५, रोमी १५, भजनसंग्रह १००-१०２, याकूब ४',
     'गन्ती १६, रोमी १६, भजनसंग्रह १०３, याकूब ५', 'गन्ती १७, १ कोरिन्थी १, भजनसंग्रह १०４, १ पत्रुस १', 'गन्ती १८, १ कोरिन्थी २, भजनसंग्रह १०５, १ पत्रुस २', 'गन्ती १९, १ कोरिन्थी ३, भजनसंग्रह १०６, १ पत्रुस ३',
@@ -382,7 +382,7 @@ const PROVERBS_NNRV: { [key: number]: string } = {
 १२ कहिले सड़कमा, कहिले चोकहरूमा, र हरेक कुनामा त्‍यो ढुकेर बस्छे।
 १३ त्यसले त्यसलाई समाती र म्वाई खाई, र निर्लज्ज अनुहारले त्यसलाई भनी:
 १४ “मसँग मेलबलिको भेटी थियो, आज मैले मेरा भाकलहरू पूरा गरेँ।
-१५ यसकारण म तिमीलाई भेट्न, तिम्रो अनुहार खोज्‍न निस्केँ, र मैले तिमीलाई भेट्टाएँ।
+१५ यसकारण म तिमीलाई भेट्न, तिम्रो अनुहार खोज्‍n निस्केँ, र मैले तिमीलाई भेट्टाएँ।
 १६ मैले मेरो ओछ्यानमा सुन्दर गलैँचाहरू, मिश्रका रङ्गीन सुती कपडाहरू बिछ्याएकी छु।
 १७ मैले मेरो ओछ्यानमा मूर्र, अगरू र दालचिनी छर्केकी छु।
 १८ आऊ, बिहानसम्म हामी प्रेममा रमाऔं, हामी प्रेममा आनन्द मनाऔं।
@@ -1556,14 +1556,51 @@ const PrayerDetailsModal = ({ request, onClose, onPray, onComment, currentUser, 
     );
 };
 
-const CreateChatModal = ({ onClose, onStartChat, allUsers, currentUser }: { onClose: () => void; onStartChat: (userIds: string[]) => void; allUsers: User[]; currentUser: User }) => {
+const CreateChatModal = ({ onClose, onStartChat, currentUser }: { onClose: () => void; onStartChat: (userIds: string[]) => void; currentUser: User }) => {
+    const [allUsers, setAllUsers] = useState<User[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            setIsLoading(true);
+            const usersCollection = collection(db, "users");
+            const userSnapshot = await getDocs(usersCollection);
+            const userList = userSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as User));
+            setAllUsers(userList);
+            setIsLoading(false);
+        };
+        fetchUsers();
+    }, []);
+
     const handleToggleUser = (id: string) => setSelectedUserIds(prev => prev.includes(id) ? prev.filter(uid => uid !== id) : [...prev, id]);
     const handleCreate = () => { if (selectedUserIds.length > 0) onStartChat(selectedUserIds); };
     return (
-        <Modal onClose={onClose}><div className="create-chat-modal"><h3>नयाँ कुराकानी सुरु गर्नुहोस्</h3><div className="user-list">{allUsers.filter(u => u.id !== currentUser.id).map(user => { const isSelected = selectedUserIds.includes(user.id); return (<div key={user.id} className={`user-list-item selectable ${isSelected ? 'selected' : ''}`} onClick={() => handleToggleUser(user.id)}><div className="chat-avatar">{user.avatar}</div><span className="user-name">{user.name}</span><span className={`material-symbols-outlined checkbox-icon ${isSelected ? 'checked' : ''}`}>{isSelected ? 'check_box' : 'check_box_outline_blank'}</span></div>)})}</div><button className="action-button" onClick={handleCreate} disabled={selectedUserIds.length === 0}>{selectedUserIds.length > 1 ? 'समूह च्याट बनाउनुहोस्' : 'च्याट सुरु गर्नुहोस्'}</button></div></Modal>
+        <Modal onClose={onClose}>
+            <div className="create-chat-modal">
+                <h3>नयाँ कुराकानी सुरु गर्नुहोस्</h3>
+                <div className="user-list">
+                    {isLoading ? (<p>Loading users...</p>) : (
+                        allUsers.filter(u => u.id !== currentUser.id).map(user => { 
+                            const isSelected = selectedUserIds.includes(user.id); 
+                            return (
+                                <div key={user.id} className={`user-list-item selectable ${isSelected ? 'selected' : ''}`} onClick={() => handleToggleUser(user.id)}>
+                                    <div className="chat-avatar">{user.avatar}</div>
+                                    <span className="user-name">{user.name}</span>
+                                    <span className={`material-symbols-outlined checkbox-icon ${isSelected ? 'checked' : ''}`}>{isSelected ? 'check_box' : 'check_box_outline_blank'}</span>
+                                </div>
+                            )
+                        })
+                    )}
+                </div>
+                <button className="action-button" onClick={handleCreate} disabled={selectedUserIds.length === 0 || isLoading}>
+                    {selectedUserIds.length > 1 ? 'समूह च्याट बनाउनुहोस्' : 'च्याट सुरु गर्नुहोस्'}
+                </button>
+            </div>
+        </Modal>
     );
 };
+
 const AddPodcastModal = ({ onClose, onAddPodcast }: { onClose: () => void; onAddPodcast: (data: { title: string; audioFile: File; }) => void; }) => {
     const [title, setTitle] = useState('');
     const [audioFile, setAudioFile] = useState<File | null>(null);
@@ -1578,16 +1615,36 @@ const AddPodcastModal = ({ onClose, onAddPodcast }: { onClose: () => void; onAdd
         <Modal onClose={onClose}><form className="modal-form" onSubmit={handleSubmit}><h3>New Podcast</h3><input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required /><div className="recording-ui">{!audioFile && (<><h4>Record Audio</h4><button type="button" onClick={isRecording ? handleStopRecording : handleStartRecording} className={`record-button ${isRecording ? 'stop' : ''}`}>{isRecording && <div className="recording-dot"></div>}</button><p>{isRecording ? "Recording..." : "Tap to record"}</p></>)}{audioPreview && (<div className="audio-preview"><h4>Preview</h4><audio src={audioPreview} controls /><button type="button" className="action-button secondary" onClick={() => { setAudioFile(null); setAudioPreview(null); }}>Record Again</button></div>)}</div><button type="submit" className="action-button" disabled={!title || !audioFile}>Upload Podcast</button></form></Modal>
     );
 };
-const ChatMembersModal = ({ chat, allUsers, onClose, onAddMembers }: { chat: Chat; allUsers: User[]; onClose: () => void; onAddMembers: (chatId: string, userIds: string[]) => void; }) => {
+
+const ChatMembersModal = ({ chat, onClose, onAddMembers }: { chat: Chat; onClose: () => void; onAddMembers: (chatId: string, userIds: string[]) => void; }) => {
+    const [allUsers, setAllUsers] = useState<User[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [isAdding, setIsAdding] = useState(false);
     const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
+    
+    useEffect(() => {
+        if (isAdding) {
+            const fetchUsers = async () => {
+                setIsLoading(true);
+                const usersCollection = collection(db, "users");
+                const userSnapshot = await getDocs(usersCollection);
+                const userList = userSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as User));
+                setAllUsers(userList);
+                setIsLoading(false);
+            };
+            fetchUsers();
+        }
+    }, [isAdding]);
+
     const usersToAdd = allUsers.filter(u => !chat.participantIds.includes(u.id));
     const handleToggleUser = (id: string) => setSelectedUserIds(prev => prev.includes(id) ? prev.filter(uid => uid !== id) : [...prev, id]);
     const handleConfirmAdd = () => { if (selectedUserIds.length > 0) onAddMembers(chat.id, selectedUserIds); setIsAdding(false); setSelectedUserIds([]); };
+
     return (
-        <Modal onClose={onClose}><div className="chat-members-modal"><h3>कुराकानी जानकारी</h3>{!isAdding ? (<><h4>सहभागीहरू ({chat.participants.length})</h4><div className="user-list">{chat.participants.map(user => (<div key={user.id} className="user-list-item"><div className="chat-avatar">{user.avatar}</div><span className="user-name">{user.name}</span></div>))}</div><button className="action-button" onClick={() => setIsAdding(true)}><span className="material-symbols-outlined">person_add</span>सहभागीहरू थप्नुहोस्</button></>) : (<><h4>कुराकानीमा थप्नुहोस्</h4><div className="user-list">{usersToAdd.map(user => { const isSelected = selectedUserIds.includes(user.id); return (<div key={user.id} className={`user-list-item selectable ${isSelected ? 'selected' : ''}`} onClick={() => handleToggleUser(user.id)}><div className="chat-avatar">{user.avatar}</div><span className="user-name">{user.name}</span><span className={`material-symbols-outlined checkbox-icon ${isSelected ? 'checked' : ''}`}>{isSelected ? 'check_box' : 'check_box_outline_blank'}</span></div>)})}</div><button className="action-button" onClick={handleConfirmAdd} disabled={selectedUserIds.length === 0}>थप्नुहोस् ({selectedUserIds.length})</button><button className="action-button secondary" onClick={() => setIsAdding(false)}>रद्द गर्नुहोस्</button></>)}</div></Modal>
+        <Modal onClose={onClose}><div className="chat-members-modal"><h3>कुराकानी जानकारी</h3>{!isAdding ? (<><h4>सहभागीहरू ({chat.participants.length})</h4><div className="user-list">{chat.participants.map(user => (<div key={user.id} className="user-list-item"><div className="chat-avatar">{user.avatar}</div><span className="user-name">{user.name}</span></div>))}</div><button className="action-button" onClick={() => setIsAdding(true)}><span className="material-symbols-outlined">person_add</span>सहभागीहरू थप्नुहोस्</button></>) : (<><h4>कुराकानीमा थप्नुहोस्</h4><div className="user-list">{isLoading ? <p>Loading users...</p> : usersToAdd.map(user => { const isSelected = selectedUserIds.includes(user.id); return (<div key={user.id} className={`user-list-item selectable ${isSelected ? 'selected' : ''}`} onClick={() => handleToggleUser(user.id)}><div className="chat-avatar">{user.avatar}</div><span className="user-name">{user.name}</span><span className={`material-symbols-outlined checkbox-icon ${isSelected ? 'checked' : ''}`}>{isSelected ? 'check_box' : 'check_box_outline_blank'}</span></div>)})}</div><button className="action-button" onClick={handleConfirmAdd} disabled={selectedUserIds.length === 0}>थप्नुहोस् ({selectedUserIds.length})</button><button className="action-button secondary" onClick={() => setIsAdding(false)}>रद्द गर्नुहोस्</button></>)}</div></Modal>
     );
 };
+
 const AddNewsModal = ({ onClose, onAddNews }: { onClose: () => void; onAddNews: (data: { title: string; content: string; imageFile: File | null; }) => void; }) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
@@ -1627,8 +1684,19 @@ const ManageWorshipModal = ({ services, onClose, onAdd, onUpdate, onDelete }: { 
         <Modal onClose={onClose}><div className="manage-worship-modal"><h3>आरधना भिडियो व्यवस्थापन</h3><div className="list-container service-list-admin">{services.map(s => (<div key={s.id} className="list-item"><span>{s.title}</span><div><button onClick={() => setIsEditing(s)}><span className="material-symbols-outlined">edit</span></button><button onClick={() => onDelete(s.id)}><span className="material-symbols-outlined">delete</span></button></div></div>))}</div><div className="modal-form"><h4>{isEditing ? 'आरधना सम्पादन गर्नुहोस्' : 'नयाँ आरधना थप्नुहोस्'}</h4><input type="text" placeholder="आरधनाको शीर्षक" value={newTitle} onChange={e => setNewTitle(e.target.value)} /><input type="text" placeholder="YouTube वा Twitch URL" value={newUrl} onChange={e => setNewUrl(e.target.value)} /><button className="action-button" onClick={handleSave}> सुरक्षित गर्नुहोस्</button>{isEditing && <button className="action-button secondary" onClick={() => setIsEditing(null)}>सम्पादन रद्द गर्नुहोस्</button>}</div></div></Modal>
     );
 };
-const ManageUsersModal = ({ allUsers, onClose }: { allUsers: User[], onClose: () => void }) => {
-    const [users, setUsers] = useState<User[]>(allUsers);
+const ManageUsersModal = ({ onClose }: { onClose: () => void }) => {
+    const [users, setUsers] = useState<User[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        setIsLoading(true);
+        const q = query(collection(db, "users"), orderBy("name"));
+        const unsub = onSnapshot(q, (snap) => {
+            setUsers(snap.docs.map(d => ({ ...d.data(), id: d.id } as User)));
+            setIsLoading(false);
+        });
+        return () => unsub();
+    }, []);
 
     const handleRoleChange = async (userId: string, role: 'news_contributor' | 'podcast_contributor', checked: boolean) => {
         const userToUpdate = users.find(u => u.id === userId);
@@ -1649,34 +1717,32 @@ const ManageUsersModal = ({ allUsers, onClose }: { allUsers: User[], onClose: ()
         }
     };
 
-    useEffect(() => {
-        setUsers(allUsers);
-    }, [allUsers]);
-
     return (
         <Modal onClose={onClose}>
             <div className="manage-users-modal">
                 <h3>प्रयोगकर्ता व्यवस्थापन</h3>
-                <div className="user-list">
-                    {users.filter(u => !u.roles.includes('admin')).map(user => (
-                        <div key={user.id} className="user-list-item manage-user-item">
-                            <div className="user-info">
-                                <div className="chat-avatar">{user.avatar}</div>
-                                <span className="user-name">{user.name}</span>
+                {isLoading ? <p>Loading users...</p> : (
+                    <div className="user-list">
+                        {users.filter(u => !u.roles.includes('admin')).map(user => (
+                            <div key={user.id} className="user-list-item manage-user-item">
+                                <div className="user-info">
+                                    <div className="chat-avatar">{user.avatar}</div>
+                                    <span className="user-name">{user.name}</span>
+                                </div>
+                                <div className="user-roles">
+                                    <label>
+                                        <input type="checkbox" checked={user.roles.includes('news_contributor')} onChange={(e) => handleRoleChange(user.id, 'news_contributor', e.target.checked)} />
+                                        सूचना
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" checked={user.roles.includes('podcast_contributor')} onChange={(e) => handleRoleChange(user.id, 'podcast_contributor', e.target.checked)} />
+                                        Podcast
+                                    </label>
+                                </div>
                             </div>
-                            <div className="user-roles">
-                                <label>
-                                    <input type="checkbox" checked={user.roles.includes('news_contributor')} onChange={(e) => handleRoleChange(user.id, 'news_contributor', e.target.checked)} />
-                                    सूचना
-                                </label>
-                                <label>
-                                    <input type="checkbox" checked={user.roles.includes('podcast_contributor')} onChange={(e) => handleRoleChange(user.id, 'podcast_contributor', e.target.checked)} />
-                                    Podcast
-                                </label>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </Modal>
     );
@@ -1689,7 +1755,6 @@ const App = () => {
     const [prayerRequests, setPrayerRequests] = useState<PrayerRequest[]>([]);
     const [podcasts, setPodcasts] = useState<Podcast[]>([]);
     const [chats, setChats] = useState<Chat[]>([]);
-    const [allUsers, setAllUsers] = useState<User[]>([]);
     const [worshipServices, setWorshipServices] = useState<WorshipService[]>([]);
     
     // View states
@@ -1722,8 +1787,8 @@ const App = () => {
         const unsubChat = onSnapshot(chatQ, async (snap) => setChats(await Promise.all(snap.docs.map(async (d) => { const data = d.data(); return ({ ...data, id: d.id, participants: await fetchUsers(data.participantIds || []), messages: (data.messages || []) } as Chat); }))));
         const worshipQ = query(collection(db, "worshipServices"), orderBy("createdAt", "desc"), limit(5));
         const unsubWorship = onSnapshot(worshipQ, snap => setWorshipServices(snap.docs.map(d => ({ ...d.data(), id: d.id } as WorshipService))));
-        const unsubUsers = onSnapshot(collection(db, "users"), (snap) => setAllUsers(snap.docs.map(d => ({ ...d.data(), id: d.id } as User))));
-        return () => { unsubPrayer(); unsubPodcast(); unsubChat(); unsubWorship(); unsubUsers(); };
+        
+        return () => { unsubPrayer(); unsubPodcast(); unsubChat(); unsubWorship(); };
     }, [user]);
 
     // --- Handlers ---
@@ -1914,12 +1979,12 @@ const App = () => {
                 isSubmitting={isSubmitting}
                 initialData={editingPrayer}
             />}
-            {modal === 'createChat' && <CreateChatModal onClose={() => setModal(null)} onStartChat={handleStartChat} allUsers={allUsers} currentUser={user} />}
+            {modal === 'createChat' && <CreateChatModal onClose={() => setModal(null)} onStartChat={handleStartChat} currentUser={user} />}
             {modal === 'addPodcast' && <AddPodcastModal onClose={() => setModal(null)} onAddPodcast={handleAddPodcast} />}
-            {modal === 'chatMembers' && activeChat && <ChatMembersModal chat={activeChat} allUsers={allUsers} onClose={() => setModal(null)} onAddMembers={handleAddMembers} />}
+            {modal === 'chatMembers' && activeChat && <ChatMembersModal chat={activeChat} onClose={() => setModal(null)} onAddMembers={handleAddMembers} />}
             {modal === 'addNews' && <AddNewsModal onClose={() => setModal(null)} onAddNews={handleAddNews} />}
             {modal === 'manageWorship' && <ManageWorshipModal services={worshipServices} onClose={() => setModal(null)} onAdd={handleAddWorship} onUpdate={handleUpdateWorship} onDelete={handleDeleteWorship} />}
-            {modal === 'manageUsers' && <ManageUsersModal allUsers={allUsers} onClose={() => setModal(null)} />}
+            {modal === 'manageUsers' && <ManageUsersModal onClose={() => setModal(null)} />}
         </div>
     );
 };
