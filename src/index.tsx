@@ -104,20 +104,20 @@ const MCHEYNE_READING_PLAN = [
     'प्रस्थान ३५, यूहन्ना १७, भजनसंग्रह २०-२१, एफिसी ६', 'प्रस्थान ३६, यूहन्ना १८, भजनसंग्रह २२, फिलिप्पी १', 'प्रस्थान ३७, यूहन्ना १९, भजनसंग्रह ২৩-२४, फिलिप्पी २', 'प्रस्थान ३८, यूहन्ना २०, भजनसंग्रह २५-२६, फिलिप्पी ३',
     'प्रस्थान ३९, यूहन्ना २१, भजनसंग्रह २७-२९, फिलिप्पी ४', 'प्रस्थान ४०, प्रेरित १, भजनसंग्रह ३０-३１, कलस्सी १', 'लेवी १, प्रेरित २, भजनसंग्रह ३２, कलस्सी २', 'लेवी २, प्रेरित ३, भजनसंग्रह ३３, कलस्सी ३',
     'लेवी ३, प्रेरित ४, भजनसंग्रह ३４, कलस्सी ४', 'लेवी ४, प्रेरित ५, भजनसंग्रह ३５, १ थिस्सलोनिकी १', 'लेवी ५, प्रेरित ६, भजनसंग्रह ३６, १ थिस्सलोनिकी २', 'लेवी ६, प्रेरित ७, भजनसंग्रह ३７, १ थिस्सलोनिकी ३',
-    'लेवी ७, प्रेरित ८, भजनसंग्रह ३８, १ थिस्सलोनिकी ४', 'लेवी ८, प्रेरित ९, भजनसंग्रह ३９, १ थिस्सलोनिकी ५', 'लेवी ९, प्रेरित १०, भजनसंग्रह ४०-४१, २ थिस्सलोनिकी १', 'लेवी १०, प्रेरित ११, भजनसंग्रह ४２-४३, २ थिस्सलोनिकी २',
-    'लेवी ११, प्रेरित १२, भजनसंग्रह ४४-४५, २ थिस्सलोनिकी ३', 'लेवी १२, प्रेरित १३, भजनसंग्रह ४６-४७, १ तिमोथी १', 'लेवी १३, प्रेरित १४, भजनसंग्रह ४８-४９, १ तिमोथी २', 'लेवी १४, प्रेरित १५, भजनसंग्रह ५０, १ तिमोथी ३',
-    'लेवी १५, प्रेरित १६, भजनसंग्रह ५１, १ तिमोथी ४', 'लेवी १६, प्रेरित १७, भजनसंग्रह ५２-५४, १ तिमोथी ५', 'लेवी १७, प्रेरित १८, भजनसंग्रह ५５, १ तिमोथी ६', 'लेवी १८, प्रेरित १९, भजनसंग्रह ५６-५７, २ तिमोथी १',
-    'लेवी १९, प्रेरित २०, भजनसंग्रह ५８-५９, २ तिमोथी २', 'लेवी २०, प्रेरित २१, भजनसंग्रह ६０-６２, २ तिमोथी ३', 'लेवी २१, प्रेरित २२, भजनसंग्रह ६３-६５, २ तिмоथी ४', 'लेवी २२, प्रेरित ২৩, भजनसंग्रह ६６-६７, तीतस १',
+    'लेवी ७, प्रेरित ८, भजनसंग्रह ३８, १ थिस्सलोनिकी ४', 'लेवी ८, प्रेरित ९, भजनसंग्रह ३９, १ थिस्सलोनिकी ५', 'लेवी ९, प्रेरित १०, भजनसंग्रह ४०-४१, २ थिस्सलोनिकी १', 'लेवी १०, प्रेरित ११, भजनसंग्रह ۴２-४३, २ थिस्सलोनिकी २',
+    'लेवी ११, प्रेरित १२, भजनसंग्रह ४४-४५, २ थिस्सलोनिकी ३', 'लेवी १२, प्रेरित १३, भजनसंग्रह ४６-४७, १ तिमोथी १', 'लेवी १३, प्रेरित १४, भजनसंग्रह ४８-४९, १ तिमोथी २', 'लेवी १४, प्रेरित १५, भजनसंग्रह ५０, १ तिमोथी ३',
+    'लेवी १५, प्रेरित १६, भजनसंग्रह ५１, १ तिमोथी ४', 'लेवी १६, प्रेरित १७, भजनसंग्रह ५２-५४, १ तिमोथी ५', 'लेवी १७, प्रेरित १८, भजनसंग्रह ५５, १ तिमोथी ६', 'लेवी १८, प्रेरित १९, भजनसंग्रह ५６-५७, २ तिमोथी १',
+    'लेवी १९, प्रेरित २०, भजनसंग्रह ५８-५９, २ तिमोथी २', 'लेवी २०, प्रेरित २१, भजनसंग्रह ६０-６２, २ तिमोथी ३', 'लेवी २१, प्रेरित २२, भजनसंग्रह ६３-६５, २ तिмоथी ४', 'लेवी २२, प्रेरित ২৩, भजनसंग्रह ६６-६७, तीतस १',
     'लेवी ২৩, प्रेरित २४, भजनसंग्रह ६８, तीतस २', 'लेवी २४, प्रेरित २५, भजनसंग्रह ६９, तीतस ३', 'लेवी २५, प्रेरित २६, भजनसंग्रह ७０-७１, फिलेमोन', 'लेवी २६, प्रेरित २७, भजनसंग्रह ७２, हिब्रू १',
     'लेवी २७, प्रेरित २८, भजनसंग्रह ७３-७४, हिब्रू २', 'गन्ती १, रोमी १, भजनसंग्रह ७５-७６, हिब्रू ३', 'गन्ती २, रोमी २, भजनसंग्रह ७７, हिब्रू ४', 'गन्ती ३, रोमी ३, भजनसंग्रह ७８, हिब्रू ५',
-    'गन्ती ४, रोमी ४, भजनसंग्रह ७９, हिब्रू ६', 'गन्ती ५, रोमी ५, भजनसंग्रह ८०, हिब्रू ७', 'गन्ती ६, रोमी ६, भजनसंग्रह ८１-８２, हिब्रू ८', 'गन्ती ७, रोमी ७, भजनसंग्रह ८３-८४, हिब्रू ९',
+    'गन्ती ४, रोमी ४, भजनसंग्रह ७９, हिब्रू ६', 'गन्ती ५, रोमी ५, भजनसंग्रह ८०, हिब्रू ७', 'गन्ती ६, रोमी ६, भजनसंग्रह ८１-८２, हिब्रू ८', 'गन्ती ७, रोमी ७, भजनसंग्रह ८３-८४, हिब्रू ९',
     'गन्ती ८, रोमी ८, भजनसंग्रह ८５-८６, हिब्रू १०', 'गन्ती ९, रोमी ९, भजनसंग्रह ८７-८८, हिब्रू ११', 'गन्ती १०, रोमी १०, भजनसंग्रह ८９, हिब्रू १२', 'गन्ती ११, रोमी ११, भजनसंग्रह ९０-९１, हिब्रू १३',
-    'गन्ती १२, रोमी १२, भजनसंग्रह ९２-९４, याकूब १', 'गन्ती १३, रोमी १३, भजनसंग्रह ९５-९６, याकूब २', 'गन्ती १४, रोमी १४, भजनसंग्रह ९７-९９, याकूब ३', 'गन्ती १५, रोमी १५, भजनसंग्रह १००-१०２, याकूब ४',
+    'गन्ती १२, रोमी १२, भजनसंग्रह ९２-९４, याकूब १', 'गन्ती १३, रोमी १३, भजनसंग्रह ९５-९६, याकूब २', 'गन्ती १४, रोमी १४, भजनसंग्रह ९７-९９, याकूब ३', 'गन्ती १५, रोमी १५, भजनसंग्रह १००-१०２, याकूब ४',
     'गन्ती १६, रोमी १६, भजनसंग्रह १०３, याकूब ५', 'गन्ती १७, १ कोरिन्थी १, भजनसंग्रह १०４, १ पत्रुस १', 'गन्ती १८, १ कोरिन्थी २, भजनसंग्रह १०５, १ पत्रुस २', 'गन्ती १९, १ कोरिन्थी ३, भजनसंग्रह १०６, १ पत्रुस ३',
     'गन्ती २०, १ कोरिन्थी ४, भजनसंग्रह १०７, १ पत्रुस ४', 'गन्ती २१, १ कोरिन्थी ५, भजनसंग्रह १०８-१०９, १ पत्रुस ५', 'गन्ती २२, १ कोरिन्थी ६, भजनसंग्रह १１０-१１１, २ पत्रुस १', 'गन्ती ২৩, १ कोरिन्थी ७, भजनसंग्रह १１２-१１４, २ पत्रुस २',
     'गन्ती २४, १ कोरिन्थी ८, भजनसंग्रह १１５-१１６, २ पत्रुस ३', 'गन्ती २५, १ कोरिन्थी ९, भजनसंग्रह १１７-११८, १ यूहन्ना १', 'गन्ती २६, १ कोरिन्थी १०, भजनसंग्रह ११९:१-२４, १ यूहन्ना २', 'गन्ती २७, १ कोरिन्थी ११, भजनसंग्रह ११९:२５-４８, १ यूहन्ना ३',
     'गन्ती २८, १ कोरिन्थी १२, भजनसंग्रह ११९:४९-７２, १ यूहन्ना ४', 'गन्ती २९, १ कोरिन्थी १३, भजनसंग्रह ११९:７３-９６, १ यूहन्ना ५', 'गन्ती ३०, १ कोरिन्थी १४, भजनसंग्रह ११९:９７-१２０, २ यूहन्ना', 'गन्ती ३१, १ कोरिन्थी १५, भजनसंग्रह ११९:१२１-१４４, ३ यूहन्ना',
-    'गन्ती ३２, १ कोरिन्थी १६, भजनसंग्रह ११९:१４５-१７６, यहूदा', 'गन्ती ३३, २ कोरिन्थी १, भजनसंग्रह १२०-१२２, प्रकाश १', 'गन्ती ३४, २ कोरिन्थी २, भजनसंग्रह १२３-१२５, प्रकाश २', 'गन्ती ३५, २ कोरिन्थी ३, भजनसंग्रह १२６-१२８, प्रकाश ३',
+    'गन्ती ३２, १ कोरिन्थी १६, भजनसंग्रह ११९:१４５-१७６, यहूदा', 'गन्ती ३३, २ कोरिन्थी १, भजनसंग्रह १२०-१२２, प्रकाश १', 'गन्ती ३४, २ कोरिन्थी २, भजनसंग्रह १२３-१२５, प्रकाश २', 'गन्ती ३५, २ कोरिन्थी ३, भजनसंग्रह १२６-१२８, प्रकाश ३',
     'गन्ती ३６, २ कोरिन्थी ४, भजनसंग्रह १२９-१३１, प्रकाश ४', 'व्यवस्था १, २ कोरिन्थी ५, भजनसंग्रह १३２-१३４, प्रकाश ५', 'व्यवस्था २, २ कोरिन्थी ६, भजनसंग्रह १३５-१३６, प्रकाश ६', 'व्यवस्था ३, २ कोरिन्थी ७, भजनसंग्रह १३７-१३８, प्रकाश ७',
     'व्यवस्था ४, २ कोरिन्थी ८, भजनसंग्रह १३９, प्रकाश ८', 'व्यवस्था ५, २ कोरिन्थी ९, भजनसंग्रह १४०-१४１, प्रकाश ९', 'व्यवस्था ६, २ कोरिन्थी १०, भजनसंग्रह १४２-१४３, प्रकाश १०', 'व्यवस्था ७, २ कोरिन्थी ११, भजनसंग्रह १४４-१४５, प्रकाश ११',
     'व्यवस्था ८, २ कोरिन्थी १२, भजनसंग्रह १४６-१४７, प्रकाश १२', 'व्यवस्था ९, २ कोरिन्थी १३, भजनसंग्रह १४８-१५０, प्रकाश १३', 'व्यवस्था १०, गलाती १, हितोपदेश १, प्रकाश १४', 'व्यवस्था ११, गलाती २, हितोपदेश २, प्रकाश १५',
@@ -640,7 +640,7 @@ const PROVERBS_NNRV: { [key: number]: string } = {
 ४ परमप्रभुले हरेक कुरालाई त्यसको आफ्‍नै उद्देश्यको निम्‍ति बनाउनुभएको छ, दुष्‍टलाई पनि विपत्तिको दिनको निम्‍ति।
 ५ हृदयमा घमण्डी हुने हरेक मानिस परमप्रभुको निम्‍ति घृणित छ। निश्‍चय नै, ऊ दण्डविना रहनेछैन।
 ६ करारको प्रेम र विश्‍वसनीयताले अधर्मको प्रायश्‍चित्त हुन्‍छ, र परमप्रभुको भयद्वारा मानिसहरू दुष्‍टताबाट अलग रहन्छन्।
-७ जब मानिसका मार्गहरूले परमप्रभुलाई प्रसन्‍न पार्छन्, तब उहाँले त्‍यसका शत्रुहरूलाई पनि त्यससँग शान्तिमा रहन लगाउनुहुन्‍छ।
+७ जब मानिसका मार्गहरूले परमप्रभुलाई प्रसन्‍न पार्छन्, तब उहाँले त्‍यसका शत्रुहरूलाई पनि त्यससँग शान्तिमा रहन लगाउनुहुनेछ।
 ८ धेरै आम्दानी र त्यससँगै अन्‍याय हुनुभन्दा, थोरै र धार्मिकता हुनु उत्तम हो।
 ९ मानिसको हृदयले आफ्‍नो मार्गको योजना बनाउँछ, तर परमप्रभुले त्‍यसका पाइलाहरूलाई स्‍थापित गर्नुहुन्‍छ।
 १० राजाका ओठहरूमा ईश्‍वरीय वाणी हुन्‍छ, त्‍यसको मुखले न्‍यायमा गल्ती गर्नुहुँदैन।
@@ -832,7 +832,7 @@ const PROVERBS_NNRV: { [key: number]: string } = {
 २१ ताकि म तँलाई सत्‍यका वचनहरूको निश्‍चयता सिकाउन सकूँ, ताकि तैंले तँलाई पठाउनेहरूलाई साँचो जवाफ फर्काउन सकोस्।
 २२ गरीबलाई नलुट्, किनभने ऊ गरीब छ, न त पीडितलाई ढोकामा कुल्ची।
 २३ किनभने परमप्रभुले तिनीहरूको मुद्दा लड्नुहुनेछ, र तिनीहरूलाई लुट्नेहरूको प्राण लुट्नुहुनेछ।
-२४ छिट्टो रिसाउने मानिससँग मित्रता नगर्, न त उग्र स्वभावको मानिससँग सङ्गत गर्,
+२४ छिट्टै रिसाउने मानिससँग मित्रता नगर्, न त उग्र स्वभावको मानिससँग सङ्गत गर्,
 २५ नत्रता तैंले त्‍यसका मार्गहरू सिक्नेछस्, र आफ्‍नै प्राणको निम्‍ति पासोमा पर्नेछस्।
 २६ हात मिलाउनेहरूमध्ये, वा ऋणको निम्‍ति जमानत बस्‍नेहरूमध्ये एक नबन्।
 २७ यदि तँसँग तिर्नलाई केही छैन भने, उसले किन तेरो ओछ्यान तेरो मुनिबाट लैजानुपर्छ र?
@@ -842,7 +842,7 @@ const PROVERBS_NNRV: { [key: number]: string } = {
 २ यदि तँ पेटू छस् भने, तेरो घिच्रोमा एउटा छुरी राख्।
 ३ त्‍यसका स्‍वादिष्‍ट भोजनहरूको लालसा नगर्, किनभने त्‍यो भोजन छली हुन सक्‍छ।
 ४ धनी हुनलाई परिश्रम नगर्, र आफ्‍नो समझ देखाउन छोड्।
-५ तैंले आफ्‍ना आँखा त्‍यसतिर लगाउने बित्तिकै के त्‍यो गइहाल्‍छ र? किनभने धनले अवश्‍य नै चीलजस्‍तै पखेटाहरू लगाउँछ, र आकाशतिर उडिhaल्‍छ।
+५ तैंले आफ्‍ना आँखा त्‍यसतिर लगाउने बित्तिकै के त्‍यो गइhaल्‍छ र? किनभने धनले अवश्‍य नै चीलजस्‍तै पखेटाहरू लगाउँछ, र आकाशतिर उडिhaल्‍छ।
 ६ कन्जूस मानिसको भोजन नखा, न त त्‍यसका स्‍वादिष्‍ट भोजनहरूको लालसा गर्।
 ७ किनभने त्‍यो त्‍यस्‍तो मानिस हो, जसले भोजनको मोल सधैँ गनिरहन्छ। त्‍यसले तँलाई भन्छ, “खाऊ र पिओ,” तर त्‍यसको हृदय तँसँग हुँदैन।
 ८ तैंले खाएको अलिकति पनि तैंले उगेल्‍नुपर्छ, र तैंले बोलेका मीठा वचनहरू खेर जानेछन्।
@@ -1398,12 +1398,9 @@ const ConversationPage = ({ chat, onBack, onSendMessage, onShowMembers, currentU
             if (!msg || typeof msg !== 'object' || !msg.senderId) {
                 return null;
             }
-            const sender = participants.find(p => p.id === msg.senderId); 
+            const sender = msg.sender || participants.find(p => p.id === msg.senderId); 
             const isSent = msg.senderId === currentUser.id; 
-            const key = (msg.createdAt && typeof msg.createdAt.toMillis === 'function')
-                ? `${msg.createdAt.toMillis()}-${index}`
-                : `msg-${index}`;
-
+            const key = msg.id || (msg.createdAt?.toMillis ? `${msg.createdAt.toMillis()}-${index}` : `msg-${index}`);
             return (<div key={key} className={`message-container ${isSent ? 'sent' : 'received'}`}>{chat.isGroup && !isSent && <div className="sender-name">{sender?.name || '...'}</div>}<div className="message-bubble">{msg.content || ''}</div></div>);
         })}<div ref={messagesEndRef} /></div><div className="message-input-container"><input type="text" placeholder="सन्देश लेख्नुहोस्..." value={newMessage} onChange={(e) => setNewMessage(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && handleSend()} /><button className="send-button" onClick={handleSend}><span className="material-symbols-outlined">send</span></button></div></div>
     );
@@ -1672,6 +1669,10 @@ const ManageWorshipModal = ({ services, onClose, onAdd, onUpdate, onDelete }: { 
     }, [isEditing]);
 
     const handleSave = () => {
+        if (newTitle.trim() === '' || newUrl.trim() === '') {
+            alert("Please fill in both title and URL.");
+            return;
+        }
         if (isEditing) {
             onUpdate(isEditing.id, { title: newTitle, videoUrl: newUrl });
         } else {
@@ -1779,23 +1780,82 @@ const App = () => {
 
     useEffect(() => {
         if (!user) return;
+        
         const prayerQ = query(collection(db, "prayerRequests"), orderBy("createdAt", "desc"));
         const unsubPrayer = onSnapshot(prayerQ, async (snap) => setPrayerRequests(await Promise.all(snap.docs.map(async d => ({ ...d.data(), id: d.id, authorId: d.data().authorId, author: await fetchUser(d.data().authorId), comments: await Promise.all((d.data().comments || []).map(async (c: any) => ({...c, id: Math.random().toString(), author: await fetchUser(c.authorId)}))), prayedBy: d.data().prayedBy || [] } as PrayerRequest)))));
+        
         const podcastQ = query(collection(db, "podcasts"), orderBy("createdAt", "desc"));
         const unsubPodcast = onSnapshot(podcastQ, async (snap) => setPodcasts(await Promise.all(snap.docs.map(async d => ({ ...d.data(), id: d.id, author: await fetchUser(d.data().authorId) } as Podcast)))));
-        const chatQ = query(collection(db, "chats"), where("participantIds", "array-contains", user.id), orderBy("lastMessageTimestamp", "desc"));
-        const unsubChat = onSnapshot(chatQ, async (snap) => setChats(await Promise.all(snap.docs.map(async (d) => { const data = d.data(); return ({ ...data, id: d.id, participants: await fetchUsers(data.participantIds || []), messages: (data.messages || []) } as Chat); }))));
+        
         const worshipQ = query(collection(db, "worshipServices"), orderBy("createdAt", "desc"), limit(5));
         const unsubWorship = onSnapshot(worshipQ, snap => setWorshipServices(snap.docs.map(d => ({ ...d.data(), id: d.id } as WorshipService))));
+
+        const chatQ = query(collection(db, "chats"), where("participantIds", "array-contains", user.id), orderBy("lastMessageTimestamp", "desc"));
+        const unsubChat = onSnapshot(chatQ, async (snap) => {
+            const serverChats = await Promise.all(snap.docs.map(async (d) => {
+                const data = d.data();
+                return {
+                    ...data,
+                    id: d.id,
+                    participants: await fetchUsers(data.participantIds || []),
+                    messages: (data.messages || [])
+                } as Chat;
+            }));
+
+            setChats(currentChats => {
+                const serverChatsMap = new Map(serverChats.map(c => [c.id, c]));
+                let mergedChats = [...serverChats];
+                const activeChatInOldState = currentChats.find(c => c.id === activeChatId);
+
+                if (activeChatId && activeChatInOldState && !serverChatsMap.has(activeChatId)) {
+                    mergedChats.push(activeChatInOldState);
+                }
+
+                return mergedChats.sort((a, b) => (b.lastMessageTimestamp?.toMillis() || 0) - (a.lastMessageTimestamp?.toMillis() || 0));
+            });
+        });
         
         return () => { unsubPrayer(); unsubPodcast(); unsubChat(); unsubWorship(); };
-    }, [user]);
+    }, [user, activeChatId]);
 
     // --- Handlers ---
     const handleLogout = () => signOut(auth);
     const handlePray = async (reqId: string) => { if (user) await updateDoc(doc(db, "prayerRequests", reqId), { prayedBy: prayerRequests.find(r => r.id === reqId)?.prayedBy.includes(user.id) ? arrayRemove(user.id) : arrayUnion(user.id) }); };
     const handleComment = async (reqId: string, text: string) => { if (user) await updateDoc(doc(db, "prayerRequests", reqId), { comments: arrayUnion({ authorId: user.id, content: text, createdAt: Timestamp.now() }) }); };
-    const handleSendMessage = async (chatId: string, content: string) => { if (user) { const now = Timestamp.now(); await updateDoc(doc(db, "chats", chatId), { messages: arrayUnion({ senderId: user.id, content, type: 'text', createdAt: now }), lastMessageTimestamp: now }); }};
+    
+    const handleSendMessage = async (chatId: string, content: string) => {
+        if (!user) return;
+        
+        const now = Timestamp.now();
+        const newMessage: Message = {
+            id: `local-${Date.now()}`,
+            senderId: user.id,
+            sender: user,
+            content,
+            type: 'text',
+            createdAt: now,
+        };
+    
+        setChats(prevChats => {
+            const newChats = prevChats.map(chat => {
+                if (chat.id === chatId) {
+                    return { 
+                        ...chat, 
+                        messages: [...(chat.messages || []), newMessage],
+                        lastMessageTimestamp: now
+                    };
+                }
+                return chat;
+            });
+            return newChats.sort((a, b) => (b.lastMessageTimestamp?.toMillis() || 0) - (a.lastMessageTimestamp?.toMillis() || 0));
+        });
+    
+        await updateDoc(doc(db, "chats", chatId), { 
+            messages: arrayUnion({ senderId: user.id, content, type: 'text', createdAt: now }), 
+            lastMessageTimestamp: now 
+        });
+    };
+
     const handleAddMembers = async (chatId: string, newUserIds: string[]) => await updateDoc(doc(db, "chats", chatId), { participantIds: arrayUnion(...newUserIds) });
 
     const uploadFile = async (file: File, path: string) => {
@@ -1824,12 +1884,10 @@ const App = () => {
         setIsSubmitting(true);
         try {
             let imageUrl = data.oldImageUrl || '';
-            // Case 1: Remove existing image
             if (data.removeImage && data.oldImageUrl) {
                 await deleteObject(ref(storage, data.oldImageUrl));
                 imageUrl = '';
             }
-            // Case 2: Upload a new image (replacing old one if it exists)
             if (data.imageFile) {
                 if (data.oldImageUrl) {
                     await deleteObject(ref(storage, data.oldImageUrl));
@@ -1859,7 +1917,7 @@ const App = () => {
                 await deleteObject(imageRef);
             }
             await deleteDoc(doc(db, "prayerRequests", reqId));
-            setSelectedPrayerRequest(null); // Close the details modal
+            setSelectedPrayerRequest(null);
         } catch (error) {
             console.error("Error deleting prayer request: ", error);
             alert("Failed to delete request.");
@@ -1882,18 +1940,42 @@ const App = () => {
 
     const handleStartChat = async (otherUserIds: string[]) => {
         if (!user || otherUserIds.length === 0) return;
-        const participantIds = [...new Set([user.id, ...otherUserIds])].sort();
-        const existingChatQ = query(collection(db, "chats"), where("participantIds", "==", participantIds));
-        const existingChats = await getDocs(existingChatQ);
-        if (!existingChats.empty) setActiveChatId(existingChats.docs[0].id);
-        else {
-            const isGroup = participantIds.length > 2;
-            const participants = await fetchUsers(otherUserIds);
-            const chatName = isGroup ? `${participants.map(p=>p.name).join(', ')}` : '';
-            const newChatRef = await addDoc(collection(db, "chats"), { participantIds, messages: [], lastMessageTimestamp: serverTimestamp(), isGroup, name: chatName });
-            setActiveChatId(newChatRef.id);
-        }
         setModal(null);
+        
+        const participantIds = [...new Set([user.id, ...otherUserIds])].sort();
+        
+        const existingChatQ = query(collection(db, "chats"), where("participantIds", "==", participantIds));
+        const qSnapshot = await getDocs(existingChatQ);
+        
+        if (!qSnapshot.empty) {
+            setActiveChatId(qSnapshot.docs[0].id);
+            return;
+        }
+        
+        const isGroup = participantIds.length > 2;
+        const participants = await fetchUsers(participantIds);
+        const chatName = isGroup ? participants.filter(p => p.id !== user.id).map(p => p.name).join(', ') : '';
+        
+        const newChatRef = await addDoc(collection(db, "chats"), { 
+            participantIds, 
+            messages: [], 
+            lastMessageTimestamp: serverTimestamp(), 
+            isGroup, 
+            name: chatName 
+        });
+    
+        const newChat: Chat = {
+            id: newChatRef.id,
+            participantIds,
+            participants,
+            messages: [],
+            lastMessageTimestamp: Timestamp.now(),
+            isGroup,
+            name: chatName
+        };
+    
+        setChats(prev => [newChat, ...prev].sort((a, b) => (b.lastMessageTimestamp?.toMillis() || 0) - (a.lastMessageTimestamp?.toMillis() || 0)));
+        setActiveChatId(newChat.id);
     };
 
     const handleAddWorship = async (service: Omit<WorshipService, 'id'|'createdAt'>) => await addDoc(collection(db, 'worshipServices'), { ...service, createdAt: serverTimestamp() });
@@ -1946,47 +2028,35 @@ const App = () => {
             </header>
             <main className="main-content">{renderPage()}</main>
             
-            {showNotifications && <NotificationPanel notifications={[]} onClose={() => setShowNotifications(false)} />}
-
+            {showNotifications && <NotificationPanel notifications={MOCK_NOTIFICATIONS} onClose={() => setShowNotifications(false)} />}
+            
             <nav className="bottom-nav">
-                {NAV_ORDER.map(page => {
-                    const icons: { [key: string]: string } = { worship: 'church', news: 'feed', bible: 'book_2', fellowship: 'groups', prayer: 'volunteer_activism', podcast: 'podcasts' };
-                    return (<button key={page} className={`nav-item ${activePage === page ? 'active' : ''}`} onClick={() => { setActivePage(page); setActiveChatId(null); }}><span className="material-symbols-outlined">{icons[page]}</span><span>{TRANSLATIONS[page]}</span></button>);
-                })}
+                {NAV_ORDER.map(page => (
+                     <button key={page} className={`nav-item ${activePage === page ? 'active' : ''}`} onClick={() => { setActivePage(page); setActiveChatId(null); }}>
+                        <span className="material-symbols-outlined">{
+                            {worship: 'church', podcast: 'podcasts', news: 'feed', bible: 'book_2', fellowship: 'groups', prayer: 'volunteer_activism'}[page]
+                        }</span>
+                        <span>{TRANSLATIONS[page]}</span>
+                    </button>
+                ))}
             </nav>
             
-            {openPrayer && <PrayerDetailsModal 
-                request={openPrayer} 
-                onClose={() => setSelectedPrayerRequest(null)} 
-                onPray={handlePray} 
-                onComment={handleComment} 
-                currentUser={user}
-                onEdit={(req) => {
-                    setSelectedPrayerRequest(null);
-                    setEditingPrayer(req);
-                }}
-                onDelete={handleDeletePrayerRequest}
-             />}
-            
-            {modal === 'addPrayer' && <PrayerRequestFormModal 
-                onClose={() => setModal(null)} 
-                onSubmit={handleAddPrayerRequest} 
-                isSubmitting={isSubmitting} 
-            />}
-            {editingPrayer && <PrayerRequestFormModal 
-                onClose={() => setEditingPrayer(null)}
-                onSubmit={handleUpdatePrayerRequest}
-                isSubmitting={isSubmitting}
-                initialData={editingPrayer}
-            />}
-            {modal === 'createChat' && <CreateChatModal onClose={() => setModal(null)} onStartChat={handleStartChat} currentUser={user} />}
-            {modal === 'addPodcast' && <AddPodcastModal onClose={() => setModal(null)} onAddPodcast={handleAddPodcast} />}
-            {modal === 'chatMembers' && activeChat && <ChatMembersModal chat={activeChat} onClose={() => setModal(null)} onAddMembers={handleAddMembers} />}
+            {modal === 'addPrayer' && <PrayerRequestFormModal onClose={() => setModal(null)} onSubmit={handleAddPrayerRequest} isSubmitting={isSubmitting}/>}
+            {editingPrayer && <PrayerRequestFormModal onClose={() => setEditingPrayer(null)} onSubmit={handleUpdatePrayerRequest} initialData={editingPrayer} isSubmitting={isSubmitting}/>}
+            {openPrayer && <PrayerDetailsModal request={openPrayer} onClose={() => setSelectedPrayerRequest(null)} onPray={handlePray} onComment={handleComment} currentUser={user} onEdit={(req) => { setSelectedPrayerRequest(null); setEditingPrayer(req);}} onDelete={handleDeletePrayerRequest} />}
             {modal === 'addNews' && <AddNewsModal onClose={() => setModal(null)} onAddNews={handleAddNews} />}
-            {modal === 'manageWorship' && <ManageWorshipModal services={worshipServices} onClose={() => setModal(null)} onAdd={handleAddWorship} onUpdate={handleUpdateWorship} onDelete={handleDeleteWorship} />}
+            {modal === 'addPodcast' && <AddPodcastModal onClose={() => setModal(null)} onAddPodcast={handleAddPodcast} />}
+            {modal === 'createChat' && user && <CreateChatModal onClose={() => setModal(null)} onStartChat={handleStartChat} currentUser={user}/>}
+            {modal === 'chatMembers' && activeChat && <ChatMembersModal chat={activeChat} onClose={() => setModal(null)} onAddMembers={handleAddMembers} />}
+            {modal === 'manageWorship' && <ManageWorshipModal services={worshipServices} onClose={() => setModal(null)} onAdd={handleAddWorship} onUpdate={handleUpdateWorship} onDelete={handleDeleteWorship}/>}
             {modal === 'manageUsers' && <ManageUsersModal onClose={() => setModal(null)} />}
         </div>
     );
 };
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(<React.StrictMode><App /></React.StrictMode>);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+root.render(
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>
+);
