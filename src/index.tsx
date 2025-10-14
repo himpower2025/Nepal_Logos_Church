@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -279,7 +280,7 @@ const ImageUpload = ({ imagePreview, onImageChange, onImageRemove }: { imagePrev
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => { e.target.files?.[0] && onImageChange(e.target.files[0]); };
     return (
         <div className="image-upload-container">
-            {!imagePreview ? (<><input type="file" accept="image/*" onChange={handleFileSelect} style={{ display: 'none' }} ref={fileInputRef} /><label onClick={() => fileInputRef.current?.click()} className="image-upload-label"><span className="material-symbols-outlined">add_photo_alternate</span><span>फोटो थप्नुहोस् (यदि तपाईं चाहनुहुन्छ भने)</span></label></>) : (<div className="image-preview"><img src={imagePreview} alt="Preview" /><button type="button" onClick={onImageRemove}><span className="material-symbols-outlined">delete</span></button></div>)}
+            {!imagePreview ? (<><input type="file" accept="image/*" onChange={handleFileSelect} style={{ display: 'none' }} ref={fileInputRef} /><label onClick={() => fileInputRef.current?.click()} className="image-upload-label"><span className="material-symbols-outlined">add_photo_alternate</span><span>फोटो थप्नुहोस् (वैकल्पिक)</span></label></>) : (<div className="image-preview"><img src={imagePreview} alt="Preview" /><button type="button" onClick={onImageRemove}><span className="material-symbols-outlined">delete</span></button></div>)}
         </div>
     );
 };
@@ -351,14 +352,14 @@ const LoginPage = ({ church }: { church: Church }) => {
         }
     };
     return (
-        <div className="login-container"><div className="login-box"><img src={church.logo} alt={`${church.name} Logo`} className="login-logo" /><h2>{church.name}</h2><p>{isLoginView ? 'Log in to join.' : 'Create an account.'}</p><form onSubmit={(e) => handleAuth(e, isLoginView ? 'login' : 'signup')}>{!isLoginView && <input className="login-input" type="text" placeholder="Full Name" value={fullName} onChange={(e) => setFullName(e.target.value)} required />}<input className="login-input" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required /><input className="login-input" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required /><button className="login-button" type="submit" disabled={isLoading}>{isLoading ? '...' : (isLoginView ? 'Log In' : 'Sign Up')}</button></form>{error && <p className="login-error">{error}</p>}<button onClick={() => setIsLoginView(!isLoginView)} className="auth-toggle-link">{isLoginView ? "Don't have an account? Sign Up" : 'Already have an account? Log In'}</button></div></div>
+        <div className="login-container"><div className="login-box"><img src={church.logo} alt={`${church.name} Logo`} className="login-logo" /><h2>{church.name}</h2><p>{isLoginView ? 'सामेल हुन लगइन गर्नुहोस्।' : 'एउटा खाता बनाउनुहोस्।'}</p><form onSubmit={(e) => handleAuth(e, isLoginView ? 'login' : 'signup')}>{!isLoginView && <input className="login-input" type="text" placeholder="पूरा नाम" value={fullName} onChange={(e) => setFullName(e.target.value)} required />}<input className="login-input" type="email" placeholder="इमेल" value={email} onChange={(e) => setEmail(e.target.value)} required /><input className="login-input" type="password" placeholder="पासवर्ड" value={password} onChange={(e) => setPassword(e.target.value)} required /><button className="login-button" type="submit" disabled={isLoading}>{isLoading ? '...' : (isLoginView ? 'लग इन' : 'साइन अप')}</button></form>{error && <p className="login-error">{error}</p>}<button onClick={() => setIsLoginView(!isLoginView)} className="auth-toggle-link">{isLoginView ? "खाता छैन? साइन अप गर्नुहोस्" : 'पहिले नै खाता छ? लग इन गर्नुहोस्'}</button></div></div>
     );
 };
 
 // --- Main App Pages ---
 const WorshipPage = ({ church, user, services, onManageServices }: { church: Church; user: User; services: WorshipService[]; onManageServices: () => void; }) => {
     const [showOfferingModal, setShowOfferingModal] = useState(false);
-    const copyToClipboard = (text: string) => navigator.clipboard.writeText(text).then(() => alert("계좌번호가 복사되었습니다."));
+    const copyToClipboard = (text: string) => navigator.clipboard.writeText(text).then(() => alert("खाता नम्बर प्रतिलिपि गरियो।"));
 
     const latestService = services[0];
     const pastServices = services.slice(1, 5);
@@ -366,32 +367,32 @@ const WorshipPage = ({ church, user, services, onManageServices }: { church: Chu
 
     return (
         <div className="page-content">
-            <h2>예배</h2>
+            <h2>आरधना</h2>
 
             <div className="card live-worship-card">
-                <div className="live-badge">LIVE</div>
+                <div className="live-badge">प्रत्यक्ष</div>
                 {latestService && latestEmbedUrl ? (
                     <>
                         <div className="twitch-container">
                             <iframe src={latestEmbedUrl} height="100%" width="100%" allowFullScreen title={latestService.title}></iframe>
                         </div>
                         <h4>{latestService.title}</h4>
-                        <p className="live-info-text">라이브 예배에 참여하세요. 스트림이 활성화되지 않은 경우 가장 최근 예배 영상이 표시됩니다.</p>
+                        <p className="live-info-text">प्रत्यक्ष आरधनामा सामेल हुनुहोस्। यदि स्ट्रिम सक्रिय छैन भने, सबैभन्दा भर्खरको आरधना भिडियो देखाइनेछ।</p>
                     </>
                 ) : (
                     <div className="no-live-service">
                         <span className="material-symbols-outlined">live_tv</span>
-                        <p>현재 라이브 예배가 없거나 등록된 영상이 없습니다.</p>
-                        <p>지난 예배 목록을 확인해 주세요.</p>
+                        <p>हाल कुनै प्रत्यक्ष आरधना वा दर्ता गरिएको भिडियो छैन।</p>
+                        <p>कृपया विगतका आरधनाहरूको सूची जाँच गर्नुहोस्।</p>
                     </div>
                 )}
                 <div className="worship-actions">
                     <button className="action-button" onClick={() => setShowOfferingModal(true)}>
-                        <span className="material-symbols-outlined">volunteer_activism</span>온라인 헌금
+                        <span className="material-symbols-outlined">volunteer_activism</span>अनलाइन भेटी
                     </button>
                     {user.roles.includes('admin') && (
                         <button className="action-button secondary" onClick={onManageServices}>
-                            <span className="material-symbols-outlined">settings</span>예배 관리
+                            <span className="material-symbols-outlined">settings</span>आरधना व्यवस्थापन
                         </button>
                     )}
                 </div>
@@ -399,7 +400,7 @@ const WorshipPage = ({ church, user, services, onManageServices }: { church: Chu
 
             {pastServices.length > 0 && (
                 <div className="card">
-                    <h3>지난 예배</h3>
+                    <h3>विगतका आरधनाहरू</h3>
                     <div className="list-container">
                         {pastServices.map(service => (
                             <a key={service.id} href={service.videoUrl} target="_blank" rel="noopener noreferrer" className="list-item worship-list-item">
@@ -414,15 +415,15 @@ const WorshipPage = ({ church, user, services, onManageServices }: { church: Chu
             {showOfferingModal && (
                 <Modal onClose={() => setShowOfferingModal(false)}>
                     <div className="offering-modal-content">
-                        <h3>온라인 헌금</h3>
+                        <h3>अनलाइन भेटी</h3>
                         <img src={church.offeringDetails.qrCodeUrl} alt="QR Code" className="qr-code-img" />
                         <div className="offering-details">
-                            <p><strong>은행:</strong> {church.offeringDetails.bankName}</p>
-                            <p><strong>예금주:</strong> {church.offeringDetails.accountHolder}</p>
+                            <p><strong>बैंक:</strong> {church.offeringDetails.bankName}</p>
+                            <p><strong>खातावाला:</strong> {church.offeringDetails.accountHolder}</p>
                             <div className="account-number-container">
-                                <p><strong>계좌번호:</strong> {church.offeringDetails.accountNumber}</p>
+                                <p><strong>खाता नम्बर:</strong> {church.offeringDetails.accountNumber}</p>
                                 <button className="copy-button" onClick={() => copyToClipboard(church.offeringDetails.accountNumber)}>
-                                    <span className="material-symbols-outlined">content_copy</span>복사
+                                    <span className="material-symbols-outlined">content_copy</span>प्रतिलिपि
                                 </button>
                             </div>
                         </div>
@@ -444,43 +445,43 @@ const NewsPage = ({ user, onAddNews }: { user: User; onAddNews: () => void; }) =
     }, []);
     const canPostNews = user.roles.includes('admin') || user.roles.includes('news_contributor');
     return (
-        <div className="page-content"><h2>소식</h2><div className="list-container">
+        <div className="page-content"><h2>सूचना</h2><div className="list-container">
             {news.length > 0 ? news.map(item => (
                 <div key={item.id} className="card news-item">
                     {item.image && <img src={item.image} alt={item.title} className="news-image"/>}
                     <div className="news-content"><h3>{item.title}</h3><p className="news-meta">{item.createdAt.toDate().toLocaleDateString()}</p><p>{item.content}</p></div>
-                </div>)) : <div className="card"><p>아직 소식이나 공지사항이 없습니다.</p></div>}
-        </div>{canPostNews && <button className="fab" onClick={onAddNews} aria-label="Add News"><span className="material-symbols-outlined">add</span></button>}</div>
+                </div>)) : <div className="card"><p>अहिलेसम्म कुनै समाचार वा घोषणाहरू छैनन्।</p></div>}
+        </div>{canPostNews && <button className="fab" onClick={onAddNews} aria-label="नयाँ सूचना"><span className="material-symbols-outlined">add</span></button>}</div>
     );
 };
 const BiblePage = () => {
     const [readingData, setReadingData] = useState<{title: string; plan: string; text: string} | null>(null);
     const dayOfYear = getDayOfYear();
-    const mcheyneReading = MCHEYNE_READING_PLAN[dayOfYear - 1] || '오늘의 읽기 계획이 없습니다.';
+    const mcheyneReading = MCHEYNE_READING_PLAN[dayOfYear - 1] || 'आजको लागि कुनै पढ्ने योजना छैन।';
     const proverbsChapter = new Date().getDate();
-    const proverbsText = PROVERBS_NNRV[proverbsChapter] || '이 장에 대한 잠언 본문은 앱에서 사용할 수 없습니다.';
+    const proverbsText = PROVERBS_NNRV[proverbsChapter] || 'यो अध्यायको लागि हितोपदेशको पाठ एपमा उपलब्ध छैन।';
     const verse = MOCK_VERSES_OF_THE_DAY[dayOfYear % MOCK_VERSES_OF_THE_DAY.length];
-    const handleShowMcheyne = () => setReadingData({ title: `맥체인 성경읽기: ${dayOfYear}일차`, plan: mcheyneReading, text: "이 읽기 계획에 따라 개인 성경 공부를 진행하세요."});
-    const handleShowProverb = () => setReadingData({ title: `잠언 ${proverbsChapter}장`, plan: `잠언 ${proverbsChapter}장`, text: proverbsText });
+    const handleShowMcheyne = () => setReadingData({ title: `बाइबल पढाइ: दिन ${dayOfYear}`, plan: mcheyneReading, text: "यो पढाइ योजना अनुसार आफ्नो व्यक्तिगत बाइबल अध्ययन गर्नुहोस्।"});
+    const handleShowProverb = () => setReadingData({ title: `हितोपदेश ${proverbsChapter}`, plan: `हितोपदेश ${proverbsChapter}`, text: proverbsText });
     return (
-        <div className="page-content"><h2>바이블</h2><div className="card verse-card"><h3>오늘의 말씀</h3><p className="verse-text">“{verse.text}”</p><p className="verse-ref">- {verse.verse}</p></div><div className="card bible-card" onClick={handleShowMcheyne}><h3>맥체인 성경읽기표</h3><p>오늘의 읽기: {mcheyneReading}</p></div><div className="card bible-card" onClick={handleShowProverb}><h3>오늘의 잠언</h3><p>오늘 날짜에 따라 잠언 {proverbsChapter}장을 읽으세요.</p></div>{readingData && <Modal onClose={() => setReadingData(null)}><div className="bible-reading-modal-content"><h3>{readingData.title}</h3><h4>{readingData.plan}</h4><div className="bible-text-content"><p>{readingData.text}</p></div></div></Modal>}</div>
+        <div className="page-content"><h2>बाइबल</h2><div className="card verse-card"><h3>आजको पद</h3><p className="verse-text">“{verse.text}”</p><p className="verse-ref">- {verse.verse}</p></div><div className="card bible-card" onClick={handleShowMcheyne}><h3>बाइबल पढ्ने योजना</h3><p>आजको पढाइ: {mcheyneReading}</p></div><div className="card bible-card" onClick={handleShowProverb}><h3>आजको हितोपदेश</h3><p>आजको मिति अनुसार हितोपदेश अध्याय {proverbsChapter} पढ्नुहोस्।</p></div>{readingData && <Modal onClose={() => setReadingData(null)}><div className="bible-reading-modal-content"><h3>{readingData.title}</h3><h4>{readingData.plan}</h4><div className="bible-text-content"><p>{readingData.text}</p></div></div></Modal>}</div>
     );
 };
 const ChatListPage = ({ chats, onSelectChat, onCreateChat, currentUser }: { chats: Chat[]; onSelectChat: (id: string) => void; onCreateChat: () => void; currentUser: User; }) => (
-    <div className="page-content chat-list-page"><h2>대화</h2><div className="list-container">{chats.map(chat => { 
+    <div className="page-content chat-list-page"><h2>संगति</h2><div className="list-container">{chats.map(chat => { 
         const lastMsg = chat.messages[chat.messages.length - 1];
         let avatar: React.ReactNode, name: string;
         if (chat.isGroup) {
             avatar = <div className="chat-avatar group-avatar"><span className="material-symbols-outlined">groups</span></div>;
-            name = chat.name || '그룹 채팅';
+            name = chat.name || 'समूह च्याट';
         } else {
             const other = chat.participants.find(p => p.id !== currentUser.id);
             if (!other) return null;
             avatar = <div className="chat-avatar">{other.avatar}</div>;
             name = other.name;
         }
-        return (<div key={chat.id} className="list-item chat-item" onClick={() => onSelectChat(chat.id)}>{avatar}<div className="chat-info"><span className="chat-name">{name}</span><span className="chat-last-message">{lastMsg ? lastMsg.content : '메시지 없음.'}</span></div>{chat.isGroup && <div className="chat-participant-count"><span className="material-symbols-outlined">group</span><span>{chat.participants.length}</span></div>}</div>); 
-    })}</div><button className="fab" onClick={onCreateChat} aria-label="새로운 대화"><span className="material-symbols-outlined">add_comment</span></button></div>
+        return (<div key={chat.id} className="list-item chat-item" onClick={() => onSelectChat(chat.id)}>{avatar}<div className="chat-info"><span className="chat-name">{name}</span><span className="chat-last-message">{lastMsg ? lastMsg.content : 'कुनै सन्देश छैन।'}</span></div>{chat.isGroup && <div className="chat-participant-count"><span className="material-symbols-outlined">group</span><span>{chat.participants.length}</span></div>}</div>); 
+    })}</div><button className="fab" onClick={onCreateChat} aria-label="नयाँ कुराकानी"><span className="material-symbols-outlined">add_comment</span></button></div>
 );
 const ConversationPage = ({ chat, onBack, onSendMessage, onShowMembers, currentUser }: { chat: Chat; onBack: () => void; onSendMessage: (chatId: string, content: string) => void; onShowMembers: () => void; currentUser: User }) => {
     const [newMessage, setNewMessage] = useState('');
@@ -490,7 +491,7 @@ const ConversationPage = ({ chat, onBack, onSendMessage, onShowMembers, currentU
 
     useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
     const handleSend = () => { if (newMessage.trim()) { onSendMessage(chat.id, newMessage.trim()); setNewMessage(''); } };
-    const chatName = chat.isGroup ? chat.name || '그룹 채팅' : participants.find(p => p.id !== currentUser.id)?.name || '대화';
+    const chatName = chat.isGroup ? chat.name || 'समूह च्याट' : participants.find(p => p.id !== currentUser.id)?.name || 'कुराकानी';
     return (
         <div className="conversation-page"><header className={`conversation-header ${chat.isGroup ? 'is-group' : ''}`} onClick={chat.isGroup ? onShowMembers : undefined}><button className="back-button" onClick={onBack}><span className="material-symbols-outlined">arrow_back</span></button><h3>{chatName}</h3>{chat.isGroup ? <button className="header-button info-button"><span className="material-symbols-outlined">info</span></button> : <div style={{width: 40}}></div>}</header><div className="message-list">{messages.map((msg, index) => {
             if (!msg || typeof msg !== 'object' || !msg.senderId) {
@@ -503,11 +504,11 @@ const ConversationPage = ({ chat, onBack, onSendMessage, onShowMembers, currentU
                 : `msg-${index}`;
 
             return (<div key={key} className={`message-container ${isSent ? 'sent' : 'received'}`}>{chat.isGroup && !isSent && <div className="sender-name">{sender?.name || '...'}</div>}<div className="message-bubble">{msg.content || ''}</div></div>);
-        })}<div ref={messagesEndRef} /></div><div className="message-input-container"><input type="text" placeholder="메시지를 입력하세요..." value={newMessage} onChange={(e) => setNewMessage(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && handleSend()} /><button className="send-button" onClick={handleSend}><span className="material-symbols-outlined">send</span></button></div></div>
+        })}<div ref={messagesEndRef} /></div><div className="message-input-container"><input type="text" placeholder="सन्देश लेख्नुहोस्..." value={newMessage} onChange={(e) => setNewMessage(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && handleSend()} /><button className="send-button" onClick={handleSend}><span className="material-symbols-outlined">send</span></button></div></div>
     );
 };
 const PrayerPage = ({ prayerRequests, onPray, onAddRequest, onSelectRequest, currentUser }: { prayerRequests: PrayerRequest[]; onPray: (id: string) => void; onAddRequest: () => void; onSelectRequest: (req: PrayerRequest) => void; currentUser: User; }) => (
-    <div className="page-content"><h2>기도 요청</h2><div className="list-container">{prayerRequests.map(req => {
+    <div className="page-content"><h2>प्रार्थना अनुरोध</h2><div className="list-container">{prayerRequests.map(req => {
         const isPrayed = req.prayedBy.includes(currentUser.id);
         return (
         <div key={req.id} className="card prayer-item" onClick={() => onSelectRequest(req)}>
@@ -519,7 +520,7 @@ const PrayerPage = ({ prayerRequests, onPray, onAddRequest, onSelectRequest, cur
                 <div className="prayer-actions">
                     <button className={`prayer-action-button ${isPrayed ? 'prayed' : ''}`} onClick={(e) => { e.stopPropagation(); onPray(req.id); }}>
                         <span className="material-symbols-outlined">volunteer_activism</span>
-                        <span>{isPrayed ? '기도함' : '기도하기'} ({req.prayedBy.length})</span>
+                        <span>{isPrayed ? 'प्रार्थना गरियो' : 'प्रार्थना गर्नुहोस्'} ({req.prayedBy.length})</span>
                     </button>
                     <div className="prayer-action-button comment-button">
                         <span className="material-symbols-outlined">chat_bubble</span>
@@ -528,12 +529,12 @@ const PrayerPage = ({ prayerRequests, onPray, onAddRequest, onSelectRequest, cur
                 </div>
             </div>
         </div>
-    )})}</div><button className="fab" onClick={onAddRequest} aria-label="새로운 기도 요청"><span className="material-symbols-outlined">edit_note</span></button></div>
+    )})}</div><button className="fab" onClick={onAddRequest} aria-label="नयाँ प्रार्थना अनुरोध"><span className="material-symbols-outlined">edit_note</span></button></div>
 );
 const PodcastPage = ({ podcasts, onAddPodcast, user }: { podcasts: Podcast[]; onAddPodcast: () => void; user: User; }) => {
     const canPostPodcast = user.roles.includes('admin') || user.roles.includes('podcast_contributor');
     return (
-    <div className="page-content"><h2>팟캐스트</h2><div className="list-container">{podcasts.length > 0 ? podcasts.map(p => (<div key={p.id} className="card podcast-item"><div className="podcast-info"><div><h4 className="podcast-title">{p.title}</h4><p className="podcast-author">By {p.author.name}</p></div></div><audio controls className="podcast-player" src={p.audioUrl}></audio></div>)) : <p>아직 팟캐스트가 없습니다.</p>}</div>{canPostPodcast && <button className="fab" onClick={onAddPodcast} aria-label="New Podcast"><span className="material-symbols-outlined">mic</span></button>}</div>
+    <div className="page-content"><h2>पोडकास्ट</h2><div className="list-container">{podcasts.length > 0 ? podcasts.map(p => (<div key={p.id} className="card podcast-item"><div className="podcast-info"><div><h4 className="podcast-title">{p.title}</h4><p className="podcast-author">By {p.author.name}</p></div></div><audio controls className="podcast-player" src={p.audioUrl}></audio></div>)) : <p>अहिलेसम्म कुनै पोडकास्ट छैन।</p>}</div>{canPostPodcast && <button className="fab" onClick={onAddPodcast} aria-label="नयाँ पोडकास्ट"><span className="material-symbols-outlined">mic</span></button>}</div>
 );
 }
 
@@ -580,12 +581,12 @@ const PrayerRequestFormModal = ({ onClose, onSubmit, isSubmitting, initialData }
     return (
         <Modal onClose={onClose}>
             <form className="modal-form" onSubmit={handleSubmit}>
-                <h3>{isEditing ? "기도 제목 수정" : "새 기도 요청"}</h3>
-                <input type="text" placeholder="제목" value={title} onChange={(e) => setTitle(e.target.value)} required />
-                <textarea rows={5} placeholder="무엇을 위해 기도할까요?" value={content} onChange={(e) => setContent(e.target.value)} required />
+                <h3>{isEditing ? "प्रार्थना अनुरोध सम्पादन गर्नुहोस्" : "नयाँ प्रार्थना अनुरोध"}</h3>
+                <input type="text" placeholder="शीर्षक" value={title} onChange={(e) => setTitle(e.target.value)} required />
+                <textarea rows={5} placeholder="हामीले केको लागि प्रार्थना गर्नुपर्छ?" value={content} onChange={(e) => setContent(e.target.value)} required />
                 <ImageUpload imagePreview={imagePreview} onImageChange={handleImageChange} onImageRemove={handleImageRemove} />
                 <button type="submit" className="action-button" disabled={isSubmitting}>
-                    {isSubmitting ? (isEditing ? "저장 중..." : "게시 중...") : (isEditing ? "변경 사항 저장" : "기도 요청 보내기")}
+                    {isSubmitting ? (isEditing ? "सुरक्षित गर्दै..." : "पोस्ट गर्दै...") : (isEditing ? "परिवर्तनहरू सुरक्षित गर्नुहोस्" : "अनुरोध पठाउनुहोस्")}
                 </button>
             </form>
         </Modal>
@@ -607,7 +608,7 @@ const PrayerDetailsModal = ({ request, onClose, onPray, onComment, currentUser, 
     const isOwner = currentUser.id === request.authorId;
 
     const handleDelete = () => {
-        if (window.confirm("정말로 이 기도 요청을 삭제하시겠습니까?")) {
+        if (window.confirm("के तपाईं साँच्चै यो प्रार्थना अनुरोध मेटाउन चाहनुहुन्छ?")) {
             onDelete(request.id, request.image);
         }
     };
@@ -619,10 +620,10 @@ const PrayerDetailsModal = ({ request, onClose, onPray, onComment, currentUser, 
                     {isOwner && (
                         <div className="prayer-owner-actions">
                             <button onClick={() => onEdit(request)}>
-                                <span className="material-symbols-outlined">edit</span> 수정
+                                <span className="material-symbols-outlined">edit</span> सम्पादन
                             </button>
                             <button className="delete-btn" onClick={handleDelete}>
-                                <span className="material-symbols-outlined">delete</span> 삭제
+                                <span className="material-symbols-outlined">delete</span> हटाउनुहोस्
                             </button>
                         </div>
                     )}
@@ -634,15 +635,15 @@ const PrayerDetailsModal = ({ request, onClose, onPray, onComment, currentUser, 
                         <div className="prayer-actions">
                             <button className={`prayer-action-button ${isPrayed ? 'prayed' : ''}`} onClick={() => onPray(request.id)}>
                                 <span className="material-symbols-outlined">volunteer_activism</span>
-                                <span>{isPrayed ? '기도했습니다' : '기도하기'} ({request.prayedBy.length})</span>
+                                <span>{isPrayed ? 'प्रार्थना गरियो' : 'प्रार्थना गर्नुहोस्'} ({request.prayedBy.length})</span>
                             </button>
                         </div>
                     </div>
                 </div>
                 <div className="prayer-comments-section">
-                    <h4>댓글 ({request.comments.length})</h4>
-                    <div className="prayer-comment-list">{request.comments.length > 0 ? [...request.comments].reverse().map(c => (<div key={c.id} className="comment-item"><p><strong>{c.author.name}:</strong> {c.content}</p></div>)) : <p className="no-comments">댓글이 없습니다.</p>}</div>
-                    <form className="comment-form" onSubmit={handleCommentSubmit}><input type="text" placeholder="댓글 추가..." value={comment} onChange={(e) => setComment(e.target.value)} /><button type="submit"><span className="material-symbols-outlined">send</span></button></form>
+                    <h4>टिप्पणीहरू ({request.comments.length})</h4>
+                    <div className="prayer-comment-list">{request.comments.length > 0 ? [...request.comments].reverse().map(c => (<div key={c.id} className="comment-item"><p><strong>{c.author.name}:</strong> {c.content}</p></div>)) : <p className="no-comments">कुनै टिप्पणीहरू छैनन्।</p>}</div>
+                    <form className="comment-form" onSubmit={handleCommentSubmit}><input type="text" placeholder="एउटा टिप्पणी थप्नुहोस्..." value={comment} onChange={(e) => setComment(e.target.value)} /><button type="submit"><span className="material-symbols-outlined">send</span></button></form>
                 </div>
             </div>
         </Modal>
@@ -654,7 +655,7 @@ const CreateChatModal = ({ onClose, onStartChat, allUsers, currentUser }: { onCl
     const handleToggleUser = (id: string) => setSelectedUserIds(prev => prev.includes(id) ? prev.filter(uid => uid !== id) : [...prev, id]);
     const handleCreate = () => { if (selectedUserIds.length > 0) onStartChat(selectedUserIds); };
     return (
-        <Modal onClose={onClose}><div className="create-chat-modal"><h3>새 대화 시작하기</h3><div className="user-list">{allUsers.filter(u => u.id !== currentUser.id).map(user => { const isSelected = selectedUserIds.includes(user.id); return (<div key={user.id} className={`user-list-item selectable ${isSelected ? 'selected' : ''}`} onClick={() => handleToggleUser(user.id)}><div className="chat-avatar">{user.avatar}</div><span className="user-name">{user.name}</span><span className={`material-symbols-outlined checkbox-icon ${isSelected ? 'checked' : ''}`}>{isSelected ? 'check_box' : 'check_box_outline_blank'}</span></div>)})}</div><button className="action-button" onClick={handleCreate} disabled={selectedUserIds.length === 0}>{selectedUserIds.length > 1 ? '그룹 채팅 만들기' : '채팅 시작하기'}</button></div></Modal>
+        <Modal onClose={onClose}><div className="create-chat-modal"><h3>नयाँ कुराकानी सुरु गर्नुहोस्</h3><div className="user-list">{allUsers.filter(u => u.id !== currentUser.id).map(user => { const isSelected = selectedUserIds.includes(user.id); return (<div key={user.id} className={`user-list-item selectable ${isSelected ? 'selected' : ''}`} onClick={() => handleToggleUser(user.id)}><div className="chat-avatar">{user.avatar}</div><span className="user-name">{user.name}</span><span className={`material-symbols-outlined checkbox-icon ${isSelected ? 'checked' : ''}`}>{isSelected ? 'check_box' : 'check_box_outline_blank'}</span></div>)})}</div><button className="action-button" onClick={handleCreate} disabled={selectedUserIds.length === 0}>{selectedUserIds.length > 1 ? 'समूह च्याट बनाउनुहोस्' : 'च्याट सुरु गर्नुहोस्'}</button></div></Modal>
     );
 };
 const AddPodcastModal = ({ onClose, onAddPodcast }: { onClose: () => void; onAddPodcast: (data: { title: string; audioFile: File; }) => void; }) => {
@@ -668,7 +669,7 @@ const AddPodcastModal = ({ onClose, onAddPodcast }: { onClose: () => void; onAdd
     const handleStopRecording = () => { mediaRecorderRef.current?.stop(); setIsRecording(false); };
     const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); if (title.trim() && audioFile) onAddPodcast({ title, audioFile }); };
     return (
-        <Modal onClose={onClose}><form className="modal-form" onSubmit={handleSubmit}><h3>새 팟캐스트</h3><input type="text" placeholder="제목" value={title} onChange={(e) => setTitle(e.target.value)} required /><div className="recording-ui">{!audioFile && (<><h4>오디오 녹음</h4><button type="button" onClick={isRecording ? handleStopRecording : handleStartRecording} className={`record-button ${isRecording ? 'stop' : ''}`}>{isRecording && <div className="recording-dot"></div>}</button><p>{isRecording ? "녹음 중..." : "탭하여 녹음"}</p></>)}{audioPreview && (<div className="audio-preview"><h4>미리듣기</h4><audio src={audioPreview} controls /><button type="button" className="action-button secondary" onClick={() => { setAudioFile(null); setAudioPreview(null); }}>다시 녹음</button></div>)}</div><button type="submit" className="action-button" disabled={!title || !audioFile}>팟캐스트 업로드</button></form></Modal>
+        <Modal onClose={onClose}><form className="modal-form" onSubmit={handleSubmit}><h3>नयाँ पोडकास्ट</h3><input type="text" placeholder="शीर्षक" value={title} onChange={(e) => setTitle(e.target.value)} required /><div className="recording-ui">{!audioFile && (<><h4>अडियो रेकर्ड गर्नुहोस्</h4><button type="button" onClick={isRecording ? handleStopRecording : handleStartRecording} className={`record-button ${isRecording ? 'stop' : ''}`}>{isRecording && <div className="recording-dot"></div>}</button><p>{isRecording ? "रेकर्डिङ हुँदैछ..." : "रेकर्ड गर्न ट्याप गर्नुहोस्"}</p></>)}{audioPreview && (<div className="audio-preview"><h4>पूर्वावलोकन</h4><audio src={audioPreview} controls /><button type="button" className="action-button secondary" onClick={() => { setAudioFile(null); setAudioPreview(null); }}>फेरि रेकर्ड गर्नुहोस्</button></div>)}</div><button type="submit" className="action-button" disabled={!title || !audioFile}>पोडकास्ट अपलोड गर्नुहोस्</button></form></Modal>
     );
 };
 const ChatMembersModal = ({ chat, allUsers, onClose, onAddMembers }: { chat: Chat; allUsers: User[]; onClose: () => void; onAddMembers: (chatId: string, userIds: string[]) => void; }) => {
@@ -678,7 +679,7 @@ const ChatMembersModal = ({ chat, allUsers, onClose, onAddMembers }: { chat: Cha
     const handleToggleUser = (id: string) => setSelectedUserIds(prev => prev.includes(id) ? prev.filter(uid => uid !== id) : [...prev, id]);
     const handleConfirmAdd = () => { if (selectedUserIds.length > 0) onAddMembers(chat.id, selectedUserIds); setIsAdding(false); setSelectedUserIds([]); };
     return (
-        <Modal onClose={onClose}><div className="chat-members-modal"><h3>대화 정보</h3>{!isAdding ? (<><h4>참여자 ({chat.participants.length})</h4><div className="user-list">{chat.participants.map(user => (<div key={user.id} className="user-list-item"><div className="chat-avatar">{user.avatar}</div><span className="user-name">{user.name}</span></div>))}</div><button className="action-button" onClick={() => setIsAdding(true)}><span className="material-symbols-outlined">person_add</span>참여자 추가</button></>) : (<><h4>대화에 추가</h4><div className="user-list">{usersToAdd.map(user => { const isSelected = selectedUserIds.includes(user.id); return (<div key={user.id} className={`user-list-item selectable ${isSelected ? 'selected' : ''}`} onClick={() => handleToggleUser(user.id)}><div className="chat-avatar">{user.avatar}</div><span className="user-name">{user.name}</span><span className={`material-symbols-outlined checkbox-icon ${isSelected ? 'checked' : ''}`}>{isSelected ? 'check_box' : 'check_box_outline_blank'}</span></div>)})}</div><button className="action-button" onClick={handleConfirmAdd} disabled={selectedUserIds.length === 0}>추가 ({selectedUserIds.length})</button><button className="action-button secondary" onClick={() => setIsAdding(false)}>취소</button></>)}</div></Modal>
+        <Modal onClose={onClose}><div className="chat-members-modal"><h3>कुराकानी जानकारी</h3>{!isAdding ? (<><h4>सहभागीहरू ({chat.participants.length})</h4><div className="user-list">{chat.participants.map(user => (<div key={user.id} className="user-list-item"><div className="chat-avatar">{user.avatar}</div><span className="user-name">{user.name}</span></div>))}</div><button className="action-button" onClick={() => setIsAdding(true)}><span className="material-symbols-outlined">person_add</span>सहभागीहरू थप्नुहोस्</button></>) : (<><h4>कुराकानीमा थप्नुहोस्</h4><div className="user-list">{usersToAdd.map(user => { const isSelected = selectedUserIds.includes(user.id); return (<div key={user.id} className={`user-list-item selectable ${isSelected ? 'selected' : ''}`} onClick={() => handleToggleUser(user.id)}><div className="chat-avatar">{user.avatar}</div><span className="user-name">{user.name}</span><span className={`material-symbols-outlined checkbox-icon ${isSelected ? 'checked' : ''}`}>{isSelected ? 'check_box' : 'check_box_outline_blank'}</span></div>)})}</div><button className="action-button" onClick={handleConfirmAdd} disabled={selectedUserIds.length === 0}>थप्नुहोस् ({selectedUserIds.length})</button><button className="action-button secondary" onClick={() => setIsAdding(false)}>रद्द गर्नुहोस्</button></>)}</div></Modal>
     );
 };
 const AddNewsModal = ({ onClose, onAddNews }: { onClose: () => void; onAddNews: (data: { title: string; content: string; imageFile: File | null; }) => void; }) => {
@@ -689,7 +690,7 @@ const AddNewsModal = ({ onClose, onAddNews }: { onClose: () => void; onAddNews: 
     const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); if (title.trim() && content.trim()) onAddNews({ title, content, imageFile }); };
     const handleImageChange = (file: File) => { setImageFile(file); setImagePreview(URL.createObjectURL(file)); };
     return (
-        <Modal onClose={onClose}><form className="modal-form" onSubmit={handleSubmit}><h3>새 공지사항</h3><input type="text" placeholder="제목" value={title} onChange={(e) => setTitle(e.target.value)} required /><textarea rows={5} placeholder="내용" value={content} onChange={(e) => setContent(e.target.value)} required /><ImageUpload imagePreview={imagePreview} onImageChange={handleImageChange} onImageRemove={() => { setImageFile(null); setImagePreview(null); }} /><button type="submit" className="action-button">소식 게시</button></form></Modal>
+        <Modal onClose={onClose}><form className="modal-form" onSubmit={handleSubmit}><h3>नयाँ सूचना</h3><input type="text" placeholder="शीर्षक" value={title} onChange={(e) => setTitle(e.target.value)} required /><textarea rows={5} placeholder="सामग्री" value={content} onChange={(e) => setContent(e.target.value)} required /><ImageUpload imagePreview={imagePreview} onImageChange={handleImageChange} onImageRemove={() => { setImageFile(null); setImagePreview(null); }} /><button type="submit" className="action-button">सूचना पोस्ट गर्नुहोस्</button></form></Modal>
     );
 };
 const ManageWorshipModal = ({ services, onClose, onAdd, onUpdate, onDelete }: { services: WorshipService[], onClose: () => void, onAdd: (s: Omit<WorshipService, 'id'|'createdAt'>) => void, onUpdate: (id: string, data: Partial<WorshipService>) => void, onDelete: (id: string) => void}) => {
@@ -717,7 +718,7 @@ const ManageWorshipModal = ({ services, onClose, onAdd, onUpdate, onDelete }: { 
     };
 
     return (
-        <Modal onClose={onClose}><div className="manage-worship-modal"><h3>예배 영상 관리</h3><div className="list-container service-list-admin">{services.map(s => (<div key={s.id} className="list-item"><span>{s.title}</span><div><button onClick={() => setIsEditing(s)}><span className="material-symbols-outlined">edit</span></button><button onClick={() => onDelete(s.id)}><span className="material-symbols-outlined">delete</span></button></div></div>))}</div><div className="modal-form"><h4>{isEditing ? '예배 수정' : '새 예배 추가'}</h4><input type="text" placeholder="예배 제목" value={newTitle} onChange={e => setNewTitle(e.target.value)} /><input type="text" placeholder="YouTube 또는 Twitch URL" value={newUrl} onChange={e => setNewUrl(e.target.value)} /><button className="action-button" onClick={handleSave}>저장</button>{isEditing && <button className="action-button secondary" onClick={() => setIsEditing(null)}>수정 취소</button>}</div></div></Modal>
+        <Modal onClose={onClose}><div className="manage-worship-modal"><h3>आरधना भिडियो व्यवस्थापन</h3><div className="list-container service-list-admin">{services.map(s => (<div key={s.id} className="list-item"><span>{s.title}</span><div><button onClick={() => setIsEditing(s)}><span className="material-symbols-outlined">edit</span></button><button onClick={() => onDelete(s.id)}><span className="material-symbols-outlined">delete</span></button></div></div>))}</div><div className="modal-form"><h4>{isEditing ? 'आरधना सम्पादन गर्नुहोस्' : 'नयाँ आरधना थप्नुहोस्'}</h4><input type="text" placeholder="आरधनाको शीर्षक" value={newTitle} onChange={e => setNewTitle(e.target.value)} /><input type="text" placeholder="YouTube वा Twitch URL" value={newUrl} onChange={e => setNewUrl(e.target.value)} /><button className="action-button" onClick={handleSave}> सुरक्षित गर्नुहोस्</button>{isEditing && <button className="action-button secondary" onClick={() => setIsEditing(null)}>सम्पादन रद्द गर्नुहोस्</button>}</div></div></Modal>
     );
 };
 const ManageUsersModal = ({ allUsers, onClose }: { allUsers: User[], onClose: () => void }) => {
@@ -749,7 +750,7 @@ const ManageUsersModal = ({ allUsers, onClose }: { allUsers: User[], onClose: ()
     return (
         <Modal onClose={onClose}>
             <div className="manage-users-modal">
-                <h3>사용자 관리</h3>
+                <h3>प्रयोगकर्ता व्यवस्थापन</h3>
                 <div className="user-list">
                     {users.filter(u => !u.roles.includes('admin')).map(user => (
                         <div key={user.id} className="user-list-item manage-user-item">
@@ -760,11 +761,11 @@ const ManageUsersModal = ({ allUsers, onClose }: { allUsers: User[], onClose: ()
                             <div className="user-roles">
                                 <label>
                                     <input type="checkbox" checked={user.roles.includes('news_contributor')} onChange={(e) => handleRoleChange(user.id, 'news_contributor', e.target.checked)} />
-                                    뉴스
+                                    सूचना
                                 </label>
                                 <label>
                                     <input type="checkbox" checked={user.roles.includes('podcast_contributor')} onChange={(e) => handleRoleChange(user.id, 'podcast_contributor', e.target.checked)} />
-                                    팟캐스트
+                                    पोडकास्ट
                                 </label>
                             </div>
                         </div>
@@ -841,7 +842,7 @@ const App = () => {
             setModal(null);
         } catch (error) {
             console.error("Error adding prayer request: ", error);
-            alert("기도 요청을 게시하지 못했습니다. 다시 시도해 주세요.");
+            alert("Failed to post prayer request. Please try again.");
         } finally {
             setIsSubmitting(false);
         }
@@ -873,7 +874,7 @@ const App = () => {
             setEditingPrayer(null);
         } catch(e) { 
             console.error("Error updating prayer request: ", e);
-            alert("기도 요청을 업데이트하지 못했습니다.");
+            alert("Failed to update prayer request.");
         }
         finally {
             setIsSubmitting(false);
@@ -959,7 +960,7 @@ const App = () => {
 
     const openPrayer = prayerRequests.find(r => r.id === selectedPrayerRequest?.id);
     
-    const TRANSLATIONS: { [key: string]: string } = { worship: '예배', podcast: '팟캐스트', news: '소식', bible: '바이블', fellowship: '대화', prayer: '기도' };
+    const TRANSLATIONS: { [key: string]: string } = { worship: 'आरधना', podcast: 'पोडकास्ट', news: 'सूचना', bible: 'बाइबल', fellowship: 'संगति', prayer: 'प्रार्थना' };
     const NAV_ORDER = ['worship', 'podcast', 'news', 'bible', 'fellowship', 'prayer'];
 
     return (
