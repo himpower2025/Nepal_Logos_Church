@@ -119,7 +119,7 @@ const MCHEYNE_READING_PLAN = [
     'गन्ती २८, १ कोरिन्थी १२, भजनसंग्रह ११९:४९-７２, १ यूहन्ना ४', 'गन्ती २९, १ कोरिन्थी १३, भजनसंग्रह ११९:７３-९６, १ यूहन्ना ५', 'गन्ती ३०, १ कोरिन्थी १४, भजनसंग्रह ११९:९７-१२०, २ यूहन्ना', 'गन्ती ३१, १ कोरिन्थी १५, भजनसंग्रह ११९:१२１-१４４, ३ यूहन्ना',
     'गन्ती ३２, १ कोरिन्थी १६, भजनसंग्रह ११९:१４５-१७６, यहूदा', 'गन्ती ३३, २ कोरिन्थी १, भजनसंग्रह १२०-१२２, प्रकाश १', 'गन्ती ३४, २ कोरिन्थी २, भजनसंग्रह १२３-१२５, प्रकाश २', 'गन्ती ३५, २ कोरिन्थी ३, भजनसंग्रह १२６-१२８, प्रकाश ३',
     'गन्ती ३６, २ कोरिन्थी ४, भजनसंग्रह १२９-१३１, प्रकाश ४', 'व्यवस्था १, २ कोरिन्थी ५, भजनसंग्रह १३２-१३４, प्रकाश ५', 'व्यवस्था २, २ कोरिन्थी ६, भजनसंग्रह १३５-१३６, प्रकाश ६', 'व्यवस्था ३, २ कोरिन्थी ७, भजनसंग्रह १३７-१३８, प्रकाश ७',
-    'व्यवस्था ४, २ कोरिन्थी ८, भजनसंग्रह १३９, प्रकाश ८', 'व्यवस्था ५, २ कोरिन्थी ९, भजनसंग्रह १४०-१४１, प्रकाश ९', 'व्यवस्था ६, २ कोरिन्थी १०, भजनसंग्रह १४２-१४３, प्रकाश १०', 'व्यवस्था ७, २ कोरिन्थी ११, भजनसंग्रह १४４-१４５, प्रकाश ११',
+    'व्यवस्था ४, २ कोरिन्थी ८, भजनसंग्रह १३９, प्रकाश ८', 'व्यवस्था ५, २ कोरिन्थी ९, भजनसंग्रह १४०-१४１, प्रकाश ९', 'व्यवस्था ६, २ कोरिन्थी १०, भजनसंग्रह १४２-१४３, प्रकाश १०', 'व्यवस्था ७, २ कोरिन्थी ११, भजनसंग्रह १४４-१४５, प्रकाश ११',
     'व्यवस्था ८, २ कोरिन्थी १२, भजनसंग्रह १४６-१४７, प्रकाश १२', 'व्यवस्था ९, २ कोरिन्थी १३, भजनसंग्रह १४８-१५０, प्रकाश १३', 'व्यवस्था १०, गलाती १, हितोपदेश १, प्रकाश १४', 'व्यवस्था ११, गलाती २, हितोपदेश २, प्रकाश १५',
     'व्यवस्था १२, गलाती ३, हितोपदेश ३, प्रकाश १६', 'व्यवस्था १३, गलाती ४, हितोपदेश ४, प्रकाश १७', 'व्यवस्था १४, गलाती ५, हितोपदेश ५, प्रकाश १८', 'व्यवस्था १५, गलाती ६, हितोपदेश ६, प्रकाश १९',
     'व्यवस्था १६, एफिसी १, हितोपदेश ७, प्रकाश २०', 'व्यवस्था १७, एफिसी २, हितोपदेश ८, प्रकाश २१', 'व्यवस्था १८, एफिसी ३, हितोपदेश ९, प्रकाश २२', 'व्यवस्था १९, एफिसी ४, उपदेशक १, मत्ती १',
@@ -1149,7 +1149,14 @@ const fetchUser = async (uid: string): Promise<User> => {
     if (userCache[uid]) return userCache[uid];
     const userDoc = await getDoc(doc(db, 'users', uid));
     if (userDoc.exists()) {
-        const user = { id: uid, ...userDoc.data(), roles: userDoc.data().roles || ['member'] } as User;
+        const data = userDoc.data();
+        const user: User = { 
+            id: uid, 
+            name: data.name || 'Unknown User',
+            email: data.email || '',
+            avatar: data.avatar || '?',
+            roles: Array.isArray(data.roles) ? data.roles : ['member'] 
+        };
         userCache[uid] = user;
         return user;
     }
@@ -1365,7 +1372,7 @@ const BiblePage = () => {
     const handleShowMcheyne = () => setReadingData({ title: `बाइबल पढाइ: दिन ${dayOfYear}`, plan: mcheyneReading, text: "यो पढाइ योजना अनुसार आफ्नो व्यक्तिगत बाइबल अध्ययन गर्नुहोस्।"});
     const handleShowProverb = () => setReadingData({ title: `हितोपदेश ${proverbsChapter}`, plan: `हितोपदेश ${proverbsChapter}`, text: proverbsText });
     return (
-        <div className="page-content"><h2>बाइबल</h2><div className="card verse-card"><h3>आजको पद</h3><p className="verse-text">“{verse.text}”</p><p className="verse-ref">- {verse.verse}</p></div><div className="card bible-card" onClick={handleShowMcheyne}><h3>बाइबल पढ्ने योजना</h3><p>आजको पढाइ: {mcheyneReading}</p></div><div className="card bible-card" onClick={handleShowProverb}><h3>आजको हितोपदेश</h3><p>आजको मिति अनुसार हितोपदेश अध्याय {proverbsChapter} पढ्नुहोस्।</p></div>{readingData && <Modal onClose={() => setReadingData(null)}><div className="bible-reading-modal-content"><h3>{readingData.title}</h3><h4>{readingData.plan}</h4><div className="bible-text-content"><p>{readingData.text}</p></div></div></Modal>}</div>
+        <div className="page-content"><h2>बाइबल</h2><div className="card verse-card"><h3>आजको पद</h3><p className="verse-text">“{verse.text}”</p><p className="verse-ref">- {verse.verse}</p></div><div className="card bible-card" onClick={handleShowMcheyne}><h3>बाइबल पढ्ने योजना</h3><p>आजको पढाइ: {mcheyneReading}</p></div><div className="card bible-card" onClick={handleShowProverb}><h3>आजको हितोपदेश</h3><p>आजको मिति अनुसार हितोपदेश अध्याय {proverbsChapter} पढ्नुहोस्।</p></div>{readingData && <Modal onClose={() => setReadingData(null)}><div className="bible-reading-modal-content"><h3>{readingData.title}</h4><h4>{readingData.plan}</h4><div className="bible-text-content"><p>{readingData.text}</p></div></div></Modal>}</div>
     );
 };
 const ChatListPage = ({ chats, onSelectChat, onCreateChat, currentUser }: { chats: Chat[]; onSelectChat: (id: string) => void; onCreateChat: () => void; currentUser: User; }) => (
@@ -1695,7 +1702,16 @@ const ManageUsersModal = ({ onClose }: { onClose: () => void }) => {
         setIsLoading(true);
         const q = query(collection(db, "users"), orderBy("name"));
         const unsub = onSnapshot(q, (snap) => {
-            setUsers(snap.docs.map(d => ({ ...d.data(), id: d.id } as User)));
+            setUsers(snap.docs.map(d => {
+                const data = d.data();
+                return {
+                    id: d.id,
+                    name: data.name || 'No Name Provided',
+                    email: data.email || 'No Email',
+                    avatar: data.avatar || '?',
+                    roles: Array.isArray(data.roles) ? data.roles : ['member']
+                } as User;
+            }));
             setIsLoading(false);
         });
         return () => unsub();
@@ -1726,7 +1742,7 @@ const ManageUsersModal = ({ onClose }: { onClose: () => void }) => {
                 <h3>प्रयोगकर्ता व्यवस्थापन</h3>
                 {isLoading ? <p>Loading users...</p> : (
                     <div className="user-list">
-                        {users.filter(u => !u.roles.includes('admin')).map(user => (
+                        {users.filter(u => u.roles && !u.roles.includes('admin')).map(user => (
                             <div key={user.id} className="user-list-item manage-user-item">
                                 <div className="user-info">
                                     <div className="chat-avatar">{user.avatar}</div>
@@ -1926,154 +1942,156 @@ const App = () => {
     const handleAddNews = async (data: { title: string; content: string; imageFile: File | null; }) => {
         if (!user) return;
         const imageUrl = data.imageFile ? await uploadFile(data.imageFile, 'newsImages') : '';
-        await addDoc(collection(db, "news"), { authorId: user.id, title: data.title, content: data.content, image: imageUrl, createdAt: serverTimestamp() });
+        await addDoc(collection(db, "news"), { title: data.title, content: data.content, image: imageUrl, createdAt: serverTimestamp() });
         setModal(null);
     };
 
-    const handleAddPodcast = async ({ title, audioFile }: { title: string; audioFile: File }) => {
-        if(!user) return;
-        const audioUrl = await uploadFile(audioFile, 'podcasts');
-        await addDoc(collection(db, 'podcasts'), { title, authorId: user.id, audioUrl, createdAt: serverTimestamp() });
+    const handleAddPodcast = async (data: { title: string; audioFile: File; }) => {
+        if (!user) return;
+        const audioUrl = await uploadFile(data.audioFile, 'podcasts');
+        await addDoc(collection(db, "podcasts"), { authorId: user.id, title: data.title, audioUrl, createdAt: serverTimestamp() });
         setModal(null);
     };
 
-    const handleStartChat = async (otherUserIds: string[]) => {
-        if (!user || otherUserIds.length === 0) return;
-        setModal(null);
-    
-        const participantIds = [...new Set([user.id, ...otherUserIds])].sort();
-    
-        // Early exit if a chat already exists
-        const q = query(collection(db, "chats"), where("participantIds", "==", participantIds));
-        const querySnapshot = await getDocs(q);
-        if (!querySnapshot.empty) {
-            setActiveChatId(querySnapshot.docs[0].id);
-            return;
-        }
-    
-        // Create new chat
-        const isGroup = participantIds.length > 2;
-        const participants = await fetchUsers(participantIds);
-        const chatName = isGroup ? participants.filter(p => p.id !== user.id).map(p => p.name).join(', ') : '';
+    const handleStartChat = async (userIds: string[]) => {
+        if (!user) return;
+        const allParticipantIds = [...new Set([...userIds, user.id])].sort();
         
-        // Optimistic UI update for instant feedback
-        const tempId = `local-${Date.now()}`;
-        const now = Timestamp.now();
-        const newChatOptimistic: Chat = {
-            id: tempId,
-            participantIds,
-            participants,
-            messages: [],
-            lastMessageTimestamp: now,
-            isGroup,
-            name: chatName,
-        };
-    
-        setChats(prev => [newChatOptimistic, ...prev]);
-        setActiveChatId(tempId);
-    
-        try {
-            const newChatRef = await addDoc(collection(db, "chats"), { 
-                participantIds, 
-                messages: [], 
-                lastMessageTimestamp: serverTimestamp(), 
-                isGroup, 
-                name: chatName 
+        let existingChatId: string | null = null;
+        if (allParticipantIds.length === 2) { // Only check for existing 1-on-1 chats
+             const q = query(collection(db, "chats"), 
+                where("isGroup", "==", false),
+                where("participantIds", "array-contains", user.id)
+            );
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach(doc => {
+                const chatData = doc.data();
+                const participants = chatData.participantIds.sort();
+                if (participants.length === 2 && participants[0] === allParticipantIds[0] && participants[1] === allParticipantIds[1]) {
+                    existingChatId = doc.id;
+                }
             });
-    
-            // Replace temporary chat with real one from Firestore once created
-            setChats(prev => prev.map(c => c.id === tempId ? { ...c, id: newChatRef.id } : c));
-            setActiveChatId(newChatRef.id);
-        } catch (error) {
-            console.error("Error starting chat:", error);
-            // Revert optimistic update on error
-            setChats(prev => prev.filter(c => c.id !== tempId));
-            setActiveChatId(null);
-            alert("Failed to start chat. Please try again.");
         }
+        
+        if (existingChatId) {
+            setActiveChatId(existingChatId);
+        } else {
+            const isGroup = allParticipantIds.length > 2;
+            let chatName = '';
+            if (isGroup) {
+                const otherUsers = await fetchUsers(userIds);
+                chatName = `You, ${otherUsers.map(u => u.name.split(' ')[0]).slice(0, 2).join(', ')}`;
+                if (otherUsers.length > 2) chatName += `, ...`;
+            }
+
+            const newChatDoc = await addDoc(collection(db, "chats"), {
+                participantIds: allParticipantIds,
+                messages: [],
+                lastMessageTimestamp: serverTimestamp(),
+                isGroup,
+                name: isGroup ? chatName : null,
+                groupAvatar: isGroup ? 'groups' : null,
+            });
+            setActiveChatId(newChatDoc.id);
+        }
+        setModal(null);
+        setActivePage('fellowship');
     };
 
-    const handleAddWorship = async (service: Omit<WorshipService, 'id'|'createdAt'>) => await addDoc(collection(db, 'worshipServices'), { ...service, createdAt: serverTimestamp() });
-    const handleUpdateWorship = async (id: string, data: Partial<WorshipService>) => await updateDoc(doc(db, 'worshipServices', id), data);
-    const handleDeleteWorship = async (id: string) => await deleteDoc(doc(db, 'worshipServices', id));
-    
-    // --- Render Logic ---
-    if (user === undefined) return <div className="login-container"><div>Loading...</div></div>;
-    if (user === null) return <LoginPage church={CHURCH} />;
-    
-    const activeChat = chats.find(c => c.id === activeChatId);
-    
+    const handleManageServices = {
+        add: async (service: Omit<WorshipService, 'id'|'createdAt'>) => {
+            await addDoc(collection(db, "worshipServices"), { ...service, createdAt: serverTimestamp() });
+        },
+        update: async (id: string, data: Partial<WorshipService>) => {
+            await updateDoc(doc(db, "worshipServices", id), data);
+        },
+        delete: async (id: string) => {
+            await deleteDoc(doc(db, "worshipServices", id));
+        },
+    };
+
     const renderPage = () => {
+        if (!user) return null;
         switch (activePage) {
             case 'worship': return <WorshipPage church={CHURCH} user={user} services={worshipServices} onManageServices={() => setModal('manageWorship')} />;
             case 'news': return <NewsPage user={user} onAddNews={() => setModal('addNews')} />;
             case 'bible': return <BiblePage />;
-            case 'fellowship':
-                return <ChatListPage chats={chats} onSelectChat={setActiveChatId} onCreateChat={() => setModal('createChat')} currentUser={user} />;
+            case 'fellowship': {
+                const activeChat = chats.find(c => c.id === activeChatId);
+                if (activeChat) {
+                    return <ConversationPage 
+                        chat={activeChat} 
+                        onBack={() => setActiveChatId(null)} 
+                        onSendMessage={handleSendMessage} 
+                        onShowMembers={() => setModal(`chatMembers_${activeChat.id}`)} 
+                        currentUser={user} 
+                    />;
+                }
+                return <ChatListPage 
+                    chats={chats} 
+                    onSelectChat={setActiveChatId} 
+                    onCreateChat={() => setModal('createChat')} 
+                    currentUser={user} 
+                />;
+            }
             case 'prayer': return <PrayerPage prayerRequests={prayerRequests} onPray={handlePray} onAddRequest={() => setModal('addPrayer')} onSelectRequest={setSelectedPrayerRequest} currentUser={user} />;
             case 'podcast': return <PodcastPage podcasts={podcasts} onAddPodcast={() => setModal('addPodcast')} user={user} />;
             default: return <WorshipPage church={CHURCH} user={user} services={worshipServices} onManageServices={() => setModal('manageWorship')} />;
         }
     };
-
-    const openPrayer = prayerRequests.find(r => r.id === selectedPrayerRequest?.id);
     
-    const TRANSLATIONS: { [key: string]: string } = { worship: 'आरधना', podcast: 'Podcast', news: 'सूचना', bible: 'बाइबल', fellowship: 'संगति', prayer: 'प्रार्थना' };
-    const NAV_ORDER = ['worship', 'podcast', 'news', 'bible', 'fellowship', 'prayer'];
+    if (user === undefined) return <div className="loading-fullscreen"><div></div><div></div><div></div></div>;
+    if (user === null) return <LoginPage church={CHURCH} />;
+
+    const activeModal = () => {
+        if (!user) return null;
+        switch (modal) {
+            case 'addPrayer': return <PrayerRequestFormModal onClose={() => setModal(null)} onSubmit={handleAddPrayerRequest} isSubmitting={isSubmitting} />;
+            case 'addNews': return <AddNewsModal onClose={() => setModal(null)} onAddNews={handleAddNews} />;
+            case 'addPodcast': return <AddPodcastModal onClose={() => setModal(null)} onAddPodcast={handleAddPodcast} />;
+            case 'createChat': return <CreateChatModal onClose={() => setModal(null)} onStartChat={handleStartChat} currentUser={user} />;
+            case 'manageWorship': return <ManageWorshipModal services={worshipServices} onClose={() => setModal(null)} onAdd={handleManageServices.add} onUpdate={handleManageServices.update} onDelete={handleManageServices.delete} />;
+            case 'manageUsers': return <ManageUsersModal onClose={() => setModal(null)} />;
+            default: return null;
+        }
+    };
 
     return (
         <div className="app-container">
             <header className="app-header">
-                 <div className="header-content"><img src={CHURCH.logo} alt="Logo" className="header-logo" /><h1>{CHURCH.name}</h1></div>
-                 <div className="header-actions">
+                <div className="header-content">
+                    <img src={CHURCH.logo} alt="Church Logo" className="header-logo" />
+                    <h1>{CHURCH.name}</h1>
+                </div>
+                <div className="header-actions">
+                     <button className="header-button" onClick={handleLogout} aria-label="Log Out">
+                        <span className="material-symbols-outlined">logout</span>
+                    </button>
                     {user.roles.includes('admin') && <button className="header-button" onClick={() => setModal('manageUsers')} aria-label="Manage Users"><span className="material-symbols-outlined">manage_accounts</span></button>}
-                    <button className="header-button notifications" onClick={() => setShowNotifications(s => !s)} aria-label="Notifications">{hasUnread && <div className="notification-dot"></div>}<span className="material-symbols-outlined">notifications</span></button>
-                    <button className="header-button" onClick={handleLogout} aria-label="Log Out"><span className="material-symbols-outlined">logout</span></button>
+                    <button className="header-button notifications" onClick={() => setShowNotifications(p => !p)} aria-label="Notifications">
+                        <span className="material-symbols-outlined">notifications</span>
+                        {hasUnread && <div className="notification-dot"></div>}
+                    </button>
                 </div>
             </header>
-            <main className="main-content" style={{ visibility: activeChat && activePage === 'fellowship' ? 'hidden' : 'visible' }}>
+            <main className="main-content">
                 {renderPage()}
             </main>
-            
-            {activeChat && activePage === 'fellowship' && (
-                <ConversationPage 
-                    chat={activeChat} 
-                    onBack={() => setActiveChatId(null)} 
-                    onSendMessage={handleSendMessage} 
-                    onShowMembers={() => setModal('chatMembers')} 
-                    currentUser={user} 
-                />
-            )}
-            
             {showNotifications && <NotificationPanel notifications={MOCK_NOTIFICATIONS} onClose={() => setShowNotifications(false)} />}
-            
             <nav className="bottom-nav">
-                {NAV_ORDER.map(page => (
-                     <button key={page} className={`nav-item ${activePage === page ? 'active' : ''}`} onClick={() => { setActivePage(page); setActiveChatId(null); }}>
-                        <span className="material-symbols-outlined">{
-                            {worship: 'church', podcast: 'podcasts', news: 'feed', bible: 'book_2', fellowship: 'groups', prayer: 'volunteer_activism'}[page]
-                        }</span>
-                        <span>{TRANSLATIONS[page]}</span>
-                    </button>
-                ))}
+                <button className={`nav-item ${activePage === 'worship' ? 'active' : ''}`} onClick={() => { setActivePage('worship'); setActiveChatId(null); }}><span className="material-symbols-outlined">church</span><span>आरधना</span></button>
+                <button className={`nav-item ${activePage === 'news' ? 'active' : ''}`} onClick={() => { setActivePage('news'); setActiveChatId(null); }}><span className="material-symbols-outlined">feed</span><span>सूचना</span></button>
+                <button className={`nav-item ${activePage === 'bible' ? 'active' : ''}`} onClick={() => { setActivePage('bible'); setActiveChatId(null); }}><span className="material-symbols-outlined">book_2</span><span>बाइबल</span></button>
+                <button className={`nav-item ${activePage === 'fellowship' ? 'active' : ''}`} onClick={() => { setActivePage('fellowship'); setActiveChatId(null); }}><span className="material-symbols-outlined">groups</span><span>संगति</span></button>
+                <button className={`nav-item ${activePage === 'prayer' ? 'active' : ''}`} onClick={() => { setActivePage('prayer'); setActiveChatId(null); }}><span className="material-symbols-outlined">volunteer_activism</span><span>प्रार्थना</span></button>
+                <button className={`nav-item ${activePage === 'podcast' ? 'active' : ''}`} onClick={() => { setActivePage('podcast'); setActiveChatId(null); }}><span className="material-symbols-outlined">podcasts</span><span>Podcast</span></button>
             </nav>
-            
-            {modal === 'addPrayer' && <PrayerRequestFormModal onClose={() => setModal(null)} onSubmit={handleAddPrayerRequest} isSubmitting={isSubmitting}/>}
-            {editingPrayer && <PrayerRequestFormModal onClose={() => setEditingPrayer(null)} onSubmit={handleUpdatePrayerRequest} initialData={editingPrayer} isSubmitting={isSubmitting}/>}
-            {openPrayer && <PrayerDetailsModal request={openPrayer} onClose={() => setSelectedPrayerRequest(null)} onPray={handlePray} onComment={handleComment} currentUser={user} onEdit={(req) => { setSelectedPrayerRequest(null); setEditingPrayer(req);}} onDelete={handleDeletePrayerRequest} />}
-            {modal === 'addNews' && <AddNewsModal onClose={() => setModal(null)} onAddNews={handleAddNews} />}
-            {modal === 'addPodcast' && <AddPodcastModal onClose={() => setModal(null)} onAddPodcast={handleAddPodcast} />}
-            {modal === 'createChat' && user && <CreateChatModal onClose={() => setModal(null)} onStartChat={handleStartChat} currentUser={user}/>}
-            {modal === 'chatMembers' && activeChat && <ChatMembersModal chat={activeChat} onClose={() => setModal(null)} onAddMembers={handleAddMembers} />}
-            {modal === 'manageWorship' && <ManageWorshipModal services={worshipServices} onClose={() => setModal(null)} onAdd={handleAddWorship} onUpdate={handleUpdateWorship} onDelete={handleDeleteWorship}/>}
-            {modal === 'manageUsers' && <ManageUsersModal onClose={() => setModal(null)} />}
+            {activeModal()}
+            {selectedPrayerRequest && <PrayerDetailsModal request={selectedPrayerRequest} onClose={() => setSelectedPrayerRequest(null)} onPray={handlePray} onComment={handleComment} currentUser={user} onEdit={(req) => { setSelectedPrayerRequest(null); setEditingPrayer(req); }} onDelete={handleDeletePrayerRequest} />}
+            {editingPrayer && <PrayerRequestFormModal onClose={() => setEditingPrayer(null)} onSubmit={handleUpdatePrayerRequest} isSubmitting={isSubmitting} initialData={editingPrayer} />}
+            {modal?.startsWith('chatMembers_') && <ChatMembersModal chat={chats.find(c => c.id === modal.split('_')[1])!} onClose={() => setModal(null)} onAddMembers={handleAddMembers} />}
         </div>
     );
 };
-
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-root.render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>
-);
+root.render(<React.StrictMode><App /></React.StrictMode>);
