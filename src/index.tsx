@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -120,8 +119,8 @@ const MCHEYNE_READING_PLAN = [
     'लेवी ২৩, प्रेरित २४, भजनसंग्रह ६８, तीतस २', 'लेवी २४, प्रेरित २५, भजनसंग्रह ६９, तीतस ३', 'लेवी २५, प्रेरित २६, भजनसंग्रह ७０-७１, फिलेमोन', 'लेवी २६, प्रेरित २७, भजनसंग्रह ७２, हिब्रू १',
     'लेवी २७, प्रेरित २८, भजनसंग्रह ७３-७४, हिब्रू २', 'गन्ती १, रोमी १, भजनसंग्रह ७５-७６, हिब्रू ३', 'गन्ती २, रोमी २, भजनसंग्रह ७７, हिब्रू ४', 'गन्ती ३, रोमी ३, भजनसंग्रह ७８, हिब्रू ५',
     'गन्ती ४, रोमी ४, भजनसंग्रह ७９, हिब्रू ६', 'गन्ती ५, रोमी ५, भजनसंग्रह ८०, हिब्रू ७', 'गन्ती ६, रोमी ६, भजनसंग्रह ८１-८２, हिब्रू ८', 'गन्ती ७, रोमी ७, भजनसंग्रह ८３-८४, हिब्रू ९',
-    'गन्ती ८, रोमी ८, भजनसंग्रह ८５-८６, हिब्रू १०', 'गन्ती ९, रोमी ९, भजनसंग्रह ८７-८८, हिब्रू ११', 'गन्ती १०, रोमी १०, भजनसंग्रह ८９, हिब्रू १२', 'गन्ती ११, रोमी ११, भजनसंग्रह ९０-९१, हिब्रू १३',
-    'गन्ती १२, रोमी १२, भजनसंग्रह ९２-९４, याकूब १', 'गन्ती १३, रोमी १३, भजनसंग्रह ९５-९６, याकूब २', 'गन्ती १४, रोमी १४, भजनसंग्रह ९７-९９, याकूब ३', 'गन्ती १५, रोमी १५, भजनसंग्रह १००-१०２, याकूब ४',
+    'गन्ती ८, रोमी ८, भजनसंग्रह ८５-८６, हिब्रू १०', 'गन्ती ९, रोमी ९, भजनसंग्रह ८７-८८, हिब्रू ११', 'गन्ती १०, रोमी १०, भजनसंग्रह ८９, हिब्रू १२', 'गन्ती ११, रोमी ११, भजनसंग्रह ९０-९１, हिब्रू १३',
+    'गन्ती १२, रोमी १२, भजनसंग्रह ९２-९４, याकूब १', 'गन्ती १३, रोमी १३, भजनसंग्रह ९５-९६, याकूब २', 'गन्ती १४, रोमी १४, भजनसंग्रह ९７-९９, याकूब ३', 'गन्ती १५, रोमी १५, भजनसंग्रह १००-१०２, याकूब ४',
     'गन्ती १६, रोमी १६, भजनसंग्रह १०３, याकूब ५', 'गन्ती १७, १ कोरिन्थी १, भजनसंग्रह १०４, १ पत्रुस १', 'गन्ती १८, १ कोरिन्थी २, भजनसंग्रह १०５, १ पत्रुस २', 'गन्ती १९, १ कोरिन्थी ३, भजनसंग्रह १०６, १ पत्रुस ३',
     'गन्ती २०, १ कोरिन्थी ४, भजनसंग्रह १०７, १ पत्रुस ४', 'गन्ती २१, १ कोरिन्थी ५, भजनसंग्रह १०８-१०９, १ पत्रुस ५', 'गन्ती २२, १ कोरिन्थी ६, भजनसंग्रह १１０-१１１, २ पत्रुस १', 'गन्ती ২৩, १ कोरिन्थी ७, भजनसंग्रह १１２-१１４, २ पत्रुस २',
     'गन्ती २४, १ कोरिन्थी ८, भजनसंग्रह १１５-१１６, २ पत्रुस ३', 'गन्ती २५, १ कोरिन्थी ९, भजनसंग्रह १１７-११८, १ यूहन्ना १', 'गन्ती २६, १ कोरिन्थी १०, भजनसंग्रह ११९:१-२４, १ यूहन्ना २', 'गन्ती २७, १ कोरिन्थी ११, भजनसंग्रह ११९:२５-４８, १ यूहन्ना ३',
@@ -732,7 +731,7 @@ const PROVERBS_NNRV: { [key: number]: string } = {
 २ ज्ञानविनाको जोश असल होइन, र हतार गर्ने खुट्टाले बाटो बिराउँछ।
 ३ मानिसको मूर्खताले त्‍यसको मार्गलाई नष्‍ट गर्छ, तर त्‍यसको हृदय परमप्रभुको विरुद्धमा क्रोधित हुन्‍छ।
 ४ धन-सम्‍पत्तिले धेरै साथीहरू बनाउँछ, तर गरीब मानिस आफ्‍नै साथीबाट अलग हुन्‍छ।
-५ झूटो साक्षी दण्डविना रहनेछैन, र झूट बोल्‍ने मानिस उम्कनेछैन।
+५ झूटो साक्षी दण्डविना रहनेछैन, र झूटो बोल्‍ने मानिस उम्कनेछैन।
 ६ धेरैले शासकको निगाह खोज्‍छन्, र उपहार दिने मानिसको हरेक मानिस साथी हुन्‍छ।
 ७ गरीब मानिसका सबै भाइहरूले त्यसलाई घृणा गर्छन्, त्‍यसका साथीहरू झन् कति बढी त्यसबाट टाढा जान्छन्! त्‍यसले वचनहरूले तिनीहरूको पछि लाग्छ, तर तिनीहरू कहीँ भेटिँदैनन्।
 ८ समझ प्राप्‍त गर्नेले आफ्‍नै प्राणलाई प्रेम गर्छ, समझलाई जोगाउनेले सफलता पाउनेछ।
@@ -1407,12 +1406,7 @@ const BiblePage = () => {
 
 const ChatListPage = ({ chats, onSelectChat, currentUser, onNewChat }: { chats: Chat[]; onSelectChat: (id: string) => void; currentUser: User; onNewChat: () => void; }) => (
     <div className="page-content chat-list-page">
-        <div className="fellowship-header">
-            <h2>संगति</h2>
-            <button className="header-button" onClick={onNewChat}>
-                <span className="material-symbols-outlined">add_comment</span>
-            </button>
-        </div>
+        <h2>संगति</h2>
         <div className="list-container">{chats.map(chat => { 
             const lastMsg = chat.lastMessage;
             let avatar: React.ReactNode, name: string;
@@ -1446,6 +1440,9 @@ const ChatListPage = ({ chats, onSelectChat, currentUser, onNewChat }: { chats: 
                 </div>
             ); 
         })}</div>
+         <button className="fab" onClick={onNewChat} aria-label="New Chat">
+            <span className="material-symbols-outlined">add_comment</span>
+        </button>
     </div>
 );
 
@@ -1480,11 +1477,9 @@ const ConversationPage = ({ chat, messages, onBack, onSendMessage, onSendImage, 
 
             const prevMsg = messages[index - 1];
             const nextMsg = messages[index + 1];
-
-            const isNewDay = !prevMsg || prevMsg.createdAt.toDate().toLocaleDateString() !== msgDateString;
             
             const isSent = msg.senderId === currentUser.id;
-            const prevSenderSame = !isNewDay && prevMsg?.senderId === msg.senderId;
+            const prevSenderSame = prevMsg?.senderId === msg.senderId && prevMsg.createdAt.toDate().toLocaleDateString() === msgDateString;
             const nextSenderSame = nextMsg?.senderId === msg.senderId && nextMsg.createdAt.toDate().toLocaleDateString() === msgDateString;
             
             const isFirstOfGroup = !prevSenderSame;
@@ -2138,9 +2133,7 @@ const App = () => {
 
     const handleNavClick = (page: string) => {
         setActivePage(page);
-        if (page !== 'fellowship') {
-            setActiveChatId(null);
-        }
+        setActiveChatId(null);
     }
     
     const renderPage = () => {
