@@ -1160,7 +1160,7 @@ const formatDateSeparator = (date: Date) => {
 };
 
 const formatTimestamp = (ts: Timestamp | undefined) => {
-    if (!ts) return '';
+    if (!ts || !(ts instanceof Timestamp)) return ''; // More robust check for pending server timestamps
     return ts.toDate().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
 };
 
@@ -1440,7 +1440,7 @@ const ChatListPage = ({ chats, onSelectChat, currentUser, onNewChat }: { chats: 
             }
 
             const lastReadTimestamp = chat.lastRead?.[currentUser.id];
-            const isUnread = lastMsg?.createdAt && (!lastReadTimestamp || lastMsg.createdAt.toMillis() > lastReadTimestamp.toMillis());
+            const isUnread = lastMsg?.createdAt instanceof Timestamp && (!lastReadTimestamp || lastMsg.createdAt.toMillis() > lastReadTimestamp.toMillis());
 
             return (
                 <div key={chat.id} className={`list-item chat-item ${isUnread ? 'unread' : ''}`} onClick={() => onSelectChat(chat.id)}>
@@ -1485,7 +1485,7 @@ const ConversationPage = ({ chat, messages, onBack, onSendMessage, onSendImage, 
         let lastDate: string | null = null;
     
         messages.forEach((msg, index) => {
-            if (!msg || !msg.createdAt) return;
+            if (!msg || !(msg.createdAt instanceof Timestamp)) return;
 
             const msgDate = msg.createdAt.toDate();
             const msgDateString = msgDate.toLocaleDateString();
@@ -1976,7 +1976,11 @@ const App = () => {
                     return prevChats;
                 }
                 
-                validUserChats.sort((a,b) => (b.lastMessage?.createdAt?.toMillis() || 0) - (a.lastMessage?.createdAt?.toMillis() || 0));
+                validUserChats.sort((a,b) => {
+                    const timeA = a.lastMessage?.createdAt instanceof Timestamp ? a.lastMessage.createdAt.toMillis() : 0;
+                    const timeB = b.lastMessage?.createdAt instanceof Timestamp ? b.lastMessage.createdAt.toMillis() : 0;
+                    return timeB - timeA;
+                });
                 return validUserChats;
             });
         });
@@ -2177,11 +2181,11 @@ const App = () => {
             
             <nav className="bottom-nav">
                 <button className={`nav-item ${activePage === 'worship' ? 'active' : ''}`} onClick={() => handlePageChange('worship')}><span className="material-symbols-outlined">church</span><span>आरधना</span></button>
+                <button className={`nav-item ${activePage === 'podcast' ? 'active' : ''}`} onClick={() => handlePageChange('podcast')}><span className="material-symbols-outlined">podcasts</span><span>पोडकास्ट</span></button>
                 <button className={`nav-item ${activePage === 'news' ? 'active' : ''}`} onClick={() => handlePageChange('news')}><span className="material-symbols-outlined">feed</span><span>सूचना</span></button>
                 <button className={`nav-item ${activePage === 'bible' ? 'active' : ''}`} onClick={() => handlePageChange('bible')}><span className="material-symbols-outlined">book_2</span><span>बाइबल</span></button>
                 <button className={`nav-item ${activePage === 'fellowship' ? 'active' : ''}`} onClick={() => handlePageChange('fellowship')}><span className="material-symbols-outlined">groups</span><span>संगति</span></button>
                 <button className={`nav-item ${activePage === 'prayer' ? 'active' : ''}`} onClick={() => handlePageChange('prayer')}><span className="material-symbols-outlined">volunteer_activism</span><span>प्रार्थना</span></button>
-                <button className={`nav-item ${activePage === 'podcast' ? 'active' : ''}`} onClick={() => handlePageChange('podcast')}><span className="material-symbols-outlined">podcasts</span><span>पोडकास्ट</span></button>
             </nav>
             
             {(modal === 'addPrayer' || modal === 'addNews' || modal === 'addPodcast' || modal === 'addService') && <AddItemModal type={modal.substring(3).toLowerCase() as any} onClose={() => setModal(null)} onAdd={handleAddItem(modal.substring(3).toLowerCase() as any)}/>}
