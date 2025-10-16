@@ -786,7 +786,7 @@ const PROVERBS_NNRV: { [key: number]: string } = {
 २८ करारको प्रेम र विश्‍वसनीयताले राजाको रक्षा गर्छ, र त्‍यसको सिंहासन करारको प्रेमले सुरक्षित रहन्‍छ।
 २९ যুবকहरूको महिमा तिनीहरूको शक्ति हो, र फुलेको केश बूढा-पाकाहरूको सुन्दरता हो।
 ३० चोट पुर्‍याउने चोटहरूले खराबीलाई शुद्ध पार्छ, र कुटपिटले पेटका भित्री भागहरूलाई।`,
-    21: `१ राजाको हृदय परमप्रभुको हातमा पानीका खोलाहरूजस्तै छ, उहाँले त्यसलाई जता चाहनुहुन्‍छ, त्यतै फर्काउनुहुन्‍छ।
+    21: `१ राजाको हृदय परमप्रभुको हातमा पानीका खोलाहरूजस्तै छ, उहाँले त्यसलाई जता चाहनुहुन्‍छ, त्यतै फर्काउनुहुनेछ।
 २ मानिसका हरेक मार्ग आफ्‍नै दृष्टिमा ठीक छन्, तर परमप्रभुले हृदयहरूलाई जाँच्‍नुहुन्‍छ।
 ३ धार्मिकता र न्‍याय गर्नु परमप्रभुको निम्‍ति बलिदानभन्दा बढी ग्रहणयोग्य छ।
 ४ घमण्डी आँखाहरू र अहङ्कारी हृदय, दुष्‍टहरूको बत्ती, पाप हो।
@@ -828,7 +828,7 @@ const PROVERBS_NNRV: { [key: number]: string } = {
 ९ उदार आँखाको मानिस आशिषित् हुनेछ, किनभने उसले आफ्‍नो रोटी गरीबलाई दिन्छ।
 १० गिल्‍ला गर्नेलाई धपा, र झगडा बाहिर जानेछ, र विवाद र अपमान बन्द हुनेछ।
 ११ हृदयको शुद्धतालाई प्रेम गर्ने, र जसका ओठहरू दयालु छन्, राजा त्‍यसको मित्र हुनेछ।
-१२ परमप्रभुका आँखाहरूले ज्ञानको रक्षा गर्छन्, तर उहाँले विश्‍वासघातीका वचनहरूलाई विफल पार्नुहुन्‍छ।
+१२ परमप्रभुका आँखाहरूले ज्ञानको रक्षा गर्छन्, तर उहाँले विश्‍वासघातीका वचनहरूलाई विफल पार्नुहुनेछ।
 १३ अल्छेले भन्छ, “बाहिर सिंह छ! म सड़कहरूमा मारिनेछु!”
 १४ परस्‍त्रीहरूको मुख गहिरो खाल्‍डो हो, परमप्रभुको क्रोधमा परेको मानिस त्यसमा खस्‍नेछ।
 १५ मूर्खता बालकको हृदयमा बाँधिएको हुन्‍छ, तर अनुशासनको लट्ठीले त्यसलाई त्यसबाट टाढा धपाउनेछ।
@@ -1160,7 +1160,7 @@ const formatDateSeparator = (date: Date) => {
 };
 
 const formatTimestamp = (ts: Timestamp | undefined) => {
-    if (!ts || !(ts instanceof Timestamp)) return ''; // More robust check for pending server timestamps
+    if (!ts || typeof ts.toDate !== 'function') return '';
     return ts.toDate().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
 };
 
@@ -1440,7 +1440,11 @@ const ChatListPage = ({ chats, onSelectChat, currentUser, onNewChat }: { chats: 
             }
 
             const lastReadTimestamp = chat.lastRead?.[currentUser.id];
-            const isUnread = lastMsg?.createdAt instanceof Timestamp && (!lastReadTimestamp || lastMsg.createdAt.toMillis() > lastReadTimestamp.toMillis());
+            const lastMsgCreatedAt = lastMsg?.createdAt;
+            const isUnread = !!(
+                lastMsgCreatedAt && typeof lastMsgCreatedAt.toMillis === 'function' &&
+                (!lastReadTimestamp || lastMsgCreatedAt.toMillis() > lastReadTimestamp.toMillis())
+            );
 
             return (
                 <div key={chat.id} className={`list-item chat-item ${isUnread ? 'unread' : ''}`} onClick={() => onSelectChat(chat.id)}>
@@ -1485,7 +1489,9 @@ const ConversationPage = ({ chat, messages, onBack, onSendMessage, onSendImage, 
         let lastDate: string | null = null;
     
         messages.forEach((msg, index) => {
-            if (!msg || !(msg.createdAt instanceof Timestamp)) return;
+            if (!msg || !msg.createdAt || typeof msg.createdAt.toDate !== 'function') {
+                return; // Skip rendering messages without a valid server-confirmed timestamp
+            }
 
             const msgDate = msg.createdAt.toDate();
             const msgDateString = msgDate.toLocaleDateString();
@@ -1499,8 +1505,8 @@ const ConversationPage = ({ chat, messages, onBack, onSendMessage, onSendImage, 
             const nextMsg = messages[index + 1];
             
             const isSent = msg.senderId === currentUser.id;
-            const prevSenderSame = prevMsg?.senderId === msg.senderId && prevMsg.createdAt.toDate().toLocaleDateString() === msgDateString;
-            const nextSenderSame = nextMsg?.senderId === msg.senderId && nextMsg.createdAt.toDate().toLocaleDateString() === msgDateString;
+            const prevSenderSame = prevMsg?.senderId === msg.senderId && prevMsg.createdAt && typeof prevMsg.createdAt.toDate === 'function' && prevMsg.createdAt.toDate().toLocaleDateString() === msgDateString;
+            const nextSenderSame = nextMsg?.senderId === msg.senderId && nextMsg.createdAt && typeof nextMsg.createdAt.toDate === 'function' && nextMsg.createdAt.toDate().toLocaleDateString() === msgDateString;
             
             const isFirstOfGroup = !prevSenderSame;
             const isLastOfGroup = !nextSenderSame;
@@ -1639,10 +1645,18 @@ const PrayerDetailsModal = ({ request, onClose, onPray, onComment, onDelete, cur
                     <h4>टिप्पणीहरू ({request.comments.length})</h4>
                     <div className="prayer-comment-list">
                        {request.comments.length > 0 ? (
-                            [...request.comments].sort((a,b) => a.createdAt.toMillis() - b.createdAt.toMillis()).map(c => (
+                            [...request.comments]
+                                .sort((a,b) => {
+                                    const timeA = a.createdAt && typeof a.createdAt.toMillis === 'function' ? a.createdAt.toMillis() : 0;
+                                    const timeB = b.createdAt && typeof b.createdAt.toMillis === 'function' ? b.createdAt.toMillis() : 0;
+                                    return timeA - timeB;
+                                })
+                                .map(c => (
                                 <div key={c.id} className="comment-item">
                                     <p><strong>{c.author.name}:</strong> {c.content}</p>
-                                    <p className="comment-timestamp">{c.createdAt.toDate().toLocaleString()}</p>
+                                    <p className="comment-timestamp">
+                                        {c.createdAt && typeof c.createdAt.toDate === 'function' ? c.createdAt.toDate().toLocaleString() : 'Just now'}
+                                    </p>
                                 </div>
                             ))
                        ) : (
@@ -1700,7 +1714,7 @@ const AddItemModal = ({ type, onClose, onAdd }: { type: 'news' | 'prayer' | 'pod
     const typeConfig = {
         news: { title: "नयाँ सूचना", fields: ['title', 'content', 'image'] },
         prayer: { title: "नयाँ प्रार्थना अनुरोध", fields: ['title', 'content', 'image'] },
-        podcast: { title: "नयाँ पोडकास्ट", fields: ['title', 'audio'] },
+        podcast: { title: "New Podcast", fields: ['title', 'audio'] },
         service: { title: "नयाँ आरधना सेवा", fields: ['title', 'videoUrl'] },
     };
     const config = typeConfig[type];
@@ -1808,7 +1822,7 @@ const PodcastPage = ({ user, onAddPodcast }: { user: User; onAddPodcast: () => v
     }, []);
     const canPostPodcast = user.roles.includes('admin') || user.roles.includes('podcast_contributor');
     return (
-        <div className="page-content"><h2>पोडकास्ट</h2><div className="list-container">
+        <div className="page-content"><h2>Podcast</h2><div className="list-container">
             {podcasts.length > 0 ? podcasts.map(podcast => (
                 <div key={podcast.id} className="card podcast-item">
                     <div className="podcast-info">
@@ -1819,8 +1833,8 @@ const PodcastPage = ({ user, onAddPodcast }: { user: User; onAddPodcast: () => v
                     </div>
                     <audio controls className="podcast-player" src={podcast.audioUrl}></audio>
                 </div>
-            )) : <div className="card"><p>अहिलेसम्म कुनै पोडकास्टहरू उपलब्ध छैनन्।</p></div>}
-        </div>{canPostPodcast && <button className="fab" onClick={onAddPodcast} aria-label="नयाँ पोडकास्ट"><span className="material-symbols-outlined">add</span></button>}</div>
+            )) : <div className="card"><p>No podcasts are available yet.</p></div>}
+        </div>{canPostPodcast && <button className="fab" onClick={onAddPodcast} aria-label="New Podcast"><span className="material-symbols-outlined">add</span></button>}</div>
     );
 };
 
@@ -1977,8 +1991,8 @@ const App = () => {
                 }
                 
                 validUserChats.sort((a,b) => {
-                    const timeA = a.lastMessage?.createdAt instanceof Timestamp ? a.lastMessage.createdAt.toMillis() : 0;
-                    const timeB = b.lastMessage?.createdAt instanceof Timestamp ? b.lastMessage.createdAt.toMillis() : 0;
+                    const timeA = a.lastMessage?.createdAt && typeof a.lastMessage.createdAt.toMillis === 'function' ? a.lastMessage.createdAt.toMillis() : 0;
+                    const timeB = b.lastMessage?.createdAt && typeof b.lastMessage.createdAt.toMillis === 'function' ? b.lastMessage.createdAt.toMillis() : 0;
                     return timeB - timeA;
                 });
                 return validUserChats;
@@ -2181,7 +2195,7 @@ const App = () => {
             
             <nav className="bottom-nav">
                 <button className={`nav-item ${activePage === 'worship' ? 'active' : ''}`} onClick={() => handlePageChange('worship')}><span className="material-symbols-outlined">church</span><span>आरधना</span></button>
-                <button className={`nav-item ${activePage === 'podcast' ? 'active' : ''}`} onClick={() => handlePageChange('podcast')}><span className="material-symbols-outlined">podcasts</span><span>पोडकास्ट</span></button>
+                <button className={`nav-item ${activePage === 'podcast' ? 'active' : ''}`} onClick={() => handlePageChange('podcast')}><span className="material-symbols-outlined">podcasts</span><span>Podcast</span></button>
                 <button className={`nav-item ${activePage === 'news' ? 'active' : ''}`} onClick={() => handlePageChange('news')}><span className="material-symbols-outlined">feed</span><span>सूचना</span></button>
                 <button className={`nav-item ${activePage === 'bible' ? 'active' : ''}`} onClick={() => handlePageChange('bible')}><span className="material-symbols-outlined">book_2</span><span>बाइबल</span></button>
                 <button className={`nav-item ${activePage === 'fellowship' ? 'active' : ''}`} onClick={() => handlePageChange('fellowship')}><span className="material-symbols-outlined">groups</span><span>संगति</span></button>
