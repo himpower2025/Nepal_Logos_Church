@@ -38,13 +38,13 @@ type PrayerRequest = { id: string; authorId: string; author: User; title: string
 type Podcast = { id: string; title: string; author: User; audioUrl: string; createdAt: Timestamp; };
 type NewsItem = { id: string; title: string; content: string; image?: string; createdAt: Timestamp; };
 type Verse = { verse: string; text: string; };
-type Message = { id: string; senderId: string; sender?: User; content: string; type: 'text' | 'image'; mediaUrl?: string; createdAt: Timestamp; };
+type Message = { id: string; senderId: string; sender?: User; content: string; type: 'text' | 'image' | 'video'; mediaUrl?: string; createdAt: Timestamp; };
 
 type LastMessage = {
     content: string;
     senderId: string;
     createdAt: Timestamp;
-    type: 'text' | 'image';
+    type: 'text' | 'image' | 'video';
 };
 
 type Chat = { 
@@ -1453,6 +1453,7 @@ const ChatListPage = ({ chats, onSelectChat, currentUser, onNewChat }: { chats: 
                         <span className="chat-name">{name}</span>
                         <span className="chat-last-message">
                             {lastMsg?.type === 'image' && <span className="material-symbols-outlined">image</span>}
+                            {lastMsg?.type === 'video' && <span className="material-symbols-outlined">videocam</span>}
                             {lastMsg ? lastMsg.content : 'कुनै सन्देश छैन।'}
                         </span>
                     </div>
@@ -1469,7 +1470,7 @@ const ChatListPage = ({ chats, onSelectChat, currentUser, onNewChat }: { chats: 
     </div>
 );
 
-const ConversationPage = ({ chat, messages, onBack, onSendMessage, onSendImage, onShowMembers, currentUser }: { chat: Chat; messages: Message[]; onBack: () => void; onSendMessage: (chatId: string, content: string) => void; onSendImage: (chatId: string, file: File) => void; onShowMembers: () => void; currentUser: User }) => {
+const ConversationPage = ({ chat, messages, onBack, onSendMessage, onSendMedia, onShowMembers, currentUser }: { chat: Chat; messages: Message[]; onBack: () => void; onSendMessage: (chatId: string, content: string) => void; onSendMedia: (chatId: string, file: File) => void; onShowMembers: () => void; currentUser: User }) => {
     const [newMessage, setNewMessage] = useState('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const imageInputRef = useRef<HTMLInputElement>(null);
@@ -1478,9 +1479,9 @@ const ConversationPage = ({ chat, messages, onBack, onSendMessage, onSendImage, 
 
     const handleSend = () => { if (newMessage.trim()) { onSendMessage(chat.id, newMessage.trim()); setNewMessage(''); } };
     
-    const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleMediaSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (file) onSendImage(chat.id, file);
+        if (file) onSendMedia(chat.id, file);
         if(e.target) e.target.value = ''; // Reset file input
     };
     
@@ -1489,11 +1490,9 @@ const ConversationPage = ({ chat, messages, onBack, onSendMessage, onSendImage, 
         let lastDate: string | null = null;
     
         messages.forEach((msg, index) => {
-            if (!msg || !msg.createdAt || typeof msg.createdAt.toDate !== 'function') {
-                return; // Skip rendering messages without a valid server-confirmed timestamp
-            }
+            const msgDate = msg.createdAt?.toDate();
+            if (!msgDate) return; // Don't render if timestamp isn't at least a local estimate
 
-            const msgDate = msg.createdAt.toDate();
             const msgDateString = msgDate.toLocaleDateString();
 
             if (msgDateString !== lastDate) {
@@ -1517,8 +1516,9 @@ const ConversationPage = ({ chat, messages, onBack, onSendMessage, onSendImage, 
                 <div key={msg.id} className={`message-container ${isSent ? 'sent' : 'received'} ${groupClasses}`}>
                     {chat.isGroup && !isSent && isFirstOfGroup && <div className="sender-name">{msg.sender?.name || '...'}</div>}
                     <div className="message-bubble">
-                        {msg.type === 'image' && msg.mediaUrl && <img src={msg.mediaUrl} alt="sent" className="message-image" />}
-                        {msg.content && <p>{msg.content}</p>}
+                        {msg.type === 'image' && msg.mediaUrl && <img src={msg.mediaUrl} alt="sent image" className="message-image" />}
+                        {msg.type === 'video' && msg.mediaUrl && <video src={msg.mediaUrl} controls className="message-video" />}
+                        {msg.type === 'text' && msg.content && <p>{msg.content}</p>}
                         <span className="message-timestamp">{formatTimestamp(msg.createdAt)}</span>
                     </div>
                 </div>
@@ -1541,7 +1541,7 @@ const ConversationPage = ({ chat, messages, onBack, onSendMessage, onSendImage, 
                 <div ref={messagesEndRef} />
             </div>
             <div className="message-input-container">
-                <input type="file" ref={imageInputRef} onChange={handleImageSelect} accept="image/*" style={{display: 'none'}} />
+                <input type="file" ref={imageInputRef} onChange={handleMediaSelect} accept="image/*,video/*" style={{display: 'none'}} />
                 <button className="input-action-button" onClick={() => imageInputRef.current?.click()}>
                     <span className="material-symbols-outlined">attach_file</span>
                 </button>
@@ -2111,12 +2111,38 @@ const App = () => {
         await updateDoc(doc(db, "chats", chatId), { lastMessage: { content, senderId: currentUser.id, createdAt: serverTimestamp(), type: 'text' } });
     };
 
-    const handleSendImage = async (chatId: string, file: File) => {
+    const handleSendMedia = async (chatId: string, file: File) => {
         if (!currentUser) return;
-        const imageUrl = await uploadFile(`chats/${chatId}/${Date.now()}-${file.name}`, file);
-        const message = { senderId: currentUser.id, content: 'Image', type: 'image' as const, mediaUrl: imageUrl, createdAt: serverTimestamp() };
-        await addDoc(collection(db, `chats/${chatId}/messages`), message);
-        await updateDoc(doc(db, "chats", chatId), { lastMessage: { content: 'Image', senderId: currentUser.id, createdAt: serverTimestamp(), type: 'image' } });
+        const isImage = file.type.startsWith('image/');
+        const isVideo = file.type.startsWith('video/');
+
+        if (!isImage && !isVideo) {
+            alert("Unsupported file type. Please select an image or video.");
+            return;
+        }
+    
+        const mediaUrl = await uploadFile(`chats/${chatId}/${Date.now()}-${file.name}`, file);
+        
+        const type = isImage ? 'image' : 'video';
+        const content = isImage ? 'Image' : 'Video';
+    
+        const messagePayload = { 
+            senderId: currentUser.id, 
+            content: content, 
+            type: type,
+            mediaUrl: mediaUrl, 
+            createdAt: serverTimestamp()
+        };
+        await addDoc(collection(db, `chats/${chatId}/messages`), messagePayload);
+    
+        await updateDoc(doc(db, "chats", chatId), { 
+            lastMessage: { 
+                content: content, 
+                senderId: currentUser.id, 
+                createdAt: serverTimestamp(), 
+                type: type
+            } 
+        });
     };
 
     const handleStartChat = async (user: User) => {
@@ -2205,7 +2231,7 @@ const App = () => {
             {(modal === 'addPrayer' || modal === 'addNews' || modal === 'addPodcast' || modal === 'addService') && <AddItemModal type={modal.substring(3).toLowerCase() as any} onClose={() => setModal(null)} onAdd={handleAddItem(modal.substring(3).toLowerCase() as any)}/>}
             {selectedPrayerRequest && <PrayerDetailsModal request={selectedPrayerRequest} onClose={() => setSelectedPrayerRequest(null)} onPray={handlePray} onComment={handleComment} onDelete={handleDeletePrayerRequest} currentUser={currentUser}/>}
             {modal === 'createChat' && <CreateChatModal onClose={() => setModal(null)} onStartChat={handleStartChat} onStartGroupChat={handleStartGroupChat} currentUser={currentUser} />}
-            {activeChat && <ConversationPage chat={activeChat} messages={activeMessages} onBack={() => setActiveChatId(null)} onSendMessage={handleSendMessage} onSendImage={handleSendImage} onShowMembers={() => {}} currentUser={currentUser}/>}
+            {activeChat && <ConversationPage chat={activeChat} messages={activeMessages} onBack={() => setActiveChatId(null)} onSendMessage={handleSendMessage} onSendMedia={handleSendMedia} onShowMembers={() => {}} currentUser={currentUser}/>}
 
         </div>
     );

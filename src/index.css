@@ -144,13 +144,13 @@ html, body, #root {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-.login-button:disabled {
-    background-color: #bdbdbd;
-    cursor: not-allowed;
-}
 
 .login-button:hover {
     background-color: var(--primary-color-dark);
+}
+.login-button:disabled {
+    background-color: #9e9e9e;
+    cursor: not-allowed;
 }
 
 .login-error {
@@ -174,13 +174,14 @@ html, body, #root {
 .app-container {
     display: flex;
     flex-direction: column;
-    height: 100dvh; /* Use dynamic viewport height for mobile browsers */
+    height: 100dvh; /* Use dynamic viewport height to solve mobile browser UI issues. */
     width: 100%;
-    max-width: 600px;
+    max-width: 800px; /* Max-width for tablet-like view on desktop */
     margin: 0 auto;
     background-color: var(--secondary-color);
     box-shadow: 0 0 20px var(--shadow-color);
     position: relative;
+    overflow: hidden;
 }
 
 .app-header {
@@ -227,13 +228,11 @@ html, body, #root {
     cursor: pointer;
     border-radius: 50%;
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 .header-button:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
+.header-button .material-symbols-outlined { font-size: 28px; }
 
 .notification-dot {
     position: absolute;
@@ -244,6 +243,56 @@ html, body, #root {
     background-color: #ef5350;
     border-radius: 50%;
     border: 1px solid var(--primary-color);
+}
+
+.profile-menu-container {
+    position: relative;
+}
+.profile-button .chat-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+}
+.profile-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background-color: var(--card-background);
+    color: var(--text-color-dark);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 1001;
+    overflow: hidden;
+    width: 220px;
+    animation: fadeIn 0.2s ease-out;
+}
+.profile-menu-header {
+    padding: var(--space-md);
+    border-bottom: 1px solid #eee;
+}
+.profile-menu-header strong {
+    display: block;
+    margin-bottom: var(--space-xs);
+}
+.profile-menu-header span {
+    font-size: var(--font-size-sm);
+    color: #757575;
+}
+.profile-menu button {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: var(--font-size-base);
+    color: var(--text-color-dark);
+}
+.profile-menu button:hover {
+    background-color: #f5f5f5;
 }
 
 .main-content {
@@ -300,7 +349,7 @@ html, body, #root {
 }
 
 .nav-item.active {
-    color: var(--accent-color);
+    color: var(--primary-color);
 }
 .nav-item.active .material-symbols-outlined {
     font-variation-settings: 'FILL' 1;
@@ -401,8 +450,7 @@ html, body, #root {
     position: absolute;
     top: 65px; /* Adjust based on header height */
     right: var(--space-md);
-    width: 90%;
-    max-width: 320px;
+    width: 300px;
     max-height: 400px;
     background-color: var(--card-background);
     border-radius: 8px;
@@ -459,10 +507,7 @@ html, body, #root {
 /* --- Page Specific Styles --- */
 
 /* Worship Page */
-.live-worship-card {
-    position: relative;
-    padding-top: var(--space-lg);
-}
+.live-worship-card { position: relative; padding-top: var(--space-lg); }
 .live-badge {
     position: absolute;
     top: var(--space-md);
@@ -473,7 +518,12 @@ html, body, #root {
     border-radius: 4px;
     font-size: var(--font-size-sm);
     font-weight: 500;
+    text-transform: uppercase;
 }
+.no-live-service { text-align: center; padding: var(--space-xl) 0; }
+.no-live-service .material-symbols-outlined { font-size: 48px; color: #9e9e9e; margin-bottom: var(--space-md); }
+.no-live-service p { color: #757575; }
+.live-worship-card h4 { margin-top: var(--space-md); }
 .twitch-container {
     position: relative;
     width: 100%;
@@ -481,7 +531,6 @@ html, body, #root {
     background-color: #000;
     border-radius: 8px;
     overflow: hidden;
-    margin-bottom: var(--space-sm);
 }
 .twitch-container iframe {
     position: absolute;
@@ -490,27 +539,20 @@ html, body, #root {
     width: 100%;
     height: 100%;
 }
-.live-info-text, .live-worship-card h4 {
-    text-align: center;
-    margin: var(--space-sm) 0;
+.live-info-text {
+    font-size: var(--font-size-sm);
+    color: #616161;
+    margin: var(--space-sm) 0 var(--space-md) 0;
 }
-.worship-actions {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
-    margin-top: var(--space-md);
-    padding-top: var(--space-md);
-    border-top: 1px solid #eee;
-}
-.no-live-service { text-align: center; padding: var(--space-xl) 0; }
-.no-live-service .material-symbols-outlined { font-size: 48px; color: #9e9e9e; }
-.worship-list-item { justify-content: space-between; }
+.worship-actions { display: flex; flex-direction: column; gap: var(--space-sm); margin-top: var(--space-md); border-top: 1px solid #eee; padding-top: var(--space-md); }
+.worship-list-item { text-decoration: none; color: var(--text-color-dark); justify-content: space-between; }
 
 
 /* Bible Page */
 .bible-card {
     cursor: pointer;
     transition: background-color 0.2s ease;
+    margin-bottom: var(--space-md);
 }
 .bible-card:hover { background-color: #f9f9f9; }
 .bible-card h3 { color: var(--primary-color); }
@@ -523,26 +565,19 @@ html, body, #root {
 
 
 /* --- Chat Page --- */
-.chat-list-page .list-container {
-    gap: 0;
-}
+.chat-list-page .list-container { gap: 0; }
 .chat-item { 
     gap: var(--space-md); 
     padding: var(--space-sm) var(--space-md);
     border-radius: 0;
-    border-bottom: 1px solid #f0f0f0;
+    box-shadow: none;
+    border-bottom: 1px solid #eee;
 }
-.chat-item:last-child {
-    border-bottom: none;
-}
-.chat-item.unread .chat-name, .chat-item.unread .chat-timestamp {
-    font-weight: 700;
-    color: var(--text-color-dark);
-}
-
+.chat-item.unread { font-weight: 500; }
+.chat-item.unread .chat-last-message { color: var(--text-color-dark); }
 .chat-avatar {
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
     background-color: var(--primary-color-dark);
     color: white;
@@ -560,6 +595,7 @@ html, body, #root {
 .chat-item .chat-info {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     flex-grow: 1;
     overflow: hidden;
 }
@@ -574,25 +610,14 @@ html, body, #root {
     align-items: center;
     gap: var(--space-xs);
 }
-.chat-last-message .material-symbols-outlined {
-    font-size: 1rem;
-}
-.chat-meta {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: var(--space-xs);
-    font-size: var(--font-size-sm);
-    color: #9e9e9e;
-    flex-shrink: 0;
-}
+.chat-last-message .material-symbols-outlined { font-size: 1rem; }
+.chat-meta { text-align: right; font-size: var(--font-size-sm); color: #9e9e9e; display: flex; flex-direction: column; align-items: flex-end; gap: var(--space-xs); }
 .unread-dot {
     width: 10px;
     height: 10px;
-    background-color: var(--accent-color);
+    background-color: var(--primary-color);
     border-radius: 50%;
 }
-
 
 .conversation-page {
     position: absolute;
@@ -615,13 +640,14 @@ html, body, #root {
     justify-content: space-between;
     align-items: center;
     padding: var(--space-sm) var(--space-md);
-    background-color: var(--primary-color);
-    color: var(--text-color-light);
+    background-color: var(--card-background);
+    border-bottom: 1px solid #e0e0e0;
+    color: var(--text-color-dark);
     flex-shrink: 0;
 }
 .conversation-header.is-group { cursor: pointer; }
-.back-button { background: none; border: none; color: white; padding: var(--space-sm); margin-left: calc(-1 * var(--space-sm)); cursor: pointer; }
-.info-button { padding: var(--space-sm); margin-right: calc(-1 * var(--space-sm));}
+.back-button { background: none; border: none; color: var(--text-color-dark); padding: var(--space-sm); margin-left: calc(-1 * var(--space-sm)); cursor: pointer; }
+.info-button { color: var(--primary-color); }
 
 .message-list {
     flex-grow: 1;
@@ -629,107 +655,88 @@ html, body, #root {
     padding: var(--space-md);
     display: flex;
     flex-direction: column;
+    gap: var(--space-xs);
 }
-.date-separator {
-    text-align: center;
-    margin: var(--space-md) 0;
-}
-.date-separator span {
-    background-color: #cfd8dc;
-    color: #37474f;
-    padding: var(--space-xs) var(--space-sm);
-    border-radius: 12px;
-    font-size: var(--font-size-sm);
-}
-
-.message-container { 
-    display: flex; 
-    flex-direction: column; 
-    max-width: 80%; 
-    margin-bottom: 2px;
-}
+.message-container { display: flex; flex-direction: column; max-width: 75%; }
 .message-container.sent { align-self: flex-end; }
 .message-container.received { align-self: flex-start; }
-.sender-name { font-size: 0.75rem; color: #616161; margin-left: var(--space-md); margin-bottom: var(--space-xs); }
 
+.sender-name { font-size: 0.75rem; color: #616161; margin-left: var(--space-md); margin-bottom: var(--space-xs); }
 .message-bubble {
     padding: var(--space-sm) calc(var(--space-sm) * 1.5);
     border-radius: 18px;
     width: fit-content;
     line-height: 1.4;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 1px 1px var(--shadow-color);
-}
-.message-bubble .message-image {
+    position: relative;
     max-width: 100%;
-    border-radius: 8px;
-    cursor: pointer;
 }
 .message-bubble p { margin: 0; word-break: break-word; }
+.message-container.sent .message-bubble { background-color: var(--sent-bubble-color); align-self: flex-end; }
+.message-container.received .message-bubble { background-color: var(--received-bubble-color); align-self: flex-start; }
+.message-container .message-bubble.first-in-group { margin-top: var(--space-sm); }
+.message-container.sent .message-bubble.last-in-group { border-bottom-right-radius: 4px; }
+.message-container.received .message-bubble.last-in-group { border-bottom-left-radius: 4px; }
+.message-footer { display: flex; align-items: center; justify-content: flex-end; float: right; clear: both; margin-top: var(--space-xs); margin-left: var(--space-md); }
+.message-timestamp { font-size: 0.7rem; color: #616161; }
+.message-failed-indicator { color: var(--danger-color); font-size: 1rem; margin-right: var(--space-xs); }
 
-.message-container.sent .message-bubble { background-color: var(--sent-bubble-color); }
-.message-container.received .message-bubble { background-color: var(--received-bubble-color); }
-.message-container.first-in-group.sent .message-bubble { border-top-right-radius: 18px; }
-.message-container.first-in-group.received .message-bubble { border-top-left-radius: 18px; }
-.message-container.last-in-group.sent .message-bubble { border-bottom-right-radius: 4px; }
-.message-container.last-in-group.received .message-bubble { border-bottom-left-radius: 4px; }
+.message-media-container { position: relative; border-radius: 8px; overflow: hidden; }
+.message-media { max-width: 100%; display: block; cursor: pointer; }
+.message-bubble { padding: 0; }
+.message-bubble > p { padding: var(--space-sm) calc(var(--space-sm) * 1.5); }
 
-
-.message-timestamp { display: block; font-size: 0.7rem; color: #616161; text-align: right; margin-top: var(--space-xs); margin-left: var(--space-sm); }
-
-.message-input-container { 
-    display: flex; 
-    align-items: center; 
-    padding: var(--space-sm) var(--space-md); 
-    background-color: var(--card-background);
-    border-top: 1px solid #ccc;
-    flex-shrink: 0; 
-    gap: var(--space-sm); 
+.media-upload-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: flex; justify-content: center; align-items: center;
 }
-.message-input-container input[type="text"] { 
-    flex-grow: 1; 
-    padding: calc(var(--space-sm) * 1.5); 
-    border: none; 
-    border-radius: 20px; 
-    background-color: #f0f0f0; 
-    font-size: var(--font-size-base); 
+.spinner {
+    width: 24px; height: 24px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
 }
+
+.date-separator {
+    text-align: center;
+    margin: var(--space-md) 0;
+}
+.date-separator span {
+    background-color: #ccc;
+    color: white;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: 12px;
+    font-size: var(--font-size-sm);
+}
+
+.message-input-container { display: flex; align-items: center; padding: var(--space-sm) var(--space-md); flex-shrink: 0; gap: var(--space-sm); background-color: var(--card-background); border-top: 1px solid #e0e0e0; }
+.message-input-container input[type="text"] { flex-grow: 1; padding: calc(var(--space-sm) * 1.5); border: none; border-radius: 20px; background-color: #f0f0f0; font-size: var(--font-size-base); }
 .message-input-container input[type="text"]:focus { outline: none; }
-.input-action-button, .send-button { 
-    background: none; 
-    border: none; 
-    padding: 0; 
-    color: #616161; 
-    cursor: pointer; 
-    flex-shrink: 0; 
-    width: 40px; 
-    height: 40px; 
-    border-radius: 50%; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-}
+.input-action-button, .send-button { background: none; border: none; padding: 0; color: #616161; cursor: pointer; flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 .send-button { background: var(--primary-color); color: white; }
 
-/* Create Chat Modal */
-.user-list { max-height: 50vh; overflow-y: auto; }
-.user-list-item { gap: var(--space-md); }
-.user-list-item.selectable { cursor: pointer; justify-content: space-between; }
+/* Create Chat & Group Members Modals */
+.modal-form-input { width: 100%; padding: var(--space-sm) var(--space-md); border: 1px solid #bdbdbd; border-radius: 8px; font-size: var(--font-size-base); font-family: var(--font-family); margin-bottom: var(--space-md); }
+.user-list { max-height: 250px; overflow-y: auto; margin-bottom: var(--space-md); }
+.user-list-item { display: flex; align-items: center; gap: var(--space-md); padding: var(--space-sm); border-radius: 8px; }
+.user-list-item.selectable { cursor: pointer; }
 .user-list-item.selectable:hover { background-color: #f0f0f0; }
-.user-list-item > .user-name { flex-grow: 1; }
+.user-list-item .user-name { flex-grow: 1; }
 .checkbox-icon { color: #757575; }
 .checkbox-icon.checked { color: var(--primary-color); font-variation-settings: 'FILL' 1; }
 
 /* Prayer Page */
-.prayer-item { cursor: pointer; }
+.prayer-item { cursor: pointer; padding: 0; }
 .prayer-item:hover { background-color: #f9f9f9; }
-.prayer-item .prayer-image { width: 100%; max-height: 250px; object-fit: cover; border-radius: 4px; margin-bottom: calc(var(--space-sm) * 1.5); }
+.prayer-item .prayer-image { width: 100%; max-height: 250px; object-fit: cover; border-top-left-radius: 8px; border-top-right-radius: 8px; }
+.prayer-main { padding: var(--space-md); }
 .prayer-content { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.prayer-meta { width: 100%; display: flex; justify-content: space-between; align-items: center; font-size: var(--font-size-sm); color: #757575; margin-top: var(--space-md); }
+.prayer-meta { width: 100%; display: flex; justify-content: space-between; align-items: center; font-size: var(--font-size-sm); color: #757575; padding: var(--space-sm) var(--space-md); border-top: 1px solid #eee; }
 .prayer-actions { display: flex; gap: var(--space-md); }
 .prayer-action-button { display: flex; align-items: center; gap: calc(var(--space-xs) * 1.5); background: none; border: none; font-family: var(--font-family); color: #757575; cursor: pointer; }
-.prayer-action-button.prayed { color: var(--accent-color); font-weight: 500;}
+.prayer-action-button.prayed { color: var(--accent-color); }
 .prayer-action-button.prayed .material-symbols-outlined { font-variation-settings: 'FILL' 1; }
 
 /* Podcast Page */
@@ -738,17 +745,7 @@ html, body, #root {
 .podcast-title { font-weight: 500; margin-bottom: var(--space-xs); }
 .podcast-author { font-size: var(--font-size-sm); color: #757575; }
 .podcast-player { width: 100%; }
-
-/* Recording UI in Modal */
-.recording-ui { text-align: center; padding: var(--space-md) 0; }
-.recording-status { display: flex; justify-content: center; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-lg); font-size: var(--font-size-lg); color: var(--danger-color); }
-.recording-dot { width: 12px; height: 12px; background-color: var(--danger-color); border-radius: 50%; animation: blink 1s infinite; }
-@keyframes blink { 50% { opacity: 0; } }
-.record-button { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--danger-color); background-color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; margin: 0 auto; }
-.record-button.stop { background-color: var(--danger-color); }
-.audio-preview { margin: var(--space-md) 0; }
-.audio-preview audio { width: 100%; }
-
+.add-podcast-options { display: flex; flex-direction: column; gap: var(--space-md); margin-top: var(--space-md); }
 
 /* --- Modal Styles --- */
 .modal-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; animation: fadeIn 0.3s; }
@@ -759,8 +756,8 @@ html, body, #root {
 /* Modal Form */
 .modal-form { display: flex; flex-direction: column; gap: var(--space-md); }
 .modal-form h3, .modal-content h3 { text-align: center; margin-bottom: var(--space-sm); color: var(--primary-color); }
-.modal-form input[type="text"], .modal-form textarea { width: 100%; padding: var(--space-sm) var(--space-md); border: 1px solid #bdbdbd; border-radius: 8px; font-size: var(--font-size-base); font-family: var(--font-family); }
-.modal-form button[type="submit"] { align-self: center; }
+.modal-form input, .modal-form textarea { width: 100%; padding: var(--space-sm) var(--space-md); border: 1px solid #bdbdbd; border-radius: 8px; font-size: var(--font-size-base); font-family: var(--font-family); }
+.modal-form button { align-self: center; }
 
 .image-upload-container { width: 100%; }
 .image-upload-label { display: flex; align-items: center; justify-content: center; gap: var(--space-sm); padding: calc(var(--space-sm) * 1.5); border: 2px dashed #bdbdbd; border-radius: 8px; cursor: pointer; color: #757575; transition: background-color 0.2s, border-color 0.2s; }
@@ -768,22 +765,6 @@ html, body, #root {
 .image-preview { position: relative; text-align: center; }
 .image-preview img { max-width: 100%; max-height: 200px; border-radius: 8px; border: 1px solid #eee; }
 .image-preview button { position: absolute; top: 5px; right: 5px; background-color: rgba(0, 0, 0, 0.6); color: white; border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; }
-
-.modal-actions {
-    display: flex;
-    gap: var(--space-sm);
-    justify-content: flex-end;
-    margin-top: var(--space-md);
-}
-
-/* --- Responsive Design --- */
-@media (max-width: 375px) {
-  .nav-item span {
-      font-size: clamp(0.65rem, 1.8vw, 0.75rem);
-      overflow: hidden;
-      text-overflow: ellipsis;
-  }
-}
 
 /* Offering Modal */
 .offering-modal-content { text-align: center; }
@@ -797,22 +778,20 @@ html, body, #root {
 
 /* Bible Reading Modal */
 .bible-reading-modal-content { text-align: center; }
-.bible-reading-modal-content h3 { font-size: var(--font-size-h1); color: var(--primary-color); margin-bottom: var(--space-sm); }
+.bible-reading-modal-content h3 { font-size: var(--font-size-h1); font-weight: 500; color: var(--primary-color); margin-bottom: var(--space-sm); }
 .bible-reading-modal-content h4 { font-size: var(--font-size-lg); font-weight: bold; color: var(--text-color-dark); margin-bottom: var(--space-lg); }
-.bible-text-content { max-height: 60vh; overflow-y: auto; text-align: left; line-height: 1.8; color: #424242; padding: var(--space-md); border: 1px solid #eee; border-radius: 8px; background-color: #f9f9f9; }
-.bible-text-content p { white-space: pre-wrap; }
+.bible-text-content { max-height: 50vh; overflow-y: auto; text-align: left; line-height: 1.8; color: #424242; padding: var(--space-md); border: 1px solid #eee; border-radius: 8px; background-color: #f9f9f9; margin-bottom: var(--space-lg); }
+.bible-text-content p { white-space: pre-wrap; /* To respect newlines in the string */ }
 
 /* Prayer Details Modal */
 .prayer-details-modal { flex-grow: 1; display: flex; flex-direction: column; gap: var(--space-md); }
 .prayer-details-content { border-bottom: 1px solid #eee; padding-bottom: var(--space-md); }
 .prayer-details-header { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-sm); }
 .prayer-details-header h3 { font-size: var(--font-size-h2); margin-bottom: var(--space-xs); flex-grow: 1; }
-.prayer-owner-actions { display: flex; gap: var(--space-sm); flex-shrink: 0;}
-.prayer-owner-actions button { background: none; border: 1px solid #ccc; border-radius: 4px; padding: var(--space-xs) var(--space-sm); cursor: pointer; display: flex; align-items: center; gap: var(--space-xs); font-size: var(--font-size-sm); }
-.prayer-owner-actions button.delete-btn { border-color: var(--danger-color); color: var(--danger-color); }
+.prayer-owner-actions .delete-btn { background: none; border: 1px solid var(--danger-color); color: var(--danger-color); border-radius: 20px; padding: var(--space-xs) var(--space-sm); cursor: pointer; display: inline-flex; align-items: center; gap: var(--space-xs); }
+.prayer-owner-actions .delete-btn:hover { background: #fee; }
 .prayer-author { font-size: var(--font-size-sm); color: #757575; margin-bottom: var(--space-md); }
 .prayer-main-content { line-height: 1.6; white-space: pre-wrap; }
-.prayer-image { margin-bottom: 1rem; }
 
 .prayer-comments-section { flex-grow: 1; display: flex; flex-direction: column; min-height: 100px; }
 .prayer-comments-section h4 { margin-bottom: calc(var(--space-sm) * 1.5); color: var(--primary-color); }
@@ -827,22 +806,68 @@ html, body, #root {
 .comment-form input:focus { outline: none; border-color: var(--primary-color); }
 .comment-form button { background-color: var(--primary-color); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; cursor: pointer; flex-shrink: 0; }
 
-/* Chat Members Modal */
-.chat-members-modal h4 {
-    margin-top: var(--space-md);
-    margin-bottom: var(--space-sm);
-    color: var(--primary-color);
-}
-.manage-users-modal .user-list-editor {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
-}
-.manage-users-modal .user-editor-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: var(--space-sm);
-    border: 1px solid #eee;
-    border-radius: 4px;
+/* Responsive Design */
+@media (min-width: 601px) {
+    .app-container {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        grid-template-rows: auto 1fr;
+        grid-template-areas:
+            "header header"
+            "nav main";
+        height: 100vh;
+    }
+    .app-header { grid-area: header; }
+    .main-content { 
+        grid-area: main; 
+        display: flex; /* Ensure flex context for children */
+    }
+    .page-content, .chat-list-page {
+        width: 100%;
+        height: 100%;
+    }
+    .bottom-nav {
+        grid-area: nav;
+        display: flex;
+        flex-direction: column;
+        width: 280px;
+        height: 100%;
+        border-top: none;
+        border-right: 1px solid #e0e0e0;
+        box-shadow: none;
+    }
+    .nav-item {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: var(--space-md);
+        padding: var(--space-md);
+        width: 100%;
+        border-radius: 0;
+    }
+    .nav-item.active {
+        background-color: #e8f5e9;
+        font-weight: 500;
+    }
+    .nav-item span { font-size: var(--font-size-base); }
+
+    .conversation-page {
+        position: relative; /* Not absolute on desktop */
+        width: 100%;
+        height: 100%;
+        z-index: 1; /* Above page content but not over nav */
+        animation: none;
+    }
+
+    .conversation-header .back-button {
+        display: none; /* Hide back button on desktop */
+    }
+
+    .page-content.chat-list-page {
+        display: block; /* Always display chat list on desktop */
+    }
+    
+    .fab {
+        bottom: var(--space-lg);
+        right: var(--space-lg);
+    }
 }
