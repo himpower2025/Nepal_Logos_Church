@@ -95,7 +95,7 @@ const MCHEYNE_READING_PLAN = [
     'उत्पत्ति १७, मत्ती १७, नहेम्याह ७, प्रेरित १७', 'उत्पत्ति १८, मत्ती १८, नहेम्याह ८, प्रेरित १८', 'उत्पत्ति १९, मत्ती १९, नहेम्याह ९, प्रेरित १९', 'उत्पत्ति २०, मत्ती २०, नहेम्याह १०, प्रेरित २०',
     'उत्पत्ति २१, मत्ती २१, नहेम्याह ११, प्रेरित २१', 'उत्पत्ति २२, मत्ती २२, नहेम्याह १२, प्रेरित २२', 'उत्पत्ति ২৩, मत्ती ২৩, नहेम्याह १३, प्रेरित ২৩', 'उत्पत्ति २४, मत्ती २४, एस्तर १, प्रेरित २४',
     'उत्पत्ति २५, मत्ती २५, एस्तर २, प्रेरित २५', 'उत्पत्ति २६, मत्ती २६, एस्तर ३, प्रेरित २६', 'उत्पत्ति २७, मत्ती २७, एस्तर ४, प्रेरित २७', 'उत्पत्ति २८, मत्ती २८, एस्तर ५, प्रेरित २८',
-    'उत्पत्ति २९, मर्कूस १, एस्तर ६, रोमी १', 'उत्पत्ति ३०, मर्कूस २, एस्तर ७, रोमी २', 'उत्पत्ति ३१, मर्कूस ३, एस्तर ८, रोमी ३', 'उत्पत्ति ३２, मर्कूस ४, एस्तर ९, रोमी ४',
+    'उत्पत्ति २९, मर्कूस १, एस्तर ६, रोमी १', 'उत्पत्ति ३०, मर्कूस २, एस्तर ७, रोमी २', 'उत्पत्ति ३१, मर्कूस ३, एस्तर ८, रोमी ३', 'उत्पत्ति ३२, मर्कूस ४, एस्तर ९, रोमी ४',
     'उत्पत्ति ३३, मर्कूस ५, एस्तर १०, रोमी ५', 'उत्पत्ति ३४, मर्कूस ६, अय्यूब १, रोमी ६', 'उत्पत्ति ३५, मर्कूस ७, अय्यूब २, रोमी ७', 'उत्पत्ति ३६, मर्कूस ८, अय्यूब ३, रोमी ८',
     'उत्पत्ति ३७, मर्कूस ९, अय्यूब ४, रोमी ९', 'उत्पत्ति ३८, मर्कूस १०, अय्यूब ५, रोमी १०', 'उत्पत्ति ३९, मर्कूस ११, अय्यूब ६, रोमी ११', 'उत्पत्ति ४०, मर्कूस १२, अय्यूब ७, रोमी १२',
     'उत्पत्ति ४१, मर्कूस १३, अय्यूब ८, रोमी १३', 'उत्पत्ति ४२, मर्कूस १४, अय्यूब ९, रोमी १४', 'उत्पत्ति ४३, मर्कूस १५, अय्यूब १०, रोमी १५', 'उत्पत्ति ४४, मर्कूस १६, अय्यूब ११, रोमी १६',
@@ -117,17 +117,17 @@ const MCHEYNE_READING_PLAN = [
     'लेवी १५, प्रेरित १६, भजनसंग्रह ۵１, १ तिमोथी ४', 'लेवी १६, प्रेरित १७, भजनसंग्रह ५２-५४, १ तिमोथी ५', 'लेवी १७, प्रेरित १८, भजनसंग्रह ५５, १ तिमोथी ६', 'लेवी १८, प्रेरित १९, भजनसंग्रह ५６-५७, २ तिमोथी १',
     'लेवी १९, प्रेरित २०, भजनसंग्रह ५８-५९, २ तिमोथी २', 'लेवी २०, प्रेरित २१, भजनसंग्रह ६０-６２, २ तिमोथी ३', 'लेवी २१, प्रेरित २२, भजनसंग्रह ६３-६५, २ तिмоथी ४', 'लेवी २२, प्रेरित ২৩, भजनसंग्रह ६６-६७, तीतस १',
     'लेवी ২৩, प्रेरित २४, भजनसंग्रह ६８, तीतस २', 'लेवी २४, प्रेरित २५, भजनसंग्रह ६９, तीतस ३', 'लेवी २५, प्रेरित २६, भजनसंग्रह ७０-७１, फिलेमोन', 'लेवी २६, प्रेरित २७, भजनसंग्रह ७２, हिब्रू १',
-    'लेवी २७, प्रेरित २८, भजनसंग्रह ७３-७४, हिब्रू २', 'गन्ती १, रोमी १, भजनसंग्रह ७５-७６, हिब्रू ३', 'गन्ती २, रोमी २, भजनसंग्रह ७７, हिब्रू ४', 'गन्ती ३, रोमी ३, भजनसंग्रह ७８, हिब्रू ५',
+    'लेवी २७, प्रेरित २८, भजनसंग्रह ७３-७४, हिब्रू २', 'गन्ती १, रोमी १, भजनसंग्रह ७５-७६, हिब्रू ३', 'गन्ती २, रोमी २, भजनसंग्रह ७７, हिब्रू ४', 'गन्ती ३, रोमी ३, भजनसंग्रह ७８, हिब्रू ५',
     'गन्ती ४, रोमी ४, भजनसंग्रह ७９, हिब्रू ६', 'गन्ती ५, रोमी ५, भजनसंग्रह ८०, हिब्रू ७', 'गन्ती ६, रोमी ६, भजनसंग्रह ८１-८２, हिब्रू ८', 'गन्ती ७, रोमी ७, भजनसंग्रह ८３-८४, हिब्रू ९',
-    'गन्ती ८, रोमी ८, भजनसंग्रह ८５-८６, हिब्रू १०', 'गन्ती ९, रोमी ९, भजनसंग्रह ८７-८८, हिब्रू ११', 'गन्ती १०, रोमी १०, भजनसंग्रह ८９, हिब्रू १२', 'गन्ती ११, रोमी ११, भजनसंग्रह ९０-९１, हिब्रू १३',
+    'गन्ती ८, रोमी ८, भजनसंग्रह ८５-८६, हिब्रू १०', 'गन्ती ९, रोमी ९, भजनसंग्रह ८７-८८, हिब्रू ११', 'गन्ती १०, रोमी १०, भजनसंग्रह ८９, हिब्रू १२', 'गन्ती ११, रोमी ११, भजनसंग्रह ९０-९１, हिब्रू १३',
     'गन्ती १२, रोमी १२, भजनसंग्रह ९２-९４, याकूब १', 'गन्ती १३, रोमी १३, भजनसंग्रह ९５-९६, याकूब २', 'गन्ती १४, रोमी १४, भजनसंग्रह ९７-९９, याकूब ३', 'गन्ती १५, रोमी १५, भजनसंग्रह १००-१०２, याकूब ४',
     'गन्ती १६, रोमी १६, भजनसंग्रह १०３, याकूब ५', 'गन्ती १७, १ कोरिन्थी १, भजनसंग्रह १०４, १ पत्रुस १', 'गन्ती १८, १ कोरिन्थी २, भजनसंग्रह १०５, १ पत्रुस २', 'गन्ती १९, १ कोरिन्थी ३, भजनसंग्रह १०６, १ पत्रुस ३',
     'गन्ती २०, १ कोरिन्थी ४, भजनसंग्रह १०７, १ पत्रुस ४', 'गन्ती २१, १ कोरिन्थी ५, भजनसंग्रह १०８-१०９, १ पत्रुस ५', 'गन्ती २२, १ कोरिन्थी ६, भजनसंग्रह १１０-१１１, २ पत्रुस १', 'गन्ती ২৩, १ कोरिन्थी ७, भजनसंग्रह १１２-१１４, २ पत्रुस २',
     'गन्ती २४, १ कोरिन्थी ८, भजनसंग्रह १１５-१１６, २ पत्रुस ३', 'गन्ती २५, १ कोरिन्थी ९, भजनसंग्रह १１７-११८, १ यूहन्ना १', 'गन्ती २६, १ कोरिन्थी १०, भजनसंग्रह ११९:१-२４, १ यूहन्ना २', 'गन्ती २७, १ कोरिन्थी ११, भजनसंग्रह ११९:२５-４８, १ यूहन्ना ३',
-    'गन्ती २८, १ कोरिन्थी १२, भजनसंग्रह ११९:४९-７２, १ यूहन्ना ४', 'गन्ती २९, १ कोरिन्थी १३, भजनसंग्रह ११९:７३-९６, १ यूहन्ना ५', 'गन्ती ३०, १ कोरिन्थी १४, भजनसंग्रह ११९:९７-१२०, २ यूहन्ना', 'गन्ती ३१, १ कोरिन्थी १५, भजनसंग्रह ११९:१२１-१４４, ३ यूहन्ना',
+    'गन्ती २८, १ कोरिन्थी १२, भजनसंग्रह ११९:४९-７２, १ यूहन्ना ४', 'गन्ती २९, १ कोरिन्थी १३, भजनसंग्रह ११९:７３-९६, १ यूहन्ना ५', 'गन्ती ३०, १ कोरिन्थी १४, भजनसंग्रह ११९:९７-१२०, २ यूहन्ना', 'गन्ती ३१, १ कोरिन्थी १५, भजनसंग्रह ११९:१२１-१４４, ३ यूहन्ना',
     'गन्ती ३２, १ कोरिन्थी १६, भजनसंग्रह ११९:१４５-१७６, यहूदा', 'गन्ती ३३, २ कोरिन्थी १, भजनसंग्रह १२०-१२２, प्रकाश १', 'गन्ती ३४, २ कोरिन्थी २, भजनसंग्रह १२３-१२５, प्रकाश २', 'गन्ती ३५, २ कोरिन्थी ३, भजनसंग्रह १२６-१२８, प्रकाश ३',
     'गन्ती ३６, २ कोरिन्थी ४, भजनसंग्रह १२９-१३１, प्रकाश ४', 'व्यवस्था १, २ कोरिन्थी ५, भजनसंग्रह १३２-१३４, प्रकाश ५', 'व्यवस्था २, २ कोरिन्थी ६, भजनसंग्रह १३５-१३６, प्रकाश ६', 'व्यवस्था ३, २ कोरिन्थी ७, भजनसंग्रह १३７-१३８, प्रकाश ७',
-    'व्यवस्था ४, २ कोरिन्थी ८, भजनसंग्रह १३９, प्रकाश ८', 'व्यवस्था ५, २ कोरिन्थी ९, भजनसंग्रह १४०-१४１, प्रकाश ९', 'व्यवस्था ६, २ कोरिन्थी १०, भजनसंग्रह १४２-१४３, प्रकाश १०', 'व्यवस्था ७, २ कोरिन्थी ११, भजनसंग्रह १४４-१४５, प्रकाश ११',
+    'व्यवस्था ४, २ कोरिन्थी ८, भजनसंग्रह १३９, प्रकाश ८', 'व्यवस्था ५, २ कोरिन्थी ९, भजनसंग्रह १४०-१४１, प्रकाश ९', 'व्यवस्था ६, २ कोरिन्थी १०, भजनसंग्रह १४２-१४３, प्रकाश १०', 'व्यवस्था ७, २ कोरिन्थी ११, भजनसंग्रह १४４-१४५, प्रकाश ११',
     'व्यवस्था ८, २ कोरिन्थी १२, भजनसंग्रह १४６-१४７, प्रकाश १२', 'व्यवस्था ९, २ कोरिन्थी १३, भजनसंग्रह १४８-१५０, प्रकाश १३', 'व्यवस्था १०, गलाती १, हितोपदेश १, प्रकाश १४', 'व्यवस्था ११, गलाती २, हितोपदेश २, प्रकाश १५',
     'व्यवस्था १२, गलाती ३, हितोपदेश ३, प्रकाश १६', 'व्यवस्था १३, गलाती ४, हितोपदेश ४, प्रकाश १७', 'व्यवस्था १४, गलाती ५, हितोपदेश ५, प्रकाश १८', 'व्यवस्था १५, गलाती ६, हितोपदेश ६, प्रकाश १९',
     'व्यवस्था १६, एफिसी १, हितोपदेश ७, प्रकाश २०', 'व्यवस्था १७, एफिसी २, हितोपदेश ८, प्रकाश २१', 'व्यवस्था १८, एफिसी ३, हितोपदेश ९, प्रकाश २२', 'व्यवस्था १९, एफिसी ४, उपदेशक १, मत्ती १',
@@ -639,7 +639,7 @@ const PROVERBS_NNRV: { [key: number]: string } = {
 २८ धर्मीको हृदयले कसरी जवाफ दिने भनी विचार गर्छ, तर दुष्‍टहरूको मुखले खराब कुराहरू उगेल्छ।
 २९ परमप्रभु दुष्‍टहरूबाट टाढा हुनुहुन्‍छ, तर उहाँले धर्मीहरूको प्रार्थना सुन्‍नुहुन्‍छ।
 ३० आँखाहरूको ज्योतिले हृदयलाई आनन्दित तुल्याउँछ, र असल समाचारले हड्डीहरूलाई पोषिलो बनाउँछ।
-३१ जीवन दिने हप्की सुन्‍ने कान बुद्धिमान् मानिसहरूको बीचमा बस्नेछ।
+३१ जीवन दिने हप्की सुन्‍ने कान बुद्धिमान् मानिसहरूको बीचमा বस्नेछ।
 ३२ अनुशासनलाई बेवास्ता गर्नेले आफ्‍नै प्राणलाई तुच्‍छ ठान्छ, तर हप्की सुन्‍नेले समझ प्राप्‍त गर्छ।
 ३३ परमप्रभुको भय मान्‍नु बुद्धिको अनुशासन हो, र आदरभन्दा पहिले नम्रता आउँछ।`,
     16: `१ हृदयका योजनाहरू मानिसका हुन्, तर जिब्रोको जवाफ परमप्रभुबाट आउँछ।
@@ -735,7 +735,7 @@ const PROVERBS_NNRV: { [key: number]: string } = {
 ६ धेरैले शासकको निगाह खोज्‍छन्, र उपहार दिने मानिसको हरेक मानिस साथी हुन्‍छ।
 ७ गरीब मानिसका सबै भाइहरूले त्यसलाई घृणा गर्छन्, त्‍यसका साथीहरू झन् कति बढी त्यसबाट टाढा जान्छन्! त्‍यसले वचनहरूले तिनीहरूको पछि लाग्छ, तर तिनीहरू कहीँ भेटिँदैनन्।
 ८ समझ प्राप्‍त गर्नेले आफ्‍नै प्राणलाई प्रेम गर्छ, समझलाई जोगाउनेले सफलता पाउनेछ।
-९ झूटो साक्षी दण्डविना रहनेछैन, र झूट बोल्‍ने मानिस नाश हुनेछ।
+९ झूटो साक्षी दण्डविना रहनेछैन, र झूटो बोल्‍ने मानिस नाश हुनेछ।
 १० मूर्खको निम्‍ति विलासितामा जिउनु उपयुक्त हुँदैन, दासले राजकुमारहरूमाथि शासन गर्नु झन् कति बढी!
 ११ मानिसको समझले त्यसलाई ढिलो रिसाउन लगाउँछ, र अपराधलाई बेवास्ता गर्नु त्‍यसको महिमा हो।
 १२ राजाको क्रोध सिंहको गर्जनजस्तै हो, तर त्‍यसको निगाह घाँसमाथिको शीतजस्तै हो।
@@ -801,7 +801,7 @@ const PROVERBS_NNRV: { [key: number]: string } = {
 १३ गरीबको पुकारामा आफ्‍नो कान थुन्‍ने मानिस आफैले पनि बोलाउँदा कुनै जवाफ पाउनेछैन।
 १४ गुप्‍तमा दिइएको उपहारले रिसलाई शान्त पार्छ, र काखमा दिइएको घूसले उग्र क्रोधलाई।
 १५ जब न्‍याय गरिन्‍छ, तब धर्मीहरूको निम्‍ति आनन्द हुन्‍छ, तर दुष्‍ट काम गर्नेहरूको निम्‍ति आतङ्क हुन्‍छ।
-१६ समझको मार्गबाट बरालिने मानिस मृतकहरूको सभामा बस्नेछ।
+१६ समझको मार्गबाट बरालिने मानिस मृतकहरूको सभामा বस्नेछ।
 १७ सुख-विलासलाई प्रेम गर्ने मानिस गरीब हुनेछ, दाखमद्य र तेललाई प्रेम गर्ने मानिस धनी हुनेछैन।
 १८ दुष्‍ट मानिस धर्मीको निम्‍ति फिरौती हुन्‍छ, र विश्‍वासघाती सोझाहरूको सट्टामा।
 १९ झगडालु र रिसाहा पत्‍नीसँग बस्‍नुभन्दा, उजाड-स्‍थानमा बस्‍नु उत्तम हो।
@@ -822,7 +822,7 @@ const PROVERBS_NNRV: { [key: number]: string } = {
 ३ विवेकी मानिसले खतरा देख्छ र लुक्छ, तर सोझाहरू अगाडि बढ्छन् र दण्ड भोग्छन्।
 ४ नम्रता र परमप्रभुको भयको इनाम धन, आदर र जीवन हो।
 ५ विचलित मानिसको मार्गमा काँडाहरू र पासोहरू छन्, आफ्‍नो प्राणको रक्षा गर्ने मानिस तिनीहरूबाट टाढा रहनेछ।
-६ बालकलाई ऊ जानुपर्ने मार्गमा तालिम दे, र ऊ बूढो हुँदा पनि त्यसबाट फर्कनेछैन।
+६ बालकलाई ऊ जानुपर्ने मार्गमा तालिम दे, र ऊ बूढो हुँदा पनि त्यसबाट फर्कнеछैन।
 ७ धनीले गरीबमाथि शासन गर्छ, र ऋण लिने मानिस ऋण दिनेको दास हुन्‍छ।
 ८ अन्‍याय छर्नेले विपत्ति कटनी गर्नेछ, र त्‍यसको क्रोधको लट्ठी भाँचिनेछ।
 ९ उदार आँखाको मानिस आशिषित् हुनेछ, किनभने उसले आफ्‍नो रोटी गरीबलाई दिन्छ।
@@ -1240,7 +1240,7 @@ const NotificationPanel = ({ notifications, onClose }: { notifications: Notifica
 
     return (
         <div className="notification-panel" ref={panelRef}>
-            <div className="notification-header"><h4>Notifications</h4></div>
+            <div className="notification-header"><h4>सूचनाहरू</h4></div>
             <div className="notification-list">
                 {notifications.length > 0 ? (
                     notifications.map(notif => (
@@ -1253,7 +1253,7 @@ const NotificationPanel = ({ notifications, onClose }: { notifications: Notifica
                         </div>
                     ))
                 ) : (
-                    <p className="no-notifications">No new notifications.</p>
+                    <p className="no-notifications">कुनै नयाँ सूचनाहरू छैनन्।</p>
                 )}
             </div>
         </div>
@@ -1276,19 +1276,37 @@ const LoginPage = ({ church }: { church: Church }) => {
             if (type === 'login') {
                 await signInWithEmailAndPassword(auth, email, password);
             } else {
-                if (fullName.trim() === '') throw new Error('Please enter your full name.');
+                if (fullName.trim() === '') throw new Error('कृपया आफ्नो पूरा नाम लेख्नुहोस्।');
                 const cred = await createUserWithEmailAndPassword(auth, email, password);
                 const avatar = fullName.trim().split(' ').map(n => n[0]).join('').toUpperCase() || '?';
                 await setDoc(doc(db, "users", cred.user.uid), { name: fullName.trim(), email: cred.user.email, avatar, roles: ['member'] });
             }
         } catch (err: any) {
-            setError(err.message || 'An error occurred.');
+             let message = 'एउटा त्रुटि भयो। कृपया फेरि प्रयास गर्नुहोस्।';
+            switch (err.code) {
+                case 'auth/invalid-email':
+                    message = 'अमान्य इमेल ठेगाना।';
+                    break;
+                case 'auth/user-not-found':
+                case 'auth/wrong-password':
+                     message = 'इमेल वा पासवर्ड गलत छ।';
+                     break;
+                case 'auth/email-already-in-use':
+                     message = 'यो इमेल पहिले नै दर्ता गरिएको छ।';
+                     break;
+                case 'auth/weak-password':
+                    message = 'पासवर्ड कम्तिमा ६ अक्षरको हुनुपर्छ।';
+                    break;
+                default:
+                    message = err.message;
+            }
+            setError(message);
         } finally {
             setIsLoading(false);
         }
     };
     return (
-        <div className="login-container"><div className="login-box"><img src={church.logo} alt={`${church.name} Logo`} className="login-logo" /><h2>{church.name}</h2><p>{isLoginView ? 'Log in to join the community.' : 'Create an account to join.'}</p><form onSubmit={(e) => handleAuth(e, isLoginView ? 'login' : 'signup')}>{!isLoginView && <input className="login-input" type="text" placeholder="Full Name" value={fullName} onChange={(e) => setFullName(e.target.value)} required />}<input className="login-input" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required /><input className="login-input" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required /><button className="login-button" type="submit" disabled={isLoading}>{isLoading ? '...' : (isLoginView ? 'Log In' : 'Sign Up')}</button></form>{error && <p className="login-error">{error}</p>}<button onClick={() => setIsLoginView(!isLoginView)} className="auth-toggle-link">{isLoginView ? "Don't have an account? Sign Up" : 'Already have an account? Log In'}</button></div></div>
+        <div className="login-container"><div className="login-box"><img src={church.logo} alt={`${church.name} Logo`} className="login-logo" /><h2>{church.name}</h2><p>{isLoginView ? 'समुदायमा सामेल हुन लगइन गर्नुहोस्।' : 'सामेल हुन एउटा खाता बनाउनुहोस्।'}</p><form onSubmit={(e) => handleAuth(e, isLoginView ? 'login' : 'signup')}>{!isLoginView && <input className="login-input" type="text" placeholder="पूरा नाम" value={fullName} onChange={(e) => setFullName(e.target.value)} required />}<input className="login-input" type="email" placeholder="इमेल" value={email} onChange={(e) => setEmail(e.target.value)} required /><input className="login-input" type="password" placeholder="पासवर्ड" value={password} onChange={(e) => setPassword(e.target.value)} required /><button className="login-button" type="submit" disabled={isLoading}>{isLoading ? '...' : (isLoginView ? 'लग इन' : 'साइन अप गर्नुहोस्')}</button></form>{error && <p className="login-error">{error}</p>}<button onClick={() => setIsLoginView(!isLoginView)} className="auth-toggle-link">{isLoginView ? "खाता छैन? साइन अप गर्नुहोस्" : 'पहिले नै खाता छ? लग इन गर्नुहोस्'}</button></div></div>
     );
 };
 
@@ -1440,7 +1458,7 @@ const ChatListPage = ({ chats, onSelectChat, currentUser, onNewChat }: { chats: 
                 </div>
             ); 
         })}</div>
-         <button className="fab" onClick={onNewChat} aria-label="New Chat">
+         <button className="fab" onClick={onNewChat} aria-label="नयाँ च्याट">
             <span className="material-symbols-outlined">add_comment</span>
         </button>
     </div>
@@ -1458,6 +1476,7 @@ const ConversationPage = ({ chat, messages, onBack, onSendMessage, onSendImage, 
     const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) onSendImage(chat.id, file);
+        if(e.target) e.target.value = ''; // Reset file input
     };
     
     const renderMessages = () => {
@@ -1519,120 +1538,72 @@ const ConversationPage = ({ chat, messages, onBack, onSendMessage, onSendImage, 
                 <button className="input-action-button" onClick={() => imageInputRef.current?.click()}>
                     <span className="material-symbols-outlined">attach_file</span>
                 </button>
-                <input type="text" placeholder="सन्देश लेख्नुहोस्..." value={newMessage} onChange={(e) => setNewMessage(e.target.value)} onKeyPress={(e) => {if(e.key === 'Enter') {e.preventDefault(); handleSend();}}}/>
-                <button className="send-button" onClick={handleSend}><span className="material-symbols-outlined">send</span></button>
-            </div>
-        </div>
-    );
-};
-const PrayerPage = ({ prayerRequests, onPray, onAddRequest, onSelectRequest, currentUser }: { prayerRequests: PrayerRequest[]; onPray: (id: string) => void; onAddRequest: () => void; onSelectRequest: (req: PrayerRequest) => void; currentUser: User; }) => (
-    <div className="page-content"><h2>प्रार्थना अनुरोध</h2><div className="list-container">{prayerRequests.map(req => {
-        const isPrayed = req.prayedBy.includes(currentUser.id);
-        return (
-        <div key={req.id} className="card prayer-item" onClick={() => onSelectRequest(req)}>
-            {req.image && <img src={req.image} alt={req.title} className="prayer-image"/>}
-            <h4>{req.title}</h4>
-            <p className="prayer-content">{req.content}</p>
-            <div className="prayer-meta">
-                <span>By {req.author.name}</span>
-                <div className="prayer-actions">
-                    <button className={`prayer-action-button ${isPrayed ? 'prayed' : ''}`} onClick={(e) => { e.stopPropagation(); onPray(req.id); }}>
-                        <span className="material-symbols-outlined">volunteer_activism</span>
-                        <span>{isPrayed ? 'प्रार्थना गरियो' : 'प्रार्थना गर्नुहोस्'} ({req.prayedBy.length})</span>
-                    </button>
-                    <div className="prayer-action-button comment-button">
-                        <span className="material-symbols-outlined">chat_bubble</span>
-                        <span>{req.comments.length}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )})}</div><button className="fab" onClick={onAddRequest} aria-label="नयाँ प्रार्थना अनुरोध"><span className="material-symbols-outlined">edit_note</span></button></div>
-);
-const PodcastPage = ({ podcasts, onAddPodcast, user }: { podcasts: Podcast[]; onAddPodcast: () => void; user: User; }) => {
-    const canPostPodcast = user.roles.includes('admin') || user.roles.includes('podcast_contributor');
-    return (
-    <div className="page-content"><h2>पोडकास्ट</h2><div className="list-container">{podcasts.length > 0 ? podcasts.map(p => (<div key={p.id} className="card podcast-item"><div className="podcast-info"><div><h4 className="podcast-title">{p.title}</h4><p className="podcast-author">By {p.author.name}</p></div></div><audio controls className="podcast-player" src={p.audioUrl}></audio></div>)) : <p>No podcasts available yet.</p>}</div>{canPostPodcast && <button className="fab" onClick={onAddPodcast} aria-label="New Podcast"><span className="material-symbols-outlined">mic</span></button>}</div>
-);
-}
-
-// --- Modals ---
-const PrayerRequestFormModal = ({ onClose, onSubmit, isSubmitting, initialData }: { 
-    onClose: () => void; 
-    onSubmit: (data: any) => void;
-    isSubmitting: boolean; 
-    initialData?: PrayerRequest;
-}) => {
-    const [title, setTitle] = useState(initialData?.title || '');
-    const [content, setContent] = useState(initialData?.content || '');
-    const [imageFile, setImageFile] = useState<File | null>(null);
-    const [imagePreview, setImagePreview] = useState<string | null>(initialData?.image || null);
-    const [removeImage, setRemoveImage] = useState(false);
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (title.trim() && content.trim() && !isSubmitting) {
-            if (initialData) {
-                onSubmit({ reqId: initialData.id, title, content, imageFile, removeImage, oldImageUrl: initialData.image });
-            } else {
-                onSubmit({ title, content, imageFile });
-            }
-        }
-    };
-
-    const handleImageChange = (file: File) => {
-        setImageFile(file);
-        setImagePreview(URL.createObjectURL(file));
-        setRemoveImage(false);
-    };
-
-    const handleImageRemove = () => {
-        setImageFile(null);
-        setImagePreview(null);
-        if (initialData?.image) {
-            setRemoveImage(true);
-        }
-    };
-
-    const isEditing = !!initialData;
-
-    return (
-        <Modal onClose={onClose}>
-            <form className="modal-form" onSubmit={handleSubmit}>
-                <h3>{isEditing ? "प्रार्थना अनुरोध सम्पादन गर्नुहोस्" : "नयाँ प्रार्थना अनुरोध"}</h3>
-                <input type="text" placeholder="शीर्षक" value={title} onChange={(e) => setTitle(e.target.value)} required />
-                <textarea rows={5} placeholder="हामीले केको लागि प्रार्थना गर्नुपर्छ?" value={content} onChange={(e) => setContent(e.target.value)} required />
-                <ImageUpload 
-                    imagePreview={imagePreview} 
-                    onImageChange={handleImageChange} 
-                    onImageRemove={handleImageRemove} 
-                    labelText="फोटो थप्नुहोस् (यदि तपाईं चाहनुहुन्छ भने)"
+                <input 
+                   type="text" 
+                   placeholder="सन्देश लेख्नुहोस्..." 
+                   value={newMessage} 
+                   onChange={(e) => setNewMessage(e.target.value)} 
+                   onKeyPress={(e) => {if(e.key === 'Enter') {e.preventDefault(); handleSend();}}} 
                 />
-                <button type="submit" className="action-button" disabled={isSubmitting}>
-                    {isSubmitting ? (isEditing ? "सुरक्षित गर्दै..." : "पोस्ट गर्दै...") : (isEditing ? "परिवर्तनहरू सुरक्षित गर्नुहोस्" : "अनुरोध पठाउनुहोस्")}
+                 <button className="send-button" onClick={handleSend}>
+                    <span className="material-symbols-outlined">send</span>
                 </button>
-            </form>
-        </Modal>
+            </div>
+        </div>
     );
 };
 
-const PrayerDetailsModal = ({ request, onClose, onPray, onComment, currentUser, onEdit, onDelete }: { 
-    request: PrayerRequest; 
-    onClose: () => void; 
-    onPray: (id: string) => void; 
-    onComment: (id: string, text: string) => void; 
-    currentUser: User;
-    onEdit: (req: PrayerRequest) => void;
-    onDelete: (reqId: string, image?: string) => void;
-}) => {
+const PrayerPage = ({ prayerRequests, onPray, onAddRequest, onSelectRequest }: { prayerRequests: PrayerRequest[]; onPray: (id: string, isPrayed: boolean) => void; onAddRequest: () => void; onSelectRequest: (req: PrayerRequest) => void; }) => (
+    <div className="page-content">
+        <h2>प्रार्थना पर्खाल</h2>
+        <div className="list-container">
+            {prayerRequests.map(request => {
+                const isPrayed = request.prayedBy.includes(auth.currentUser?.uid || '');
+                return (
+                    <div key={request.id} className="card prayer-item" onClick={() => onSelectRequest(request)}>
+                        {request.image && <img src={request.image} alt={request.title} className="prayer-image" />}
+                        <div className="prayer-main">
+                            <h4>{request.title}</h4>
+                            <p className="prayer-content">{request.content}</p>
+                        </div>
+                        <div className="prayer-meta">
+                            <span>{request.author.name} द्वारा</span>
+                            <div className="prayer-actions">
+                                <button
+                                    className={`prayer-action-button ${isPrayed ? 'prayed' : ''}`}
+                                    onClick={(e) => { e.stopPropagation(); onPray(request.id, isPrayed); }}
+                                    aria-pressed={isPrayed}
+                                >
+                                    <span className="material-symbols-outlined">volunteer_activism</span>
+                                    <span>{request.prayedBy.length}</span>
+                                </button>
+                                <div className="prayer-action-button comment-button">
+                                    <span className="material-symbols-outlined">chat_bubble</span>
+                                    <span>{request.comments.length}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            })}
+        </div>
+         <button className="fab" onClick={onAddRequest} aria-label="नयाँ प्रार्थना अनुरोध">
+             <span className="material-symbols-outlined">add</span>
+        </button>
+    </div>
+);
+
+const PrayerDetailsModal = ({ request, onClose, onPray, onComment, onDelete, currentUser }: { request: PrayerRequest; onClose: () => void; onPray: (id: string, isPrayed: boolean) => void; onComment: (id: string, text: string) => void; onDelete: (id: string) => void; currentUser: User; }) => {
     const [comment, setComment] = useState('');
     const handleCommentSubmit = (e: React.FormEvent) => { e.preventDefault(); if (comment.trim()) { onComment(request.id, comment.trim()); setComment(''); } };
     const isPrayed = request.prayedBy.includes(currentUser.id);
-    const isOwner = currentUser.id === request.authorId;
+    const isOwner = request.authorId === currentUser.id;
+    const canDelete = isOwner || currentUser.roles.includes('admin');
 
     const handleDelete = () => {
         if (window.confirm("के तपाईं साँच्चै यो प्रार्थना अनुरोध मेटाउन चाहनुहुन्छ?")) {
-            onDelete(request.id, request.image);
+            onDelete(request.id);
+            onClose();
         }
     };
 
@@ -1642,237 +1613,177 @@ const PrayerDetailsModal = ({ request, onClose, onPray, onComment, currentUser, 
                 <div className="prayer-details-content">
                     <div className="prayer-details-header">
                         <h3>{request.title}</h3>
-                        {isOwner && (
+                        {canDelete && 
                             <div className="prayer-owner-actions">
-                                <button onClick={() => onEdit(request)}>
-                                    <span className="material-symbols-outlined">edit</span> सम्पादन
-                                </button>
-                                <button className="delete-btn" onClick={handleDelete}>
-                                    <span className="material-symbols-outlined">delete</span> हटाउनुहोस्
+                                <button onClick={handleDelete} className="delete-btn">
+                                    <span className="material-symbols-outlined">delete</span>मेटाउनुहोस्
                                 </button>
                             </div>
-                        )}
+                        }
                     </div>
-                    <p className="prayer-author">By {request.author.name}</p>
+                    <p className="prayer-author">{request.author.name} द्वारा</p>
                     {request.image && <img src={request.image} alt={request.title} className="prayer-image" />}
                     <p className="prayer-main-content">{request.content}</p>
-                    <div className="prayer-meta">
-                        <div className="prayer-actions">
-                            <button className={`prayer-action-button ${isPrayed ? 'prayed' : ''}`} onClick={() => onPray(request.id)}>
+                    <div className="prayer-meta" style={{ justifyContent: 'flex-end' }}>
+                         <div className="prayer-actions">
+                            <button className={`prayer-action-button ${isPrayed ? 'prayed' : ''}`} onClick={() => onPray(request.id, isPrayed)} aria-pressed={isPrayed}>
                                 <span className="material-symbols-outlined">volunteer_activism</span>
-                                <span>{isPrayed ? 'प्रार्थना गरियो' : 'प्रार्थना गर्नुहोस्'} ({request.prayedBy.length})</span>
+                                <span>{request.prayedBy.length} मैले प्रार्थना गरेँ</span>
                             </button>
                         </div>
                     </div>
                 </div>
+
                 <div className="prayer-comments-section">
                     <h4>टिप्पणीहरू ({request.comments.length})</h4>
-                    <div className="prayer-comment-list">{request.comments.length > 0 ? [...request.comments].reverse().map(c => (<div key={c.id} className="comment-item"><p><strong>{c.author.name}:</strong> {c.content}</p></div>)) : <p className="no-comments">कुनै टिप्पणीहरू छैनन्।</p>}</div>
-                    <form className="comment-form" onSubmit={handleCommentSubmit}><input type="text" placeholder="एउटा टिप्पणी थप्नुहोस्..." value={comment} onChange={(e) => setComment(e.target.value)} /><button type="submit"><span className="material-symbols-outlined">send</span></button></form>
-                </div>
-            </div>
-        </Modal>
-    );
-};
-
-const CreateChatModal = ({ onClose, onStartChat, currentUser }: { onClose: () => void; onStartChat: (userIds: string[]) => void; currentUser: User }) => {
-    const [allUsers, setAllUsers] = useState<User[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
-
-    useEffect(() => {
-        const fetchUsers = async () => {
-            setIsLoading(true);
-            const usersCollection = collection(db, "users");
-            const userSnapshot = await getDocs(usersCollection);
-            const userList = userSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as User));
-            setAllUsers(userList);
-            setIsLoading(false);
-        };
-        fetchUsers();
-    }, []);
-
-    const handleToggleUser = (id: string) => setSelectedUserIds(prev => prev.includes(id) ? prev.filter(uid => uid !== id) : [...prev, id]);
-    const handleCreate = () => { if (selectedUserIds.length > 0) onStartChat(selectedUserIds); };
-    return (
-        <Modal onClose={onClose}>
-            <div className="create-chat-modal">
-                <h3>नयाँ कुराकानी सुरु गर्नुहोस्</h3>
-                <div className="user-list">
-                    {isLoading ? (<p>Loading users...</p>) : (
-                        allUsers.filter(u => u.id !== currentUser.id).map(user => { 
-                            const isSelected = selectedUserIds.includes(user.id); 
-                            return (
-                                <div key={user.id} className={`user-list-item selectable ${isSelected ? 'selected' : ''}`} onClick={() => handleToggleUser(user.id)}>
-                                    <div className="chat-avatar">{user.avatar}</div>
-                                    <span className="user-name">{user.name}</span>
-                                    <span className={`material-symbols-outlined checkbox-icon ${isSelected ? 'checked' : ''}`}>{isSelected ? 'check_box' : 'check_box_outline_blank'}</span>
+                    <div className="prayer-comment-list">
+                       {request.comments.length > 0 ? (
+                            [...request.comments].sort((a,b) => a.createdAt.toMillis() - b.createdAt.toMillis()).map(c => (
+                                <div key={c.id} className="comment-item">
+                                    <p><strong>{c.author.name}:</strong> {c.content}</p>
+                                    <p className="comment-timestamp">{c.createdAt.toDate().toLocaleString()}</p>
                                 </div>
-                            )
-                        })
-                    )}
+                            ))
+                       ) : (
+                           <p className="no-comments">अहिलेसम्म कुनै टिप्पणी छैन। प्रोत्साहन दिने पहिलो व्यक्ति बन्नुहोस्!</p>
+                       )}
+                    </div>
+                    <form className="comment-form" onSubmit={handleCommentSubmit}>
+                        <input type="text" placeholder="टिप्पणी थप्नुहोस्..." value={comment} onChange={(e) => setComment(e.target.value)} />
+                        <button type="submit"><span className="material-symbols-outlined">send</span></button>
+                    </form>
                 </div>
-                <button className="action-button" onClick={handleCreate} disabled={selectedUserIds.length === 0 || isLoading}>
-                    {selectedUserIds.length > 1 ? 'समूह च्याट बनाउनुहोस्' : 'च्याट सुरु गर्नुहोस्'}
-                </button>
             </div>
         </Modal>
     );
 };
 
-const AddPodcastModal = ({ onClose, onAddPodcast }: { onClose: () => void; onAddPodcast: (data: { title: string; audioFile: File; }) => void; }) => {
-    const [title, setTitle] = useState('');
-    const [audioFile, setAudioFile] = useState<File | null>(null);
-    const [audioPreview, setAudioPreview] = useState<string | null>(null);
-    const [isRecording, setIsRecording] = useState(false);
-    const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-    const audioChunksRef = useRef<Blob[]>([]);
-    const handleStartRecording = async () => { const stream = await navigator.mediaDevices.getUserMedia({ audio: true }); mediaRecorderRef.current = new MediaRecorder(stream); mediaRecorderRef.current.ondataavailable = event => audioChunksRef.current.push(event.data); mediaRecorderRef.current.onstop = () => { const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' }); const audioUrl = URL.createObjectURL(audioBlob); setAudioFile(new File([audioBlob], "recording.webm", { type: 'audio/webm' })); setAudioPreview(audioUrl); audioChunksRef.current = []; }; mediaRecorderRef.current.start(); setIsRecording(true); };
-    const handleStopRecording = () => { mediaRecorderRef.current?.stop(); setIsRecording(false); };
-    const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); if (title.trim() && audioFile) onAddPodcast({ title, audioFile }); };
-    return (
-        <Modal onClose={onClose}><form className="modal-form" onSubmit={handleSubmit}><h3>New Podcast</h3><input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required /><div className="recording-ui">{!audioFile && (<><h4>Record Audio</h4><button type="button" onClick={isRecording ? handleStopRecording : handleStartRecording} className={`record-button ${isRecording ? 'stop' : ''}`}>{isRecording && <div className="recording-dot"></div>}</button><p>{isRecording ? "Recording..." : "Tap to record"}</p></>)}{audioPreview && (<div className="audio-preview"><h4>Preview</h4><audio src={audioPreview} controls /><button type="button" className="action-button secondary" onClick={() => { setAudioFile(null); setAudioPreview(null); }}>Record Again</button></div>)}</div><button type="submit" className="action-button" disabled={!title || !audioFile}>Upload Podcast</button></form></Modal>
-    );
-};
-
-const ChatMembersModal = ({ chat, onClose, onAddMembers }: { chat: Chat; onClose: () => void; onAddMembers: (chatId: string, userIds: string[]) => void; }) => {
-    const [allUsers, setAllUsers] = useState<User[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [isAdding, setIsAdding] = useState(false);
-    const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
-    
-    useEffect(() => {
-        if (isAdding) {
-            const fetchUsers = async () => {
-                setIsLoading(true);
-                const usersCollection = collection(db, "users");
-                const userSnapshot = await getDocs(usersCollection);
-                const userList = userSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as User));
-                setAllUsers(userList);
-                setIsLoading(false);
-            };
-            fetchUsers();
-        }
-    }, [isAdding]);
-
-    const usersToAdd = allUsers.filter(u => !chat.participantIds.includes(u.id));
-    const handleToggleUser = (id: string) => setSelectedUserIds(prev => prev.includes(id) ? prev.filter(uid => uid !== id) : [...prev, id]);
-    const handleConfirmAdd = () => { if (selectedUserIds.length > 0) onAddMembers(chat.id, selectedUserIds); setIsAdding(false); setSelectedUserIds([]); };
-
-    return (
-        <Modal onClose={onClose}><div className="chat-members-modal"><h3>कुराकानी जानकारी</h3>{!isAdding ? (<><h4>सहभागीहरू ({chat.participants.length})</h4><div className="user-list">{chat.participants.map(user => (<div key={user.id} className="user-list-item"><div className="chat-avatar">{user.avatar}</div><span className="user-name">{user.name}</span></div>))}</div><button className="action-button" onClick={() => setIsAdding(true)}><span className="material-symbols-outlined">person_add</span>सहभागीहरू थप्नुहोस्</button></>) : (<><h4>कुराकानीमा थप्नुहोस्</h4><div className="user-list">{isLoading ? <p>Loading users...</p> : usersToAdd.map(user => { const isSelected = selectedUserIds.includes(user.id); return (<div key={user.id} className={`user-list-item selectable ${isSelected ? 'selected' : ''}`} onClick={() => handleToggleUser(user.id)}><div className="chat-avatar">{user.avatar}</div><span className="user-name">{user.name}</span><span className={`material-symbols-outlined checkbox-icon ${isSelected ? 'checked' : ''}`}>{isSelected ? 'check_box' : 'check_box_outline_blank'}</span></div>)})}</div><button className="action-button" onClick={handleConfirmAdd} disabled={selectedUserIds.length === 0}>थप्नुहोस् ({selectedUserIds.length})</button><button className="action-button secondary" onClick={() => setIsAdding(false)}>रद्द गर्नुहोस्</button></>)}</div></Modal>
-    );
-};
-
-const AddNewsModal = ({ onClose, onAddNews }: { onClose: () => void; onAddNews: (data: { title: string; content: string; imageFile: File | null; }) => void; }) => {
+const AddItemModal = ({ type, onClose, onAdd }: { type: 'news' | 'prayer' | 'podcast' | 'service'; onClose: () => void; onAdd: (data: any) => Promise<void>; }) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
-    const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); if (title.trim() && content.trim()) onAddNews({ title, content, imageFile }); };
-    const handleImageChange = (file: File) => { setImageFile(file); setImagePreview(URL.createObjectURL(file)); };
-    return (
-        <Modal onClose={onClose}><form className="modal-form" onSubmit={handleSubmit}><h3>नयाँ सूचना</h3><input type="text" placeholder="शीर्षक" value={title} onChange={(e) => setTitle(e.target.value)} required /><textarea rows={5} placeholder="सामग्री" value={content} onChange={(e) => setContent(e.target.value)} required /><ImageUpload imagePreview={imagePreview} onImageChange={handleImageChange} onImageRemove={() => { setImageFile(null); setImagePreview(null); }} /><button type="submit" className="action-button">सूचना पोस्ट गर्नुहोस्</button></form></Modal>
-    );
-};
-const ManageWorshipModal = ({ services, onClose, onAdd, onUpdate, onDelete }: { services: WorshipService[], onClose: () => void, onAdd: (s: Omit<WorshipService, 'id'|'createdAt'>) => void, onUpdate: (id: string, data: Partial<WorshipService>) => void, onDelete: (id: string) => void}) => {
-    const [isEditing, setIsEditing] = useState<WorshipService | null>(null);
-    const [newTitle, setNewTitle] = useState('');
-    const [newUrl, setNewUrl] = useState('');
+    const [audioFile, setAudioFile] = useState<File | null>(null);
+    const [videoUrl, setVideoUrl] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    useEffect(() => {
-        if (isEditing) {
-            setNewTitle(isEditing.title);
-            setNewUrl(isEditing.videoUrl);
-        } else {
-            setNewTitle('');
-            setNewUrl('');
-        }
-    }, [isEditing]);
-
-    const handleSave = () => {
-        if (newTitle.trim() === '' || newUrl.trim() === '') {
-            alert("Please fill in both title and URL.");
-            return;
-        }
-        if (isEditing) {
-            onUpdate(isEditing.id, { title: newTitle, videoUrl: newUrl });
-        } else {
-            onAdd({ title: newTitle, videoUrl: newUrl });
-        }
-        setIsEditing(null);
+    const handleImageChange = (file: File) => {
+        setImageFile(file);
+        setImagePreview(URL.createObjectURL(file));
+    };
+    const handleImageRemove = () => {
+        setImageFile(null);
+        if (imagePreview) URL.revokeObjectURL(imagePreview);
+        setImagePreview(null);
     };
 
-    return (
-        <Modal onClose={onClose}><div className="manage-worship-modal"><h3>आरधना भिडियो व्यवस्थापन</h3><div className="list-container service-list-admin">{services.map(s => (<div key={s.id} className="list-item"><span>{s.title}</span><div><button onClick={() => setIsEditing(s)}><span className="material-symbols-outlined">edit</span></button><button onClick={() => onDelete(s.id)}><span className="material-symbols-outlined">delete</span></button></div></div>))}</div><div className="modal-form"><h4>{isEditing ? 'आरधना सम्पादन गर्नुहोस्' : 'नयाँ आरधना थप्नुहोस्'}</h4><input type="text" placeholder="आरधनाको शीर्षक" value={newTitle} onChange={e => setNewTitle(e.target.value)} /><input type="text" placeholder="YouTube वा Twitch URL" value={newUrl} onChange={e => setNewUrl(e.target.value)} /><button className="action-button" onClick={handleSave}> सुरक्षित गर्नुहोस्</button>{isEditing && <button className="action-button secondary" onClick={() => setIsEditing(null)}>सम्पादन रद्द गर्नुहोस्</button>}</div></div></Modal>
-    );
-};
-const ManageUsersModal = ({ onClose }: { onClose: () => void }) => {
-    const [users, setUsers] = useState<User[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        setIsLoading(true);
-        const q = query(collection(db, "users"), orderBy("name"));
-        const unsub = onSnapshot(q, (snap) => {
-            setUsers(snap.docs.map(d => {
-                const data = d.data();
-                return {
-                    id: d.id,
-                    name: data.name || 'No Name Provided',
-                    email: data.email || 'No Email',
-                    avatar: data.avatar || '?',
-                    roles: Array.isArray(data.roles) && data.roles.length > 0 ? data.roles : ['member']
-                } as User;
-            }));
-            setIsLoading(false);
-        });
-        return () => unsub();
-    }, []);
-
-    const handleRoleChange = async (userId: string, role: 'news_contributor' | 'podcast_contributor', checked: boolean) => {
-        const userToUpdate = users.find(u => u.id === userId);
-        if (!userToUpdate) return;
-        
-        let newRoles = [...userToUpdate.roles];
-        if (checked) {
-            if (!newRoles.includes(role)) newRoles.push(role);
-        } else {
-            newRoles = newRoles.filter(r => r !== role);
-        }
-        
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (isSubmitting) return;
+        setIsSubmitting(true);
         try {
-            await updateDoc(doc(db, "users", userId), { roles: newRoles });
+            let data: any = { title };
+            if (type === 'prayer' || type === 'news') data.content = content;
+            if (type === 'service') data.videoUrl = videoUrl;
+            
+            await onAdd({ ...data, imageFile, audioFile });
+            onClose();
         } catch (error) {
-            console.error("Error updating roles: ", error);
-            alert("Failed to update roles.");
+            console.error("Error adding item:", error);
+            alert("Failed to add item. Please try again.");
+        } finally {
+            setIsSubmitting(false);
         }
     };
+
+    const typeConfig = {
+        news: { title: "नयाँ सूचना", fields: ['title', 'content', 'image'] },
+        prayer: { title: "नयाँ प्रार्थना अनुरोध", fields: ['title', 'content', 'image'] },
+        podcast: { title: "नयाँ पोडकास्ट", fields: ['title', 'audio'] },
+        service: { title: "नयाँ आरधना सेवा", fields: ['title', 'videoUrl'] },
+    };
+    const config = typeConfig[type];
 
     return (
         <Modal onClose={onClose}>
-            <div className="manage-users-modal">
-                <h3>प्रयोगकर्ता व्यवस्थापन</h3>
-                {isLoading ? <p>Loading users...</p> : (
+            <form className="modal-form" onSubmit={handleSubmit}>
+                <h3>{config.title}</h3>
+                {config.fields.includes('title') && <input type="text" placeholder="शीर्षक" value={title} onChange={e => setTitle(e.target.value)} required />}
+                {config.fields.includes('content') && <textarea rows={5} placeholder={type === 'prayer' ? "हामीले केको लागि प्रार्थना गर्नुपर्छ?" : "सामग्री"} value={content} onChange={e => setContent(e.target.value)} required />}
+                {config.fields.includes('videoUrl') && <input type="text" placeholder="YouTube/Twitch URL" value={videoUrl} onChange={e => setVideoUrl(e.target.value)} required />}
+                {config.fields.includes('image') && <ImageUpload imagePreview={imagePreview} onImageChange={handleImageChange} onImageRemove={handleImageRemove} />}
+                {config.fields.includes('audio') && <input type="file" accept="audio/*" onChange={e => e.target.files?.[0] && setAudioFile(e.target.files[0])} required />}
+                <button type="submit" className="action-button" disabled={isSubmitting}>{isSubmitting ? 'पोस्ट गर्दै...' : 'पोस्ट गर्नुहोस्'}</button>
+            </form>
+        </Modal>
+    );
+};
+
+const CreateChatModal = ({ onClose, onStartChat, onStartGroupChat, currentUser }: { onClose: () => void; onStartChat: (user: User) => void; onStartGroupChat: (name: string, userIds: string[]) => void; currentUser: User; }) => {
+    const [users, setUsers] = useState<User[]>([]);
+    const [isGroupMode, setIsGroupMode] = useState(false);
+    const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
+    const [groupName, setGroupName] = useState('');
+
+    useEffect(() => {
+        const fetchAllUsers = async () => {
+            const usersCol = collection(db, "users");
+            const q = query(usersCol, where("name", "!=", null));
+            const snapshot = await getDocs(q);
+            const allUsers = snapshot.docs
+                .map(d => ({ ...d.data(), id: d.id } as User))
+                .filter(u => u.id !== currentUser.id);
+            setUsers(allUsers);
+        };
+        fetchAllUsers();
+    }, [currentUser.id]);
+
+    const handleUserSelect = (userId: string) => {
+        setSelectedUserIds(prev => prev.includes(userId) ? prev.filter(id => id !== userId) : [...prev, userId]);
+    };
+
+    const handleCreateGroup = () => {
+        if (groupName.trim() && selectedUserIds.length > 0) {
+            onStartGroupChat(groupName.trim(), selectedUserIds);
+        }
+    };
+    
+    return (
+        <Modal onClose={onClose}>
+            <div className="create-chat-modal">
+                <h3>{isGroupMode ? 'नयाँ समूह बनाउनुहोस्' : 'नयाँ कुराकानी सुरु गर्नुहोस्'}</h3>
+                
+                {!isGroupMode ? (
                     <div className="user-list">
-                        {users.filter(user => user.roles && !user.roles.includes('admin')).map(user => (
-                            <div key={user.id} className="user-list-item manage-user-item">
-                                <div className="user-info">
-                                    <div className="chat-avatar">{user.avatar}</div>
-                                    <span className="user-name">{user.name}</span>
-                                </div>
-                                <div className="user-roles">
-                                    <label>
-                                        <input type="checkbox" checked={user.roles.includes('news_contributor')} onChange={(e) => handleRoleChange(user.id, 'news_contributor', e.target.checked)} />
-                                        सूचना
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" checked={user.roles.includes('podcast_contributor')} onChange={(e) => handleRoleChange(user.id, 'podcast_contributor', e.target.checked)} />
-                                        Podcast
-                                    </label>
-                                </div>
+                        <div key="group-chat-option" className="user-list-item selectable" onClick={() => setIsGroupMode(true)}>
+                            <div className="chat-avatar group-avatar"><span className="material-symbols-outlined">groups</span></div>
+                            <span className="user-name">नयाँ समूह च्याट</span>
+                        </div>
+                        {users.map(user => (
+                            <div key={user.id} className="user-list-item selectable" onClick={() => onStartChat(user)}>
+                                <div className="chat-avatar">{user.avatar}</div>
+                                <span className="user-name">{user.name}</span>
                             </div>
                         ))}
+                    </div>
+                ) : (
+                    <div className="group-chat-form">
+                        <input type="text" placeholder="समूहको नाम" value={groupName} onChange={e => setGroupName(e.target.value)} className="modal-form-input" />
+                        <h4>सदस्यहरू छान्नुहोस्</h4>
+                        <div className="user-list">
+                            {users.map(user => (
+                                <div key={user.id} className="user-list-item selectable" onClick={() => handleUserSelect(user.id)}>
+                                    <div className="chat-avatar">{user.avatar}</div>
+                                    <span className="user-name">{user.name}</span>
+                                    <span className={`material-symbols-outlined checkbox-icon ${selectedUserIds.includes(user.id) ? 'checked' : ''}`}>
+                                        {selectedUserIds.includes(user.id) ? 'check_box' : 'check_box_outline_blank'}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                        <button className="action-button" onClick={handleCreateGroup} disabled={!groupName.trim() || selectedUserIds.length === 0}>
+                            समूह बनाउनुहोस्
+                        </button>
                     </div>
                 )}
             </div>
@@ -1880,417 +1791,404 @@ const ManageUsersModal = ({ onClose }: { onClose: () => void }) => {
     );
 };
 
-// --- Main App Component ---
-const App = () => {
-    const [user, setUser] = useState<User | null | undefined>(undefined);
-    const [activePage, setActivePage] = useState('worship');
-    const [prayerRequests, setPrayerRequests] = useState<PrayerRequest[]>([]);
+const PodcastPage = ({ user, onAddPodcast }: { user: User; onAddPodcast: () => void; }) => {
     const [podcasts, setPodcasts] = useState<Podcast[]>([]);
-    const [chats, setChats] = useState<Chat[]>([]);
-    const [worshipServices, setWorshipServices] = useState<WorshipService[]>([]);
-    const [activeChatMessages, setActiveChatMessages] = useState<Message[]>([]);
-    
-    // View states
-    const [activeChatId, setActiveChatId] = useState<string | null>(null);
-    const [selectedPrayerRequest, setSelectedPrayerRequest] = useState<PrayerRequest | null>(null);
-    const [editingPrayer, setEditingPrayer] = useState<PrayerRequest | null>(null);
-    const [showNotifications, setShowNotifications] = useState(false);
-    const [hasUnread, setHasUnread] = useState(true);
-    
-    // Modal states
-    const [modal, setModal] = useState<string | null>(null);
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    
     useEffect(() => {
-        onAuthStateChanged(auth, async (fbUser) => {
-            if (fbUser) {
-                const userDoc = await fetchUser(fbUser.uid);
-                setUser(userDoc);
-            } else setUser(null);
+        const q = query(collection(db, "podcasts"), orderBy("createdAt", "desc"));
+        const unsub = onSnapshot(q, async (snap) => {
+            const pods = await Promise.all(snap.docs.map(async d => {
+                const data = d.data();
+                const author = await fetchUser(data.authorId);
+                return { ...data, id: d.id, author } as Podcast;
+            }));
+            setPodcasts(pods);
         });
+        return () => unsub();
+    }, []);
+    const canPostPodcast = user.roles.includes('admin') || user.roles.includes('podcast_contributor');
+    return (
+        <div className="page-content"><h2>पोडकास्ट</h2><div className="list-container">
+            {podcasts.length > 0 ? podcasts.map(podcast => (
+                <div key={podcast.id} className="card podcast-item">
+                    <div className="podcast-info">
+                        <div>
+                            <h4 className="podcast-title">{podcast.title}</h4>
+                            <p className="podcast-author">{podcast.author.name} द्वारा</p>
+                        </div>
+                    </div>
+                    <audio controls className="podcast-player" src={podcast.audioUrl}></audio>
+                </div>
+            )) : <div className="card"><p>अहिलेसम्म कुनै पोडकास्टहरू उपलब्ध छैनन्।</p></div>}
+        </div>{canPostPodcast && <button className="fab" onClick={onAddPodcast} aria-label="नयाँ पोडकास्ट"><span className="material-symbols-outlined">add</span></button>}</div>
+    );
+};
+
+// --- App Headers ---
+const AppHeader = ({ user, onNotificationToggle, hasUnread }: { user: User; onNotificationToggle: () => void; hasUnread: boolean; }) => {
+    const [showMenu, setShowMenu] = useState(false);
+    const menuRef = useRef<HTMLDivElement>(null);
+    const handleLogout = () => signOut(auth);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setShowMenu(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
+    return (
+        <header className="app-header">
+            <div className="header-content">
+                <img src={CHURCH.logo} alt="Church Logo" className="header-logo" />
+                <h1>{CHURCH.name}</h1>
+            </div>
+            <div className="header-actions">
+                <button className="header-button notifications" onClick={onNotificationToggle} aria-label="Notifications">
+                    <span className="material-symbols-outlined">notifications</span>
+                    {hasUnread && <div className="notification-dot"></div>}
+                </button>
+                <div className="profile-menu-container" ref={menuRef}>
+                     <button className="header-button profile-button" onClick={() => setShowMenu(p => !p)} aria-label="प्रोफाइल मेनु">
+                         <div className="chat-avatar" style={{width: '32px', height: '32px'}}>{user.avatar}</div>
+                     </button>
+                     {showMenu && (
+                        <div className="profile-menu">
+                            <div className="profile-menu-header">
+                                <strong>{user.name}</strong>
+                                <span>{user.email}</span>
+                            </div>
+                            <button onClick={handleLogout}><span className="material-symbols-outlined">logout</span>लग आउट</button>
+                        </div>
+                     )}
+                </div>
+            </div>
+        </header>
+    );
+};
+
+const AdminHeader = ({ onAction }: { onAction: (action: 'logout' | 'manageUsers') => void; }) => (
+    <header className="app-header">
+        <div className="header-content">
+            <h1>व्यवस्थापन</h1>
+        </div>
+        <div className="header-actions">
+            <button onClick={() => onAction('manageUsers')} className="header-button" aria-label="प्रयोगकर्ताहरू व्यवस्थापन गर्नुहोस्">
+                <span className="material-symbols-outlined">manage_accounts</span>
+            </button>
+            <button onClick={() => onAction('logout')} className="header-button" aria-label="लग आउट">
+                <span className="material-symbols-outlined">logout</span>
+            </button>
+        </div>
+    </header>
+);
+
+// --- Main App Component ---
+const App = () => {
+    const [currentUser, setCurrentUser] = useState<User | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [activePage, setActivePage] = useState('worship');
+    const [activeChatId, setActiveChatId] = useState<string | null>(null);
+
+    // Data states
+    const [prayerRequests, setPrayerRequests] = useState<PrayerRequest[]>([]);
+    const [chats, setChats] = useState<Chat[]>([]);
+    const [messages, setMessages] = useState<{ [key: string]: Message[] }>({});
+    const [worshipServices, setWorshipServices] = useState<WorshipService[]>([]);
+
+    // View states
+    const [selectedPrayerRequest, setSelectedPrayerRequest] = useState<PrayerRequest | null>(null);
+    const [showNotifications, setShowNotifications] = useState(false);
+    const [hasUnread, setHasUnread] = useState(true); // Mocked for now
+
+    // Modal states
+    const [modal, setModal] = useState<'addPrayer' | 'addNews' | 'addPodcast' | 'addService' | 'createChat' | 'chatMembers' | 'manageUsers' | null>(null);
+
+    // Auth & User listener
     useEffect(() => {
-        if (!user) return;
-        
-        const prayerQ = query(collection(db, "prayerRequests"), orderBy("createdAt", "desc"));
-        const unsubPrayer = onSnapshot(prayerQ, async (snap) => setPrayerRequests(await Promise.all(snap.docs.map(async d => ({ ...d.data(), id: d.id, authorId: d.data().authorId, author: await fetchUser(d.data().authorId), comments: await Promise.all((d.data().comments || []).map(async (c: any) => ({...c, id: Math.random().toString(), author: await fetchUser(c.authorId)}))), prayedBy: d.data().prayedBy || [] } as PrayerRequest)))));
-        
-        const podcastQ = query(collection(db, "podcasts"), orderBy("createdAt", "desc"));
-        const unsubPodcast = onSnapshot(podcastQ, async (snap) => setPodcasts(await Promise.all(snap.docs.map(async d => ({ ...d.data(), id: d.id, author: await fetchUser(d.data().authorId) } as Podcast)))));
-        
-        const worshipQ = query(collection(db, "worshipServices"), orderBy("createdAt", "desc"), limit(5));
-        const unsubWorship = onSnapshot(worshipQ, snap => setWorshipServices(snap.docs.map(d => ({ ...d.data(), id: d.id } as WorshipService))));
-
-        const chatQ = query(collection(db, "chats"), where("participantIds", "array-contains", user.id), orderBy("lastMessage.createdAt", "desc"));
-        const unsubChat = onSnapshot(chatQ, async (snap) => {
-            const serverChats = await Promise.all(snap.docs.map(async (d) => {
-                const data = d.data();
-                return {
-                    ...data,
-                    id: d.id,
-                    participants: await fetchUsers(data.participantIds || []),
-                } as Chat;
-            }));
-            setChats(serverChats);
-        });
-        
-        return () => { unsubPrayer(); unsubPodcast(); unsubChat(); unsubWorship(); };
-    }, [user]);
-
-    useEffect(() => {
-        if (!activeChatId) {
-            setActiveChatMessages([]);
-            return;
-        }
-        if (user) {
-            const chatRef = doc(db, "chats", activeChatId);
-            updateDoc(chatRef, { [`lastRead.${user.id}`]: serverTimestamp() });
-        }
-        const messagesQ = query(collection(db, "chats", activeChatId, "messages"), orderBy("createdAt", "asc"));
-        const unsubMessages = onSnapshot(messagesQ, async (snap) => {
-            const messagesData = await Promise.all(snap.docs.map(async d => {
-                const data = d.data();
-                return { ...data, id: d.id, sender: await fetchUser(data.senderId) } as Message;
-            }));
-            setActiveChatMessages(messagesData);
-        });
-        return () => unsubMessages();
-    }, [activeChatId, user]);
-
-
-    // --- Handlers ---
-    const handleLogout = () => signOut(auth);
-    const handlePray = async (reqId: string) => { if (user) await updateDoc(doc(db, "prayerRequests", reqId), { prayedBy: prayerRequests.find(r => r.id === reqId)?.prayedBy.includes(user.id) ? arrayRemove(user.id) : arrayUnion(user.id) }); };
-    const handleComment = async (reqId: string, text: string) => { if (user) await updateDoc(doc(db, "prayerRequests", reqId), { comments: arrayUnion({ authorId: user.id, content: text, createdAt: Timestamp.now() }) }); };
-    
-    const uploadFile = async (file: File, path: string) => {
-        const storageRef = ref(storage, `${path}/${Date.now()}_${file.name}`);
-        const snapshot = await uploadBytes(storageRef, file);
-        return getDownloadURL(snapshot.ref);
-    };
-
-    const handleSendMessage = async (chatId: string, content: string, type: 'text' | 'image' = 'text', mediaUrl: string = '') => {
-        if (!user) return;
-        const now = Timestamp.now();
-        const messageContent = type === 'text' ? content : '📷 Photo';
-    
-        await addDoc(collection(db, "chats", chatId, "messages"), {
-            senderId: user.id,
-            content: type === 'text' ? content : '',
-            type,
-            mediaUrl,
-            createdAt: now,
-        });
-    
-        await updateDoc(doc(db, "chats", chatId), {
-            lastMessage: { content: messageContent, senderId: user.id, createdAt: now, type },
-            [`lastRead.${user.id}`]: now
-        });
-    };
-
-    const handleSendImageMessage = async (chatId: string, file: File) => {
-        if (!user) return;
-        try {
-            const mediaUrl = await uploadFile(file, `chatImages/${chatId}`);
-            await handleSendMessage(chatId, '', 'image', mediaUrl);
-        } catch (error) {
-            console.error("Error sending image: ", error);
-            alert("Failed to send image.");
-        }
-    };
-
-    const handleAddMembers = async (chatId: string, newUserIds: string[]) => await updateDoc(doc(db, "chats", chatId), { participantIds: arrayUnion(...newUserIds) });
-
-    const handleAddPrayerRequest = async (data: { title: string; content: string; imageFile: File | null; }) => {
-        if (!user || isSubmitting) return;
-        setIsSubmitting(true);
-        try {
-            const imageUrl = data.imageFile ? await uploadFile(data.imageFile, 'prayerImages') : '';
-            await addDoc(collection(db, "prayerRequests"), { authorId: user.id, title: data.title, content: data.content, image: imageUrl, prayedBy: [], comments: [], createdAt: serverTimestamp() });
-            setModal(null);
-        } catch (error) {
-            console.error("Error adding prayer request: ", error);
-            alert("Failed to post prayer request. Please try again.");
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
-    
-    const handleUpdatePrayerRequest = async (data: { reqId: string; title: string; content: string; imageFile: File | null; removeImage: boolean; oldImageUrl?: string; }) => {
-        if (!user || isSubmitting) return;
-        setIsSubmitting(true);
-        try {
-            let imageUrl = data.oldImageUrl || '';
-            if (data.removeImage && data.oldImageUrl) {
-                await deleteObject(ref(storage, data.oldImageUrl));
-                imageUrl = '';
-            }
-            if (data.imageFile) {
-                if (data.oldImageUrl) {
-                    await deleteObject(ref(storage, data.oldImageUrl));
+        const unsub = onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                if (userDoc.exists()) {
+                    const data = userDoc.data();
+                    setCurrentUser({ 
+                        id: user.uid, 
+                        name: data.name, 
+                        email: data.email, 
+                        avatar: data.avatar,
+                        roles: data.roles || ['member']
+                    });
+                } else {
+                    signOut(auth); // Force logout if user doc doesn't exist
                 }
-                imageUrl = await uploadFile(data.imageFile, 'prayerImages');
+            } else {
+                setCurrentUser(null);
             }
-            
-            await updateDoc(doc(db, "prayerRequests", data.reqId), {
-                title: data.title,
-                content: data.content,
-                image: imageUrl
-            });
-            setEditingPrayer(null);
-            setModal(null);
-        } catch(e) { 
-            console.error("Error updating prayer request: ", e);
-            alert("Failed to update prayer request.");
-        }
-        finally {
-            setIsSubmitting(false);
-        }
-    };
+            setIsLoading(false);
+        });
+        return () => unsub();
+    }, []);
     
-    const handleDeletePrayerRequest = async (reqId: string, imageUrl?: string) => {
-        try {
-            if (imageUrl) {
-                const imageRef = ref(storage, imageUrl);
-                await deleteObject(imageRef);
-            }
-            await deleteDoc(doc(db, "prayerRequests", reqId));
-            setSelectedPrayerRequest(null);
-        } catch (error) {
-            console.error("Error deleting prayer request: ", error);
-            alert("Failed to delete request.");
-        }
-    };
+    // Data listeners
+    useEffect(() => {
+        if (!currentUser) return;
 
-    const handleAddNews = async (data: { title: string; content: string; imageFile: File | null; }) => {
-        if (!user) return;
-        const imageUrl = data.imageFile ? await uploadFile(data.imageFile, 'newsImages') : '';
-        await addDoc(collection(db, "news"), { title: data.title, content: data.content, image: imageUrl, createdAt: serverTimestamp() });
-        setModal(null);
-    };
+        // Prayer Requests
+        const prayerQuery = query(collection(db, "prayerRequests"), orderBy("createdAt", "desc"));
+        const prayerUnsub = onSnapshot(prayerQuery, async (snap) => {
+            const reqs = await Promise.all(snap.docs.map(async d => {
+                const data = d.data();
+                const author = await fetchUser(data.authorId);
+                const comments = await Promise.all((data.comments || []).map(async (c: any) => ({...c, author: await fetchUser(c.authorId)})));
+                return { ...data, id: d.id, author, comments } as PrayerRequest;
+            }));
+            setPrayerRequests(reqs);
+        });
 
-    const handleAddPodcast = async (data: { title: string; audioFile: File; }) => {
-        if (!user) return;
-        const audioUrl = await uploadFile(data.audioFile, 'podcasts');
-        await addDoc(collection(db, "podcasts"), { authorId: user.id, title: data.title, audioUrl, createdAt: serverTimestamp() });
-        setModal(null);
-    };
-
-    const handleStartChat = async (userIds: string[]) => {
-        if (!user) return;
-        const allParticipantIds = [...new Set([...userIds, user.id])].sort();
+        // Chats
+        const chatsQuery = query(collection(db, "chats"), where("participantIds", "array-contains", currentUser.id));
+        const chatsUnsub = onSnapshot(chatsQuery, async (snap) => {
+            const userChats = await Promise.all(snap.docs.map(async d => {
+                const data = d.data();
+                const participants = await fetchUsers(data.participantIds);
+                return { ...data, id: d.id, participants } as Chat;
+            }));
+            // Sort chats by last message timestamp
+            userChats.sort((a,b) => (b.lastMessage?.createdAt?.toMillis() || 0) - (a.lastMessage?.createdAt?.toMillis() || 0));
+            setChats(userChats);
+        });
         
-        let existingChatId: string | null = null;
-        if (allParticipantIds.length === 2) {
-             const q = query(
-                collection(db, "chats"), 
-                where("isGroup", "==", false),
-                where("participantIds", "==", allParticipantIds)
-            );
-            const querySnapshot = await getDocs(q);
-            if (!querySnapshot.empty) {
-                 existingChatId = querySnapshot.docs[0].id;
+        // Worship Services
+        const servicesQuery = query(collection(db, "worshipServices"), orderBy("createdAt", "desc"), limit(5));
+        const servicesUnsub = onSnapshot(servicesQuery, snap => {
+            setWorshipServices(snap.docs.map(d => ({...d.data(), id: d.id} as WorshipService)));
+        });
+
+        return () => {
+            prayerUnsub();
+            chatsUnsub();
+            servicesUnsub();
+        };
+    }, [currentUser]);
+
+    // Message listener for active chat
+    useEffect(() => {
+        if (!activeChatId) return;
+        const messagesQuery = query(collection(db, `chats/${activeChatId}/messages`), orderBy("createdAt", "asc"));
+        const unsub = onSnapshot(messagesQuery, async (snap) => {
+             const msgs = await Promise.all(snap.docs.map(async d => {
+                const data = d.data();
+                const sender = await fetchUser(data.senderId);
+                return { ...data, id: d.id, sender } as Message;
+            }));
+            setMessages(prev => ({ ...prev, [activeChatId]: msgs }));
+        });
+        return () => unsub();
+    }, [activeChatId]);
+
+    // Handlers
+    const handlePray = async (requestId: string, isPrayed: boolean) => {
+        if (!currentUser) return;
+        const reqRef = doc(db, "prayerRequests", requestId);
+        await updateDoc(reqRef, { prayedBy: isPrayed ? arrayRemove(currentUser.id) : arrayUnion(currentUser.id) });
+    };
+
+    const handleDeletePrayerRequest = async (requestId: string) => {
+        const reqToDelete = prayerRequests.find(r => r.id === requestId);
+        if (reqToDelete?.image) {
+            try {
+                const imageRef = ref(storage, reqToDelete.image);
+                await deleteObject(imageRef);
+            } catch (error) {
+                console.error("Error deleting prayer request image:", error);
             }
         }
+        await deleteDoc(doc(db, "prayerRequests", requestId));
+    };
 
-        if (existingChatId) {
-            setActiveChatId(existingChatId);
-        } else {
-            const isGroup = allParticipantIds.length > 2;
-            const chatData: any = {
-                participantIds: allParticipantIds,
-                isGroup: isGroup,
-                lastRead: {},
-                createdAt: serverTimestamp()
-            };
-
-            if (isGroup) {
-                const groupName = prompt("समूह च्याटको लागि नाम प्रविष्ट गर्नुहोस्:", "नयाँ समूह");
-                if (!groupName) return; 
-                chatData.name = groupName;
-            }
-            
-            const newChatRef = await addDoc(collection(db, "chats"), chatData);
-            setActiveChatId(newChatRef.id);
-        }
-        setModal(null);
+    const handleComment = async (requestId: string, text: string) => {
+        if (!currentUser) return;
+        const reqRef = doc(db, "prayerRequests", requestId);
+        await updateDoc(reqRef, {
+            comments: arrayUnion({ authorId: currentUser.id, content: text, createdAt: serverTimestamp() })
+        });
     };
     
-    const handleAddWorshipService = async (service: Omit<WorshipService, 'id' | 'createdAt'>) => {
-        await addDoc(collection(db, "worshipServices"), { ...service, createdAt: serverTimestamp() });
-        setModal(null);
-    };
-    const handleUpdateWorshipService = async (id: string, data: Partial<WorshipService>) => {
-        await updateDoc(doc(db, "worshipServices", id), data);
-        setModal(null);
-    };
-    const handleDeleteWorshipService = async (id: string) => {
-        if (window.confirm("Are you sure you want to delete this worship service?")) {
-            await deleteDoc(doc(db, "worshipServices", id));
-        }
+    const uploadFile = async (file: File, path: string): Promise<string> => {
+        const storageRef = ref(storage, path);
+        await uploadBytes(storageRef, file);
+        return getDownloadURL(storageRef);
     };
 
-    const handleNavClick = (page: string) => {
-        setActivePage(page);
-        setActiveChatId(null);
-    }
+    const handleAddItem = async (data: any) => {
+        if (!currentUser) return;
+        const { title, content, imageFile, audioFile, videoUrl } = data;
+        let collectionName = '';
+        let docData: any = { title, authorId: currentUser.id, createdAt: serverTimestamp() };
+
+        if (modal === 'addPrayer') {
+            collectionName = 'prayerRequests';
+            docData.content = content;
+            docData.prayedBy = [];
+            docData.comments = [];
+            if (imageFile) docData.image = await uploadFile(imageFile, `prayer_requests/${Date.now()}_${imageFile.name}`);
+        } else if (modal === 'addNews') {
+            collectionName = 'news';
+            docData.content = content;
+            if (imageFile) docData.image = await uploadFile(imageFile, `news/${Date.now()}_${imageFile.name}`);
+        } else if (modal === 'addPodcast') {
+            collectionName = 'podcasts';
+            if (audioFile) docData.audioUrl = await uploadFile(audioFile, `podcasts/${Date.now()}_${audioFile.name}`);
+        } else if (modal === 'addService') {
+            collectionName = 'worshipServices';
+            docData.videoUrl = videoUrl;
+        }
+        
+        if(collectionName) await addDoc(collection(db, collectionName), docData);
+    };
+
+    const handleSendMessage = async (chatId: string, content: string) => {
+        if (!currentUser) return;
+        const msgData = { senderId: currentUser.id, content, type: 'text' as 'text', createdAt: serverTimestamp() };
+        await addDoc(collection(db, `chats/${chatId}/messages`), msgData);
+        await updateDoc(doc(db, 'chats', chatId), { lastMessage: msgData });
+    };
+
+    const handleSendImage = async (chatId: string, file: File) => {
+        if (!currentUser) return;
+        const imageUrl = await uploadFile(file, `chat_images/${chatId}/${Date.now()}_${file.name}`);
+        const msgData = { senderId: currentUser.id, content: 'Image', type: 'image' as 'image', mediaUrl: imageUrl, createdAt: serverTimestamp() };
+        await addDoc(collection(db, `chats/${chatId}/messages`), msgData);
+        await updateDoc(doc(db, 'chats', chatId), { lastMessage: msgData });
+    };
+
+    const handleStartChat = async (otherUser: User) => {
+        if (!currentUser) return;
+        const q = query(collection(db, "chats"), where("participantIds", "==", [currentUser.id, otherUser.id]));
+        const existingChats = await getDocs(q);
+        if (!existingChats.empty) {
+            setActiveChatId(existingChats.docs[0].id);
+        } else {
+             const q2 = query(collection(db, "chats"), where("participantIds", "==", [otherUser.id, currentUser.id]));
+             const existingChats2 = await getDocs(q2);
+             if(!existingChats2.empty) {
+                setActiveChatId(existingChats2.docs[0].id);
+             } else {
+                const newChatRef = await addDoc(collection(db, "chats"), {
+                    participantIds: [currentUser.id, otherUser.id],
+                    isGroup: false,
+                    createdAt: serverTimestamp()
+                });
+                setActiveChatId(newChatRef.id);
+             }
+        }
+        setModal(null);
+    };
+
+    const handleStartGroupChat = async (name: string, userIds: string[]) => {
+        if (!currentUser) return;
+        const participantIds = [currentUser.id, ...userIds];
+        const newChatRef = await addDoc(collection(db, "chats"), {
+            name,
+            participantIds,
+            isGroup: true,
+            admins: [currentUser.id],
+            createdAt: serverTimestamp()
+        });
+        setActiveChatId(newChatRef.id);
+        setModal(null);
+    };
+
+    const markChatAsRead = async (chatId: string) => {
+        if(!currentUser) return;
+        const chatRef = doc(db, 'chats', chatId);
+        await updateDoc(chatRef, { [`lastRead.${currentUser.id}`]: serverTimestamp() });
+    };
+
+    const handleSelectChat = (chatId: string) => {
+        setActiveChatId(chatId);
+        markChatAsRead(chatId);
+    };
+
+    const handleAdminHeaderAction = (action: 'logout' | 'manageUsers') => {
+        if (action === 'logout') signOut(auth);
+        else if (action === 'manageUsers') setModal('manageUsers');
+    };
     
     const renderPage = () => {
-        if (!user) return null;
         switch (activePage) {
-            case 'worship':
-                return <WorshipPage church={CHURCH} user={user} services={worshipServices} onManageServices={() => setModal('manageWorship')} />;
-            case 'podcast':
-                 return <PodcastPage podcasts={podcasts} onAddPodcast={() => setModal('addPodcast')} user={user} />;
-            case 'news':
-                return <NewsPage user={user} onAddNews={() => setModal('addNews')} />;
-            case 'bible':
-                return <BiblePage />;
-            case 'fellowship':
-                return <ChatListPage chats={chats} onSelectChat={setActiveChatId} currentUser={user} onNewChat={() => setModal('createChat')} />;
-            case 'prayer':
-                return <PrayerPage 
-                    prayerRequests={prayerRequests} 
-                    onPray={handlePray}
-                    onAddRequest={() => setModal('addPrayer')}
-                    onSelectRequest={setSelectedPrayerRequest}
-                    currentUser={user}
-                />;
-            default:
-                return <WorshipPage church={CHURCH} user={user} services={worshipServices} onManageServices={() => setModal('manageWorship')} />;
+            case 'worship': return <WorshipPage church={CHURCH} user={currentUser!} services={worshipServices} onManageServices={() => setModal('addService')} />;
+            case 'news': return <NewsPage user={currentUser!} onAddNews={() => setModal('addNews')} />;
+            case 'bible': return <BiblePage />;
+            case 'podcast': return <PodcastPage user={currentUser!} onAddPodcast={() => setModal('addPodcast')} />;
+            case 'fellowship': return <ChatListPage chats={chats} onSelectChat={handleSelectChat} currentUser={currentUser!} onNewChat={() => setModal('createChat')} />;
+            case 'prayer': return <PrayerPage prayerRequests={prayerRequests} onPray={handlePray} onAddRequest={() => setModal('addPrayer')} onSelectRequest={setSelectedPrayerRequest} />;
+            default: return <WorshipPage church={CHURCH} user={currentUser!} services={worshipServices} onManageServices={() => setModal('addService')} />;
         }
     };
-
-    if (user === undefined) {
-        return <div className="loading-fullscreen"><div></div><div></div><div></div></div>;
-    }
-    if (user === null) {
-        return <LoginPage church={CHURCH} />;
-    }
+    
+    if (isLoading) return <div className="loading-screen"><div></div></div>;
+    if (!currentUser) return <LoginPage church={CHURCH} />;
 
     const activeChat = chats.find(c => c.id === activeChatId);
-    const mainContentVisible = !activeChat || window.innerWidth > 600;
+    if (activeChat) {
+        return (
+            <ConversationPage
+                chat={activeChat}
+                messages={messages[activeChat.id] || []}
+                onBack={() => {
+                    markChatAsRead(activeChat.id);
+                    setActiveChatId(null);
+                }}
+                onSendMessage={handleSendMessage}
+                onSendImage={handleSendImage}
+                onShowMembers={() => setModal('chatMembers')}
+                currentUser={currentUser}
+            />
+        );
+    }
 
     return (
         <div className="app-container">
-            <header className="app-header">
-                 <div className="header-content">
-                    <img src={CHURCH.logo} alt="Church Logo" className="header-logo" />
-                    <h1>{CHURCH.name}</h1>
-                </div>
-                <div className="header-actions">
-                    <button className="header-button notifications" onClick={() => setShowNotifications(p => !p)} aria-label="Notifications">
-                        <span className="material-symbols-outlined">notifications</span>
-                        {hasUnread && <div className="notification-dot"></div>}
-                    </button>
-                    {user.roles.includes('admin') && (
-                        <button className="header-button" onClick={() => setModal('manageUsers')} aria-label="Manage Users">
-                            <span className="material-symbols-outlined">manage_accounts</span>
-                        </button>
-                    )}
-                    <button className="header-button" onClick={handleLogout} aria-label="Log Out">
-                        <span className="material-symbols-outlined">logout</span>
-                    </button>
-                </div>
-            </header>
+            {activePage === 'fellowship' && currentUser.roles.includes('admin') 
+                ? <AdminHeader onAction={handleAdminHeaderAction} /> 
+                : <AppHeader user={currentUser} onNotificationToggle={() => setShowNotifications(p => !p)} hasUnread={hasUnread} />
+            }
             <main className="main-content">
-                {mainContentVisible && renderPage()}
-                 {activeChat && <ConversationPage 
-                    chat={activeChat} 
-                    messages={activeChatMessages}
-                    onBack={() => setActiveChatId(null)} 
-                    onSendMessage={handleSendMessage} 
-                    onSendImage={handleSendImageMessage}
-                    currentUser={user}
-                    onShowMembers={() => setModal('chatMembers')}
-                />}
+                {renderPage()}
             </main>
             
             {showNotifications && <NotificationPanel notifications={MOCK_NOTIFICATIONS} onClose={() => setShowNotifications(false)} />}
             
             <nav className="bottom-nav">
-                <button className={`nav-item ${activePage === 'worship' ? 'active' : ''}`} onClick={() => handleNavClick('worship')}>
-                    <span className="material-symbols-outlined">church</span>
-                    <span>आरधना</span>
+                <button className={`nav-item ${activePage === 'worship' ? 'active' : ''}`} onClick={() => setActivePage('worship')}>
+                    <span className="material-symbols-outlined">church</span><span>आरधना</span>
                 </button>
-                <button className={`nav-item ${activePage === 'podcast' ? 'active' : ''}`} onClick={() => handleNavClick('podcast')}>
-                    <span className="material-symbols-outlined">podcasts</span>
-                    <span>Podcast</span>
+                <button className={`nav-item ${activePage === 'news' ? 'active' : ''}`} onClick={() => setActivePage('news')}>
+                    <span className="material-symbols-outlined">feed</span><span>सूचना</span>
                 </button>
-                <button className={`nav-item ${activePage === 'news' ? 'active' : ''}`} onClick={() => handleNavClick('news')}>
-                    <span className="material-symbols-outlined">feed</span>
-                    <span>सूचना</span>
+                <button className={`nav-item ${activePage === 'bible' ? 'active' : ''}`} onClick={() => setActivePage('bible')}>
+                    <span className="material-symbols-outlined">book_2</span><span>बाइबल</span>
                 </button>
-                <button className={`nav-item ${activePage === 'bible' ? 'active' : ''}`} onClick={() => handleNavClick('bible')}>
-                    <span className="material-symbols-outlined">book_2</span>
-                    <span>बाइबल</span>
+                 <button className={`nav-item ${activePage === 'fellowship' ? 'active' : ''}`} onClick={() => setActivePage('fellowship')}>
+                    <span className="material-symbols-outlined">groups</span><span>संगति</span>
                 </button>
-                 <button className={`nav-item ${activePage === 'fellowship' ? 'active' : ''}`} onClick={() => handleNavClick('fellowship')}>
-                    <span className="material-symbols-outlined">groups</span>
-                    <span>संगति</span>
+                <button className={`nav-item ${activePage === 'prayer' ? 'active' : ''}`} onClick={() => setActivePage('prayer')}>
+                    <span className="material-symbols-outlined">volunteer_activism</span><span>प्रार्थना</span>
                 </button>
-                <button className={`nav-item ${activePage === 'prayer' ? 'active' : ''}`} onClick={() => handleNavClick('prayer')}>
-                    <span className="material-symbols-outlined">volunteer_activism</span>
-                    <span>प्रार्थना</span>
+                 <button className={`nav-item ${activePage === 'podcast' ? 'active' : ''}`} onClick={() => setActivePage('podcast')}>
+                    <span className="material-symbols-outlined">podcasts</span><span>पोडकास्ट</span>
                 </button>
             </nav>
             
-            {modal === 'addPrayer' && <PrayerRequestFormModal 
-                onClose={() => setModal(null)}
-                onSubmit={handleAddPrayerRequest}
-                isSubmitting={isSubmitting}
-            />}
-            {editingPrayer && <PrayerRequestFormModal
-                onClose={() => { setEditingPrayer(null); setModal(null); }}
-                onSubmit={handleUpdatePrayerRequest}
-                isSubmitting={isSubmitting}
-                initialData={editingPrayer}
-            />}
-            {selectedPrayerRequest && <PrayerDetailsModal 
-                request={selectedPrayerRequest} 
-                onClose={() => setSelectedPrayerRequest(null)}
-                onPray={handlePray}
-                onComment={handleComment}
-                currentUser={user}
-                onEdit={(req) => { setSelectedPrayerRequest(null); setEditingPrayer(req); }}
-                onDelete={handleDeletePrayerRequest}
-            />}
-            {modal === 'createChat' && <CreateChatModal 
-                onClose={() => setModal(null)} 
-                onStartChat={handleStartChat} 
-                currentUser={user}
-            />}
-            {modal === 'addPodcast' && <AddPodcastModal 
-                onClose={() => setModal(null)}
-                onAddPodcast={handleAddPodcast}
-            />}
-            {modal === 'addNews' && <AddNewsModal
-                onClose={() => setModal(null)}
-                onAddNews={handleAddNews}
-            />}
-            {modal === 'manageWorship' && <ManageWorshipModal 
-                services={worshipServices}
-                onClose={() => setModal(null)}
-                onAdd={handleAddWorshipService}
-                onUpdate={handleUpdateWorshipService}
-                onDelete={handleDeleteWorshipService}
-            />}
-            {modal === 'manageUsers' && <ManageUsersModal
-                onClose={() => setModal(null)}
-            />}
-            {modal === 'chatMembers' && activeChat && <ChatMembersModal
-                chat={activeChat}
-                onClose={() => setModal(null)}
-                onAddMembers={handleAddMembers}
-            />}
+            {selectedPrayerRequest && <PrayerDetailsModal request={selectedPrayerRequest} onClose={() => setSelectedPrayerRequest(null)} onPray={handlePray} onComment={handleComment} onDelete={handleDeletePrayerRequest} currentUser={currentUser} />}
+            {(modal === 'addPrayer' || modal === 'addNews' || modal === 'addPodcast' || modal === 'addService') && <AddItemModal type={modal.replace('add', '').toLowerCase() as 'news'|'prayer'|'podcast'|'service'} onClose={() => setModal(null)} onAdd={handleAddItem} />}
+            {modal === 'createChat' && <CreateChatModal onClose={() => setModal(null)} onStartChat={handleStartChat} onStartGroupChat={handleStartGroupChat} currentUser={currentUser} />}
         </div>
     );
 };
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-root.render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>
-);
+root.render(<React.StrictMode><App /></React.StrictMode>);
