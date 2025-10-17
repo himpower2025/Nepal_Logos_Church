@@ -1,4 +1,5 @@
-const CACHE_NAME = 'nepal-logos-church-v40'; // Increment version on significant changes
+
+const CACHE_NAME = 'nepal-logos-church-v42'; // Increment version on significant changes
 
 // These are cached on install for basic offline fallback.
 const APP_SHELL_URLS = [
@@ -17,12 +18,6 @@ self.addEventListener('install', event => {
   );
 });
 
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
-});
-
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
@@ -36,17 +31,11 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  // Use a "Network falling back to cache" strategy for all GET requests.
-  // This ensures that online users always get the latest content.
-  // Offline users will get the last cached version.
   if (event.request.method === 'GET') {
     event.respondWith(
       fetch(event.request)
         .then(networkResponse => {
-          // If the fetch is successful, cache the response for offline use.
           return caches.open(CACHE_NAME).then(cache => {
-            // Do not cache opaque responses (e.g., from third-party CDNs without CORS)
-            // as we can't determine if they were successful.
             if (networkResponse.type !== 'opaque') {
               cache.put(event.request, networkResponse.clone());
             }
@@ -54,11 +43,7 @@ self.addEventListener('fetch', event => {
           });
         })
         .catch(() => {
-          // If the network request fails (e.g., offline),
-          // try to serve the response from the cache.
           return caches.match(event.request).then(cachedResponse => {
-            // For navigation requests that fail and are not in cache,
-            // always return the cached index.html as a fallback for the SPA.
             if (!cachedResponse && event.request.mode === 'navigate') {
               return caches.match('/index.html');
             }
@@ -70,6 +55,7 @@ self.addEventListener('fetch', event => {
 });
 
 self.addEventListener('push', event => {
+  console.log('[Service Worker] Push Received.');
   const data = event.data ? event.data.json() : {
       body: 'You have a new notification.',
       url: '/'
@@ -78,9 +64,9 @@ self.addEventListener('push', event => {
   const options = {
     body: data.body,
     icon: '/logos-church-new-logo.jpg',
-    badge: '/logos-church-new-logo.jpg',
+    badge: '/logos-church-new-logo.jpg', // Icon for the notification tray
     data: {
-      url: data.url
+      url: data.url || '/' // Fallback URL
     }
   };
 
@@ -88,8 +74,9 @@ self.addEventListener('push', event => {
 });
 
 self.addEventListener('notificationclick', event => {
+  console.log('[Service Worker] Notification click Received.');
   event.notification.close();
-  const urlToOpen = new URL(event.notification.data.url || '/', self.location.origin).href;
+  const urlToOpen = new URL(event.notification.data.url, self.location.origin).href;
 
   event.waitUntil(
     clients.matchAll({

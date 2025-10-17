@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import { auth, db, storage } from './firebase';
+import { auth, db, storage, messaging } from './firebase';
 import { 
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
@@ -28,6 +28,7 @@ import {
     limit
 } from "firebase/firestore";
 import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
+import { getToken, onMessage } from "firebase/messaging";
 
 // --- Types ---
 type UserRole = 'admin' | 'member' | 'news_contributor' | 'podcast_contributor';
@@ -38,7 +39,7 @@ type PrayerRequest = { id: string; authorId: string; author: User; title: string
 type Podcast = { id: string; title: string; author: User; audioUrl: string; createdAt: Timestamp; };
 type NewsItem = { id: string; title: string; content: string; image?: string; createdAt: Timestamp; };
 type Verse = { verse: string; text: string; };
-type Message = { id: string; senderId: string; sender?: User; content: string; type: 'text' | 'image' | 'video'; mediaUrl?: string; createdAt: Timestamp; status?: 'uploading' | 'failed' };
+type Message = { id: string; senderId: string; sender?: User; content?: string; type: 'text' | 'image' | 'video'; mediaUrl?: string; createdAt: Timestamp; status?: 'uploading' | 'failed'; tempId?: string; };
 
 type LastMessage = {
     content: string;
@@ -95,7 +96,7 @@ const MCHEYNE_READING_PLAN = [
     'उत्पत्ति १७, मत्ती १७, नहेम्याह ७, प्रेरित १७', 'उत्पत्ति १८, मत्ती १८, नहेम्याह ८, प्रेरित १८', 'उत्पत्ति १९, मत्ती १९, नहेम्याह ९, प्रेरित १९', 'उत्पत्ति २०, मत्ती २०, नहेम्याह १०, प्रेरित २०',
     'उत्पत्ति २१, मत्ती २१, नहेम्याह ११, प्रेरित २१', 'उत्पत्ति २२, मत्ती २२, नहेम्याह १२, प्रेरित २२', 'उत्पत्ति ২৩, मत्ती ২৩, नहेम्याह १३, प्रेरित ২৩', 'उत्पत्ति २४, मत्ती २४, एस्तर १, प्रेरित २४',
     'उत्पत्ति २५, मत्ती २५, एस्तर २, प्रेरित २५', 'उत्पत्ति २६, मत्ती २६, एस्तर ३, प्रेरित २६', 'उत्पत्ति २७, मत्ती २७, एस्तर ४, प्रेरित २७', 'उत्पत्ति २८, मत्ती २८, एस्तर ५, प्रेरित २८',
-    'उत्पत्ति २९, मर्कूस १, एस्तर ६, रोमी १', 'उत्पत्ति ३०, मर्कूस २, एस्तर ७, रोमी २', 'उत्पत्ति ३१, मर्कूस ३, एस्तर ८, रोमी ३', 'उत्पत्ति ३२, मर्कूस ४, एस्तर ९, रोमी ४',
+    'उत्पत्ति २९, मर्कूस १, एस्तर ६, रोमी १', 'उत्पत्ति ३०, मर्कूस २, एस्तर ७, रोमी २', 'उत्पत्ति ३१, मर्कूस ३, एस्तर ८, रोमी ३', 'उत्पत्ति ३２, मर्कूस ४, एस्तर ९, रोमी ४',
     'उत्पत्ति ३३, मर्कूस ५, एस्तर १०, रोमी ५', 'उत्पत्ति ३४, मर्कूस ६, अय्यूब १, रोमी ६', 'उत्पत्ति ३५, मर्कूस ७, अय्यूब २, रोमी ७', 'उत्पत्ति ३६, मर्कूस ८, अय्यूब ३, रोमी ८',
     'उत्पत्ति ३७, मर्कूस ९, अय्यूब ४, रोमी ९', 'उत्पत्ति ३८, मर्कूस १०, अय्यूब ५, रोमी १०', 'उत्पत्ति ३९, मर्कूस ११, अय्यूब ६, रोमी ११', 'उत्पत्ति ४०, मर्कूस १२, अय्यूब ७, रोमी १२',
     'उत्पत्ति ४१, मर्कूस १३, अय्यूब ८, रोमी १३', 'उत्पत्ति ४२, मर्कूस १४, अय्यूब ९, रोमी १४', 'उत्पत्ति ४३, मर्कूस १५, अय्यूब १०, रोमी १५', 'उत्पत्ति ४४, मर्कूस १६, अय्यूब ११, रोमी १६',
@@ -118,7 +119,7 @@ const MCHEYNE_READING_PLAN = [
     'लेवी १९, प्रेरित २०, भजनसंग्रह ५８-५९, २ तिमोथी २', 'लेवी २०, प्रेरित २१, भजनसंग्रह ६０-６２, २ तिमोथी ३', 'लेवी २१, प्रेरित २२, भजनसंग्रह ६３-६५, २ तिмоथी ४', 'लेवी २२, प्रेरित ২৩, भजनसंग्रह ६６-६७, तीतस १',
     'लेवी ২৩, प्रेरित २४, भजनसंग्रह ६８, तीतस २', 'लेवी २४, प्रेरित २५, भजनसंग्रह ६９, तीतस ३', 'लेवी २५, प्रेरित २६, भजनसंग्रह ७０-७１, फिलेमोन', 'लेवी २६, प्रेरित २७, भजनसंग्रह ७２, हिब्रू १',
     'लेवी २७, प्रेरित २८, भजनसंग्रह ७３-७४, हिब्रू २', 'गन्ती १, रोमी १, भजनसंग्रह ७５-७६, हिब्रू ३', 'गन्ती २, रोमी २, भजनसंग्रह ७７, हिब्रू ४', 'गन्ती ३, रोमी ३, भजनसंग्रह ७８, हिब्रू ५',
-    'गन्ती ४, रोमी ४, भजनसंग्रह ७９, हिब्रू ६', 'गन्ती ५, रोमी ५, भजनसंग्रह ८०, हिब्रू ७', 'गन्ती ६, रोमी ६, भजनसंग्रह ८１-८२, हिब्रू ८', 'गन्ती ७, रोमी ७, भजनसंग्रह ८３-८४, हिब्रू ९',
+    'गन्ती ४, रोमी ४, भजनसंग्रह ७９, हिब्रू ६', 'गन्ती ५, रोमी ५, भजनसंग्रह ८०, हिब्रू ७', 'गन्ती ६, रोमी ६, भजनसंग्रह ८１-८２, हिब्रू ८', 'गन्ती ७, रोमी ७, भजनसंग्रह ८３-८४, हिब्रू ९',
     'गन्ती ८, रोमी ८, भजनसंग्रह ८５-८६, हिब्रू १०', 'गन्ती ९, रोमी ९, भजनसंग्रह ८７-८८, हिब्रू ११', 'गन्ती १०, रोमी १०, भजनसंग्रह ८９, हिब्रू १२', 'गन्ती ११, रोमी ११, भजनसंग्रह ९０-९１, हिब्रू १३',
     'गन्ती १२, रोमी १२, भजनसंग्रह ९２-९４, याकूब १', 'गन्ती १३, रोमी १३, भजनसंग्रह ९５-९६, याकूब २', 'गन्ती १४, रोमी १४, भजनसंग्रह ९７-९９, याकूब ३', 'गन्ती १५, रोमी १५, भजनसंग्रह १००-१०２, याकूब ४',
     'गन्ती १६, रोमी १६, भजनसंग्रह १०３, याकूब ५', 'गन्ती १७, १ कोरिन्थी १, भजनसंग्रह १०４, १ पत्रुस १', 'गन्ती १८, १ कोरिन्थी २, भजनसंग्रह १०５, १ पत्रुस २', 'गन्ती १९, १ कोरिन्थी ३, भजनसंग्रह १०６, १ पत्रुस ३',
@@ -146,7 +147,7 @@ const MCHEYNE_READING_PLAN = [
     'न्यायकर्ता १०, याकूब ४, यशैया ३०, लूका ६', 'न्यायकर्ता ११, याकूब ५, यशैया ३１, लूका ७', 'न्यायकर्ता १२, १ पत्रुस १, यशैया ३２, लूका ८', 'न्यायकर्ता १३, १ पत्रुस २, यशैया ३３, लूका ९',
     'न्यायकर्ता १४, १ पत्रुस ३, यशैया ३４, लूका १०', 'न्यायकर्ता १५, १ पत्रुस ४, यशैया ३５, लूका ११', 'न्यायकर्ता १६, १ पत्रुस ५, यशैया ३６, लूका १२', 'न्यायकर्ता १७, २ पत्रुस १, यशैया ३７, लूका १३',
     'न्यायकर्ता १८, २ पत्रुस २, यशैया ३８, लूका १४', 'न्यायकर्ता १९, २ पत्रुस ३, यशैया ३９, लूका १५', 'न्यायकर्ता २०, १ यूहन्ना १, यशैया ४०, लूका १६', 'न्यायकर्ता २१, १ यूहन्ना २, यशैया ४１, लूका १७',
-    'रूथ १, १ यूहन्ना ३, यशैया ४２, लूका १८', 'रूथ २, १ यूहन्ना ४, यशैया ४３, लूका १९', 'रूथ ३, १ यूहन्ना ५, यशैया ४４, लूका २०', 'रूथ ४, २ यूहन्ना, यशैया ४５, लूका २१',
+    'रूथ १, १ यूहन्ना ३, यशैया ४２, लूका १८', 'रूथ २, १ यूहन्ना ৪, यशैया ४３, लूका १९', 'रूथ ३, १ यूहन्ना ५, यशैया ४４, लूका २०', 'रूथ ४, २ यूहन्ना, यशैया ४５, लूका २१',
     '१ शमूएल १, ३ यूहन्ना, यशैया ४６, लूका २२', '१ शमूएल २, यहूदा, यशैया ४７, लूका ২৩', '१ शमूएल ३, प्रकाश १, यशैया ४８, लूका २४', '१ शमूएल ४, प्रकाश २, यशैया ४９, यूहन्ना १',
     '१ शमूएल ५, प्रकाश ३, यशैया ५०, यूहन्ना २', '१ शमूएल ६, प्रकाश ४, यशैया ५１, यूहन्ना ३', '१ शमूएल ७, प्रकाश ५, यशैया ५２, यूहन्ना ४', '१ शमूएल ८, प्रकाश ६, यशैया ५３, यूहन्ना ५',
     '१ शमूएल ९, प्रकाश ७, यशैया ५４, यूहन्ना ६', '१ शमूएल १०, प्रकाश ८, यशैया ५５, यूहन्ना ७', '१ शमूएल ११, प्रकाश ९, यशैया ५６, यूहन्ना ८', '१ शमूएल १२, प्रकाश १०, यशैया ५７, यूहन्ना ९',
@@ -157,7 +158,7 @@ const MCHEYNE_READING_PLAN = [
     '१ शमूएल २९, मत्ती ५, यर्मिया ८, प्रेरित ५', '१ शमूएल ३०, मत्ती ६, यर्मिया ९, प्रेरित ६', '१ शमूएल ३１, मत्ती ७, यर्मिया १०, प्रेरित ७', '२ शमूएल १, मत्ती ८, यर्मिया ११, प्रेरित ८',
     '२ शमूएल २, मत्ती ९, यर्मिया १२, प्रेरित ९', '२ शमूएल ३, मत्ती १०, यर्मिया १३, प्रेरित १०', '२ शमूएल ४, मत्ती ११, यर्मिया १४, प्रेरित ११', '२ शमूएल ५, मत्ती १२, यर्मिया १५, प्रेरित १२',
     '२ शमूएल ६, मत्ती १३, यर्मिया १६, प्रेरित १३', '२ शमूएल ७, मत्ती १४, यर्मिया १७, प्रेरित १४', '२ शमूएल ८, मत्ती १५, यर्मिया १८, प्रेरित १५', '२ शमूएल ९, मत्ती १६, यर्मिया १९, प्रेरित १६',
-    '२ शमूएल १०, मत्ती १७, यर्मिया २०, प्रेरित १७', '२ शमूएल ११, मत्ती १८, यर्मिया २१, प्रेरित १८', '२ शमूएल १२, मत्ती १९, यर्मिया २２, प्रेरित १९', '२ शमूएल १३, मत्ती २०, यर्मिया ২৩, प्रेरित २०',
+    '२ शमूएल १०, मत्ती १७, यर्मिया २०, प्रेरित १७', '२ शमूएल ११, मत्ती १८, यर्मिया २１, प्रेरित १८', '२ शमूएल १२, मत्ती १९, यर्मिया २２, प्रेरित १९', '२ शमूएल १३, मत्ती २०, यर्मिया ২৩, प्रेरित २०',
     '२ शमूएल १४, मत्ती २१, यर्मिया २४, प्रेरित २१', '२ शमूएल १५, मत्ती २２, यर्मिया २५, प्रेरित २२', '२ शमूएल १६, मत्ती ২৩, यर्मिया २६, प्रेरित ২৩', '२ शमूएल १७, मत्ती २४, यर्मिया २७, प्रेरित २४',
     '२ शमूएल १८, मत्ती २५, यर्मिया २८, प्रेरित २५', '२ शमूएल १९, मत्ती २६, यर्मिया २९, प्रेरित २६', '२ शमूएल २०, मत्ती २७, यर्मिया ३０, प्रेरित २७', '२ शमूएल २१, मत्ती २८, यर्मिया ३１, प्रेरित २८',
     '२ शमूएल २２, मर्कूस १, यर्मिया ३２, रोमी १', '२ शमूएल ২৩, मर्कूस २, यर्मिया ३３, रोमी २', '२ शमूएल २४, मर्कूस ३, यर्मिया ३４, रोमी ३', '१ राजा १, मर्कूस ४, यर्मिया ३５, रोमी ४',
@@ -223,7 +224,7 @@ const PROVERBS_NNRV: { [key: number]: string } = {
 २० बुद्धिले सड़कमा ठूलो सोरले कराउँछे, त्यसले सार्वजनिक चोकहरूमा आफ्‍नो सोर उठाउँछे।
 २१ त्यसले कोलाहलपूर्ण सड़कका कुनाहरूमा कराउँछे, सहरका मूल ढोकाहरूमा त्यसले आफ्‍नो भाषण दिन्छे:
 २२ “हे सोझाहरू, तिमीहरू कहिलेसम्म मूर्खतालाई प्रेम गरिरहन्छौ? गिल्‍ला गर्नेहरू कहिलेसम्म गिल्‍ला गर्नमा प्रसन्‍n भइरहन्छौ? र मूर्खहरू कहिलेसम्म ज्ञानलाई घृणा गरिरहन्छौ?
-२३ यदि तिमीहरू मेरो हप्कीमा फर्केर आयौ भने, म तिमीहरूमाथि मेरो आत्मा खन्याउनेछु, र मेरा वचनहरू तिमीहरूलाई प्रकट गर्नेछु।
+২৩ यदि तिमीहरू मेरो हप्कीमा फर्केर आयौ भने, म तिमीहरूमाथि मेरो आत्मा खन्याउनेछु, र मेरा वचनहरू तिमीहरूलाई प्रकट गर्नेछु।
 २४ मैले बोलाएँ, तर तिमीहरूले इन्कार गर्‍यौ, मैले मेरो हात फैलाएँ, तर कसैले ध्यान दिएन।
 २५ तिमीहरूले मेरा सबै सल्लाहलाई बेवास्ता गर्‍यौ, र मेरो हप्कीलाई स्‍वीकार गरेनौ।
 २६ म पनि तिमीहरूको विपत्तिमा हाँस्‍नेछु, जब तिमीहरूमाथि आतङ्क आइपर्छ, तब म खिसी गर्नेछु,
@@ -460,7 +461,7 @@ const PROVERBS_NNRV: { [key: number]: string } = {
     10: `१ सोलोमनका हितोपदेश:
 बुद्धिमान् छोराले बाबुलाई आनन्दित तुल्याउँछ, तर मूर्ख छोराचाहिँ आमाको निम्‍ति शोकको कारण हुन्‍छ।
 २ दुष्‍टताका धन-सम्‍पत्तिले केही लाभ हुँदैन, तर धार्मिकताले मृत्‍युबाट बचाउँछ।
-३ परमप्रभुले धर्मीको प्राणलाई भोकै रहन दिनुहुन्‍n, तर उहाँले दुष्‍टहरूको लालसालाई विफल पार्नुहुन्‍छ।
+३ परमप्रभुले धर्मीको प्राणलाई भोकै रहन दिनुहुन्‍n, तर उहाँले दुष्‍टहरूको लालसालाई विफल पार्नुहुनेछ।
 ४ अल्छे हातले गरीबी ल्याउँछ, तर परिश्रमीको हातले धन-सम्‍पत्ति ल्याउँछ।
 ५ गर्मीमा जम्मा गर्ने छोरा बुद्धिमान् हुन्‍छ, तर कटनीमा सुत्‍ने छोराले लाज ल्याउँछ।
 ६ धर्मीको शिरमाथि आशिष्‌हरू हुन्‍छन्, तर दुष्‍टहरूको मुखले हिंसालाई ढाक्‍छ।
@@ -512,7 +513,7 @@ const PROVERBS_NNRV: { [key: number]: string } = {
 २० हृदयमा विचलित हुनेहरू परमप्रभुको निम्‍ति घृणित छन्, तर आफ्‍ना मार्गमा निष्‍कलङ्क हुनेहरू उहाँको निम्‍ति आनन्द हुन्।
 २१ निश्‍चय नै, दुष्‍ट मानिस दण्डविना रहनेछैन, तर धर्मीहरूका सन्तानहरू बचाइनेछन्।
 २२ सुँगुरको नाकमा सुनको मुन्द्रीजस्तै, विवेकहीन सुन्दर स्‍त्री हो।
-२३ धर्मीहरूको इच्‍छा असल मात्र हुन्‍छ, दुष्‍टहरूको अपेक्षाचाहिँ क्रोध मात्र हो।
+২৩ धर्मीहरूको इच्‍छा असल मात्र हुन्‍छ, दुष्‍टहरूको अपेक्षाचाहिँ क्रोध मात्र हो।
 २४ एक जनाले उदारतासाथ दिन्छ, र अझ धेरै पाउँछ, अर्कोले दिनुपर्ने कुरा रोकेर राख्छ, र गरीबीमा मात्र पर्छ।
 २५ उदार प्राण समृद्ध हुनेछ, र जसले अरूलाई ताजा पार्छ, ऊ आफै पनि ताजा हुनेछ।
 २६ अन्‍न रोकेर राख्नेलाई मानिसहरूले श्राप दिनेछन्, तर बेच्नेको शिरमाथि आशिष् रहनेछ।
@@ -1049,7 +1050,7 @@ const PROVERBS_NNRV: { [key: number]: string } = {
 २० के तैंले आफ्‍ना वचनहरूमा हतार गर्ने मानिस देखेको छस्? त्‍यसभन्दा मूर्खको निम्‍ति बढी आशा छ।
 २१ आफ्‍नो दासलाई बाल्यकालदेखि नै माया गर्नेले आखिरमा त्यसलाई छोरा बनाउनेछ।
 २२ रिसाहा मानिसले झगडा उत्‍पन्‍n गर्छ, र उग्र स्वभावको मानिसले धेरै अपराध गर्छ।
-२३ मानिसको अहङ्कारले त्यसलाई होच्याउनेछ, तर नम्र आत्माको मानिसले आदर पाउनेछ।
+২৩ मानिसको अहङ्कारले त्यसलाई होच्याउनेछ, तर नम्र आत्माको मानिसले आदर पाउनेछ।
 २४ चोरको साथीले आफ्‍नै प्राणलाई घृणा गर्छ, उसले शपथ सुन्‍छ, तर केही प्रकट गर्दैन।
 २५ मानिसको डरले पासो ल्याउँछ, तर परमप्रभुमा भरोसा गर्ने मानिस सुरक्षित रहनेछ।
 २६ धेरैले शासकको निगाह खोज्‍छन्, तर मानिसको न्‍याय परमप्रभुबाट आउँछ।
@@ -1078,7 +1079,7 @@ const PROVERBS_NNRV: { [key: number]: string } = {
 २० व्यभिचारिणीको मार्ग यस्तो छ: त्‍यसले खान्छे र आफ्‍नो मुख पुस्छे, र भन्छे, “मैले कुनै खराबी गरेको छैन।”
 २१ तीनवटा कुराहरूमुनि पृथ्‍वी काम्छ, चारवटामुनि त्‍यो सहन सक्दैन:
 २२ दास, जब ऊ राजा हुन्‍छ, र मूर्ख, जब ऊ भोजनले भरिपूर्ण हुन्‍छ,
-२३ घृणा गरिएकी स्‍त्री, जब त्‍यसले पति पाउँछे, र दासी, जब त्‍यसले आफ्‍नी मालिक्नीको ठाउँ लिन्छे।
+২৩ घृणा गरिएकी स्‍त्री, जब त्‍यसले पति पाउँछे, र दासी, जब त्‍यसले आफ्‍नी मालिक्नीको ठाउँ लिन्छे।
 २४ पृथ्‍वीमा चारवटा साना कुराहरू छन्, तर ती अत्यन्तै बुद्धिमान् छन्:
 २५ कमिलाहरू, जो शक्तिशाली जाति होइनन्, तर तिनीहरूले गर्मीमा आफ्‍नो भोजन जम्मा गर्छन्।
 २६ चट्टानका खरायोहरू, जो शक्तिशाली जाति होइनन्, तर तिनीहरूले चट्टानहरूमा आफ्‍नो घर बनाउँछन्।
@@ -1111,7 +1112,7 @@ const PROVERBS_NNRV: { [key: number]: string } = {
 २० त्‍यसले आफ्‍ना हातहरू गरीबतिर फैलाउँछे, र आफ्‍ना हातहरू दरिद्रतिर बढ़ाउँछे।
 २१ त्‍यो आफ्‍नो घरको निम्‍ति हिउँदेखि डराउँदैन, किनभने त्‍यसका सबै घरकाहरूले रातो लुगा लगाएका छन्।
 २२ त्‍यसले आफ्‍नो निम्‍ति गलैँचाहरू बनाउँछे, त्‍यसका लुगाहरू मलमल र बैजनी रङ्गका छन्।
-२३ त्‍यसको पति ढोकाहरूमा चिनिन्‍छ, जब ऊ देशका अग्रजहरूसँग बस्छ।
+২৩ त्‍यसको पति ढोकाहरूमा चिनिन्‍छ, जब ऊ देशका अग्रजहरूसँग बस्छ।
 २४ त्‍यसले सुती कपडाहरू बनाउँछे र बेच्छे, र व्यापारीहरूलाई पेटीहरू दिन्छे।
 २५ शक्ति र आदर त्‍यसका लुगाहरू हुन्, र आउने दिनहरूमा त्‍यो हाँस्‍छे।
 २६ त्‍यसले आफ्‍नो मुख बुद्धिसाथ खोल्छे, र त्‍यसको जिब्रोमा दयाको व्यवस्था छ।
@@ -1388,6 +1389,46 @@ const WorshipPage = ({ church, user, services, onManageServices }: { church: Chu
     );
 };
 
+const PodcastPage = ({ user, onAddPodcast }: { user: User; onAddPodcast: () => void; }) => {
+    const [podcasts, setPodcasts] = useState<Podcast[]>([]);
+    useEffect(() => {
+        const q = query(collection(db, "podcasts"), orderBy("createdAt", "desc"));
+        const unsub = onSnapshot(q, async (snap) => {
+            const pods = await Promise.all(snap.docs.map(async (d) => {
+                const data = d.data();
+                const author = await fetchUser(data.authorId);
+                return { ...data, id: d.id, author } as Podcast;
+            }));
+            setPodcasts(pods);
+        });
+        return () => unsub();
+    }, []);
+
+    const canPost = user.roles.includes('admin') || user.roles.includes('podcast_contributor');
+
+    return (
+        <div className="page-content">
+            <h2>पडकास्ट</h2>
+            <div className="list-container">
+                {podcasts.length > 0 ? podcasts.map(item => (
+                    <div key={item.id} className="card podcast-item">
+                        <div className="podcast-info">
+                            <div>
+                                <h3 className="podcast-title">{item.title}</h3>
+                                <p className="podcast-author">{item.author.name}</p>
+                            </div>
+                        </div>
+                        <audio controls className="podcast-player" src={item.audioUrl}>
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                )) : <div className="card"><p>अहिलेसम्म कुनै पडकास्टहरू छैनन्।</p></div>}
+            </div>
+            {canPost && <button className="fab" onClick={onAddPodcast} aria-label="नयाँ पडकास्ट"><span className="material-symbols-outlined">add</span></button>}
+        </div>
+    );
+};
+
 const NewsPage = ({ user, onAddNews }: { user: User; onAddNews: () => void; }) => {
     const [news, setNews] = useState<NewsItem[]>([]);
     useEffect(() => {
@@ -1408,6 +1449,7 @@ const NewsPage = ({ user, onAddNews }: { user: User; onAddNews: () => void; }) =
         </div>{canPostNews && <button className="fab" onClick={onAddNews} aria-label="नयाँ सूचना"><span className="material-symbols-outlined">add</span></button>}</div>
     );
 };
+
 const BiblePage = () => {
     const [readingData, setReadingData] = useState<{title: string; plan: string; text: string} | null>(null);
     const dayOfYear = getDayOfYear();
@@ -1454,483 +1496,183 @@ const ChatListPage = ({ chats, onSelectChat, currentUser, onNewChat }: { chats: 
                         <span className="chat-last-message">
                             {lastMsg?.type === 'image' && <span className="material-symbols-outlined">image</span>}
                             {lastMsg?.type === 'video' && <span className="material-symbols-outlined">videocam</span>}
-                            {lastMsg ? lastMsg.content : 'कुनै सन्देश छैन।'}
+                            {lastMsg?.content || 'No messages yet.'}
                         </span>
                     </div>
                     <div className="chat-meta">
-                        <span className="chat-timestamp">{formatTimestamp(lastMsg?.createdAt)}</span>
-                        {isUnread && <div className="unread-dot"></div>}
+                         <span className="chat-timestamp">{formatTimestamp(lastMsg?.createdAt)}</span>
+                         {isUnread && <div className="unread-dot"></div>}
                     </div>
                 </div>
-            ); 
+            )
         })}</div>
-         <button className="fab" onClick={onNewChat} aria-label="नयाँ च्याट">
-            <span className="material-symbols-outlined">add_comment</span>
-        </button>
+        <button className="fab" onClick={onNewChat}><span className="material-symbols-outlined">edit</span></button>
     </div>
 );
 
-const ConversationPage = ({ chat, messages, onBack, onSendMessage, onSendMedia, onShowMembers, currentUser }: { chat: Chat; messages: Message[]; onBack: () => void; onSendMessage: (chatId: string, content: string) => void; onSendMedia: (chatId: string, file: File) => void; onShowMembers: () => void; currentUser: User }) => {
+const ConversationPage = ({ chat, currentUser, onBack }: { chat: Chat, currentUser: User, onBack: () => void }) => {
+    const [messages, setMessages] = useState<Message[]>([]);
+    const [localMessages, setLocalMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
-    const imageInputRef = useRef<HTMLInputElement>(null);
-
-    useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'auto' }); }, [messages]);
-
-    const handleSend = () => { if (newMessage.trim()) { onSendMessage(chat.id, newMessage.trim()); setNewMessage(''); } };
-    
-    const handleMediaSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) onSendMedia(chat.id, file);
-        if(e.target) e.target.value = ''; // Reset file input
-    };
-    
-    const renderMessages = () => {
-        const elements: React.ReactNode[] = [];
-        let lastDate: string | null = null;
-    
-        messages.forEach((msg, index) => {
-            const msgDate = msg.createdAt?.toDate();
-            if (!msgDate) return; 
-
-            const msgDateString = msgDate.toLocaleDateString();
-
-            if (msgDateString !== lastDate) {
-                elements.push(<div key={msgDateString} className="date-separator"><span>{formatDateSeparator(msgDate)}</span></div>);
-                lastDate = msgDateString;
-            }
-
-            const prevMsg = messages[index - 1];
-            
-            const isSent = msg.senderId === currentUser.id;
-            const prevSenderSame = prevMsg?.senderId === msg.senderId && prevMsg.createdAt && typeof prevMsg.createdAt.toDate === 'function' && prevMsg.createdAt.toDate().toLocaleDateString() === msgDateString;
-            
-            const isFirstOfGroup = !prevSenderSame;
-
-            elements.push(
-                <div key={msg.id} className={`message-container ${isSent ? 'sent' : 'received'}`}>
-                    {chat.isGroup && !isSent && isFirstOfGroup && <div className="sender-name">{msg.sender?.name || '...'}</div>}
-                    <div className={`message-bubble ${ (msg.type === 'image' || msg.type === 'video') ? 'has-media' : ''}`}>
-                        {(msg.type === 'image' || msg.type === 'video') && msg.mediaUrl ? (
-                            <div className="message-media-container">
-                                {msg.type === 'image' ? 
-                                    <img src={msg.mediaUrl} alt="sent content" className="message-media" style={{ opacity: msg.status === 'uploading' ? 0.5 : 1 }} />
-                                    : <video src={msg.mediaUrl} controls className="message-media" style={{ opacity: msg.status === 'uploading' ? 0.5 : 1 }} />
-                                }
-                                {msg.status === 'uploading' && <div className="media-upload-overlay"><div className="spinner"></div></div>}
-                            </div>
-                        ) : null }
-                        { msg.type === 'text' && <p>{msg.content}</p>}
-
-                        <div className="message-footer">
-                            {msg.status === 'failed' && <span className="material-symbols-outlined message-failed-indicator">error</span>}
-                            <span className="message-timestamp">{formatTimestamp(msg.createdAt)}</span>
-                        </div>
-                    </div>
-                </div>
-            );
-        });
-        return elements;
-    };
-
-    const chatName = chat.isGroup ? chat.name || 'समूह च्याट' : chat.participants.find(p => p.id !== currentUser.id)?.name || 'कुराकानी';
-    
-    return (
-        <div className="conversation-page">
-            <header className={`conversation-header ${chat.isGroup ? 'is-group' : ''}`} onClick={chat.isGroup ? onShowMembers : undefined}>
-                <button className="back-button" onClick={onBack}><span className="material-symbols-outlined">arrow_back</span></button>
-                <h3>{chatName}</h3>
-                {chat.isGroup ? <button className="header-button info-button"><span className="material-symbols-outlined">info</span></button> : <div style={{width: 40}}></div>}
-            </header>
-            <div className="message-list">
-                {renderMessages()}
-                <div ref={messagesEndRef} />
-            </div>
-            <div className="message-input-container">
-                <input type="file" ref={imageInputRef} onChange={handleMediaSelect} accept="image/*,video/*" style={{display: 'none'}} />
-                <button className="input-action-button" onClick={() => imageInputRef.current?.click()}>
-                    <span className="material-symbols-outlined">attach_file</span>
-                </button>
-                <input 
-                   type="text" 
-                   placeholder="सन्देश लेख्नुहोस्..." 
-                   value={newMessage} 
-                   onChange={(e) => setNewMessage(e.target.value)} 
-                   onKeyPress={(e) => {if(e.key === 'Enter') {e.preventDefault(); handleSend();}}} 
-                />
-                 <button className="send-button" onClick={handleSend}>
-                    <span className="material-symbols-outlined">send</span>
-                </button>
-            </div>
-        </div>
-    );
-};
-
-const PrayerPage = ({ prayerRequests, onPray, onAddRequest, onSelectRequest, currentUser }: { prayerRequests: PrayerRequest[]; onPray: (id: string, isPrayed: boolean) => void; onAddRequest: () => void; onSelectRequest: (req: PrayerRequest) => void; currentUser: User; }) => (
-    <div className="page-content">
-        <h2>प्रार्थना पर्खाल</h2>
-        <div className="list-container">
-            {prayerRequests.map(request => {
-                const isPrayed = request.prayedBy.includes(currentUser.id);
-                return (
-                    <div key={request.id} className="card prayer-item" onClick={() => onSelectRequest(request)}>
-                        {request.image && <img src={request.image} alt={request.title} className="prayer-image" />}
-                        <div className="prayer-main">
-                            <h4>{request.title}</h4>
-                            <p className="prayer-content">{request.content}</p>
-                        </div>
-                        <div className="prayer-meta">
-                            <span>{request.author.name} द्वारा</span>
-                            <div className="prayer-actions">
-                                <button
-                                    className={`prayer-action-button ${isPrayed ? 'prayed' : ''}`}
-                                    onClick={(e) => { e.stopPropagation(); onPray(request.id, isPrayed); }}
-                                    aria-pressed={isPrayed}
-                                >
-                                    <span className="material-symbols-outlined">volunteer_activism</span>
-                                    <span>{request.prayedBy.length}</span>
-                                </button>
-                                <div className="prayer-action-button comment-button">
-                                    <span className="material-symbols-outlined">chat_bubble</span>
-                                    <span>{request.comments.length}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                );
-            })}
-        </div>
-         <button className="fab" onClick={onAddRequest} aria-label="नयाँ प्रार्थना अनुरोध">
-             <span className="material-symbols-outlined">add</span>
-        </button>
-    </div>
-);
-
-const PrayerDetailsModal = ({ request, onClose, onPray, onComment, onDelete, currentUser }: { request: PrayerRequest; onClose: () => void; onPray: (id: string, isPrayed: boolean) => void; onComment: (id: string, text: string) => void; onDelete: (id: string) => void; currentUser: User; }) => {
-    const [comment, setComment] = useState('');
-    const handleCommentSubmit = (e: React.FormEvent) => { e.preventDefault(); if (comment.trim()) { onComment(request.id, comment.trim()); setComment(''); } };
-    const isPrayed = request.prayedBy.includes(currentUser.id);
-    const isOwner = request.authorId === currentUser.id;
-    const canDelete = isOwner || currentUser.roles.includes('admin');
-
-    const handleDelete = () => {
-        if (window.confirm("के तपाईं साँच्चै यो प्रार्थना अनुरोध मेटाउन चाहनुहुन्छ?")) {
-            onDelete(request.id);
-            onClose();
-        }
-    };
-
-    return (
-        <Modal onClose={onClose}>
-            <div className="prayer-details-modal">
-                <div className="prayer-details-content">
-                    <div className="prayer-details-header">
-                        <h3>{request.title}</h3>
-                        {canDelete && 
-                            <div className="prayer-owner-actions">
-                                <button onClick={handleDelete} className="delete-btn">
-                                    <span className="material-symbols-outlined">delete</span>मेटाउनुहोस्
-                                </button>
-                            </div>
-                        }
-                    </div>
-                    <p className="prayer-author">{request.author.name} द्वारा</p>
-                    {request.image && <img src={request.image} alt={request.title} className="prayer-image" />}
-                    <p className="prayer-main-content">{request.content}</p>
-                    <div className="prayer-meta" style={{ justifyContent: 'flex-end' }}>
-                         <div className="prayer-actions">
-                            <button className={`prayer-action-button ${isPrayed ? 'prayed' : ''}`} onClick={() => onPray(request.id, isPrayed)} aria-pressed={isPrayed}>
-                                <span className="material-symbols-outlined">volunteer_activism</span>
-                                <span>{request.prayedBy.length} मैले प्रार्थना गरेँ</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="prayer-comments-section">
-                    <h4>टिप्पणीहरू ({request.comments.length})</h4>
-                    <div className="prayer-comment-list">
-                       {request.comments.length > 0 ? (
-                            [...request.comments]
-                                .sort((a,b) => {
-                                    const timeA = a.createdAt && typeof a.createdAt.toMillis === 'function' ? a.createdAt.toMillis() : 0;
-                                    const timeB = b.createdAt && typeof b.createdAt.toMillis === 'function' ? b.createdAt.toMillis() : 0;
-                                    return timeA - timeB;
-                                })
-                                .map(c => (
-                                <div key={c.id} className="comment-item">
-                                    <p><strong>{c.author.name}:</strong> {c.content}</p>
-                                    <p className="comment-timestamp">
-                                        {c.createdAt && typeof c.createdAt.toDate === 'function' ? c.createdAt.toDate().toLocaleString() : 'Just now'}
-                                    </p>
-                                </div>
-                            ))
-                       ) : (
-                           <p className="no-comments">अहिलेसम्म कुनै टिप्पणी छैन। प्रोत्साहन दिने पहिलो व्यक्ति बन्नुहोस्!</p>
-                       )}
-                    </div>
-                    <form className="comment-form" onSubmit={handleCommentSubmit}>
-                        <input type="text" placeholder="टिप्पणी थप्नुहोस्..." value={comment} onChange={(e) => setComment(e.target.value)} />
-                        <button type="submit"><span className="material-symbols-outlined">send</span></button>
-                    </form>
-                </div>
-            </div>
-        </Modal>
-    );
-};
-
-const AddItemModal = ({ type, onClose, onAdd }: { type: 'news' | 'prayer' | 'podcast' | 'service'; onClose: () => void; onAdd: (data: any) => Promise<void>; }) => {
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
-    const [imageFile, setImageFile] = useState<File | null>(null);
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
-    const [audioFile, setAudioFile] = useState<File | null>(null);
-    const [videoUrl, setVideoUrl] = useState('');
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
-    const handleImageChange = (file: File) => {
-        setImageFile(file);
-        setImagePreview(URL.createObjectURL(file));
-    };
-    const handleImageRemove = () => {
-        setImageFile(null);
-        if (imagePreview) URL.revokeObjectURL(imagePreview);
-        setImagePreview(null);
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (isSubmitting) return;
-        setIsSubmitting(true);
-        try {
-            let data: any = { title };
-            if (type === 'prayer' || type === 'news') data.content = content;
-            if (type === 'service') data.videoUrl = videoUrl;
-            
-            await onAdd({ ...data, imageFile, audioFile });
-            onClose();
-        } catch (error) {
-            console.error("Error adding item:", error);
-            alert("Failed to add item. Please try again.");
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
-
-    const typeConfig = {
-        news: { title: "नयाँ सूचना", fields: ['title', 'content', 'image'] },
-        prayer: { title: "नयाँ प्रार्थना अनुरोध", fields: ['title', 'content', 'image'] },
-        podcast: { title: "New Podcast", fields: ['title', 'audio'] },
-        service: { title: "नयाँ आरधना सेवा", fields: ['title', 'videoUrl'] },
-    };
-    const config = typeConfig[type];
-
-    return (
-        <Modal onClose={onClose}>
-            <form className="modal-form" onSubmit={handleSubmit}>
-                <h3>{config.title}</h3>
-                {config.fields.includes('title') && <input type="text" placeholder="शीर्षक" value={title} onChange={e => setTitle(e.target.value)} required />}
-                {config.fields.includes('content') && <textarea rows={5} placeholder={type === 'prayer' ? "हामीले केको लागि प्रार्थना गर्नुपर्छ?" : "सामग्री"} value={content} onChange={e => setContent(e.target.value)} required />}
-                {config.fields.includes('videoUrl') && <input type="text" placeholder="YouTube/Twitch URL" value={videoUrl} onChange={e => setVideoUrl(e.target.value)} required />}
-                {config.fields.includes('image') && <ImageUpload imagePreview={imagePreview} onImageChange={handleImageChange} onImageRemove={handleImageRemove} />}
-                {config.fields.includes('audio') && <input type="file" accept="audio/*" onChange={e => e.target.files?.[0] && setAudioFile(e.target.files[0])} required />}
-                <button type="submit" className="action-button" disabled={isSubmitting}>{isSubmitting ? 'पोस्ट गर्दै...' : 'पोस्ट गर्नुहोस्'}</button>
-            </form>
-        </Modal>
-    );
-};
-
-const CreateChatModal = ({ onClose, onStartChat, onStartGroupChat, currentUser }: { onClose: () => void; onStartChat: (user: User) => void; onStartGroupChat: (name: string, userIds: string[]) => void; currentUser: User; }) => {
-    const [users, setUsers] = useState<User[]>([]);
-    const [isGroupMode, setIsGroupMode] = useState(false);
-    const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
-    const [groupName, setGroupName] = useState('');
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const otherParticipant = chat.participants.find(p => p.id !== currentUser.id);
 
     useEffect(() => {
-        const fetchAllUsers = async () => {
-            const usersCol = collection(db, "users");
-            const q = query(usersCol, where("name", "!=", null));
-            const snapshot = await getDocs(q);
-            const allUsers = snapshot.docs
-                .map(d => ({ ...d.data(), id: d.id } as User))
-                .filter(u => u.id !== currentUser.id);
-            setUsers(allUsers);
-        };
-        fetchAllUsers();
-    }, [currentUser.id]);
-
-    const handleUserSelect = (userId: string) => {
-        setSelectedUserIds(prev => prev.includes(userId) ? prev.filter(id => id !== userId) : [...prev, userId]);
-    };
-
-    const handleCreateGroup = () => {
-        if (groupName.trim() && selectedUserIds.length > 0) {
-            onStartGroupChat(groupName.trim(), selectedUserIds);
-        }
-    };
-    
-    return (
-        <Modal onClose={onClose}>
-            <div className="create-chat-modal">
-                <h3>{isGroupMode ? 'नयाँ समूह बनाउनुहोस्' : 'नयाँ कुराकानी सुरु गर्नुहोस्'}</h3>
-                
-                {!isGroupMode ? (
-                    <div className="user-list">
-                        <div key="group-chat-option" className="user-list-item selectable" onClick={() => setIsGroupMode(true)}>
-                            <div className="chat-avatar group-avatar"><span className="material-symbols-outlined">groups</span></div>
-                            <span className="user-name">नयाँ समूह च्याट</span>
-                        </div>
-                        {users.map(user => (
-                            <div key={user.id} className="user-list-item selectable" onClick={() => onStartChat(user)}>
-                                <div className="chat-avatar">{user.avatar}</div>
-                                <span className="user-name">{user.name}</span>
-                            </div>
-                        ))}
-                    </div>
-                ) : (
-                    <div className="group-chat-form">
-                        <input type="text" placeholder="समूहको नाम" value={groupName} onChange={e => setGroupName(e.target.value)} className="modal-form-input" />
-                        <h4>सदस्यहरू छान्नुहोस्</h4>
-                        <div className="user-list">
-                            {users.map(user => (
-                                <div key={user.id} className="user-list-item selectable" onClick={() => handleUserSelect(user.id)}>
-                                    <div className="chat-avatar">{user.avatar}</div>
-                                    <span className="user-name">{user.name}</span>
-                                    <span className={`material-symbols-outlined checkbox-icon ${selectedUserIds.includes(user.id) ? 'checked' : ''}`}>
-                                        {selectedUserIds.includes(user.id) ? 'check_box' : 'check_box_outline_blank'}
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-                        <button className="action-button" onClick={handleCreateGroup} disabled={!groupName.trim() || selectedUserIds.length === 0}>
-                            समूह बनाउनुहोस्
-                        </button>
-                    </div>
-                )}
-            </div>
-        </Modal>
-    );
-};
-
-const PodcastPage = ({ user, onAddPodcast }: { user: User; onAddPodcast: () => void; }) => {
-    const [podcasts, setPodcasts] = useState<Podcast[]>([]);
-    useEffect(() => {
-        const q = query(collection(db, "podcasts"), orderBy("createdAt", "desc"));
+        const messagesCol = collection(db, 'chats', chat.id, 'messages');
+        const q = query(messagesCol, orderBy('createdAt', 'asc'));
         const unsub = onSnapshot(q, async (snap) => {
-            const pods = await Promise.all(snap.docs.map(async d => {
-                const data = d.data();
-                const author = await fetchUser(data.authorId);
-                return { ...data, id: d.id, author } as Podcast;
+            const fetchedMessages = await Promise.all(snap.docs.map(async (doc) => {
+                 const data = doc.data() as Message;
+                 const sender = await fetchUser(data.senderId);
+                 return { ...data, id: doc.id, sender };
             }));
-            setPodcasts(pods);
+            setMessages(fetchedMessages);
         });
         return () => unsub();
-    }, []);
-    const canPostPodcast = user.roles.includes('admin') || user.roles.includes('podcast_contributor');
-    return (
-        <div className="page-content"><h2>Podcast</h2><div className="list-container">
-            {podcasts.length > 0 ? podcasts.map(podcast => (
-                <div key={podcast.id} className="card podcast-item">
-                    <div className="podcast-info">
-                        <div>
-                            <h4 className="podcast-title">{podcast.title}</h4>
-                            <p className="podcast-author">{podcast.author.name} द्वारा</p>
-                        </div>
-                    </div>
-                    <audio controls className="podcast-player" src={podcast.audioUrl}></audio>
-                </div>
-            )) : <div className="card"><p>No podcasts are available yet.</p></div>}
-        </div>{canPostPodcast && <button className="fab" onClick={onAddPodcast} aria-label="New Podcast"><span className="material-symbols-outlined">add</span></button>}</div>
-    );
-};
-
-// --- App Headers ---
-const AppHeader = ({ user, onNotificationToggle, hasUnread }: { user: User; onNotificationToggle: () => void; hasUnread: boolean; }) => {
-    const [showMenu, setShowMenu] = useState(false);
-    const menuRef = useRef<HTMLDivElement>(null);
-    const handleLogout = () => signOut(auth);
+    }, [chat.id]);
 
     useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-                setShowMenu(false);
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages, localMessages]);
+
+    const handleSendMessage = async () => {
+        if (newMessage.trim() === '') return;
+        const messagesCol = collection(db, 'chats', chat.id, 'messages');
+        const chatDocRef = doc(db, 'chats', chat.id);
+        
+        await addDoc(messagesCol, {
+            senderId: currentUser.id,
+            content: newMessage.trim(),
+            type: 'text',
+            createdAt: serverTimestamp(),
+        });
+        await updateDoc(chatDocRef, {
+            lastMessage: {
+                content: newMessage.trim(),
+                senderId: currentUser.id,
+                createdAt: serverTimestamp(),
+                type: 'text'
             }
+        });
+
+        setNewMessage('');
+    };
+
+    const handleSendMedia = async (file: File) => {
+        const tempId = `temp_${Date.now()}`;
+        const previewUrl = URL.createObjectURL(file);
+        const type = file.type.startsWith('image') ? 'image' : 'video';
+
+        const tempMessage: Message = {
+            id: tempId,
+            tempId,
+            senderId: currentUser.id,
+            type,
+            mediaUrl: previewUrl,
+            createdAt: Timestamp.now(),
+            status: 'uploading',
         };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
+
+        setLocalMessages(prev => [...prev, tempMessage]);
+
+        try {
+            const storagePath = `chats/${chat.id}/${Date.now()}_${file.name}`;
+            const storageRef = ref(storage, storagePath);
+            await uploadBytes(storageRef, file);
+            const downloadURL = await getDownloadURL(storageRef);
+            
+            const messagesCol = collection(db, 'chats', chat.id, 'messages');
+            const chatDocRef = doc(db, 'chats', chat.id);
+
+            await addDoc(messagesCol, {
+                senderId: currentUser.id,
+                type,
+                mediaUrl: downloadURL,
+                createdAt: serverTimestamp(),
+            });
+            await updateDoc(chatDocRef, {
+                lastMessage: {
+                    content: type === 'image' ? 'Photo' : 'Video',
+                    senderId: currentUser.id,
+                    createdAt: serverTimestamp(),
+                    type,
+                }
+            });
+            
+            setLocalMessages(prev => prev.filter(m => m.tempId !== tempId));
+        } catch (error) {
+            console.error("Media upload failed:", error);
+            setLocalMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
+        }
+    };
+
+    const combinedMessages = [...messages, ...localMessages].sort((a,b) => a.createdAt.toMillis() - b.createdAt.toMillis());
 
     return (
-        <header className="app-header">
-            <div className="header-content">
-                <img src={CHURCH.logo} alt="Church Logo" className="header-logo" />
-                <h1>{CHURCH.name}</h1>
-            </div>
-            <div className="header-actions">
-                <button className="header-button notifications" onClick={onNotificationToggle} aria-label="Notifications">
-                    <span className="material-symbols-outlined">notifications</span>
-                    {hasUnread && <div className="notification-dot"></div>}
-                </button>
-                <div className="profile-menu-container" ref={menuRef}>
-                     <button className="header-button profile-button" onClick={() => setShowMenu(p => !p)} aria-label="प्रोफाइल मेनु">
-                         <div className="chat-avatar" style={{width: '32px', height: '32px'}}>{user.avatar}</div>
-                     </button>
-                     {showMenu && (
-                        <div className="profile-menu">
-                            <div className="profile-menu-header">
-                                <strong>{user.name}</strong>
-                                <span>{user.email}</span>
+        <div className="conversation-page">
+            <header className="conversation-header">
+                <button className="back-button" onClick={onBack}><span className="material-symbols-outlined">arrow_back</span></button>
+                <h3>{chat.isGroup ? chat.name : otherParticipant?.name}</h3>
+                <div style={{width: 40}}></div>
+            </header>
+            <div className="message-list">
+                {combinedMessages.map(msg => (
+                     <div key={msg.id} className={`message-container ${msg.senderId === currentUser.id ? 'sent' : 'received'}`}>
+                        {msg.type === 'text' ? (
+                             <div className="message-bubble">
+                                 <p>{msg.content || ''}</p>
+                                 <div className="message-footer">
+                                     <span className="message-timestamp">{formatTimestamp(msg.createdAt)}</span>
+                                 </div>
+                             </div>
+                        ) : (
+                            <div className="message-bubble has-media">
+                                <div className="message-media-container">
+                                    {msg.type === 'image' && <img src={msg.mediaUrl} alt="sent" className="message-media"/>}
+                                    {msg.type === 'video' && <video src={msg.mediaUrl} controls className="message-media"/>}
+                                    {msg.status === 'uploading' && <div className="media-upload-overlay"><div className="spinner"></div></div>}
+                                </div>
+                                <div className="message-footer">
+                                     <span className="message-timestamp">{formatTimestamp(msg.createdAt)}</span>
+                                 </div>
+                                 {msg.status === 'failed' && <span className="material-symbols-outlined message-failed-indicator">error</span>}
                             </div>
-                            <button onClick={handleLogout}><span className="material-symbols-outlined">logout</span>लग आउट</button>
-                        </div>
-                     )}
-                </div>
+                        )}
+                     </div>
+                ))}
+                 <div ref={messagesEndRef} />
             </div>
-        </header>
+            <div className="message-input-container">
+                <input type="file" ref={fileInputRef} onChange={(e) => e.target.files?.[0] && handleSendMedia(e.target.files[0])} style={{display: 'none'}} accept="image/*,video/*" />
+                <button className="input-action-button" onClick={() => fileInputRef.current?.click()}><span className="material-symbols-outlined">attach_file</span></button>
+                <input type="text" placeholder=" सन्देश लेख्नुहोस्..." value={newMessage} onChange={e => setNewMessage(e.target.value)} onKeyPress={e => e.key === 'Enter' && handleSendMessage()} />
+                <button className="send-button" onClick={handleSendMessage}><span className="material-symbols-outlined">send</span></button>
+            </div>
+        </div>
     );
 };
+const PrayerPage = () => {return <div className="page-content"><h2>प्रार्थना</h2><p>Coming Soon</p></div>}
+
 
 // --- Main App Component ---
 const App = () => {
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [activePage, setActivePage] = useState('worship');
-    const [activeChatId, setActiveChatId] = useState<string | null>(null);
-
-    // Data states
-    const [prayerRequests, setPrayerRequests] = useState<PrayerRequest[]>([]);
     const [chats, setChats] = useState<Chat[]>([]);
-    const [messages, setMessages] = useState<{ [key: string]: Message[] }>({});
+    const [activeChatId, setActiveChatId] = useState<string | null>(null);
+    const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
+    const [showNotifications, setShowNotifications] = useState(false);
+    const [hasUnread, setHasUnread] = useState(true);
     const [worshipServices, setWorshipServices] = useState<WorshipService[]>([]);
 
-    // View states
-    const [selectedPrayerRequest, setSelectedPrayerRequest] = useState<PrayerRequest | null>(null);
-    const [showNotifications, setShowNotifications] = useState(false);
-    const [hasUnread, setHasUnread] = useState(true); // Mocked for now
 
-    // Modal states
-    const [modal, setModal] = useState<'addPrayer' | 'addNews' | 'addPodcast' | 'addService' | 'createChat' | 'chatMembers' | 'manageUsers' | null>(null);
-
-    const activeChatIdRef = useRef(activeChatId);
-    activeChatIdRef.current = activeChatId;
-
-    // Auth & User listener
     useEffect(() => {
         const unsub = onAuthStateChanged(auth, async (user) => {
             if (user) {
-                const userDoc = await getDoc(doc(db, 'users', user.uid));
-                if (userDoc.exists()) {
-                    const data = userDoc.data();
-                    setCurrentUser({ 
-                        id: user.uid, 
-                        name: data.name, 
-                        email: data.email, 
-                        avatar: data.avatar,
-                        roles: data.roles || ['member']
-                    });
-                } else {
-                    signOut(auth); 
-                }
+                const userProfile = await fetchUser(user.uid);
+                setCurrentUser(userProfile);
             } else {
                 setCurrentUser(null);
             }
@@ -1938,237 +1680,145 @@ const App = () => {
         });
         return () => unsub();
     }, []);
-    
-    // Data listeners
+
     useEffect(() => {
         if (!currentUser) return;
-
-        const prayerQuery = query(collection(db, "prayerRequests"), orderBy("createdAt", "desc"));
-        const prayerUnsub = onSnapshot(prayerQuery, async (snap) => {
-            const reqs = await Promise.all(snap.docs.map(async d => {
+        const q = query(collection(db, 'chats'), where('participantIds', 'array-contains', currentUser.id));
+        const unsub = onSnapshot(q, async (snap) => {
+            const chatData = await Promise.all(snap.docs.map(async (d) => {
                 const data = d.data();
-                const author = await fetchUser(data.authorId);
-                const comments = await Promise.all((data.comments || []).map(async (c: any) => ({...c, author: await fetchUser(c.authorId)})));
-                return { ...data, id: d.id, author, comments } as PrayerRequest;
-            }));
-            setPrayerRequests(reqs);
-        });
-
-        const chatsQuery = query(collection(db, "chats"), where("participantIds", "array-contains", currentUser.id));
-        const chatsUnsub = onSnapshot(chatsQuery, async (snap) => {
-            const userChatsPromises = snap.docs.map(async d => {
-                const data = d.data();
-                if (!data || !data.participantIds || !Array.isArray(data.participantIds)) return null;
                 const participants = await fetchUsers(data.participantIds);
                 return { ...data, id: d.id, participants } as Chat;
-            });
-            const resolvedUserChats = (await Promise.all(userChatsPromises)).filter(Boolean) as Chat[];
-            resolvedUserChats.sort((a,b) => (b.lastMessage?.createdAt?.toMillis() || 0) - (a.lastMessage?.createdAt?.toMillis() || 0));
-            setChats(resolvedUserChats);
-        });
-        
-        const servicesQuery = query(collection(db, "worshipServices"), orderBy("createdAt", "desc"), limit(5));
-        const servicesUnsub = onSnapshot(servicesQuery, snap => setWorshipServices(snap.docs.map(d => ({...d.data(), id: d.id} as WorshipService))));
-
-        return () => { prayerUnsub(); chatsUnsub(); servicesUnsub(); };
-    }, [currentUser]);
-
-    // Message listener for active chat
-    useEffect(() => {
-        if (!activeChatId) return;
-        const messagesQuery = query(collection(db, `chats/${activeChatId}/messages`), orderBy("createdAt", "asc"));
-        const unsub = onSnapshot(messagesQuery, async (snap) => {
-             const serverMsgs = await Promise.all(snap.docs.map(async d => {
-                const data = d.data();
-                const sender = await fetchUser(data.senderId);
-                return { ...data, id: d.id, sender } as Message;
             }));
-
-            setMessages(prev => {
-                const localMessages = prev[activeChatId] || [];
-                const uploadingMessages = localMessages.filter(m => m.status && m.id.startsWith('temp_'));
-                const combined = [...serverMsgs];
-
-                uploadingMessages.forEach(localMsg => {
-                    if (!serverMsgs.some(serverMsg => serverMsg.createdAt && serverMsg.createdAt.isEqual(localMsg.createdAt))) {
-                        combined.push(localMsg);
-                    }
-                });
-                
-                return { ...prev, [activeChatId]: combined };
-            });
+            chatData.sort((a, b) => (b.lastMessage?.createdAt?.toMillis() || 0) - (a.lastMessage?.createdAt?.toMillis() || 0));
+            setChats(chatData);
         });
 
-        const chatRef = doc(db, 'chats', activeChatId);
-        updateDoc(chatRef, { [`lastRead.${currentUser?.id}`]: Timestamp.now() });
+        // Push Notifications Setup
+        const setupNotifications = async () => {
+            try {
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    console.log('Notification permission granted.');
+                    const token = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY });
+                    if (token) {
+                        console.log('FCM Token:', token);
+                        const userDocRef = doc(db, 'users', currentUser.id);
+                        const userDoc = await getDoc(userDocRef);
+                        const tokens = userDoc.data()?.fcmTokens || [];
+                        if (!tokens.includes(token)) {
+                            await updateDoc(userDocRef, { fcmTokens: arrayUnion(token) });
+                        }
+                    }
+                } else {
+                    console.log('Unable to get permission to notify.');
+                }
+            } catch (error) {
+                console.error('An error occurred while setting up notifications.', error);
+            }
+        };
+        setupNotifications();
+
+        // Listen for foreground messages
+        onMessage(messaging, (payload) => {
+            console.log('Message received. ', payload);
+            // Customize notification here
+            alert(payload.notification?.title || 'New Message');
+        });
+
 
         return () => unsub();
-    }, [activeChatId, currentUser?.id]);
+    }, [currentUser]);
 
-    // Handlers
-    const handlePray = async (requestId: string, isPrayed: boolean) => {
-        if (!currentUser) return;
-        const reqRef = doc(db, "prayerRequests", requestId);
-        await updateDoc(reqRef, { prayedBy: isPrayed ? arrayRemove(currentUser.id) : arrayUnion(currentUser.id) });
-    };
-
-    const handleDeletePrayerRequest = async (requestId: string) => {
-        const reqToDelete = prayerRequests.find(r => r.id === requestId);
-        if (reqToDelete?.image) {
-            try {
-                const imageRef = ref(storage, reqToDelete.image);
-                await deleteObject(imageRef);
-            } catch (error) { console.error("Error deleting prayer request image:", error); }
-        }
-        await deleteDoc(doc(db, "prayerRequests", requestId));
-    };
-
-    const handleComment = async (requestId: string, text: string) => {
-        if (!currentUser) return;
-        const reqRef = doc(db, "prayerRequests", requestId);
-        const newComment = { id: `c${Date.now()}`, authorId: currentUser.id, content: text, createdAt: serverTimestamp() };
-        await updateDoc(reqRef, { comments: arrayUnion(newComment) });
-    };
-
-    const uploadFile = async (path: string, file: File) => {
-        const fileRef = ref(storage, path);
-        await uploadBytes(fileRef, file);
-        return await getDownloadURL(fileRef);
-    };
-
-    const handleAddItem = (type: 'news' | 'prayer' | 'podcast' | 'service') => async (data: any) => {
-        if (!currentUser) return;
-        const collectionName = type === 'prayer' ? 'prayerRequests' : `${type}s`;
-        const docRef = collection(db, collectionName);
-        let imageUrl: string | undefined;
-        if (data.imageFile) imageUrl = await uploadFile(`${collectionName}/${Date.now()}-${data.imageFile.name}`, data.imageFile);
-        let audioUrl: string | undefined;
-        if (data.audioFile) audioUrl = await uploadFile(`${collectionName}/${Date.now()}-${data.audioFile.name}`, data.audioFile);
-        let payload: any = { title: data.title, createdAt: serverTimestamp() };
-        if (type === 'prayer' || type === 'news') {
-            payload.content = data.content;
-            if (imageUrl) payload.image = imageUrl;
-            if (type === 'prayer') {
-                payload.authorId = currentUser.id;
-                payload.prayedBy = [];
-                payload.comments = [];
-            }
-        }
-        if (type === 'podcast') {
-            payload.authorId = currentUser.id;
-            if (audioUrl) payload.audioUrl = audioUrl;
-        }
-        if (type === 'service') payload.videoUrl = data.videoUrl;
-        await addDoc(docRef, payload);
-    };
-
-    const handleSendMessage = async (chatId: string, content: string) => {
-        if (!currentUser) return;
-        const tempId = `temp_${Date.now()}`;
-        const newMessage: Message = { id: tempId, senderId: currentUser.id, sender: currentUser, content, type: 'text', createdAt: Timestamp.now(), status: 'uploading' };
-        setMessages(prev => ({ ...prev, [chatId]: [...(prev[chatId] || []), newMessage] }));
-        try {
-            await addDoc(collection(db, `chats/${chatId}/messages`), { senderId: currentUser.id, content, type: 'text', createdAt: serverTimestamp() });
-            await updateDoc(doc(db, 'chats', chatId), { lastMessage: { content, senderId: currentUser.id, createdAt: serverTimestamp(), type: 'text' } });
-        } catch (error) {
-            console.error("Error sending message:", error);
-            setMessages(prev => ({ ...prev, [chatId]: (prev[chatId] || []).map(msg => msg.id === tempId ? { ...msg, status: 'failed' } : msg) }));
-        }
-    };
-
-    const handleSendMedia = async (chatId: string, file: File) => {
-        if (!currentUser) return;
-        const tempId = `temp_${Date.now()}`;
-        const mediaType = file.type.startsWith('image/') ? 'image' : 'video';
-        const localUrl = URL.createObjectURL(file);
-        const contentPlaceholder = mediaType === 'image' ? 'फोटो' : 'भिडियो';
-        const newMessage: Message = { id: tempId, senderId: currentUser.id, sender: currentUser, content: contentPlaceholder, type: mediaType, mediaUrl: localUrl, createdAt: Timestamp.now(), status: 'uploading' };
-        setMessages(prev => ({ ...prev, [chatId]: [...(prev[chatId] || []), newMessage] }));
-        try {
-            const filePath = `chats/${chatId}/${Date.now()}_${file.name}`;
-            const downloadURL = await uploadFile(filePath, file);
-            await addDoc(collection(db, `chats/${chatId}/messages`), { senderId: currentUser.id, content: contentPlaceholder, type: mediaType, mediaUrl: downloadURL, createdAt: serverTimestamp() });
-            await updateDoc(doc(db, 'chats', chatId), { lastMessage: { content: contentPlaceholder, senderId: currentUser.id, createdAt: serverTimestamp(), type: mediaType } });
-        } catch (error) {
-            console.error("Error sending media:", error);
-            setMessages(prev => ({ ...prev, [chatId]: (prev[chatId] || []).map(msg => msg.id === tempId ? { ...msg, status: 'failed' } : msg) }));
-        }
-    };
-
-    const handleStartChat = async (otherUser: User) => {
-        if (!currentUser) return;
-        const q = query(collection(db, "chats"), where("isGroup", "==", false), where("participantIds", "array-contains", currentUser.id));
-        const querySnapshot = await getDocs(q);
-        const existingChat = querySnapshot.docs.find(d => d.data().participantIds.includes(otherUser.id));
-        if (existingChat) setActiveChatId(existingChat.id);
-        else {
-            const newChatRef = await addDoc(collection(db, "chats"), { participantIds: [currentUser.id, otherUser.id], isGroup: false, createdAt: serverTimestamp() });
-            setActiveChatId(newChatRef.id);
-        }
-        setModal(null);
-        setActivePage('fellowship');
-    };
-    
-    const handleStartGroupChat = async (name: string, userIds: string[]) => {
-        if (!currentUser) return;
-        const participantIds = [...new Set([currentUser.id, ...userIds])];
-        const newChatRef = await addDoc(collection(db, "chats"), {
-            name,
-            participantIds,
-            isGroup: true,
-            createdBy: currentUser.id,
-            createdAt: serverTimestamp(),
+     useEffect(() => {
+        const q = query(collection(db, "worshipServices"), orderBy("createdAt", "desc"), limit(5));
+        const unsub = onSnapshot(q, (snap) => {
+            setWorshipServices(snap.docs.map(d => ({ ...d.data(), id: d.id } as WorshipService)));
         });
-        setActiveChatId(newChatRef.id);
-        setModal(null);
-        setActivePage('fellowship');
+        return () => unsub();
+    }, []);
+
+    const handleLogout = async () => {
+        await signOut(auth);
     };
+
+    const handleSelectChat = async (chatId: string) => {
+        setActiveChatId(chatId);
+        const chatDocRef = doc(db, 'chats', chatId);
+        await updateDoc(chatDocRef, {
+            [`lastRead.${currentUser?.id}`]: serverTimestamp()
+        });
+    }
 
     const renderPage = () => {
-        if (!currentUser) return null;
         switch (activePage) {
-            case 'worship': return <WorshipPage church={CHURCH} user={currentUser} services={worshipServices} onManageServices={() => setModal('addService')} />;
-            case 'podcast': return <PodcastPage user={currentUser} onAddPodcast={() => setModal('addPodcast')} />;
-            case 'news': return <NewsPage user={currentUser} onAddNews={() => setModal('addNews')} />;
+            case 'worship': return <WorshipPage church={CHURCH} user={currentUser!} services={worshipServices} onManageServices={() => {}} />;
+            case 'podcast': return <PodcastPage user={currentUser!} onAddPodcast={() => {}} />;
+            case 'news': return <NewsPage user={currentUser!} onAddNews={() => {}} />;
             case 'bible': return <BiblePage />;
-            case 'fellowship': return <ChatListPage chats={chats} onSelectChat={setActiveChatId} currentUser={currentUser} onNewChat={() => setModal('createChat')} />;
-            case 'prayer': return <PrayerPage prayerRequests={prayerRequests} onPray={handlePray} onAddRequest={() => setModal('addPrayer')} onSelectRequest={setSelectedPrayerRequest} currentUser={currentUser}/>;
-            default: return <WorshipPage church={CHURCH} user={currentUser} services={worshipServices} onManageServices={() => setModal('addService')} />;
+            case 'fellowship': return <ChatListPage chats={chats} onSelectChat={handleSelectChat} currentUser={currentUser!} onNewChat={() => {}} />;
+            case 'prayer': return <PrayerPage />;
+            default: return <WorshipPage church={CHURCH} user={currentUser!} services={worshipServices} onManageServices={() => {}} />;
         }
     };
 
-    if (isLoading) return <div className="loading-screen"><div /></div>;
+    if (isLoading) return <div className="login-container"></div>;
     if (!currentUser) return <LoginPage church={CHURCH} />;
-
-    const activeChat = chats.find(c => c.id === activeChatId);
     
-    const handleNavClick = (page: string) => {
-        setActivePage(page);
-        setActiveChatId(null);
-    };
+    const activeChat = chats.find(c => c.id === activeChatId);
 
     return (
         <div className="app-container">
-            <AppHeader user={currentUser} onNotificationToggle={() => setShowNotifications(p => !p)} hasUnread={hasUnread} />
+            <header className="app-header">
+                <div className="header-content">
+                    <img src={CHURCH.logo} alt="Church Logo" className="header-logo" />
+                    <h1>{CHURCH.name}</h1>
+                </div>
+                <div className="header-actions">
+                    <button className="header-button notifications" onClick={() => setShowNotifications(p => !p)} aria-label="Notifications">
+                        <span className="material-symbols-outlined">notifications</span>
+                        {hasUnread && <div className="notification-dot"></div>}
+                    </button>
+                     <button className="header-button" onClick={handleLogout} aria-label="Logout">
+                        <span className="material-symbols-outlined">logout</span>
+                    </button>
+                </div>
+            </header>
+            
             <main className="main-content">
                 {renderPage()}
             </main>
             
-            {activeChat && <ConversationPage chat={activeChat} messages={messages[activeChat.id] || []} onBack={() => setActiveChatId(null)} onSendMessage={handleSendMessage} onSendMedia={handleSendMedia} onShowMembers={() => {}} currentUser={currentUser} />}
-            {showNotifications && <NotificationPanel notifications={MOCK_NOTIFICATIONS} onClose={() => setShowNotifications(false)} />}
+            {showNotifications && <NotificationPanel notifications={notifications} onClose={() => setShowNotifications(false)} />}
             
             <nav className="bottom-nav">
-                <button className={`nav-item ${activePage === 'worship' ? 'active' : ''}`} onClick={() => handleNavClick('worship')}><span className="material-symbols-outlined">church</span><span>आरधना</span></button>
-                <button className={`nav-item ${activePage === 'news' ? 'active' : ''}`} onClick={() => handleNavClick('news')}><span className="material-symbols-outlined">feed</span><span>सूचना</span></button>
-                <button className={`nav-item ${activePage === 'bible' ? 'active' : ''}`} onClick={() => handleNavClick('bible')}><span className="material-symbols-outlined">book_2</span><span>बाइबल</span></button>
-                <button className={`nav-item ${activePage === 'fellowship' ? 'active' : ''}`} onClick={() => handleNavClick('fellowship')}><span className="material-symbols-outlined">groups</span><span>संगति</span></button>
-                <button className={`nav-item ${activePage === 'prayer' ? 'active' : ''}`} onClick={() => handleNavClick('prayer')}><span className="material-symbols-outlined">volunteer_activism</span><span>प्रार्थना</span></button>
-                <button className={`nav-item ${activePage === 'podcast' ? 'active' : ''}`} onClick={() => handleNavClick('podcast')}><span className="material-symbols-outlined">podcasts</span><span>Podcast</span></button>
+                <button className={`nav-item ${activePage === 'worship' ? 'active' : ''}`} onClick={() => { setActivePage('worship'); setActiveChatId(null); }}>
+                    <span className="material-symbols-outlined">church</span>
+                    <span>आरधना</span>
+                </button>
+                <button className={`nav-item ${activePage === 'podcast' ? 'active' : ''}`} onClick={() => { setActivePage('podcast'); setActiveChatId(null); }}>
+                    <span className="material-symbols-outlined">podcasts</span>
+                    <span>पडकास्ट</span>
+                </button>
+                <button className={`nav-item ${activePage === 'news' ? 'active' : ''}`} onClick={() => { setActivePage('news'); setActiveChatId(null); }}>
+                    <span className="material-symbols-outlined">feed</span>
+                    <span>सूचना</span>
+                </button>
+                <button className={`nav-item ${activePage === 'bible' ? 'active' : ''}`} onClick={() => { setActivePage('bible'); setActiveChatId(null); }}>
+                    <span className="material-symbols-outlined">book_2</span>
+                    <span>बाइबल</span>
+                </button>
+                <button className={`nav-item ${activePage === 'fellowship' ? 'active' : ''}`} onClick={() => { setActivePage('fellowship'); setActiveChatId(null); }}>
+                    <span className="material-symbols-outlined">groups</span>
+                    <span>संगति</span>
+                </button>
+                <button className={`nav-item ${activePage === 'prayer' ? 'active' : ''}`} onClick={() => { setActivePage('prayer'); setActiveChatId(null); }}>
+                    <span className="material-symbols-outlined">volunteer_activism</span>
+                    <span>प्रार्थना</span>
+                </button>
             </nav>
-            
-            {selectedPrayerRequest && <PrayerDetailsModal request={selectedPrayerRequest} onClose={() => setSelectedPrayerRequest(null)} onPray={handlePray} onComment={handleComment} onDelete={handleDeletePrayerRequest} currentUser={currentUser} />}
-            {(modal === 'addPrayer' || modal === 'addNews' || modal === 'addPodcast' || modal === 'addService') && <AddItemModal type={modal.replace('add', '').toLowerCase() as any} onClose={() => setModal(null)} onAdd={handleAddItem(modal.replace('add', '').toLowerCase() as any)} />}
-            {modal === 'createChat' && <CreateChatModal onClose={() => setModal(null)} onStartChat={handleStartChat} onStartGroupChat={handleStartGroupChat} currentUser={currentUser} />}
+
+            {activeChat && <ConversationPage chat={activeChat} currentUser={currentUser} onBack={() => setActiveChatId(null)} />}
         </div>
     );
 };
