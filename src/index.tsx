@@ -95,7 +95,7 @@ const MCHEYNE_READING_PLAN = [
     'उत्पत्ति १७, मत्ती १७, नहेम्याह ७, प्रेरित १७', 'उत्पत्ति १८, मत्ती १८, नहेम्याह ८, प्रेरित १८', 'उत्पत्ति १९, मत्ती १९, नहेम्याह ९, प्रेरित १९', 'उत्पत्ति २०, मत्ती २०, नहेम्याह १०, प्रेरित २०',
     'उत्पत्ति २१, मत्ती २१, नहेम्याह ११, प्रेरित २१', 'उत्पत्ति २२, मत्ती २२, नहेम्याह १२, प्रेरित २२', 'उत्पत्ति ২৩, मत्ती ২৩, नहेम्याह १३, प्रेरित ২৩', 'उत्पत्ति २४, मत्ती २४, एस्तर १, प्रेरित २४',
     'उत्पत्ति २५, मत्ती २५, एस्तर २, प्रेरित २५', 'उत्पत्ति २६, मत्ती २६, एस्तर ३, प्रेरित २६', 'उत्पत्ति २७, मत्ती २७, एस्तर ४, प्रेरित २७', 'उत्पत्ति २८, मत्ती २८, एस्तर ५, प्रेरित २८',
-    'उत्पत्ति २९, मर्कूस १, एस्तर ६, रोमी १', 'उत्पत्ति ३०, मर्कूस २, एस्तर ७, रोमी २', 'उत्पत्ति ३१, मर्कूस ३, एस्तर ८, रोमी ३', 'उत्पत्ति ३２, मर्कूस ४, एस्तर ९, रोमी ४',
+    'उत्पत्ति २९, मर्कूस १, एस्तर ६, रोमी १', 'उत्पत्ति ३०, मर्कूस २, एस्तर ७, रोमी २', 'उत्पत्ति ३१, मर्कूस ३, एस्तर ८, रोमी ३', 'उत्पत्ति ३२, मर्कूस ४, एस्तर ९, रोमी ४',
     'उत्पत्ति ३३, मर्कूस ५, एस्तर १०, रोमी ५', 'उत्पत्ति ३४, मर्कूस ६, अय्यूब १, रोमी ६', 'उत्पत्ति ३५, मर्कूस ७, अय्यूब २, रोमी ७', 'उत्पत्ति ३६, मर्कूस ८, अय्यूब ३, रोमी ८',
     'उत्पत्ति ३७, मर्कूस ९, अय्यूब ४, रोमी ९', 'उत्पत्ति ३८, मर्कूस १०, अय्यूब ५, रोमी १०', 'उत्पत्ति ३९, मर्कूस ११, अय्यूब ६, रोमी ११', 'उत्पत्ति ४०, मर्कूस १२, अय्यूब ७, रोमी १२',
     'उत्पत्ति ४१, मर्कूस १३, अय्यूब ८, रोमी १३', 'उत्पत्ति ४२, मर्कूस १४, अय्यूब ९, रोमी १४', 'उत्पत्ति ४३, मर्कूस १५, अय्यूब १०, रोमी १५', 'उत्पत्ति ४४, मर्कूस १६, अय्यूब ११, रोमी १६',
@@ -1894,10 +1894,20 @@ const App = () => {
     
             snapshot.docs.forEach(doc => {
                 const data = doc.data();
-                const chat = { ...data, id: doc.id, participants: [] } as Chat;
+                // Explicitly construct the Chat object to fix TypeScript error TS2352
+                const chat: Chat = {
+                    id: doc.id,
+                    participantIds: data.participantIds || [],
+                    participants: [], // This is populated asynchronously below
+                    isGroup: data.isGroup || false,
+                    lastMessage: data.lastMessage,
+                    lastRead: data.lastRead,
+                    name: data.name,
+                    groupAvatar: data.groupAvatar
+                };
                 chatsFromSnapshot[doc.id] = chat;
     
-                const promise = fetchUsers(data.participantIds as string[]).then(participants => {
+                const promise = fetchUsers(chat.participantIds).then(participants => {
                     if (chatsFromSnapshot[doc.id]) {
                        chatsFromSnapshot[doc.id].participants = participants;
                     }
