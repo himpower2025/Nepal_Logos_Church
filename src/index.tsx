@@ -24,7 +24,8 @@ import {
     Timestamp,
     where,
     arrayRemove,
-    limit
+    limit,
+    deleteDoc
 } from "firebase/firestore";
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { getToken, onMessage } from "firebase/messaging";
@@ -119,11 +120,11 @@ const MCHEYNE_READING_PLAN = [
     'लेवी ২৩, प्रेरित २४, भजनसंग्रह ६８, तीतस २', 'लेवी २४, प्रेरित २५, भजनसंग्रह ६９, तीतस ३', 'लेवी २५, प्रेरित २६, भजनसंग्रह ७０-७１, फिलेमोन', 'लेवी २६, प्रेरित २७, भजनसंग्रह ७２, हिब्रू १',
     'लेवी २७, प्रेरित २८, भजनसंग्रह ७３-७४, हिब्रू २', 'गन्ती १, रोमी १, भजनसंग्रह ७５-७६, हिब्रू ३', 'गन्ती २, रोमी २, भजनसंग्रह ७７, हिब्रू ४', 'गन्ती ३, रोमी ३, भजनसंग्रह ७８, हिब्रू ५',
     'गन्ती ४, रोमी ४, भजनसंग्रह ७９, हिब्रू ६', 'गन्ती ५, रोमी ५, भजनसंग्रह ८०, हिब्रू ७', 'गन्ती ६, रोमी ६, भजनसंग्रह ८１-८２, हिब्रू ८', 'गन्ती ७, रोमी ७, भजनसंग्रह ८３-८४, हिब्रू ९',
-    'गन्ती ८, रोमी ८, भजनसंग्रह ८５-८६, हिब्रू १०', 'गन्ती ९, रोमी ९, भजनसंग्रह ८７-८८, हिब्रू ११', 'गन्ती १०, रोमी १०, भजनसंग्रह ८９, हिब्रू १२', 'गन्ती ११, रोमी ११, भजनसंग्रह ९０-९१, हिब्रू १३',
+    'गन्ती ८, रोमी ८, भजनसंग्रह ८５-८६, हिब्रू १०', 'गन्ती ९, रोमी ९, भजनसंग्रह ८７-८८, हिब्रू ११', 'गन्ती १०, रोमी १०, भजनसंग्रह ८９, हिब्रू १२', 'गन्ती ११, रोमी ११, भजनसंग्रह ९０-९１, हिब्रू १३',
     'गन्ती १२, रोमी १२, भजनसंग्रह ९２-९４, याकूब १', 'गन्ती १३, रोमी १३, भजनसंग्रह ९５-९६, याकूब २', 'गन्ती १४, रोमी १४, भजनसंग्रह ९７-९９, याकूब ३', 'गन्ती १५, रोमी १५, भजनसंग्रह १००-१०２, याकूब ४',
     'गन्ती १६, रोमी १६, भजनसंग्रह १०３, याकूब ५', 'गन्ती १७, १ कोरिन्थी १, भजनसंग्रह १०４, १ पत्रुस १', 'गन्ती १८, १ कोरिन्थी २, भजनसंग्रह १०５, १ पत्रुस २', 'गन्ती १९, १ कोरिन्थी ३, भजनसंग्रह १०６, १ पत्रुस ३',
-    'गन्ती २०, १ कोरिन्थी ४, भजनसंग्रह १०７, १ पत्रुस ४', 'गन्ती २१, १ कोरिन्थी ५, भजनसंग्रह १०８-१०９, १ पत्रुस ५', 'गन्ती २२, १ कोरिन्थी ६, भजनसंग्रह १１０-१１１, २ पत्रुस १', 'गन्ती ২৩, १ कोरिन्थी ७, भजनसंग्रह १１２-१１４, २ पत्रुस २',
-    'गन्ती २४, १ कोरिन्थी ८, भजनसंग्रह १１５-१１６, २ पत्रुस ३', 'गन्ती २५, १ कोरिन्थी ९, भजनसंग्रह १１७-११८, १ यूहन्ना १', 'गन्ती २६, १ कोरिन्थी १०, भजनसंग्रह ११९:१-२４, १ यूहन्ना २', 'गन्ती २७, १ कोरिन्थी ११, भजनसंग्रह ११९:२５-４८, १ यूहन्ना ३',
+    'गन्ती २०, १ कोरिन्थी ४, भजनसंग्रह १०７, १ पत्रुस ४', 'गन्ती २१, १ कोरिन्थी ५, भजनसंग्रह १०８-१०９, १ पत्रुस ५', 'गन्ती २２, १ कोरिन्थी ६, भजनसंग्रह १１０-१１１, २ पत्रुस १', 'गन्ती ২৩, १ कोरिन्थी ७, भजनसंग्रह १１２-१１４, २ पत्रुस २',
+    'गन्ती २४, १ कोरिन्थी ८, भजनसंग्रह १１５-१１６, २ पत्रुस ३', 'गन्ती २५, १ कोरिन्थी ९, भजनसंग्रह १１７-११८, १ यूहन्ना १', 'गन्ती २६, १ कोरिन्थी १०, भजनसंग्रह ११९:१-२４, १ यूहन्ना २', 'गन्ती २७, १ कोरिन्थी ११, भजनसंग्रह ११९:२５-४८, १ यूहन्ना ३',
     'गन्ती २८, १ कोरिन्थी १२, भजनसंग्रह ११९:४९-７２, १ यूहन्ना ४', 'गन्ती २९, १ कोरिन्थी १३, भजनसंग्रह ११९:７３-९६, १ यूहन्ना ५', 'गन्ती ३०, १ कोरिन्थी १४, भजनसंग्रह ११९:९７-१२०, २ यूहन्ना', 'गन्ती ३१, १ कोरिन्थी १५, भजनसंग्रह ११९:१२１-१４４, ३ यूहन्ना',
     'गन्ती ३２, १ कोरिन्थी १६, भजनसंग्रह ११९:१４５-१७６, यहूदा', 'गन्ती ३३, २ कोरिन्थी १, भजनसंग्रह १२०-१२２, प्रकाश १', 'गन्ती ३४, २ कोरिन्थी २, भजनसंग्रह १२３-१२５, प्रकाश २', 'गन्ती ३५, २ कोरिन्थी ३, भजनसंग्रह १२６-१२８, प्रकाश ३',
     'गन्ती ३６, २ कोरिन्थी ४, भजनसंग्रह १२９-१३１, प्रकाश ४', 'व्यवस्था १, २ कोरिन्थी ५, भजनसंग्रह १३２-१३４, प्रकाश ५', 'व्यवस्था २, २ कोरिन्थी ६, भजनसंग्रह १३５-१३６, प्रकाश ६', 'व्यवस्था ३, २ कोरिन्थी ७, भजनसंग्रह १३７-१३８, प्रकाश ७',
@@ -178,7 +179,7 @@ const MCHEYNE_READING_PLAN = [
     '१ इतिहास ११, यूहन्ना २१, इजकिएल ३５, फिलिप्पी ४', '१ इतिहास १२, प्रेरित १, इजकिएल ३６, कलस्सी १', '१ इतिहास १३, प्रेरित २, इजकिएल ३７, कलस्सी २', '१ इतिहास १४, प्रेरित ३, इजकिएल ३８, कलस्सी ३',
     '१ इतिहास १५, प्रेरित ४, इजकिएल ३９, कलस्सी ४', '१ इतिहास १६, प्रेरित ५, इजकिएल ४０, १ थिस्सलोनिकी १', '१ इतिहास १७, प्रेरित ६, इजकिएल ४１, १ थिस्सलोनिकी २', '१ इतिहास १८, प्रेरित ७, इजकिएल ४２, १ थिस्सलोनिकी ३',
     '१ इतिहास १९, प्रेरित ८, इजकिएल ४３, १ थिस्सलोनिकी ४', '१ इतिहास २०, प्रेरित ९, इजकिएल ४４, १ थिस्सलोनिकी ५', '१ इतिहास २१, प्रेरित १०, इजकिएल ४５, २ थिस्सलोनिकी १', '१ इतिहास २２, प्रेरित ११, इजकिएल ४６, २ थिस्सलोनिकी २',
-    '१ इतिहास ২৩, प्रेरित १२, इजकिएल ४７, २ थिस्सलोनिकी ३', '१ इतिहास २४, प्रेरित १३, इजकिएल ४８, १ तिमोथी १', '१ इतिहास २५, प्रेरित १४, दानिएल १, १ तिमोथी २', '१ इतिहास २६, प्रेरित १५, दानिएल २, १ तिमोथी ३',
+    '१ इतिहास ২৩, प्रेरित १२, इजकिएल ४７, २ थिस्सलोनिकी ३', '१ इतिहास २४, प्रेरित १३, इजकिएल ४８, १ तिमोथी १', '१ इतिहास २५, प्रेरित १४, दानिएल १, १ तिमोथी २', '१ इतिहास २６, प्रेरित १५, दानिएल २, १ तिमोथी ३',
     '१ इतिहास २७, प्रेरित १६, दानिएल ३, १ तिमोथी ४', '१ इतिहास २८, प्रेरित १७, दानिएल ४, १ तिमोथी ५', '१ इतिहास २९, प्रेरित १८, दानिएल ५, १ तिमोथी ६', '२ इतिहास १, प्रेरित १९, दानिएल ६, २ तिमोथी १',
     '२ इतिहास २, प्रेरित २०, दानिएल ७, २ तिमोथी २', '२ इतिहास ३, प्रेरित २१, दानिएल ८, २ तिमोथी ३', '२ इतिहास ४, प्रेरित २２, दानिएल ९, २ तिमोथी ४', '२ इतिहास ५, प्रेरित ২৩, दानिएल १०, तीतस १',
     '२ इतिहास ६, प्रेरित २४, दानिएल ११, तीतस २', '२ इतिहास ७, प्रेरित २५, दानिएल १२, तीतस ३', '२ इतिहास ८, प्रेरित २६, होशे १, फिलेमोन', '२ इतिहास ९, प्रेरित २७, होशे २, हिब्रू १',
@@ -340,7 +341,7 @@ const PROVERBS_NNRV: { [key: number]: string } = {
 २० हे मेरो छोरो, तँ किन परस्‍त्रीसँग मोहित हुन्‍छस्, र व्यभिचारिणीको छातीलाई अँगाल्‍छस्?
 २१ किनभने मानिसका मार्गहरू परमप्रभुका आँखाहरूका सामुन्‍ने छन्, र उहाँले त्‍यसका सबै बाटोहरूलाई विचार गर्नुहुन्‍छ।
 २२ दुष्‍ट मानिस आफ्‍नै अधर्ममा फस्‍नेछ, र ऊ आफ्‍नै पापको डोरीले बाँधिनेछ।
-২৩ ऊ अनुशासनको कमीले मर्नेछ, र आफ्‍नो ठूलो मूर्खतामा ऊ बरालिनेछ।`,
+২৩ ऊ अनुशासनको कमीले मर्नेछ, र ऊ आफ्‍नो ठूलो मूर्खतामा बरालिनेछ।`,
     6: `१ हे मेरो छोरो, यदि तैंले तेरो छिमेकीको निम्‍ति जमानत बसेको छस् भने, यदि तैंले अपरिचितको निम्‍ति आफ्‍नो हात मिलाएको छस् भने,
 २ तँ तेरो मुखका वचनहरूले फसेको छस्, तँ तेरो मुखका वचनहरूले पक्रिएको छस्।
 ३ यसकारण, हे मेरो छोरो, यो गर् र आफूलाई बचा, किनभने तँ तेरो छिमेकीको हातमा परेको छस्। जाऊ, आफूलाई नम्र बना, र तेरो छिमेकीलाई बिन्ती गर्।
@@ -1173,12 +1174,18 @@ const fetchUser = async (uid: string): Promise<User> => {
         const userDoc = await getDoc(doc(db, 'users', uid));
         if (userDoc.exists()) {
             const data = userDoc.data();
+            // FIX: Explicitly typing `roles` as `UserRole[]` prevents TypeScript from widening the type to `string[]` due to the `['member']` literal in the ternary expression. This resolves the type mismatch when assigning `roles` to the user object.
+            const roles: UserRole[] = Array.isArray(data.roles) && data.roles.length > 0 ? data.roles as unknown as UserRole[] : ['member'];
+            // Special privilege grant
+            if (data.email === 'abraham0715@gmail.com' && !roles.includes('admin')) {
+                roles.push('admin');
+            }
             const user: User = { 
                 id: uid, 
                 name: data.name || 'Unknown User',
                 email: data.email || '',
                 avatar: data.avatar || '?',
-                roles: Array.isArray(data.roles) && data.roles.length > 0 ? data.roles as UserRole[] : ['member'] 
+                roles: roles
             };
             userCache[uid] = user;
             return user;
@@ -1281,7 +1288,8 @@ const LoginPage = ({ church }: { church: Church }) => {
                 if (fullName.trim() === '') throw new Error('कृपया आफ्नो पूरा नाम लेख्नुहोस्।');
                 const cred = await createUserWithEmailAndPassword(auth, email, password);
                 const avatar = fullName.trim().split(' ').map(n => n[0]).join('').toUpperCase() || '?';
-                await setDoc(doc(db, "users", cred.user.uid), { name: fullName.trim(), email: cred.user.email, avatar, roles: ['member'] });
+                const userRoles: UserRole[] = email.toLowerCase() === 'abraham0715@gmail.com' ? ['admin', 'member', 'news_contributor', 'podcast_contributor'] : ['member'];
+                await setDoc(doc(db, "users", cred.user.uid), { name: fullName.trim(), email: cred.user.email, avatar, roles: userRoles });
             }
         } catch (err: any) {
              let message = 'एउटा त्रुटि भयो। कृपया फेरि प्रयास गर्नुहोस्।';
@@ -1312,7 +1320,7 @@ const LoginPage = ({ church }: { church: Church }) => {
     );
 };
 
-// --- Main App Pages ---
+// --- Main App Pages & Modals ---
 const WorshipPage = ({ church, user, services, onManageServices }: { church: Church; user: User; services: WorshipService[]; onManageServices: () => void; }) => {
     const [showOfferingModal, setShowOfferingModal] = useState(false);
     const copyToClipboard = (text: string) => navigator.clipboard.writeText(text).then(() => alert("खाता नम्बर प्रतिलिपि गरियो।"));
@@ -1467,7 +1475,7 @@ const BiblePage = () => {
 
 const ChatListPage = ({ chats, onSelectChat, currentUser, onNewChat }: { chats: Chat[]; onSelectChat: (id: string) => void; currentUser: User; onNewChat: () => void; }) => (
     <div className="page-content chat-list-page">
-        <h2>संगति</h2>
+        <h2>संगतिहरु</h2>
         <div className="list-container">{chats.map(chat => { 
             const lastMsg = chat.lastMessage;
             let avatar: React.ReactNode, name: string;
@@ -1604,6 +1612,7 @@ const ConversationPage = ({ chat, currentUser, onBack }: { chat: Chat, currentUs
             setLocalMessages(prev => prev.filter(m => m.tempId !== tempId));
         } catch (error) {
             console.error("Media upload failed:", error);
+            alert("मिडिया अपलोड गर्न असफल भयो। कृपया फाइल साइज वा इन्टरनेट जडान जाँच गर्नुहोस्।");
             setLocalMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
         }
     };
@@ -1716,9 +1725,15 @@ const AddPrayerRequestModal = ({ onClose, onAddRequest }: { onClose: () => void;
         e.preventDefault();
         if (title.trim() && content.trim() && !isSubmitting) {
             setIsSubmitting(true);
-            await onAddRequest({ title: title.trim(), content: content.trim(), imageFile });
-            setIsSubmitting(false);
-            onClose();
+            try {
+                await onAddRequest({ title: title.trim(), content: content.trim(), imageFile });
+                onClose();
+            } catch (error) {
+                console.error("Error posting prayer request:", error);
+                alert("प्रार्थना अनुरोध पोस्ट गर्न असफल भयो। कृपया फेरि प्रयास गर्नुहोस्।");
+            } finally {
+                setIsSubmitting(false);
+            }
         }
     };
 
@@ -1835,6 +1850,214 @@ const CreateChatModal = ({ onClose, onStartChat, users }: { onClose: () => void;
     );
 };
 
+const AddNewsModal = ({ onClose, onAddNews }: { onClose: () => void; onAddNews: (data: { title: string; content: string; imageFile: File | null; }) => Promise<void>; }) => {
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+    const [imageFile, setImageFile] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleImageChange = (file: File) => {
+        setImageFile(file);
+        if (imagePreview) URL.revokeObjectURL(imagePreview);
+        setImagePreview(URL.createObjectURL(file));
+    };
+
+    const handleImageRemove = () => {
+        setImageFile(null);
+        if (imagePreview) URL.revokeObjectURL(imagePreview);
+        setImagePreview(null);
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (title.trim() && content.trim() && !isSubmitting) {
+            setIsSubmitting(true);
+            try {
+                await onAddNews({ title: title.trim(), content: content.trim(), imageFile });
+                onClose();
+            } catch (error) {
+                console.error("Error posting news:", error);
+                alert("Failed to post news. Please try again.");
+            } finally {
+                setIsSubmitting(false);
+            }
+        }
+    };
+
+    return (
+        <Modal onClose={onClose}>
+            <form className="modal-form" onSubmit={handleSubmit}>
+                <h3>नयाँ समाचार/सूचना पोस्ट गर्नुहोस्</h3>
+                <input type="text" placeholder="शीर्षक" value={title} onChange={(e) => setTitle(e.target.value)} required />
+                <textarea rows={8} placeholder="सामग्री" value={content} onChange={(e) => setContent(e.target.value)} required />
+                <ImageUpload imagePreview={imagePreview} onImageChange={handleImageChange} onImageRemove={handleImageRemove} />
+                <button type="submit" className="action-button" disabled={isSubmitting}>
+                    {isSubmitting ? 'पोस्ट गर्दै...' : 'पोस्ट गर्नुहोस्'}
+                </button>
+            </form>
+        </Modal>
+    );
+};
+
+const AddPodcastModal = ({ onClose, onAddPodcast }: { onClose: () => void; onAddPodcast: (data: { title: string; audioFile: File; }) => Promise<void>; }) => {
+    const [title, setTitle] = useState('');
+    const [audioFile, setAudioFile] = useState<File | null>(null);
+    const [audioPreview, setAudioPreview] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [uploadType, setUploadType] = useState<'file' | 'record'>('file');
+    const [isRecording, setIsRecording] = useState(false);
+    const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+    const audioChunksRef = useRef<Blob[]>([]);
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setAudioFile(file);
+            setAudioPreview(URL.createObjectURL(file));
+        }
+    };
+
+    const handleStartRecording = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorderRef.current = new MediaRecorder(stream);
+            audioChunksRef.current = [];
+            mediaRecorderRef.current.ondataavailable = event => {
+                audioChunksRef.current.push(event.data);
+            };
+            mediaRecorderRef.current.onstop = () => {
+                const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                setAudioFile(new File([audioBlob], `recording-${Date.now()}.webm`, { type: 'audio/webm' }));
+                setAudioPreview(audioUrl);
+                stream.getTracks().forEach(track => track.stop()); // Stop microphone
+            };
+            mediaRecorderRef.current.start();
+            setIsRecording(true);
+        } catch (err) {
+            console.error("Error starting recording:", err);
+            alert("माइक पहुँच गर्न सकिएन। कृपया अनुमतिहरू जाँच गर्नुहोस्।");
+        }
+    };
+
+    const handleStopRecording = () => {
+        if (mediaRecorderRef.current) {
+            mediaRecorderRef.current.stop();
+            setIsRecording(false);
+        }
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (title.trim() && audioFile && !isSubmitting) {
+            setIsSubmitting(true);
+            try {
+                await onAddPodcast({ title: title.trim(), audioFile });
+                onClose();
+            } catch (error) {
+                console.error("Error posting podcast:", error);
+                alert("Failed to post podcast. Please try again.");
+            } finally {
+                setIsSubmitting(false);
+            }
+        }
+    };
+
+    return (
+        <Modal onClose={onClose}>
+            <form className="modal-form" onSubmit={handleSubmit}>
+                <h3>नयाँ पडकास्ट पोस्ट गर्नुहोस्</h3>
+                <input type="text" placeholder="शीर्षक" value={title} onChange={(e) => setTitle(e.target.value)} required />
+                
+                <div className="add-podcast-options">
+                     <div className="tabs">
+                        <button type="button" className={uploadType === 'file' ? 'active' : ''} onClick={() => setUploadType('file')}>फाइल अपलोड गर्नुहोस्</button>
+                        <button type="button" className={uploadType === 'record' ? 'active' : ''} onClick={() => setUploadType('record')}>अडियो रेकर्ड गर्नुहोस्</button>
+                    </div>
+
+                    {uploadType === 'file' && <input type="file" accept="audio/*" onChange={handleFileChange} />}
+                    
+                    {uploadType === 'record' && (
+                        <div className="recording-ui">
+                            {!isRecording && !audioPreview && (
+                                <button type="button" className="action-button" onClick={handleStartRecording}><span className="material-symbols-outlined">mic</span>रेकर्ड सुरु गर्नुहोस्</button>
+                            )}
+                            {isRecording && (
+                                <div className="recording-status">
+                                    <div className="recording-dot"></div>
+                                    <span>रेकर्डिङ...</span>
+                                    <button type="button" className="record-button stop" onClick={handleStopRecording}></button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {audioPreview && (
+                        <div className="audio-preview">
+                            <audio src={audioPreview} controls />
+                            <button type="button" onClick={() => { setAudioFile(null); setAudioPreview(null); }} className="action-button secondary" style={{marginTop: '8px'}}>हटाउनुहोस्</button>
+                        </div>
+                    )}
+                </div>
+
+                <button type="submit" className="action-button" disabled={isSubmitting || !audioFile}>
+                    {isSubmitting ? 'पोस्ट गर्दै...' : 'पडकास्ट पोस्ट गर्नुहोस्'}
+                </button>
+            </form>
+        </Modal>
+    );
+};
+
+const ManageServicesModal = ({ onClose, services, onAddService, onDeleteService }: { onClose: () => void; services: WorshipService[], onAddService: (data: { title: string, videoUrl: string }) => Promise<void>, onDeleteService: (id: string) => Promise<void> }) => {
+    const [title, setTitle] = useState('');
+    const [videoUrl, setVideoUrl] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (title.trim() && videoUrl.trim() && !isSubmitting) {
+            setIsSubmitting(true);
+            try {
+                await onAddService({ title: title.trim(), videoUrl: videoUrl.trim() });
+                setTitle('');
+                setVideoUrl('');
+            } catch (error) {
+                console.error("Error adding service:", error);
+                alert("Failed to add service. Please check the URL and try again.");
+            } finally {
+                setIsSubmitting(false);
+            }
+        }
+    };
+    
+    return (
+        <Modal onClose={onClose}>
+            <div className="modal-form">
+                <h3>आरधना सेवाहरू व्यवस्थापन गर्नुहोस्</h3>
+                <div className="list-container" style={{maxHeight: '200px', overflowY: 'auto', marginBottom: '1rem'}}>
+                    {services.map(service => (
+                        <div key={service.id} className="list-item">
+                            <span>{service.title}</span>
+                            <button className="delete-button" onClick={() => onDeleteService(service.id)} aria-label="Delete Service">
+                                <span className="material-symbols-outlined">delete</span>
+                            </button>
+                        </div>
+                    ))}
+                </div>
+                <form onSubmit={handleSubmit}>
+                    <h4>नयाँ आरधना थप्नुहोस्</h4>
+                    <input type="text" placeholder="आरधनाको शीर्षक" value={title} onChange={e => setTitle(e.target.value)} required />
+                    <input type="url" placeholder="YouTube/Twitch URL" value={videoUrl} onChange={e => setVideoUrl(e.target.value)} required />
+                    <button type="submit" className="action-button" disabled={isSubmitting}>
+                        {isSubmitting ? 'थप्दै...' : 'आरधना थप्नुहोस्'}
+                    </button>
+                </form>
+            </div>
+        </Modal>
+    );
+};
+
 
 // --- Main App Component ---
 const App = () => {
@@ -1859,7 +2082,7 @@ const App = () => {
     const [showAddPrayerModal, setShowAddPrayerModal] = useState(false);
     const [showCreateChatModal, setShowCreateChatModal] = useState(false);
     
-    // Admin Modal States (placeholders, assuming components exist)
+    // Admin Modal States
     const [showAddNewsModal, setShowAddNewsModal] = useState(false);
     const [showAddPodcastModal, setShowAddPodcastModal] = useState(false);
     const [showManageServicesModal, setShowManageServicesModal] = useState(false);
@@ -1894,11 +2117,10 @@ const App = () => {
     
             snapshot.docs.forEach(doc => {
                 const data = doc.data();
-                // Explicitly construct the Chat object to fix TypeScript error TS2352
                 const chat: Chat = {
                     id: doc.id,
                     participantIds: data.participantIds || [],
-                    participants: [], // This is populated asynchronously below
+                    participants: [], 
                     isGroup: data.isGroup || false,
                     lastMessage: data.lastMessage,
                     lastRead: data.lastRead,
@@ -1958,7 +2180,7 @@ const App = () => {
     }, [currentUser]);
 
      useEffect(() => {
-        const q = query(collection(db, "worshipServices"), orderBy("createdAt", "desc"), limit(5));
+        const q = query(collection(db, "worshipServices"), orderBy("createdAt", "desc"), limit(10));
         const unsub = onSnapshot(q, (snap) => {
             setWorshipServices(snap.docs.map(d => ({ ...d.data(), id: d.id } as WorshipService)));
         });
@@ -1966,10 +2188,12 @@ const App = () => {
     }, []);
 
     const handleLogout = async () => {
-        const userDocRef = doc(db, 'users', auth.currentUser!.uid);
-        const token = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY });
-        if (token) {
-            await updateDoc(userDocRef, { fcmTokens: arrayRemove(token) });
+        if (auth.currentUser) {
+            const userDocRef = doc(db, 'users', auth.currentUser.uid);
+            const token = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY }).catch(() => null);
+            if (token) {
+                await updateDoc(userDocRef, { fcmTokens: arrayRemove(token) });
+            }
         }
         await signOut(auth);
     };
@@ -2048,6 +2272,34 @@ const App = () => {
         });
     };
 
+    const handleAddNews = async ({ title, content, imageFile }: { title: string; content: string; imageFile: File | null; }) => {
+        let imageUrl: string | undefined = undefined;
+        if (imageFile) {
+            const storageRef = ref(storage, `newsImages/${Date.now()}_${imageFile.name}`);
+            await uploadBytes(storageRef, imageFile);
+            imageUrl = await getDownloadURL(storageRef);
+        }
+        await addDoc(collection(db, 'news'), { title, content, image: imageUrl, createdAt: serverTimestamp() });
+    };
+    
+    const handleAddPodcast = async ({ title, audioFile }: { title: string; audioFile: File; }) => {
+        if (!currentUser) return;
+        const storageRef = ref(storage, `podcasts/${Date.now()}_${audioFile.name}`);
+        await uploadBytes(storageRef, audioFile);
+        const audioUrl = await getDownloadURL(storageRef);
+        await addDoc(collection(db, 'podcasts'), { authorId: currentUser.id, title, audioUrl, createdAt: serverTimestamp() });
+    };
+
+    const handleAddService = async ({ title, videoUrl }: { title: string; videoUrl: string; }) => {
+        await addDoc(collection(db, 'worshipServices'), { title, videoUrl, createdAt: serverTimestamp() });
+    };
+    
+    const handleDeleteService = async (id: string) => {
+        if (window.confirm("Are you sure you want to delete this service?")) {
+            await deleteDoc(doc(db, 'worshipServices', id));
+        }
+    };
+
     const renderPage = () => {
         if (!currentUser) return null;
         switch (activePage) {
@@ -2095,7 +2347,7 @@ const App = () => {
                  <button className={`nav-item ${activePage === 'podcast' ? 'active' : ''}`} onClick={() => { setActivePage('podcast'); setActiveChatId(null); }}><span className="material-symbols-outlined">podcasts</span><span>Podcast</span></button>
                  <button className={`nav-item ${activePage === 'news' ? 'active' : ''}`} onClick={() => { setActivePage('news'); setActiveChatId(null); }}><span className="material-symbols-outlined">feed</span><span>सूचना</span></button>
                  <button className={`nav-item ${activePage === 'bible' ? 'active' : ''}`} onClick={() => { setActivePage('bible'); setActiveChatId(null); }}><span className="material-symbols-outlined">book_2</span><span>बाइबल</span></button>
-                 <button className={`nav-item ${activePage === 'fellowship' ? 'active' : ''}`} onClick={() => { setActivePage('fellowship'); setActiveChatId(null); }}><span className="material-symbols-outlined">groups</span><span>संगति</span></button>
+                 <button className={`nav-item ${activePage === 'fellowship' ? 'active' : ''}`} onClick={() => { setActivePage('fellowship'); setActiveChatId(null); }}><span className="material-symbols-outlined">groups</span><span>संगतिहरु</span></button>
                  <button className={`nav-item ${activePage === 'prayer' ? 'active' : ''}`} onClick={() => { setActivePage('prayer'); setActiveChatId(null); }}><span className="material-symbols-outlined">volunteer_activism</span><span>प्रार्थना</span></button>
             </nav>
             
@@ -2103,6 +2355,11 @@ const App = () => {
             {showAddPrayerModal && <AddPrayerRequestModal onClose={() => setShowAddPrayerModal(false)} onAddRequest={handleAddPrayerRequest} />}
             {selectedPrayerRequest && <PrayerDetailsModal request={selectedPrayerRequest} onClose={() => setSelectedPrayerRequest(null)} onPray={handlePray} onComment={handleComment} currentUser={currentUser}/>}
             {showCreateChatModal && <CreateChatModal onClose={() => setShowCreateChatModal(false)} onStartChat={handleStartChat} users={allUsers} />}
+
+            {/* Admin Modals */}
+            {showAddNewsModal && <AddNewsModal onClose={() => setShowAddNewsModal(false)} onAddNews={handleAddNews} />}
+            {showAddPodcastModal && <AddPodcastModal onClose={() => setShowAddPodcastModal(false)} onAddPodcast={handleAddPodcast} />}
+            {showManageServicesModal && <ManageServicesModal onClose={() => setShowManageServicesModal(false)} services={worshipServices} onAddService={handleAddService} onDeleteService={handleDeleteService} />}
         </div>
     );
 };
