@@ -178,7 +178,7 @@ const HomePage = ({ currentUser }: { currentUser: User }) => {
         <div className="page-content">
             <h2>Welcome, {currentUser.name.split(' ')[0]}!</h2>
             <div className="card home-welcome-card">
-                 <h3>오늘도 말씀 안에서 승리하세요</h3>
+                 <h3>आजको लागि बाइबल पढ्ने योजना</h3>
                 <p>Have a victorious day in the Word.</p>
             </div>
             <div className="card verse-card">
@@ -312,7 +312,7 @@ const WorshipPage = ({services}: {services: WorshipService[]}) => {
 
     return (
         <div className="page-content">
-            <h2>Worship</h2>
+            <h2>आरधना</h2>
             {liveService ? (
                  <div className="card live-worship-card">
                     <div className="live-badge">LIVE</div>
@@ -335,7 +335,7 @@ const WorshipPage = ({services}: {services: WorshipService[]}) => {
             ) : (
                  <div className="card no-live-service">
                     <span className="material-symbols-outlined">videocam_off</span>
-                    <p>There is no live service at the moment.</p>
+                    <p>अहिले कुनै पनि आरधना सेवा छैन।</p>
                      <div className="worship-actions">
                         <button className="action-button" onClick={() => setShowOfferingModal(true)}>
                             <span className="material-symbols-outlined">volunteer_activism</span>
@@ -401,13 +401,13 @@ const BiblePage = () => {
                 <p className="verse-ref">- {MOCK_VERSES_OF_THE_DAY[dayOfYear % MOCK_VERSES_OF_THE_DAY.length].verse}</p>
             </div>
             <div className="card bible-card">
-                <h3>म्याकचेन 성경읽기표 (McCheyne Reading Plan)</h3>
-                <p>दिन {dayOfYear}: {readingPlan}</p>
+                <h3>आजको लागि बाइबल पढ्ने योजना</h3>
+                <p>{readingPlan}</p>
             </div>
             <div className="card bible-card" onClick={() => setShowProverbsModal(true)}>
-                <h3>दिनको हितोपदेश (Proverb of the Day)</h3>
+                <h3>दिनको हितोपदेश</h3>
                 <p>महिनाको हरेक दिनको लागि एक हितोपदेश: हितोपदेश अध्याय {dayOfMonth}</p>
-                <small style={{ color: 'var(--primary-color)', marginTop: '8px', display: 'block' }}>본문을 보려면 클릭하세요 (Click to read)</small>
+                <small style={{ color: 'var(--primary-color)', marginTop: '8px', display: 'block' }}>पढ्नको लागि क्लिक गर्नुहोस्</small>
             </div>
             {showProverbsModal && (
                 <BibleReadingModal
@@ -424,7 +424,7 @@ const BiblePage = () => {
 const NewsPage = ({news, currentUser, onDelete}: {news: NewsItem[], currentUser: User | null, onDelete: (id: string, image?: string) => void}) => {
     return (
         <div className="page-content">
-            <h2>News & Announcements</h2>
+            <h2>सुचना</h2>
             <div className="list-container">
                 {news.map(item => (
                     <div key={item.id} className="card news-item">
@@ -595,7 +595,7 @@ const ConversationPage = ({ chat, messages, currentUser, onBack, onSendMessage }
 const PrayerPage = ({ prayerRequests, currentUser, onPray, onAddRequest, onSelectRequest, onDelete, onEdit }: { prayerRequests: PrayerRequest[]; currentUser: User | null; onPray: (id:string) => void; onAddRequest: () => void; onSelectRequest: (req: PrayerRequest) => void; onDelete: (id: string, image?: string) => void; onEdit: (req: PrayerRequest) => void; }) => {
     return (
         <div className="page-content">
-            <h2>Prayer Wall</h2>
+            <h2>प्रार्थना अनुरोध</h2>
             <div className="list-container">
                 {prayerRequests.map(request => (
                     <div key={request.id} className="card prayer-item">

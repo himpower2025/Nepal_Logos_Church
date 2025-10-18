@@ -1,4 +1,5 @@
 
+
 :root {
     --primary-color: #004d40;
     --primary-color-dark: #00251a;
@@ -324,7 +325,7 @@ html, body, #root {
 }
 
 .nav-item.active {
-    color: var(--primary-color);
+    color: var(--accent-color);
 }
 .nav-item.active .material-symbols-outlined {
     font-variation-settings: 'FILL' 1;
