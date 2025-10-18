@@ -196,9 +196,9 @@ html, body, #root {
 
 /* --- Main App Layout --- */
 .app-container {
-    display: flex;
-    flex-direction: column;
-    height: 100%; /* Changed from 100dvh for better mobile compatibility */
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100%; /* Changed from 100dvh for better compatibility */
     width: 100%;
     max-width: 600px; 
     margin: 0 auto;
@@ -208,6 +208,7 @@ html, body, #root {
 }
 
 .app-header {
+    grid-row: 1;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -215,7 +216,6 @@ html, body, #root {
     background-color: var(--primary-color);
     color: var(--text-color-light);
     box-shadow: 0 2px 4px var(--shadow-color);
-    flex-shrink: 0;
     z-index: 10;
 }
 
@@ -268,11 +268,10 @@ html, body, #root {
 }
 
 .main-content {
-    flex-grow: 1;
+    grid-row: 2;
     overflow-y: auto;
-    display: flex;
-    flex-direction: column;
     position: relative;
+    -webkit-overflow-scrolling: touch;
 }
 
 .page-content {
@@ -287,15 +286,15 @@ html, body, #root {
 }
 
 .bottom-nav {
+    grid-row: 3;
     width: 100%;
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     background-color: var(--card-background);
     border-top: 1px solid #e0e0e0;
     box-shadow: 0 -2px 5px var(--shadow-color);
-    flex-shrink: 0;
     z-index: 10;
-    min-height: 65px; /* Ensure it has enough height */
+    min-height: 70px; /* Increased height for better visibility */
     padding-bottom: env(safe-area-inset-bottom); /* Safe area for iPhones */
 }
 
@@ -666,8 +665,8 @@ html, body, #root {
     height: 100%;
     background-color: var(--background-color);
     z-index: 100;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
     animation: slideInUp 0.3s ease-out;
 }
 @keyframes slideInUp {
@@ -675,13 +674,13 @@ html, body, #root {
     to { transform: translateY(0); opacity: 1; }
 }
 .conversation-header {
+    grid-row: 1;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: var(--space-sm) var(--space-md);
     background-color: var(--primary-color);
     color: var(--text-color-light);
-    flex-shrink: 0;
 }
 
 .back-button { background: none; border: none; color: white; padding: var(--space-sm); cursor: pointer; border-radius: 50%; }
@@ -689,7 +688,7 @@ html, body, #root {
 
 
 .message-list {
-    flex-grow: 1;
+    grid-row: 2;
     overflow-y: auto;
     padding: var(--space-md);
     display: flex;
@@ -779,13 +778,14 @@ html, body, #root {
 }
 
 .message-input-container {
+    grid-row: 3;
     display: flex;
     align-items: center;
     padding: var(--space-sm) var(--space-md);
-    flex-shrink: 0;
     gap: var(--space-sm);
     background-color: var(--card-background);
     border-top: 1px solid #ccc;
+    padding-bottom: calc(var(--space-sm) + env(safe-area-inset-bottom));
 }
 .message-input-container input[type="text"] {
     flex-grow: 1;
