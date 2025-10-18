@@ -870,22 +870,30 @@ const App = () => {
             return;
         }
 
-        // Watchdog timer to prevent getting stuck
         const authTimeout = setTimeout(() => {
-            console.warn("Authentication check timed out after 5 seconds. Assuming user is logged out.");
             if (isLoading) {
+                console.warn("Authentication check timed out after 5 seconds. Assuming user is logged out.");
                 setIsLoading(false);
             }
         }, 5000);
 
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            clearTimeout(authTimeout); // Response received, cancel the watchdog
+            clearTimeout(authTimeout);
             try {
                 if (user) {
                     const userDocRef = doc(db, "users", user.uid);
                     const userDocSnap = await getDoc(userDocRef);
                     if (userDocSnap.exists()) {
-                        setCurrentUser({ id: user.uid, ...userDocSnap.data() } as User);
+                        const userData = userDocSnap.data();
+                        // Defensive coding: Ensure essential fields exist and have fallback values to prevent crashes.
+                        const userProfile: User = {
+                            id: user.uid,
+                            name: userData.name || user.displayName || 'Unknown User',
+                            email: userData.email || user.email || '',
+                            avatar: userData.avatar || (userData.name || user.displayName || '?').split(' ').map((n: string) => n[0]).join('').toUpperCase(),
+                            roles: userData.roles || ['member'] // CRITICAL: Ensure roles is always an array.
+                        };
+                        setCurrentUser(userProfile);
                     } else {
                         console.warn("User authenticated but no profile in Firestore. Forcing sign out.");
                         await signOut(auth);
