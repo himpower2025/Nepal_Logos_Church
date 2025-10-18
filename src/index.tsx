@@ -865,27 +865,35 @@ const App = () => {
     const [showManageUsersModal, setShowManageUsersModal] = useState(false);
 
     useEffect(() => {
-        if (!auth) {
+        if (!auth || !db) {
             setIsLoading(false);
             return;
         }
+
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            if (user && db) {
-                const userDocRef = doc(db, "users", user.uid);
-                const userDocSnap = await getDoc(userDocRef);
-                if (userDocSnap.exists()) {
-                    setCurrentUser({ id: user.uid, ...userDocSnap.data() } as User);
+            try {
+                if (user) {
+                    const userDocRef = doc(db, "users", user.uid);
+                    const userDocSnap = await getDoc(userDocRef);
+                    if (userDocSnap.exists()) {
+                        setCurrentUser({ id: user.uid, ...userDocSnap.data() } as User);
+                    } else {
+                        console.warn("User authenticated but no profile in Firestore. Forcing sign out.");
+                        await signOut(auth); // This will re-trigger the listener with user=null
+                        setCurrentUser(null);
+                    }
                 } else {
-                    // This case handles a user that exists in Auth but not in Firestore DB.
-                    // Log them out to force a clean sign-up.
-                    signOut(auth);
                     setCurrentUser(null);
                 }
-            } else {
+            } catch (error) {
+                console.error("Error during authentication state check:", error);
                 setCurrentUser(null);
+            } finally {
+                // This ensures the loading state is turned off after the first auth check.
+                setIsLoading(false);
             }
-            setIsLoading(false);
         });
+
         return () => unsubscribe();
     }, [auth, db]);
 
