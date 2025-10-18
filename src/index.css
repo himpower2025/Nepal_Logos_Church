@@ -198,7 +198,7 @@ html, body, #root {
 .app-container {
     display: flex;
     flex-direction: column;
-    height: 100dvh; /* Use dynamic viewport height to fix mobile nav issue */
+    height: 100%; /* Changed from 100dvh for better mobile compatibility */
     width: 100%;
     max-width: 600px; 
     margin: 0 auto;
@@ -295,6 +295,8 @@ html, body, #root {
     box-shadow: 0 -2px 5px var(--shadow-color);
     flex-shrink: 0;
     z-index: 10;
+    min-height: 65px; /* Ensure it has enough height */
+    padding-bottom: env(safe-area-inset-bottom); /* Safe area for iPhones */
 }
 
 .nav-item {
