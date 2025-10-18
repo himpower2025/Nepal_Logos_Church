@@ -589,20 +589,11 @@ const PrayerPage = ({ prayerRequests, currentUser, onPray, onAddRequest, onSelec
 
 const PrayerDetailsModal = ({ request, currentUser, onClose, onPray, onComment, onDelete, onEdit }: { request: PrayerRequest; currentUser: User | null; onClose: () => void; onPray: (id: string) => void; onComment: (id: string, text: string) => void; onDelete: (id: string, image?:string) => void; onEdit: (req: PrayerRequest) => void; }) => {
     const [comment, setComment] = useState('');
-    const { db } = useFirebase();
 
-    const handleCommentSubmit = async (e: React.FormEvent) => {
+    const handleCommentSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (comment.trim() && currentUser && db) {
-            const newComment = {
-                id: doc(collection(db, "tmp")).id, // temp id
-                authorId: currentUser.id,
-                author: currentUser,
-                content: comment.trim(),
-                createdAt: Timestamp.now(),
-            };
-            const prayerRef = doc(db, "prayerRequests", request.id);
-            await updateDoc(prayerRef, { comments: arrayUnion(newComment) });
+        if (comment.trim()) {
+            onComment(request.id, comment.trim());
             setComment('');
         }
     };
