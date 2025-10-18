@@ -411,7 +411,7 @@ const ChatListPage = ({ chats, currentUser, onSelectChat, onCreateChat }: { chat
                     if (otherParticipants.length === 0) return null;
                     const displayName = otherParticipants.map(p => p.name).join(', ');
                     const lastMessage = chat.lastMessage;
-                    const isUnread = chat.lastRead && lastMessage && chat.lastRead[currentUser.id] < lastMessage.createdAt;
+                    const isUnread = chat.lastRead && lastMessage && currentUser && chat.lastRead[currentUser.id] < lastMessage.createdAt;
 
                     return (
                         <div key={chat.id} className={`list-item chat-item ${isUnread ? 'unread' : ''}`} onClick={() => onSelectChat(chat.id)}>
@@ -939,7 +939,9 @@ const App = () => {
     const handleSavePrayerRequest = async (data: { title: string; content: string; imageFile: File | null }, id?: string) => {
         if (!currentUser) return;
         try {
-            let imageUrl = existingRequest?.image || undefined;
+            const requestToEdit = prayerRequestToEdit;
+            let imageUrl = (id && requestToEdit) ? requestToEdit.image : undefined;
+
             if (data.imageFile) {
                 const storageRef = ref(storage, `prayer_images/${Date.now()}_${data.imageFile.name}`);
                 await uploadBytes(storageRef, data.imageFile);
@@ -1249,7 +1251,7 @@ const App = () => {
                 </button>
             </nav>
             
-            {activeChat && <ConversationPage chat={activeChat} messages={messages[activeChatId] || []} currentUser={currentUser} onBack={() => setActiveChatId(null)} onSendMessage={handleSendMessage} />}
+            {activeChat && activeChatId && <ConversationPage chat={activeChat} messages={messages[activeChatId] || []} currentUser={currentUser} onBack={() => setActiveChatId(null)} onSendMessage={handleSendMessage} />}
             {showAddPrayerModal && <AddPrayerRequestModal onClose={() => setShowAddPrayerModal(false)} onSave={handleSavePrayerRequest} existingRequest={existingRequest} />}
             {selectedPrayerRequest && <PrayerDetailsModal 
                 request={selectedPrayerRequest} 
