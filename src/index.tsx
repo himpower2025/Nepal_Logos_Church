@@ -44,10 +44,10 @@ export const useFirebase = () => {
 
 // --- Types ---
 type UserRole = 'admin' | 'member' | 'news_contributor' | 'podcast_contributor';
-type User = { id: string; name: string; email: string; avatar: string; roles: UserRole[]; };
+type User = { id: string; name: string; email: string; avatar: string; roles: UserRole[]; fcmTokens?: string[] };
 type Church = { id: string; name: string; logo: string; offeringDetails: any; };
 type Comment = { id: string; author: User; authorId: string; content: string; createdAt: Timestamp; };
-type PrayerRequest = { id: string; authorId: string; authorName: string; title: string; content: string; image?: string; prayedBy: string[]; comments: Comment[]; createdAt: Timestamp; };
+type PrayerRequest = { id:string; authorId: string; authorName: string; title: string; content: string; image?: string; prayedBy: string[]; comments: Comment[]; createdAt: Timestamp; };
 type Podcast = { id: string; title: string; authorId: string; authorName: string; audioUrl: string; createdAt: Timestamp; };
 type NewsItem = { id: string; title: string; content: string; image?: string; createdAt: Timestamp; authorId: string, authorName: string };
 type Verse = { verse: string; text: string; };
@@ -63,7 +63,7 @@ type LastMessage = {
 type Chat = { 
     id: string; 
     participantIds: string[]; 
-    participants: { [key: string]: User }; 
+    participants: { [key: string]: { name: string; avatar: string; } }; // Simplified participant info
     lastMessage?: LastMessage;
     lastRead?: { [key: string]: Timestamp };
 };
@@ -94,8 +94,16 @@ const MOCK_VERSES_OF_THE_DAY: Verse[] = [
     { verse: 'फिलिप्पी ४:१३', text: 'जसले मलाई शक्ति दिनuहुन्छ, उहाँमा म सब कुरा गर्न सक्छु।' }
 ];
 
-const BIBLE_READING_PLAN_NNRV = [ 'उत्पत्ति १, मत्ती १', 'उत्पत्ति २, मत्ती २', 'उत्पत्ति ३, मत्ती ३', 'उत्पत्ति ४, मत्ती ४', 'उत्पत्ति ५, मत्ती ५', 'उत्पत्ति ६, मत्ती ६', 'उत्पत्ति ७, मत्ती ७', 'उत्पत्ति ८, मत्ती ८', 'उत्पत्ति ९-१०, मत्ती ९', 'उत्पत्ति ११, मत्ती १०', 'उत्पत्ति १२, मत्ती ११', 'उत्पत्ति १३, मत्ती १२', 'उत्पत्ति १४, मत्ती १३', 'उत्पत्ति १५, मत्ती १४', 'उत्पत्ति १६, मत्ती १५', 'उत्पत्ति १७, मत्ती १६', 'उत्पत्ति १८, मत्ती १७', 'उत्पत्ति १९, मत्ती १८', 'उत्पत्ति २०, मत्ती १९', 'उत्पत्ति २१, मत्ती २०', 'उत्पत्ति २२, मत्ती २१', 'उत्पत्ति ২৩, मत्ती २२', 'उत्पत्ति २४, मत्ती २३', 'उत्पत्ति २५, मत्ती २४', 'उत्पत्ति २६, मत्ती २५', 'उत्पत्ति २७, मत्ती २۶', 'उत्पत्ति २८, मत्ती २७', 'उत्पत्ति २९, मत्ती २८', 'उत्पत्ति ३०, मर्कूस १', 'उत्पत्ति ३१, मर्कूस २', 'उत्पत्ति ३२, मर्कूस ३', 'उत्पत्ति ३३, मर्कूस ४', 'उत्पत्ति ३४, मर्कूस ५', 'उत्पत्ति ३५, मर्कूस ६', 'उत्पत्ति ३६, मर्कूस ७', 'उत्पत्ति ३७, मर्कूस ८', 'उत्पत्ति ३८, मर्कूस ९', 'उत्पत्ति ३९, मर्कूस १०', 'उत्पत्ति ४०, मर्कूस ११', 'उत्पत्ति ४１, मर्कूस १२', 'उत्पत्ति ४२, मर्कूस १३', 'उत्पत्ति ४३, मर्कूस १४', 'उत्पत्ति ४४, मर्कूस १५', 'उत्पत्ति ४५, मर्कूस १६', 'उत्पत्ति ४६, लूका १', 'उत्पत्ति ४७, लूका २', 'उत्पत्ति ४८, लूका ३', 'उत्पत्ति ४९, लूका ४', 'उत्पत्ति ५०, लूका ५', 'प्रस्थान १, लूका ६', 'प्रस्थान २, लूका ७', 'प्रस्थान ३, लूका ८', 'प्रस्थान ४, लूका ९', 'प्रस्थान ५, लूका १०', 'प्रस्थान ६, लूका ११', 'प्रस्थान ७, लूका १२', 'प्रस्थान ८, लूका १३', 'प्रस्थान ९, लूका १४', 'प्रस्थान १०, लूका १५', 'प्रस्थान ११, लूका १६', 'प्रस्थान १२, लूका १७', 'प्रस्थान १३, लूका १८', 'प्रस्थान १४, लूका १९', 'प्रस्थान १५, लूका २०', 'प्रस्थान १६, लूका २१', 'प्रस्थान १७, लूका २२', 'प्रस्थान १८, लूका ২৩', 'प्रस्थान १९, लूका २४', 'प्रस्थान २०, यूहन्ना १', 'प्रस्थान २१, यूहन्ना २', 'प्रस्थान २२, यूहन्ना ३', 'प्रस्थान ২৩, यूहन्ना ४', 'प्रस्थान २४, यूहन्ना ५', 'प्रस्थान २५, यूहन्ना ६', 'प्रस्थान २६, यूहन्ना ७', 'प्रस्थान २७, यूहन्ना ८', 'प्रस्थान २८, यूहन्ना ९', 'प्रस्थान २९, यूहन्ना १०', 'प्रस्थान ३०, यूहन्ना ११', 'प्रस्थान ३१, यूहन्ना १२', 'प्रस्थान ३２, यूहन्ना १३', 'प्रस्थान ३३, यूहन्ना १४', 'प्रस्थान ३४, यूहन्ना १५', 'प्रस्थान ३५, यूहन्ना १६', 'प्रस्थान ३६, यूहन्ना १७', 'प्रस्थान ३७, यूहन्ना १८', 'प्रस्थान ३८, यूहन्ना १९', 'प्रस्थान ३९, यूहन्ना २०', 'प्रस्थान ४०, यूहन्ना २१' ];
-const PROVERBS_NNRV: { [key: number]: string } = { 23: `१ जब तँ शासकसँग खान बस्छस्, तेरो सामुन्ने को छ, सो होशियारसित विचार गर्। २ यदि तँ पेटू छस् भने, तेरो घिच्रोमा एउटा छुरी राख्। ३ त्‍यसका स्‍वादिष्‍ट भोजनहरूको लालसा नगर्, किनभने त्‍यो भोजन छली हुन सक्‍छ। ४ धनी हुनलाई परिश्रम नगर्, र आफ्‍नो समझ देखाउन छोड्। ५ तैंले आफ्‍ना आँखा त्‍यसतिर लगाउने बित्तिकै के त्‍यो गइhaल्‍छ र? किनभने धनले अवश्‍य नै चीलजस्‍तै पखेटाहरू लगाउँछ, र आकाशतिर उडिhaल्‍छ। ६ कन्जूस मानिसको भोजन नखा, न त त्‍यसका स्‍वादिष्‍ट भोजनहरूको लालसा गर्। ७ किनभने त्‍यो त्‍यस्‍तो मानिस हो, जसले भोजनको मोल सधैँ गनिरहन्छ। त्‍यसले तँलाई भन्छ, “खाऊ र पिओ,” तर त्‍यसको हृदय तँसँग हुँदैन। ८ तैंले खाएको अलिकति पनि तैंले उगेल्‍नुपर्छ, र तैंले बोलेका मीठा वचनहरू खेर जानेछन्। ९ अज्ञानीको कानमा नबोल्, किनभने त्‍यसले तेरा बुद्धिका कुरालाई तुच्‍छ ठान्‍नेछ। १० पुरानो सिमानाको ढुङ्गा नसार्, न त टुहुरा-टुहुरीहरूको जग्‍गा मिच्। ११ किनभने तिनीहरूका उद्धारक शक्तिशाली हुनुहुन्‍छ, तँसँग तिनीहरूको पक्षमा उहाँले नै बहस गर्नुहुनेछ। १२ तेरो हृदय अनुशासनतिर लगा, र तेरा कान ज्ञानका कुरातिर लगा। १३ बालकलाई अनुशासन दिन नहिचकिचा। यदि तैंले त्‍यसलाई लट्ठीले हिर्काइस् भने त्‍यो मर्दैन। १४ तैंले त्‍यसलाई लट्ठीले हिर्काइस् भनेता, तैंले त्‍यसको प्राणलाई चिहानबाट बचाउँछस्। १५ हे मेरो छोरो, यदि तेरो हृदय बुद्धिमान् छ भने, मेरो हृदय पनि आनन्दित हुनेछ। १६ जब तेरा ओठले ठीक कुरा बोल्‍छन्, तब मेरो भित्री प्राण रमाउनेछ। १७ पापीहरँग तेरो हृदयले डाह नगरोस्, तर दिनभरि परमप्रभुको भयमा लागिरह। १८ निश्‍चय नै तेरो निम्‍ति एउटा भविष्य छ, र तेरो आशा कहिल्‍यै टुट्नेछैन। १९ हे मेरो छोरो, सुन् र बुद्धिमान् हो, र तेरो हृदय सोझो मार्गमा डोर्‍या। २० धेरै दाखमद्य पिउनेहरू, वा धेरै मासु खाने पेटूहरूसँग सङ्गत नगर्। २१ किनभने पियक्कड र पेटूहरू गरीब हुनेछन्, र निन्द्राले तिनीहरूलाई झुत्रा लुगा पहिराइदिनेछ। २२ तँलाई जन्‍म दिने तेरा बाबुको कुरा सुन्, र तेरी आमा बूढ़ी भएकी बेला तिनलाई हेला नगर्। ২৩ सत्‍यलाई किन् र त्‍यसलाई नबेच्, बुद्धि, अनुशासन र समझलाई पनि किन्। २४ धर्मी मानिसको बाबुले धेरै रमाहट गर्छ, बुद्धिमान् छोरो हुने बाबु त्‍यसमा प्रसन्‍n हुन्‍छ। २५ तेरा बाबु र आमा आनन्दित होऊन्, र तँलाई जन्‍म दिने तिनी रमाऊन्। २६ हे मेरो छोरो, तेरो हृदय मलाई दे, र तेरा आँखाले मेरा मार्गहरू मन पराऊन्। २७ किनभने वेश्‍या एउटा गहिरो खाल्‍डो हो, र परस्‍त्री एउटा साँघुरो इनार हो। २८ डाँकुले झैँ त्‍यसले पनि मानिसहरूलाई ढुकिरहन्छे, र मानिसहरूका बीचमा विश्‍वासघातीहरूको संख्‍या बढ़ाउँछे। २९ कसलाई दु:ख छ? कसलाई शोक छ? कसको झगड़ा छ? कसको गनगन छ? कसलाई अकारण घाउहरू छन्? कसका आँखा राता छन्? ३० तिनीहरू, जो दाखमद्यमा अल्‍मलिरहन्छन्, जो मिस्रित दाखमद्य चाख्‍n जान्छन्। ३१ दाखमद्य रातो भएको बेला, जब त्‍यो कचौरामा चम्‍कन्‍छ, र जब त्‍यो सरर तल जान्छ, त्‍यसलाई नहेर्। ३२ आखिरमा त्‍यसले सर्पले झैँ डस्‍छ, र विषालु सर्पले झैँ टोक्‍छ। ३३ तेरा आँखाले अनौठा कुराहरू देख्‍नेछन्, र तेरो मनले विचलित कुराहरू बोल्‍नेछ। ३४ तँ समुद्रको बीचमा सुत्‍ने मानिसजस्‍तै, वा जहाजको मस्तूलको टुप्‍पामा सुत्‍ने मानिसजस्‍तै हुनेछस्। ३५ तैंले भन्‍नेछस्, “तिनीहरूले मलाई हिर्काए, तर मलाई दुखेको छैन। तिनीहरूले मलाई पिटे, तर मैले थाहै पाइनँ। म कहिले ब्‍उँझने? म फेरि अर्को गिलास पिउँछु।”` };
+const MCCHEYNE_READING_PLAN = [
+  "उत्पत्ति १, मत्ती १, एज्रा १, प्रेरित १",
+  "उत्पत्ति २, मत्ती २, एज्रा २, प्रेरित २",
+  "उत्पत्ति ३, मत्ती ३, एज्रा ३, प्रेरित ३",
+  // ... Add all 365 days here
+];
+
+const PROVERBS_NNRV: { [key: number]: string } = {
+    1: `१ दाऊदका छोरा, इस्राएलका राजा सोलोमनका हितोपदेश: २ बुद्धि र अनुशासन प्राप्त गर्न, समझशक्तिका कुराहरू बुझ्न, ३ अनुशासन र बुद्धिमानी जीवन प्राप्त गर्न, अर्थात् जे ठीक, न्यायसङ्गत र निष्पक्ष छ, सो गर्न, ४ निर्दोषलाई विवेक, र जवान मानिसलाई ज्ञान र समझ दिनलाई लेखिएका हुन्। ५ बुद्धिमान्ले सुनोस् र आफ्नो ज्ञान बढ़ाओस्, र समझदार मानिसले मार्गदर्शन पाओस्, ६ हितोपदेश र त्यसको अर्थ, बुद्धिमान् मानिसहरूका वचन र तिनीहरूका पहेलीहरू बुझ्नलाई हो। ७ परमप्रभुको भय मान्नु नै ज्ञानको प्रारम्भ हो, तर मूर्खहरूले बुद्धि र अनुशासनलाई तुच्छ ठान्छन्। ८ हे मेरो छोरो, तेरो बाबुको अनुशासन सुन्, र तेरी आमाको शिक्षा नत्याग्। ९ ती तेरो शिरको निम्ति सुन्दर माला, र तेरो घाँटीको हार हुनेछन्। १० हे मेरो छोरो, यदि पापीहरूले तँलाई फसाउन खोजे भने, तिनीहरूको इच्छा पूरा नगर्। ...`, // Truncated for brevity
+    23: `१ जब तँ शासकसँग खान बस्छस्, तेरो सामुन्ने को छ, सो होशियारसित विचार गर्। २ यदि तँ पेटू छस् भने, तेरो घिच्रोमा एउटा छुरी राख्। ३ त्‍यसका स्‍वादिष्‍ट भोजनहरूको लालसा नगर्, किनभने त्‍यो भोजन छली हुन सक्‍छ। ४ धनी हुनलाई परिश्रम नगर्, र आफ्‍नो समझ देखाउन छोड्। ५ तैंले आफ्‍ना आँखा त्‍यसतिर लगाउने बित्तिकै के त्‍यो गइhaल्‍छ र? किनभने धनले अवश्‍य नै चीलजस्‍तै पखेटाहरू लगाउँछ, र आकाशतिर उडिhaल्‍छ। ६ कन्जूस मानिसको भोजन नखा, न त त्‍यसका स्‍वादिष्‍ट भोजनहरूको लालसा गर्। ७ किनभने त्‍यो त्‍यस्‍तो मानिस हो, जसले भोजनको मोल सधैँ गनिरहन्छ। त्‍यसले तँलाई भन्छ, “खाऊ र पिओ,” तर त्‍यसको हृदय तँसँग हुँदैन। ८ तैंले खाएको अलिकति पनि तैंले उगेल्‍नुपर्छ, र तैंले बोलेका मीठा वचनहरू खेर जानेछन्। ९ अज्ञानीको कानमा नबोल्, किनभने त्‍यसले तेरा बुद्धिका कुरालाई तुच्‍छ ठान्‍नेछ। १० पुरानो सिमानाको ढुङ्गा नसार्, न त टुहुरा-टुहुरीहरूको जग्‍गा मिच्। ११ किनभने तिनीहरूका उद्धारक शक्तिशाली हुनुहुन्‍छ, तँसँग तिनीहरूको पक्षमा उहाँले नै बहस गर्नुहुनेछ। १२ तेरो हृदय अनुशासनतिर लगा, र तेरा कान ज्ञानका कुरातिर लगा। १३ बालकलाई अनुशासन दिन नहिचकिचा। यदि तैंले त्‍यसलाई लट्ठीले हिर्काइस् भने त्‍यो मर्दैन। १४ तैंले त्‍यसलाई लट्ठीले हिर्काइस् भनेता, तैंले त्‍यसको प्राणलाई चिहानबाट बचाउँछस्। १५ हे मेरो छोरो, यदि तेरो हृदय बुद्धिमान् छ भने, मेरो हृदय पनि आनन्दित हुनेछ। १६ जब तेरा ओठले ठीक कुरा बोल्‍छन्, तब मेरो भित्री प्राण रमाउनेछ। १७ पापीहरँग तेरो हृदयले डाह नगरोस्, तर दिनभरि परमप्रभुको भयमा लागिरह। १८ निश्‍चय नै तेरो निम्‍ति एउटा भविष्य छ, र तेरो आशा कहिल्‍यै टुट्नेछैन। १९ हे मेरो छोरो, सुन् र बुद्धिमान् हो, र तेरो हृदय सोझो मार्गमा डोर्‍या। २० धेरै दाखमद्य पिउनेहरू, वा धेरै मासु खाने पेटूहरूसँग सङ्गत नगर्। २१ किनभने पियक्कड र पेटूहरू गरीब हुनेछन्, र निन्द्राले तिनीहरूलाई झुत्रा लुगा पहिराइदिनेछ। २२ तँलाई जन्‍म दिने तेरा बाबुको कुरा सुन्, र तेरी आमा बूढ़ी भएकी बेला तिनलाई हेला नगर्। ২৩ सत्‍यलाई किन् र त्‍यसलाई नबेच्, बुद्धि, अनुशासन र समझलाई पनि किन्। २४ धर्मी मानिसको बाबुले धेरै रमाहट गर्छ, बुद्धिमान् छोरो हुने बाबु त्‍यसमा प्रसन्‍n हुन्‍छ। २५ तेरा बाबु र आमा आनन्दित होऊन्, र तँलाई जन्‍म दिने तिनी रमाऊन्। २६ हे मेरो छोरो, तेरो हृदय मलाई दे, र तेरा आँखाले मेरा मार्गहरू मन पराऊन्। २७ किनभने वेश्‍या एउटा गहिरो खाल्‍डो हो, र परस्‍त्री एउटा साँघुरो इनार हो। २८ डाँकुले झैँ त्‍यसले पनि मानिसहरूलाई ढुकिरहन्छे, र मानिसहरूका बीचमा विश्‍वासघातीहरूको संख्‍या बढ़ाउँछे। २९ कसलाई दु:ख छ? कसलाई शोक छ? कसको झगड़ा छ? कसको गनगन छ? कसलाई अकारण घाउहरू छन्? कसका आँखा राता छन्? ३० तिनीहरू, जो दाखमद्यमा अल्‍मलिरहन्छन्, जो मिस्रित दाखमद्य चाख्‍n जान्छन्। ३१ दाखमद्य रातो भएको बेला, जब त्‍यो कचौरामा चम्‍कन्‍छ, र जब त्‍यो सरर तल जान्छ, त्‍यसलाई नहेर्। ३२ आखिरमा त्‍यसले सर्पले झैँ डस्‍छ, र विषालु सर्पले झैँ टोक्‍छ। ३३ तेरा आँखाले अनौठा कुराहरू देख्‍नेछन्, र तेरो मनले विचलित कुराहरू बोल्‍नेछ। ३४ तँ समुद्रको बीचमा सुत्‍ने मानिसजस्‍तै, वा जहाजको मस्तूलको टुप्‍पामा सुत्‍ने मानिसजस्‍तै हुनेछस्। ३५ तैंले भन्‍नेछस्, “तिनीहरूले मलाई हिर्काए, तर मलाई दुखेको छैन। तिनीहरूले मलाई पिटे, तर मैले थाहै पाइनँ। म कहिले ब्‍उँझने? म फेरि अर्को गिलास पिउँछु।”` };
 
 // --- Helper Functions ---
 
@@ -229,13 +237,12 @@ const LoginPage = ({ onLoginSuccess }: { onLoginSuccess: () => void }) => {
             await updateProfile(user, { displayName: fullName.trim() });
             const avatar = fullName.trim().split(' ').map(n => n[0]).join('').toUpperCase() || '?';
             
-            // Create user document in Firestore
             await setDoc(doc(db, "users", user.uid), {
                 id: user.uid,
                 name: fullName.trim(),
                 email: user.email,
                 avatar,
-                roles: ['member'] // Default role
+                roles: ['member']
             });
 
             onLoginSuccess();
@@ -361,11 +368,29 @@ const WorshipPage = ({services}: {services: WorshipService[]}) => {
     );
 };
 
+const BibleReadingModal = ({ title, content, onClose }: { title: string; content: string; onClose: () => void; }) => {
+    return (
+        <Modal onClose={onClose}>
+            <div className="bible-reading-modal-content">
+                <h3>{title}</h3>
+                <div className="bible-text-content">
+                    <p>{content}</p>
+                </div>
+                <button className="action-button close-reading-button" onClick={onClose}>Close</button>
+            </div>
+        </Modal>
+    );
+};
+
 const BiblePage = () => {
+    const [showProverbsModal, setShowProverbsModal] = useState(false);
+    
     const dayOfYear = getDayOfYear();
-    const readingPlan = BIBLE_READING_PLAN_NNRV[dayOfYear - 1] || 'आजको लागि कुनै पढ्ने योजना छैन।';
-    const proverbsChapter = dayOfYear % 31 === 0 ? 31 : dayOfYear % 31;
-    const proverbsText = PROVERBS_NNRV[proverbsChapter] || 'हितोपदेश उपलब्ध छैन।';
+    const today = new Date();
+    const dayOfMonth = today.getDate();
+    
+    const readingPlan = MCCHEYNE_READING_PLAN[dayOfYear - 1] || 'आजको लागि कुनै पढ्ने योजना छैन।';
+    const proverbsText = PROVERBS_NNRV[dayOfMonth] || 'हितोपदेश उपलब्ध छैन।';
     
     return (
         <div className="page-content">
@@ -376,16 +401,25 @@ const BiblePage = () => {
                 <p className="verse-ref">- {MOCK_VERSES_OF_THE_DAY[dayOfYear % MOCK_VERSES_OF_THE_DAY.length].verse}</p>
             </div>
             <div className="card bible-card">
-                <h3>बाइबल पढ्ने योजना (NNRV)</h3>
+                <h3>म्याकचेन 성경읽기표 (McCheyne Reading Plan)</h3>
                 <p>दिन {dayOfYear}: {readingPlan}</p>
             </div>
-            <div className="card bible-card">
-                <h3>दिनको हितोपदेश</h3>
-                <p>महिनाको हरेक दिनको लागि एक हितोपदेश: हितोपदेश अध्याय {proverbsChapter}</p>
+            <div className="card bible-card" onClick={() => setShowProverbsModal(true)}>
+                <h3>दिनको हितोपदेश (Proverb of the Day)</h3>
+                <p>महिनाको हरेक दिनको लागि एक हितोपदेश: हितोपदेश अध्याय {dayOfMonth}</p>
+                <small style={{ color: 'var(--primary-color)', marginTop: '8px', display: 'block' }}>본문을 보려면 클릭하세요 (Click to read)</small>
             </div>
+            {showProverbsModal && (
+                <BibleReadingModal
+                    title={`हितोपदेश अध्याय ${dayOfMonth}`}
+                    content={proverbsText}
+                    onClose={() => setShowProverbsModal(false)}
+                />
+            )}
         </div>
     );
 };
+
 
 const NewsPage = ({news, currentUser, onDelete}: {news: NewsItem[], currentUser: User | null, onDelete: (id: string, image?: string) => void}) => {
     return (
@@ -449,15 +483,18 @@ const ChatListPage = ({ chats, currentUser, onSelectChat, onCreateChat }: { chat
             <h2>संगतिहरु</h2>
             <div className="list-container">
                 {chats.map(chat => {
-                    const otherParticipants = Object.values(chat.participants).filter(p => p.id !== currentUser.id);
-                    if (otherParticipants.length === 0) return null;
-                    const displayName = otherParticipants.map(p => p.name).join(', ');
+                    const participantDetails = Object.entries(chat.participants).filter(([id]) => id !== currentUser.id).map(([,p]) => p);
+
+                    if (participantDetails.length === 0) return null;
+
+                    const displayName = participantDetails.map(p => p.name).join(', ');
+                    const avatar = participantDetails[0].avatar;
                     const lastMessage = chat.lastMessage;
-                    const isUnread = chat.lastRead && lastMessage && currentUser && chat.lastRead[currentUser.id] < lastMessage.createdAt;
+                    const isUnread = chat.lastRead && lastMessage && currentUser && chat.lastRead[currentUser.id] && (chat.lastRead[currentUser.id].toMillis() < lastMessage.createdAt.toMillis());
 
                     return (
                         <div key={chat.id} className={`list-item chat-item ${isUnread ? 'unread' : ''}`} onClick={() => onSelectChat(chat.id)}>
-                            <div className="chat-avatar">{otherParticipants[0].avatar}</div>
+                            <div className="chat-avatar">{avatar}</div>
                             <div className="chat-info">
                                 <span className="chat-name">{displayName}</span>
                                 {lastMessage && <span className="chat-last-message">
@@ -487,11 +524,11 @@ const ConversationPage = ({ chat, messages, currentUser, onBack, onSendMessage }
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const otherParticipants = Object.values(chat.participants).filter(p => p.id !== currentUser.id);
+    const otherParticipants = Object.entries(chat.participants).filter(([id]) => id !== currentUser.id).map(([,p]) => p);
     const displayName = otherParticipants.map(p => p.name).join(', ');
     
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
     }, [messages]);
 
     const handleSend = () => {
@@ -506,10 +543,7 @@ const ConversationPage = ({ chat, messages, currentUser, onBack, onSendMessage }
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-           setMediaFile(file);
-           // Immediately try to send or let user add text
-           onSendMessage('', file); // Auto-send file
-           setMediaFile(null);
+           onSendMessage('', file);
            if(fileInputRef.current) fileInputRef.current.value = "";
         }
     };
@@ -856,10 +890,38 @@ const ManageUsersModal = ({onClose, users, onUpdateRoles}: {onClose: () => void;
     );
 }
 
+const NotificationPanel = ({ notifications, onClose }: { notifications: Notification[], onClose: () => void }) => {
+    return (
+        <>
+            <div className="modal-backdrop" onClick={onClose} style={{backgroundColor: 'transparent', zIndex: 1000}}></div>
+            <div className="notification-panel">
+                <div className="notification-header">
+                    <h4>Notifications</h4>
+                </div>
+                <div className="notification-list">
+                    {notifications.length > 0 ? (
+                        notifications.map(notif => (
+                            <div key={notif.id} className="notification-item">
+                                <span className="material-symbols-outlined notification-icon">{notif.icon}</span>
+                                <div className="notification-content">
+                                    <p>{notif.message}</p>
+                                    <span className="notification-timestamp">{notif.timestamp}</span>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <p className="no-notifications">No new notifications.</p>
+                    )}
+                </div>
+            </div>
+        </>
+    );
+};
+
 // --- Main App Component ---
 
 const App = () => {
-    const { auth, db, storage } = useFirebase();
+    const { auth, db, storage, messaging } = useFirebase();
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [activePage, setActivePage] = useState('home');
@@ -872,6 +934,7 @@ const App = () => {
     const [news, setNews] = useState<NewsItem[]>([]);
     const [podcasts, setPodcasts] = useState<Podcast[]>([]);
     const [worshipServices, setWorshipServices] = useState<WorshipService[]>([]);
+    const [notifications, setNotifications] = useState<Notification[]>([]);
     
     // View states
     const [activeChatId, setActiveChatId] = useState<string | null>(null);
@@ -884,6 +947,30 @@ const App = () => {
     const [showAddPodcastModal, setShowAddPodcastModal] = useState(false);
     const [showCreateChatModal, setShowCreateChatModal] = useState(false);
     const [showManageUsersModal, setShowManageUsersModal] = useState(false);
+    const [showNotificationPanel, setShowNotificationPanel] = useState(false);
+
+
+    const setupNotifications = useCallback(async (user: User) => {
+        if (!messaging || !db) return;
+        try {
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                const currentToken = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY });
+                if (currentToken) {
+                    if (!user.fcmTokens?.includes(currentToken)) {
+                        await updateDoc(doc(db, "users", user.id), {
+                            fcmTokens: arrayUnion(currentToken)
+                        });
+                    }
+                } else {
+                    console.log('No registration token available. Request permission to generate one.');
+                }
+            }
+        } catch (error) {
+            console.error('An error occurred while retrieving token. ', error);
+        }
+    }, [messaging, db]);
+
 
     useEffect(() => {
         if (!auth || !db) {
@@ -891,32 +978,24 @@ const App = () => {
             return;
         }
 
-        const authTimeout = setTimeout(() => {
-            if (isLoading) {
-                console.warn("Authentication check timed out after 5 seconds. Assuming user is logged out.");
-                setIsLoading(false);
-            }
-        }, 5000);
-
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            clearTimeout(authTimeout);
             try {
                 if (user) {
                     const userDocRef = doc(db, "users", user.uid);
                     const userDocSnap = await getDoc(userDocRef);
                     if (userDocSnap.exists()) {
                         const userData = userDocSnap.data();
-                        // Defensive coding: Ensure essential fields exist and have fallback values to prevent crashes.
                         const userProfile: User = {
                             id: user.uid,
                             name: userData.name || user.displayName || 'Unknown User',
                             email: userData.email || user.email || '',
                             avatar: userData.avatar || (userData.name || user.displayName || '?').split(' ').map((n: string) => n[0]).join('').toUpperCase(),
-                            roles: userData.roles || ['member'] // CRITICAL: Ensure roles is always an array.
+                            roles: userData.roles || ['member'],
+                            fcmTokens: userData.fcmTokens || []
                         };
                         setCurrentUser(userProfile);
+                        await setupNotifications(userProfile);
                     } else {
-                        console.warn("User authenticated but no profile in Firestore. Forcing sign out.");
                         await signOut(auth);
                         setCurrentUser(null);
                     }
@@ -931,11 +1010,26 @@ const App = () => {
             }
         });
 
-        return () => {
-            unsubscribe();
-            clearTimeout(authTimeout);
-        };
-    }, [auth, db]);
+        return () => unsubscribe();
+    }, [auth, db, setupNotifications]);
+    
+    useEffect(() => {
+        if (messaging) {
+            const unsubscribe = onMessage(messaging, (payload) => {
+                console.log('Message received. ', payload);
+                const notification: Notification = {
+                    id: payload.messageId || new Date().toISOString(),
+                    icon: 'notifications',
+                    message: payload.notification?.body || "You have a new message.",
+                    timestamp: new Date().toLocaleTimeString()
+                };
+                setNotifications(prev => [notification, ...prev]);
+                setShowNotificationPanel(true);
+            });
+            return () => unsubscribe();
+        }
+    }, [messaging]);
+
 
     useEffect(() => {
         if (!currentUser || !db) return;
@@ -1034,10 +1128,10 @@ const App = () => {
                 image: imageUrl,
             };
 
-            if (id) { // Editing existing request
+            if (id) {
                 const prayerDocRef = doc(db, "prayerRequests", id);
                 await updateDoc(prayerDocRef, prayerData);
-            } else { // Adding new request
+            } else {
                 await addDoc(collection(db, "prayerRequests"), {
                     ...prayerData,
                     authorId: currentUser.id,
@@ -1071,9 +1165,9 @@ const App = () => {
     const handleComment = async (requestId: string, commentText: string) => {
         if(!currentUser || !db) return;
         const newComment = {
-            id: doc(collection(db, "tmp")).id, // temp id
+            id: doc(collection(db, "tmp")).id,
             authorId: currentUser.id,
-            author: currentUser,
+            author: { id: currentUser.id, name: currentUser.name, avatar: currentUser.avatar, roles: currentUser.roles, email: currentUser.email },
             content: commentText,
             createdAt: Timestamp.now(),
         };
@@ -1169,7 +1263,6 @@ const App = () => {
             messageData.content = text;
         }
 
-        // Optimistic UI update
         setMessages(prev => ({...prev, [activeChatId]: [...(prev[activeChatId] || []), messageData as Message] }));
         
         try {
@@ -1194,7 +1287,6 @@ const App = () => {
         } catch (error) {
             console.error("Error sending message:", error);
             alert("मिडिया अपलोड गर्न असफल भयो");
-            // Update UI to show error
             setMessages(prev => {
                 const newMessages = [...(prev[activeChatId] || [])];
                 const msgIndex = newMessages.findIndex(m => m.tempId === tempId);
@@ -1208,19 +1300,18 @@ const App = () => {
 
     const handleStartChat = async (userId: string) => {
         if(!currentUser || !db) return;
-        // Check for existing 1-on-1 chat
-        const q = query(collection(db, "chats"), where("participantIds", "==", [currentUser.id, userId].sort()));
+        const sortedIds = [currentUser.id, userId].sort();
+        const q = query(collection(db, "chats"), where("participantIds", "==", sortedIds));
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
             setActiveChatId(querySnapshot.docs[0].id);
         } else {
-            // Create new chat
             const otherUser = users.find(u => u.id === userId);
             if (!otherUser) return;
 
             const newChatDoc = await addDoc(collection(db, "chats"), {
-                participantIds: [currentUser.id, userId].sort(),
+                participantIds: sortedIds,
                 participants: {
                     [currentUser.id]: { name: currentUser.name, avatar: currentUser.avatar },
                     [userId]: { name: otherUser.name, avatar: otherUser.avatar }
@@ -1254,7 +1345,7 @@ const App = () => {
 
     const openEditPrayerModal = (request: PrayerRequest) => {
         setPrayerRequestToEdit(request);
-        setSelectedPrayerRequest(null); // Close details modal if open
+        setSelectedPrayerRequest(null);
         setShowAddPrayerModal(true);
     };
 
@@ -1279,7 +1370,9 @@ const App = () => {
             case 'bible': return <BiblePage />;
             case 'news': return <NewsPage news={news} currentUser={currentUser} onDelete={handleDeleteNews} />;
             case 'fellowship':
-                if (activeChatId) return null;
+                if (activeChatId && activeChat) {
+                    return <ConversationPage chat={activeChat} messages={messages[activeChatId] || []} currentUser={currentUser} onBack={() => setActiveChatId(null)} onSendMessage={handleSendMessage} />;
+                }
                 return <ChatListPage chats={chats} currentUser={currentUser} onSelectChat={setActiveChatId} onCreateChat={() => setShowCreateChatModal(true)} />;
             case 'prayer':
                 return <PrayerPage prayerRequests={prayerRequests} currentUser={currentUser} onPray={handleTogglePray} onAddRequest={openAddPrayerModal} onSelectRequest={setSelectedPrayerRequest} onDelete={handleDeletePrayerRequest} onEdit={openEditPrayerModal} />;
@@ -1288,7 +1381,6 @@ const App = () => {
         }
     };
     
-
     return (
         <div className="app-container">
             <header className="app-header">
@@ -1297,6 +1389,10 @@ const App = () => {
                     <h1>{CHURCH.name}</h1>
                 </div>
                 <div className="header-actions">
+                    <button className="header-button" onClick={() => setShowNotificationPanel(p => !p)} aria-label="Notifications">
+                        <span className="material-symbols-outlined">notifications</span>
+                        {notifications.length > 0 && <div className="notification-dot"></div>}
+                    </button>
                     {currentUser.roles.includes('admin') && (
                         <button className="header-button" onClick={() => setShowManageUsersModal(true)} aria-label="Manage Users">
                             <span className="material-symbols-outlined">settings</span>
@@ -1311,38 +1407,40 @@ const App = () => {
                 {renderPage()}
             </main>
             
-            <nav className="bottom-nav">
-                <button className={`nav-item ${activePage === 'home' ? 'active' : ''}`} onClick={() => { setActivePage('home'); setActiveChatId(null); }}>
-                    <span className="material-symbols-outlined">home</span>
-                    <span>होम</span>
-                </button>
-                <button className={`nav-item ${activePage === 'worship' ? 'active' : ''}`} onClick={() => { setActivePage('worship'); setActiveChatId(null); }}>
-                    <span className="material-symbols-outlined">church</span>
-                    <span>आरधना</span>
-                </button>
-                <button className={`nav-item ${activePage === 'news' ? 'active' : ''}`} onClick={() => { setActivePage('news'); setActiveChatId(null); }}>
-                    <span className="material-symbols-outlined">feed</span>
-                    <span>सूचना</span>
-                </button>
-                <button className={`nav-item ${activePage === 'bible' ? 'active' : ''}`} onClick={() => { setActivePage('bible'); setActiveChatId(null); }}>
-                    <span className="material-symbols-outlined">book_2</span>
-                    <span>बाइबल</span>
-                </button>
-                 <button className={`nav-item ${activePage === 'fellowship' ? 'active' : ''}`} onClick={() => { setActivePage('fellowship'); setActiveChatId(null); }}>
-                    <span className="material-symbols-outlined">groups</span>
-                    <span>संगतिहरु</span>
-                </button>
-                <button className={`nav-item ${activePage === 'prayer' ? 'active' : ''}`} onClick={() => { setActivePage('prayer'); setActiveChatId(null); }}>
-                    <span className="material-symbols-outlined">volunteer_activism</span>
-                    <span>प्रार्थना</span>
-                </button>
-                <button className={`nav-item ${activePage === 'podcast' ? 'active' : ''}`} onClick={() => { setActivePage('podcast'); setActiveChatId(null); }}>
-                    <span className="material-symbols-outlined">podcasts</span>
-                    <span>Podcast</span>
-                </button>
-            </nav>
+            {(activePage !== 'fellowship' || !activeChatId) && (
+                <nav className="bottom-nav">
+                    <button className={`nav-item ${activePage === 'home' ? 'active' : ''}`} onClick={() => setActivePage('home')}>
+                        <span className="material-symbols-outlined">home</span>
+                        <span>होम</span>
+                    </button>
+                    <button className={`nav-item ${activePage === 'worship' ? 'active' : ''}`} onClick={() => setActivePage('worship')}>
+                        <span className="material-symbols-outlined">church</span>
+                        <span>आरधना</span>
+                    </button>
+                    <button className={`nav-item ${activePage === 'podcast' ? 'active' : ''}`} onClick={() => setActivePage('podcast')}>
+                        <span className="material-symbols-outlined">podcasts</span>
+                        <span>Podcast</span>
+                    </button>
+                    <button className={`nav-item ${activePage === 'news' ? 'active' : ''}`} onClick={() => setActivePage('news')}>
+                        <span className="material-symbols-outlined">feed</span>
+                        <span>सूचना</span>
+                    </button>
+                    <button className={`nav-item ${activePage === 'bible' ? 'active' : ''}`} onClick={() => setActivePage('bible')}>
+                        <span className="material-symbols-outlined">book_2</span>
+                        <span>बाइबल</span>
+                    </button>
+                    <button className={`nav-item ${activePage === 'fellowship' ? 'active' : ''}`} onClick={() => setActivePage('fellowship')}>
+                        <span className="material-symbols-outlined">groups</span>
+                        <span>संगतिहरु</span>
+                    </button>
+                    <button className={`nav-item ${activePage === 'prayer' ? 'active' : ''}`} onClick={() => setActivePage('prayer')}>
+                        <span className="material-symbols-outlined">volunteer_activism</span>
+                        <span>प्रार्थना</span>
+                    </button>
+                </nav>
+            )}
             
-            {activeChat && activeChatId && <ConversationPage chat={activeChat} messages={messages[activeChatId] || []} currentUser={currentUser} onBack={() => setActiveChatId(null)} onSendMessage={handleSendMessage} />}
+            {showNotificationPanel && <NotificationPanel notifications={notifications} onClose={() => setShowNotificationPanel(false)} />}
             {showAddPrayerModal && <AddPrayerRequestModal onClose={() => setShowAddPrayerModal(false)} onSave={handleSavePrayerRequest} existingRequest={existingRequest} />}
             {selectedPrayerRequest && <PrayerDetailsModal 
                 request={selectedPrayerRequest} 
@@ -1412,7 +1510,6 @@ const AppInitializer = () => {
         );
     }
 
-    // This case should ideally not be reached
     return (
         <div className="error-container">
             <h2>Unknown Error</h2>
