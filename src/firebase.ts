@@ -15,11 +15,28 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+let app, auth, db, storage, messaging;
+let firebaseError: string | undefined;
 
-// Export the necessary Firebase services
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const storage = getStorage(app);
-export const messaging = getMessaging(app);
+const missingVars = Object.entries(firebaseConfig)
+  .filter(([, value]) => !value)
+  .map(([key]) => key);
+
+if (missingVars.length > 0) {
+  const errorMsg = `The application is not configured correctly. Missing required environment variables: ${missingVars.join(', ')}.`;
+  console.error(errorMsg);
+  firebaseError = errorMsg;
+} else {
+  try {
+    app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    db = getFirestore(app);
+    storage = getStorage(app);
+    messaging = getMessaging(app);
+  } catch (e: any) {
+    console.error("Firebase initialization failed:", e);
+    firebaseError = `A critical error occurred while starting the application: ${e.message}`;
+  }
+}
+
+export { auth, db, storage, messaging, firebaseError };

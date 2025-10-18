@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import { auth, db, storage, messaging } from './firebase';
+import { auth, db, storage, messaging, firebaseError } from './firebase';
 import { 
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
@@ -842,7 +842,19 @@ const App = () => {
     const [showCreateChatModal, setShowCreateChatModal] = useState(false);
     const [showManageUsersModal, setShowManageUsersModal] = useState(false);
 
+    if (firebaseError) {
+        return (
+            <div className="error-container">
+                <img src={CHURCH.logo} alt="Church Logo" className="error-logo" />
+                <h2>Application Error</h2>
+                <p>Could not connect to services. Please contact support if the problem persists.</p>
+                <pre>{firebaseError}</pre>
+            </div>
+        );
+    }
+
     useEffect(() => {
+        if (!auth) return;
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const userDocRef = doc(db, "users", user.uid);

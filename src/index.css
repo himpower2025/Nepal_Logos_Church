@@ -52,6 +52,47 @@ html, body, #root {
     height: 100%;
 }
 
+/* --- Error Page --- */
+.error-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: var(--space-lg);
+    text-align: center;
+    background-color: #fef2f2;
+    color: var(--danger-color);
+}
+.error-logo {
+    width: 80px;
+    height: 80px;
+    margin-bottom: var(--space-lg);
+}
+.error-container h2 {
+    color: var(--danger-color);
+    margin-bottom: var(--space-md);
+}
+.error-container p {
+    margin-bottom: var(--space-md);
+    max-width: 400px;
+    color: #333;
+}
+.error-container pre {
+    background-color: #fee;
+    padding: var(--space-md);
+    border-radius: 8px;
+    font-family: monospace;
+    word-break: break-all;
+    white-space: pre-wrap;
+    font-size: var(--font-size-sm);
+    max-width: 100%;
+    text-align: left;
+    color: var(--danger-color);
+    border: 1px solid #fdd;
+}
+
+
 /* --- Login Page --- */
 .login-container {
     display: flex;
