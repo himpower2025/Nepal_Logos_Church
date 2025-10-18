@@ -1,8 +1,8 @@
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, createContext, useContext } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import { initializeFirebaseServices } from './firebase';
+import { initializeFirebaseServices, FirebaseServices } from './firebase';
 import { 
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
@@ -31,7 +31,16 @@ import {
 import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
 import { getToken, onMessage } from "firebase/messaging";
 
-const { auth, db, storage, messaging, firebaseError } = initializeFirebaseServices();
+
+// --- Firebase Context for safe dependency injection ---
+const FirebaseContext = createContext<FirebaseServices | null>(null);
+export const useFirebase = () => {
+    const context = useContext(FirebaseContext);
+    if (!context) {
+        throw new Error("useFirebase must be used within a FirebaseProvider");
+    }
+    return context;
+};
 
 // --- Types ---
 type UserRole = 'admin' | 'member' | 'news_contributor' | 'podcast_contributor';
@@ -160,6 +169,7 @@ const LoginPage = ({ onLoginSuccess }: { onLoginSuccess: () => void }) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const { auth, db } = useFirebase();
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -579,11 +589,20 @@ const PrayerPage = ({ prayerRequests, currentUser, onPray, onAddRequest, onSelec
 
 const PrayerDetailsModal = ({ request, currentUser, onClose, onPray, onComment, onDelete, onEdit }: { request: PrayerRequest; currentUser: User | null; onClose: () => void; onPray: (id: string) => void; onComment: (id: string, text: string) => void; onDelete: (id: string, image?:string) => void; onEdit: (req: PrayerRequest) => void; }) => {
     const [comment, setComment] = useState('');
+    const { db } = useFirebase();
 
-    const handleCommentSubmit = (e: React.FormEvent) => {
+    const handleCommentSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (comment.trim()) {
-            onComment(request.id, comment.trim());
+        if (comment.trim() && currentUser && db) {
+            const newComment = {
+                id: doc(collection(db, "tmp")).id, // temp id
+                authorId: currentUser.id,
+                author: currentUser,
+                content: comment.trim(),
+                createdAt: Timestamp.now(),
+            };
+            const prayerRef = doc(db, "prayerRequests", request.id);
+            await updateDoc(prayerRef, { comments: arrayUnion(newComment) });
             setComment('');
         }
     };
@@ -828,6 +847,7 @@ const ManageUsersModal = ({onClose, users, onUpdateRoles}: {onClose: () => void;
 // --- Main App Component ---
 
 const App = () => {
+    const { auth, db, storage } = useFirebase();
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [activePage, setActivePage] = useState('worship');
@@ -853,19 +873,8 @@ const App = () => {
     const [showCreateChatModal, setShowCreateChatModal] = useState(false);
     const [showManageUsersModal, setShowManageUsersModal] = useState(false);
 
-    if (firebaseError) {
-        return (
-            <div className="error-container">
-                <img src={CHURCH.logo} alt="Church Logo" className="error-logo" />
-                <h2>Application Error</h2>
-                <p>Could not connect to services. Please contact support if the problem persists.</p>
-                <pre>{firebaseError}</pre>
-            </div>
-        );
-    }
-
     useEffect(() => {
-        if (firebaseError || !auth) {
+        if (!auth) {
             setIsLoading(false);
             return;
         }
@@ -876,6 +885,9 @@ const App = () => {
                 if (userDocSnap.exists()) {
                     setCurrentUser({ id: user.uid, ...userDocSnap.data() } as User);
                 } else {
+                    // This case handles a user that exists in Auth but not in Firestore DB.
+                    // Log them out to force a clean sign-up.
+                    signOut(auth);
                     setCurrentUser(null);
                 }
             } else {
@@ -884,7 +896,7 @@ const App = () => {
             setIsLoading(false);
         });
         return () => unsubscribe();
-    }, [firebaseError]);
+    }, [auth, db]);
 
     useEffect(() => {
         if (!currentUser || !db) return;
@@ -893,7 +905,7 @@ const App = () => {
             setUsers(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as User)));
         });
         return () => unsubscribe();
-    }, [currentUser]);
+    }, [currentUser, db]);
 
     useEffect(() => {
         if (!currentUser || !db) return;
@@ -902,7 +914,7 @@ const App = () => {
             setPrayerRequests(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PrayerRequest)));
         });
         return () => unsubscribe();
-    }, [currentUser]);
+    }, [currentUser, db]);
     
     useEffect(() => {
         if (!currentUser || !db) return;
@@ -911,7 +923,7 @@ const App = () => {
             setNews(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as NewsItem)));
         });
         return () => unsubscribe();
-    }, [currentUser]);
+    }, [currentUser, db]);
 
     useEffect(() => {
         if (!currentUser || !db) return;
@@ -920,7 +932,7 @@ const App = () => {
             setPodcasts(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Podcast)));
         });
         return () => unsubscribe();
-    }, [currentUser]);
+    }, [currentUser, db]);
 
     useEffect(() => {
         if (!db) return;
@@ -929,7 +941,7 @@ const App = () => {
             setWorshipServices(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as WorshipService)));
         });
         return () => unsubscribe();
-    }, []);
+    }, [db]);
 
     useEffect(() => {
         if (!currentUser || !db) return;
@@ -939,7 +951,7 @@ const App = () => {
             setChats(chatsData);
         });
         return () => unsubscribe();
-    }, [currentUser]);
+    }, [currentUser, db]);
     
     useEffect(() => {
         if (!activeChatId || !db) return;
@@ -949,7 +961,7 @@ const App = () => {
              setMessages(prev => ({...prev, [activeChatId]: messagesData}));
         });
         return () => unsubscribe();
-    }, [activeChatId]);
+    }, [activeChatId, db]);
 
     // --- Handlers ---
     const handleTogglePray = async (requestId: string) => {
@@ -1212,7 +1224,7 @@ const App = () => {
     // --- Render Logic ---
 
     if (isLoading) {
-        return <div className="loading-container">Loading...</div>;
+        return <div className="loading-container">Authenticating...</div>;
     }
 
     if (!currentUser) {
@@ -1315,9 +1327,60 @@ const App = () => {
     );
 };
 
+const AppInitializer = () => {
+    const [services, setServices] = useState<FirebaseServices | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const [isInitializing, setIsInitializing] = useState(true);
+
+    useEffect(() => {
+        const init = () => {
+            const firebaseServices = initializeFirebaseServices();
+            if (firebaseServices.firebaseError) {
+                setError(firebaseServices.firebaseError);
+            } else {
+                setServices(firebaseServices);
+            }
+            setIsInitializing(false);
+        };
+        init();
+    }, []);
+
+    if (isInitializing) {
+        return <div className="loading-container">Initializing services...</div>;
+    }
+
+    if (error) {
+        return (
+            <div className="error-container">
+                <img src={CHURCH.logo} alt="Church Logo" className="error-logo" />
+                <h2>Application Error</h2>
+                <p>Could not connect to services. Please check your configuration and contact support if the problem persists.</p>
+                <pre>{error}</pre>
+            </div>
+        );
+    }
+
+    if (services) {
+        return (
+            <FirebaseContext.Provider value={services}>
+                <App />
+            </FirebaseContext.Provider>
+        );
+    }
+
+    // This case should ideally not be reached
+    return (
+        <div className="error-container">
+            <h2>Unknown Error</h2>
+            <p>An unexpected error occurred during application startup.</p>
+        </div>
+    );
+};
+
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
     <React.StrictMode>
-        <App />
+        <AppInitializer />
     </React.StrictMode>
 );
