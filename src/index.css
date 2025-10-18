@@ -367,17 +367,53 @@ html, body, #root {
 .list-item {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: var(--space-md);
     background-color: var(--card-background);
     border-radius: 8px;
     box-shadow: 0 1px 3px var(--shadow-color);
-    cursor: pointer;
     transition: box-shadow 0.2s ease;
+}
+.worship-list-item {
     text-decoration: none;
-    color: inherit;
+    color: var(--text-color-dark);
 }
 .list-item:hover {
     box-shadow: 0 3px 6px var(--shadow-color);
+}
+.worship-list-item:hover {
+    background-color: #f9f9f9;
+}
+.delete-button {
+    background: none;
+    border: none;
+    color: var(--danger-color);
+    cursor: pointer;
+    padding: var(--space-xs);
+    border-radius: 50%;
+}
+.delete-button:hover {
+    background-color: rgba(211, 47, 47, 0.1);
+}
+.edit-button {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    padding: var(--space-xs);
+    border-radius: 50%;
+}
+.edit-button:hover {
+     background-color: rgba(0, 77, 64, 0.1);
+}
+
+.item-actions-footer {
+    border-top: 1px solid #eee;
+    margin-top: var(--space-sm);
+    padding-top: var(--space-sm);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-sm);
 }
 
 /* --- Notification Panel --- */
@@ -442,6 +478,19 @@ html, body, #root {
 /* --- Page Specific Styles --- */
 
 /* Worship Page */
+.live-worship-card { position: relative; }
+.live-badge {
+    position: absolute;
+    top: var(--space-md);
+    left: var(--space-md);
+    background-color: var(--danger-color);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    z-index: 1;
+}
 .twitch-container {
     position: relative;
     width: 100%;
@@ -457,6 +506,21 @@ html, body, #root {
     left: 0;
     width: 100%;
     height: 100%;
+}
+.live-worship-card h4 { margin-top: var(--space-md); }
+.live-info-text {
+    font-size: var(--font-size-sm);
+    color: #616161;
+    text-align: center;
+    margin: var(--space-md) 0;
+}
+.worship-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding-top: var(--space-md);
+    border-top: 1px solid #ccc;
+    margin-top: var(--space-md);
 }
 .no-live-service {
     text-align: center;
@@ -479,18 +543,20 @@ html, body, #root {
 
 /* News Page */
 .news-item { padding: 0; overflow: hidden; }
+.news-header { display: flex; justify-content: space-between; align-items: flex-start; }
 .news-image { width: 100%; height: 150px; object-fit: cover; }
 .news-content { padding: var(--space-md); }
 .news-meta { font-size: var(--font-size-sm); color: #757575; margin-bottom: var(--space-sm); }
 
 
-/* --- Chat Page (New) --- */
+/* --- Chat Page --- */
 .chat-list-page {
     padding-bottom: 0;
 }
 .chat-item { 
     gap: var(--space-md); 
     align-items: flex-start;
+    cursor: pointer;
 }
 .chat-avatar {
     width: 48px;
@@ -677,7 +743,6 @@ html, body, #root {
 .message-failed-indicator {
     color: var(--danger-color);
     font-size: 1rem;
-    margin-right: var(--space-xs);
 }
 
 .message-input-container {
@@ -723,7 +788,7 @@ html, body, #root {
 .prayer-item { cursor: pointer; }
 .prayer-item:hover { background-color: #f9f9f9; }
 .prayer-item .prayer-image { width: 100%; max-height: 250px; object-fit: cover; border-radius: 4px; margin-bottom: calc(var(--space-sm) * 1.5); }
-.prayer-content { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.prayer-content { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; white-space: pre-wrap; }
 .prayer-meta { width: 100%; display: flex; justify-content: space-between; align-items: center; font-size: var(--font-size-sm); color: #757575; }
 .prayer-actions { display: flex; gap: var(--space-md); }
 .prayer-action-button { display: flex; align-items: center; gap: calc(var(--space-xs) * 1.5); background: none; border: none; font-family: var(--font-family); color: #757575; cursor: pointer; }
@@ -737,15 +802,6 @@ html, body, #root {
 .podcast-author { font-size: var(--font-size-sm); color: #757575; }
 .podcast-player { width: 100%; }
 .add-podcast-options { display: flex; flex-direction: column; gap: var(--space-md); margin-top: var(--space-md); }
-
-/* Recording Modal */
-.recording-ui { text-align: center; }
-.recording-status { display: flex; justify-content: center; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-lg); font-size: var(--font-size-lg); color: var(--danger-color); }
-.recording-dot { width: 12px; height: 12px; background-color: var(--danger-color); border-radius: 50%; animation: blink 1s infinite; }
-@keyframes blink { 50% { opacity: 0; } }
-.record-button { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--danger-color); background-color: white; cursor: pointer; }
-.record-button.stop { background-color: var(--danger-color); }
-.audio-preview { margin: var(--space-md) 0; }
 
 
 /* --- Modal Styles --- */
@@ -766,6 +822,8 @@ html, body, #root {
 .image-preview { position: relative; text-align: center; }
 .image-preview img { max-width: 100%; max-height: 200px; border-radius: 8px; border: 1px solid #eee; }
 .image-preview button { position: absolute; top: 5px; right: 5px; background-color: rgba(0, 0, 0, 0.6); color: white; border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; }
+.custom-file-input { display: flex; align-items: center; gap: var(--space-md); margin: var(--space-sm) 0;}
+.custom-file-input span { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 
 /* --- Responsive Design --- */
@@ -875,9 +933,12 @@ html, body, #root {
     border-bottom: 1px solid #eee;
     padding-bottom: var(--space-md);
 }
-.prayer-details-content h3 { font-size: var(--font-size-h2); margin-bottom: var(--space-xs); }
+.prayer-details-header { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-sm); }
+.prayer-details-header h3 { font-size: var(--font-size-h2); margin-bottom: var(--space-xs); flex-grow: 1; }
+.item-actions-header { display: flex; gap: var(--space-xs); }
+
 .prayer-author { font-size: var(--font-size-sm); color: #757575; margin-bottom: var(--space-md); }
-.prayer-main-content { line-height: 1.6; }
+.prayer-main-content { line-height: 1.6; white-space: pre-wrap; }
 
 .prayer-comments-section {
     flex-grow: 1;
@@ -936,94 +997,20 @@ html, body, #root {
     flex-shrink: 0;
 }
 
-.create-chat-modal .user-list-item {
-    gap: var(--space-md);
-}
-.create-chat-modal .chat-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: var(--primary-color-dark);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 500;
-    flex-shrink: 0;
-}
-
-.tabs {
-    display: flex;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: var(--space-md);
-}
-
-.tabs button {
-    padding: var(--space-sm) var(--space-md);
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-size: var(--font-size-base);
-    color: #757575;
-    border-bottom: 2px solid transparent;
-}
-
-.tabs button.active {
-    color: var(--primary-color);
-    border-bottom-color: var(--primary-color);
-    font-weight: 500;
-}
-
-.delete-button {
-    background: none;
-    border: none;
-    color: var(--danger-color);
-    cursor: pointer;
-    margin-left: auto;
-    padding: var(--space-xs);
-}
-
-.live-worship-card {
-    position: relative;
-    padding-top: var(--space-lg);
-}
-
-.live-badge {
-    position: absolute;
-    top: var(--space-md);
-    left: var(--space-md);
-    background-color: var(--danger-color);
-    color: white;
-    padding: var(--space-xs) var(--space-sm);
-    border-radius: 4px;
-    font-size: var(--font-size-sm);
-    font-weight: 500;
-    text-transform: uppercase;
-}
-.live-worship-card h4 {
-    margin-top: var(--space-md);
-    font-size: var(--font-size-lg);
-}
-.live-info-text {
-    font-size: var(--font-size-sm);
-    color: #616161;
-    margin-top: var(--space-sm);
-    margin-bottom: var(--space-md);
-}
-.worship-actions {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
-    margin-top: var(--space-md);
-    padding-top: var(--space-md);
+/* Manage Worship/Users Modal */
+.worship-service-list, .user-role-list {
+    margin-top: var(--space-lg);
     border-top: 1px solid #eee;
+    padding-top: var(--space-md);
+    max-height: 30vh;
+    overflow-y: auto;
 }
-.worship-list-item {
-    justify-content: space-between;
+.worship-service-list h4, .manage-users-modal h3 {
+    text-align: center;
+    color: var(--primary-color);
 }
-.worship-list-item span:first-child {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding-right: var(--space-sm);
-}
+.user-role-item { padding: var(--space-sm); }
+.user-role-item .user-name { font-weight: 500; }
+.user-role-item .user-email { font-size: 0.8rem; color: #757575; }
+.role-checkboxes { display: flex; flex-direction: column; gap: var(--space-xs); margin-top: var(--space-sm); }
+.role-checkboxes label { display: flex; align-items: center; gap: var(--space-sm); }
