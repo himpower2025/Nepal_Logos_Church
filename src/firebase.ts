@@ -1,9 +1,9 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
-import { getMessaging } from "firebase/messaging";
+import { getAuth, type Auth } from "firebase/auth";
+import { getFirestore, type Firestore } from "firebase/firestore";
+import { getStorage, type FirebaseStorage } from "firebase/storage";
+import { getMessaging, type Messaging } from "firebase/messaging";
 
 // Your web app's Firebase configuration using Vite environment variables
 const firebaseConfig = {
@@ -15,28 +15,30 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-let app, auth, db, storage, messaging;
+let auth: Auth | undefined;
+let db: Firestore | undefined;
+let storage: FirebaseStorage | undefined;
+let messaging: Messaging | undefined;
 let firebaseError: string | undefined;
 
-const missingVars = Object.entries(firebaseConfig)
-  .filter(([, value]) => !value)
-  .map(([key]) => key);
+try {
+    const missingVars = Object.entries(firebaseConfig)
+    .filter(([, value]) => !value)
+    .map(([key]) => key);
 
-if (missingVars.length > 0) {
-  const errorMsg = `The application is not configured correctly. Missing required environment variables: ${missingVars.join(', ')}.`;
-  console.error(errorMsg);
-  firebaseError = errorMsg;
-} else {
-  try {
-    app = initializeApp(firebaseConfig);
+    if (missingVars.length > 0) {
+        throw new Error(`The application is not configured correctly. Missing required environment variables: ${missingVars.join(', ')}.`);
+    }
+
+    const app = initializeApp(firebaseConfig);
     auth = getAuth(app);
     db = getFirestore(app);
     storage = getStorage(app);
     messaging = getMessaging(app);
-  } catch (e: any) {
+} catch (e: any) {
     console.error("Firebase initialization failed:", e);
     firebaseError = `A critical error occurred while starting the application: ${e.message}`;
-  }
 }
+
 
 export { auth, db, storage, messaging, firebaseError };

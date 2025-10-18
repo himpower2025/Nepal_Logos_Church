@@ -163,7 +163,7 @@ const LoginPage = ({ onLoginSuccess }: { onLoginSuccess: () => void }) => {
         setError('');
         setIsLoading(true);
         try {
-            await signInWithEmailAndPassword(auth, email.trim(), password);
+            await signInWithEmailAndPassword(auth!, email.trim(), password);
             onLoginSuccess();
         } catch (err: any) {
             setError('प्रयोगकर्ता नाम वा पासवर्ड फेला परेन।');
@@ -182,13 +182,13 @@ const LoginPage = ({ onLoginSuccess }: { onLoginSuccess: () => void }) => {
         }
         setIsLoading(true);
         try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email.trim(), password);
+            const userCredential = await createUserWithEmailAndPassword(auth!, email.trim(), password);
             const user = userCredential.user;
             await updateProfile(user, { displayName: fullName.trim() });
             const avatar = fullName.trim().split(' ').map(n => n[0]).join('').toUpperCase() || '?';
             
             // Create user document in Firestore
-            await setDoc(doc(db, "users", user.uid), {
+            await setDoc(doc(db!, "users", user.uid), {
                 id: user.uid,
                 name: fullName.trim(),
                 email: user.email,
@@ -854,10 +854,9 @@ const App = () => {
     }
 
     useEffect(() => {
-        if (!auth) return;
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+        const unsubscribe = onAuthStateChanged(auth!, async (user) => {
             if (user) {
-                const userDocRef = doc(db, "users", user.uid);
+                const userDocRef = doc(db!, "users", user.uid);
                 const userDocSnap = await getDoc(userDocRef);
                 if (userDocSnap.exists()) {
                     setCurrentUser({ id: user.uid, ...userDocSnap.data() } as User);
@@ -872,7 +871,7 @@ const App = () => {
 
     useEffect(() => {
         if (!currentUser) return;
-        const q = query(collection(db, "users"));
+        const q = query(collection(db!, "users"));
         const unsubscribe = onSnapshot(q, (snapshot) => {
             setUsers(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as User)));
         });
@@ -881,7 +880,7 @@ const App = () => {
 
     useEffect(() => {
         if (!currentUser) return;
-        const q = query(collection(db, "prayerRequests"), orderBy("createdAt", "desc"));
+        const q = query(collection(db!, "prayerRequests"), orderBy("createdAt", "desc"));
         const unsubscribe = onSnapshot(q, (snapshot) => {
             setPrayerRequests(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PrayerRequest)));
         });
@@ -890,7 +889,7 @@ const App = () => {
     
     useEffect(() => {
         if (!currentUser) return;
-        const q = query(collection(db, "news"), orderBy("createdAt", "desc"));
+        const q = query(collection(db!, "news"), orderBy("createdAt", "desc"));
         const unsubscribe = onSnapshot(q, (snapshot) => {
             setNews(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as NewsItem)));
         });
@@ -899,7 +898,7 @@ const App = () => {
 
     useEffect(() => {
         if (!currentUser) return;
-        const q = query(collection(db, "podcasts"), orderBy("createdAt", "desc"));
+        const q = query(collection(db!, "podcasts"), orderBy("createdAt", "desc"));
         const unsubscribe = onSnapshot(q, (snapshot) => {
             setPodcasts(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Podcast)));
         });
@@ -907,7 +906,7 @@ const App = () => {
     }, [currentUser]);
 
     useEffect(() => {
-        const q = query(collection(db, "worshipServices"), orderBy("createdAt", "desc"));
+        const q = query(collection(db!, "worshipServices"), orderBy("createdAt", "desc"));
         const unsubscribe = onSnapshot(q, (snapshot) => {
             setWorshipServices(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as WorshipService)));
         });
@@ -916,7 +915,7 @@ const App = () => {
 
     useEffect(() => {
         if (!currentUser) return;
-        const q = query(collection(db, "chats"), where("participantIds", "array-contains", currentUser.id));
+        const q = query(collection(db!, "chats"), where("participantIds", "array-contains", currentUser.id));
         const unsubscribe = onSnapshot(q, (snapshot) => {
             const chatsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Chat));
             setChats(chatsData);
@@ -926,7 +925,7 @@ const App = () => {
     
     useEffect(() => {
         if (!activeChatId) return;
-        const q = query(collection(db, "chats", activeChatId, "messages"), orderBy("createdAt", "asc"));
+        const q = query(collection(db!, "chats", activeChatId, "messages"), orderBy("createdAt", "asc"));
         const unsubscribe = onSnapshot(q, (snapshot) => {
              const messagesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Message));
              setMessages(prev => ({...prev, [activeChatId]: messagesData}));
@@ -937,7 +936,7 @@ const App = () => {
     // --- Handlers ---
     const handleTogglePray = async (requestId: string) => {
         if (!currentUser) return;
-        const prayerRef = doc(db, "prayerRequests", requestId);
+        const prayerRef = doc(db!, "prayerRequests", requestId);
         const prayer = prayerRequests.find(p => p.id === requestId);
         if (!prayer) return;
 
@@ -955,7 +954,7 @@ const App = () => {
             let imageUrl = (id && requestToEdit) ? requestToEdit.image : undefined;
 
             if (data.imageFile) {
-                const storageRef = ref(storage, `prayer_images/${Date.now()}_${data.imageFile.name}`);
+                const storageRef = ref(storage!, `prayer_images/${Date.now()}_${data.imageFile.name}`);
                 await uploadBytes(storageRef, data.imageFile);
                 imageUrl = await getDownloadURL(storageRef);
             }
@@ -967,10 +966,10 @@ const App = () => {
             };
 
             if (id) { // Editing existing request
-                const prayerDocRef = doc(db, "prayerRequests", id);
+                const prayerDocRef = doc(db!, "prayerRequests", id);
                 await updateDoc(prayerDocRef, prayerData);
             } else { // Adding new request
-                await addDoc(collection(db, "prayerRequests"), {
+                await addDoc(collection(db!, "prayerRequests"), {
                     ...prayerData,
                     authorId: currentUser.id,
                     authorName: currentUser.name,
@@ -989,10 +988,10 @@ const App = () => {
         if(!window.confirm("Are you sure you want to delete this prayer request?")) return;
         try {
             if (imageUrl) {
-                const imageRef = ref(storage, imageUrl);
+                const imageRef = ref(storage!, imageUrl);
                 await deleteObject(imageRef).catch(err => console.error("Error deleting image: ", err));
             }
-            await deleteDoc(doc(db, "prayerRequests", id));
+            await deleteDoc(doc(db!, "prayerRequests", id));
             if(selectedPrayerRequest?.id === id) setSelectedPrayerRequest(null);
         } catch (error) {
             console.error("Error deleting prayer request: ", error);
@@ -1002,13 +1001,13 @@ const App = () => {
     const handleComment = async (requestId: string, commentText: string) => {
         if(!currentUser) return;
         const newComment = {
-            id: doc(collection(db, "tmp")).id, // temp id
+            id: doc(collection(db!, "tmp")).id, // temp id
             authorId: currentUser.id,
             author: currentUser,
             content: commentText,
             createdAt: Timestamp.now(),
         };
-        const prayerRef = doc(db, "prayerRequests", requestId);
+        const prayerRef = doc(db!, "prayerRequests", requestId);
         await updateDoc(prayerRef, { comments: arrayUnion(newComment) });
     };
 
@@ -1017,11 +1016,11 @@ const App = () => {
         try {
             let imageUrl = undefined;
             if (data.imageFile) {
-                const storageRef = ref(storage, `news_images/${Date.now()}_${data.imageFile.name}`);
+                const storageRef = ref(storage!, `news_images/${Date.now()}_${data.imageFile.name}`);
                 await uploadBytes(storageRef, data.imageFile);
                 imageUrl = await getDownloadURL(storageRef);
             }
-            await addDoc(collection(db, "news"), {
+            await addDoc(collection(db!, "news"), {
                 title: data.title,
                 content: data.content,
                 image: imageUrl,
@@ -1039,10 +1038,10 @@ const App = () => {
         if(!window.confirm("Are you sure you want to delete this news item?")) return;
         try {
             if (imageUrl) {
-                const imageRef = ref(storage, imageUrl);
+                const imageRef = ref(storage!, imageUrl);
                 await deleteObject(imageRef).catch(err => console.error("Error deleting image: ", err));
             }
-            await deleteDoc(doc(db, "news", id));
+            await deleteDoc(doc(db!, "news", id));
         } catch (error) {
             console.error("Error deleting news: ", error);
         }
@@ -1051,10 +1050,10 @@ const App = () => {
     const handleAddPodcast = async (data: {title: string, audioFile: File}) => {
         if (!currentUser) return;
         try {
-            const storageRef = ref(storage, `podcasts/${Date.now()}_${data.audioFile.name}`);
+            const storageRef = ref(storage!, `podcasts/${Date.now()}_${data.audioFile.name}`);
             await uploadBytes(storageRef, data.audioFile);
             const audioUrl = await getDownloadURL(storageRef);
-            await addDoc(collection(db, "podcasts"), {
+            await addDoc(collection(db!, "podcasts"), {
                 title: data.title,
                 audioUrl,
                 authorId: currentUser.id,
@@ -1070,9 +1069,9 @@ const App = () => {
     const handleDeletePodcast = async (id: string, audioUrl: string) => {
         if(!window.confirm("Are you sure you want to delete this podcast?")) return;
         try {
-            const audioRef = ref(storage, audioUrl);
+            const audioRef = ref(storage!, audioUrl);
             await deleteObject(audioRef).catch(err => console.error("Error deleting audio: ", err));
-            await deleteDoc(doc(db, "podcasts", id));
+            await deleteDoc(doc(db!, "podcasts", id));
         } catch (error) {
             console.error("Error deleting podcast: ", error);
         }
@@ -1103,14 +1102,14 @@ const App = () => {
         
         try {
             if (file) {
-                const storageRef = ref(storage, `chat_media/${activeChatId}/${Date.now()}_${file.name}`);
+                const storageRef = ref(storage!, `chat_media/${activeChatId}/${Date.now()}_${file.name}`);
                 await uploadBytes(storageRef, file);
                 messageData.mediaUrl = await getDownloadURL(storageRef);
             }
             delete messageData.status;
             delete messageData.tempId;
 
-            const chatRef = doc(db, "chats", activeChatId);
+            const chatRef = doc(db!, "chats", activeChatId);
             await addDoc(collection(chatRef, "messages"), messageData);
             await updateDoc(chatRef, { 
                 lastMessage: {
@@ -1138,7 +1137,7 @@ const App = () => {
     const handleStartChat = async (userId: string) => {
         if(!currentUser) return;
         // Check for existing 1-on-1 chat
-        const q = query(collection(db, "chats"), where("participantIds", "==", [currentUser.id, userId].sort()));
+        const q = query(collection(db!, "chats"), where("participantIds", "==", [currentUser.id, userId].sort()));
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
@@ -1148,7 +1147,7 @@ const App = () => {
             const otherUser = users.find(u => u.id === userId);
             if (!otherUser) return;
 
-            const newChatDoc = await addDoc(collection(db, "chats"), {
+            const newChatDoc = await addDoc(collection(db!, "chats"), {
                 participantIds: [currentUser.id, userId].sort(),
                 participants: {
                     [currentUser.id]: { name: currentUser.name, avatar: currentUser.avatar },
@@ -1163,14 +1162,14 @@ const App = () => {
 
     const handleUpdateUserRoles = async (userId: string, newRoles: UserRole[]) => {
         try {
-            await updateDoc(doc(db, "users", userId), { roles: newRoles });
+            await updateDoc(doc(db!, "users", userId), { roles: newRoles });
         } catch (error) {
             console.error("Error updating roles:", error);
         }
     };
 
     const handleLogout = () => {
-        signOut(auth);
+        signOut(auth!);
     };
 
     const openAddPrayerModal = () => {
