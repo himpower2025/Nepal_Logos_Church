@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useCallback, createContext, useContext } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -153,7 +152,7 @@ const ImageUpload = ({ imagePreview, onImageChange, onImageRemove }: { imagePrev
                     <input type="file" accept="image/*" onChange={handleFileSelect} style={{ display: 'none' }} ref={fileInputRef} />
                     <label onClick={() => fileInputRef.current?.click()} className="image-upload-label">
                         <span className="material-symbols-outlined">add_photo_alternate</span>
-                        <span>Add Photo</span>
+                        <span>फोटो थप्नुहोस् (यदि तपाईं चाहनुहुन्छ भने)</span>
                     </label>
                 </>
             ) : (
@@ -169,27 +168,6 @@ const ImageUpload = ({ imagePreview, onImageChange, onImageRemove }: { imagePrev
 };
 
 // --- Pages & Components ---
-
-const HomePage = ({ currentUser }: { currentUser: User }) => {
-    const dayOfYear = getDayOfYear();
-    const verseOfTheDay = MOCK_VERSES_OF_THE_DAY[dayOfYear % MOCK_VERSES_OF_THE_DAY.length];
-    
-    return (
-        <div className="page-content">
-            <h2>Welcome, {currentUser.name.split(' ')[0]}!</h2>
-            <div className="card home-welcome-card">
-                 <h3>आजको लागि बाइबल पढ्ने योजना</h3>
-                <p>Have a victorious day in the Word.</p>
-            </div>
-            <div className="card verse-card">
-                <h3>दिनको पद (Verse of the Day)</h3>
-                <p className="verse-text">“{verseOfTheDay.text}”</p>
-                <p className="verse-ref">- {verseOfTheDay.verse}</p>
-            </div>
-        </div>
-    );
-};
-
 
 const LoginPage = ({ onLoginSuccess }: { onLoginSuccess: () => void }) => {
     const [isLoginView, setIsLoginView] = useState(true);
@@ -490,7 +468,8 @@ const ChatListPage = ({ chats, currentUser, onSelectChat, onCreateChat }: { chat
                     const displayName = participantDetails.map(p => p.name).join(', ');
                     const avatar = participantDetails[0].avatar;
                     const lastMessage = chat.lastMessage;
-                    const isUnread = chat.lastRead && lastMessage && currentUser && chat.lastRead[currentUser.id] && (chat.lastRead[currentUser.id].toMillis() < lastMessage.createdAt.toMillis());
+                    const lastReadTimestamp = chat.lastRead?.[currentUser.id];
+                    const isUnread = lastMessage && lastReadTimestamp && (lastReadTimestamp.toMillis() < lastMessage.createdAt.toMillis());
 
                     return (
                         <div key={chat.id} className={`list-item chat-item ${isUnread ? 'unread' : ''}`} onClick={() => onSelectChat(chat.id)}>
@@ -636,7 +615,7 @@ const PrayerPage = ({ prayerRequests, currentUser, onPray, onAddRequest, onSelec
                 ))}
             </div>
              <button className="fab" onClick={onAddRequest} aria-label="New Prayer Request">
-                 <span className="material-symbols-outlined">add</span>
+                 <span className="material-symbols-outlined">volunteer_activism</span>
             </button>
         </div>
     );
@@ -714,30 +693,38 @@ const PrayerDetailsModal = ({ request, currentUser, onClose, onPray, onComment, 
     );
 };
 
-const AddPrayerRequestModal = ({ onClose, onSave, existingRequest }: { onClose: () => void; onSave: (data: { title: string; content: string; imageFile: File | null }, id?: string) => void; existingRequest?: PrayerRequest | null; }) => {
+const AddPrayerRequestModal = ({ onClose, onSave, existingRequest }: { onClose: () => void; onSave: (data: { title: string; content: string; imageFile: File | null; imageRemoved: boolean }, id?: string) => void; existingRequest?: PrayerRequest | null; }) => {
     const [title, setTitle] = useState(existingRequest?.title || '');
     const [content, setContent] = useState(existingRequest?.content || '');
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(existingRequest?.image || null);
+    const [imageRemoved, setImageRemoved] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleImageChange = (file: File) => {
         setImageFile(file);
         setImagePreview(URL.createObjectURL(file));
+        setImageRemoved(false);
     };
 
     const handleImageRemove = () => {
         setImageFile(null);
         setImagePreview(null);
+        setImageRemoved(true);
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (title.trim() && content.trim()) {
             setIsSubmitting(true);
-            await onSave({ title, content, imageFile }, existingRequest?.id);
-            setIsSubmitting(false);
-            onClose();
+            try {
+                await onSave({ title, content, imageFile, imageRemoved }, existingRequest?.id);
+            } catch (error) {
+                console.error("Failed to save prayer request from modal:", error);
+            } finally {
+                setIsSubmitting(false);
+                onClose();
+            }
         }
     };
 
@@ -924,7 +911,7 @@ const App = () => {
     const { auth, db, storage, messaging } = useFirebase();
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [activePage, setActivePage] = useState('home');
+    const [activePage, setActivePage] = useState('news');
     
     // Data states
     const [users, setUsers] = useState<User[]>([]);
@@ -1110,36 +1097,47 @@ const App = () => {
         }
     };
 
-    const handleSavePrayerRequest = async (data: { title: string; content: string; imageFile: File | null }, id?: string) => {
+    const handleSavePrayerRequest = async (data: { title: string; content: string; imageFile: File | null; imageRemoved: boolean }, id?: string) => {
         if (!currentUser || !db || !storage) return;
         try {
-            const requestToEdit = prayerRequestToEdit;
-            let imageUrl = (id && requestToEdit) ? requestToEdit.image : undefined;
-
+            const originalRequest = id ? prayerRequests.find(p => p.id === id) : undefined;
+            let imageUrl: string | undefined = originalRequest?.image;
+    
+            // 1. Handle image removal by user
+            if (data.imageRemoved && imageUrl) {
+                await deleteObject(ref(storage, imageUrl)).catch(e => console.warn("Could not delete old image on removal", e));
+                imageUrl = undefined;
+            }
+    
+            // 2. Handle new image upload (this will also replace an old image)
             if (data.imageFile) {
+                // If there was a previous image, delete it before uploading the new one
+                if (imageUrl) {
+                    await deleteObject(ref(storage, imageUrl)).catch(e => console.warn("Could not delete old image before new upload", e));
+                }
                 const storageRef = ref(storage, `prayer_images/${Date.now()}_${data.imageFile.name}`);
                 await uploadBytes(storageRef, data.imageFile);
                 imageUrl = await getDownloadURL(storageRef);
             }
-
-            const prayerData = {
+    
+            const payload: any = {
                 title: data.title,
                 content: data.content,
-                image: imageUrl,
             };
-
+    
             if (id) {
-                const prayerDocRef = doc(db, "prayerRequests", id);
-                await updateDoc(prayerDocRef, prayerData);
+                // For updates, explicitly set image to the new URL or null if it was removed/never existed
+                payload.image = imageUrl || null; 
+                await updateDoc(doc(db, "prayerRequests", id), payload);
             } else {
-                await addDoc(collection(db, "prayerRequests"), {
-                    ...prayerData,
-                    authorId: currentUser.id,
-                    authorName: currentUser.name,
-                    prayedBy: [],
-                    comments: [],
-                    createdAt: serverTimestamp(),
-                });
+                // For new documents, only add the image field if it exists
+                if (imageUrl) payload.image = imageUrl;
+                payload.authorId = currentUser.id;
+                payload.authorName = currentUser.name;
+                payload.prayedBy = [];
+                payload.comments = [];
+                payload.createdAt = serverTimestamp();
+                await addDoc(collection(db, "prayerRequests"), payload);
             }
         } catch (error) {
             console.error("Error saving prayer request: ", error);
@@ -1365,10 +1363,9 @@ const App = () => {
 
     const renderPage = () => {
         switch (activePage) {
-            case 'home': return <HomePage currentUser={currentUser} />;
+            case 'news': return <NewsPage news={news} currentUser={currentUser} onDelete={handleDeleteNews} />;
             case 'worship': return <WorshipPage services={worshipServices} />;
             case 'bible': return <BiblePage />;
-            case 'news': return <NewsPage news={news} currentUser={currentUser} onDelete={handleDeleteNews} />;
             case 'fellowship':
                 if (activeChatId && activeChat) {
                     return <ConversationPage chat={activeChat} messages={messages[activeChatId] || []} currentUser={currentUser} onBack={() => setActiveChatId(null)} onSendMessage={handleSendMessage} />;
@@ -1377,7 +1374,7 @@ const App = () => {
             case 'prayer':
                 return <PrayerPage prayerRequests={prayerRequests} currentUser={currentUser} onPray={handleTogglePray} onAddRequest={openAddPrayerModal} onSelectRequest={setSelectedPrayerRequest} onDelete={handleDeletePrayerRequest} onEdit={openEditPrayerModal} />;
             case 'podcast': return <PodcastPage podcasts={podcasts} currentUser={currentUser} onDelete={handleDeletePodcast}/>;
-            default: return <HomePage currentUser={currentUser} />;
+            default: return <NewsPage news={news} currentUser={currentUser} onDelete={handleDeleteNews} />;
         }
     };
     
@@ -1409,9 +1406,9 @@ const App = () => {
             
             {(activePage !== 'fellowship' || !activeChatId) && (
                 <nav className="bottom-nav">
-                    <button className={`nav-item ${activePage === 'home' ? 'active' : ''}`} onClick={() => setActivePage('home')}>
-                        <span className="material-symbols-outlined">home</span>
-                        <span>होम</span>
+                    <button className={`nav-item ${activePage === 'news' ? 'active' : ''}`} onClick={() => setActivePage('news')}>
+                        <span className="material-symbols-outlined">feed</span>
+                        <span>सूचना</span>
                     </button>
                     <button className={`nav-item ${activePage === 'worship' ? 'active' : ''}`} onClick={() => setActivePage('worship')}>
                         <span className="material-symbols-outlined">church</span>
@@ -1420,10 +1417,6 @@ const App = () => {
                     <button className={`nav-item ${activePage === 'podcast' ? 'active' : ''}`} onClick={() => setActivePage('podcast')}>
                         <span className="material-symbols-outlined">podcasts</span>
                         <span>Podcast</span>
-                    </button>
-                    <button className={`nav-item ${activePage === 'news' ? 'active' : ''}`} onClick={() => setActivePage('news')}>
-                        <span className="material-symbols-outlined">feed</span>
-                        <span>सूचना</span>
                     </button>
                     <button className={`nav-item ${activePage === 'bible' ? 'active' : ''}`} onClick={() => setActivePage('bible')}>
                         <span className="material-symbols-outlined">book_2</span>
