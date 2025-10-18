@@ -870,7 +870,16 @@ const App = () => {
             return;
         }
 
+        // Watchdog timer to prevent getting stuck
+        const authTimeout = setTimeout(() => {
+            console.warn("Authentication check timed out after 5 seconds. Assuming user is logged out.");
+            if (isLoading) {
+                setIsLoading(false);
+            }
+        }, 5000);
+
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            clearTimeout(authTimeout); // Response received, cancel the watchdog
             try {
                 if (user) {
                     const userDocRef = doc(db, "users", user.uid);
@@ -879,7 +888,7 @@ const App = () => {
                         setCurrentUser({ id: user.uid, ...userDocSnap.data() } as User);
                     } else {
                         console.warn("User authenticated but no profile in Firestore. Forcing sign out.");
-                        await signOut(auth); // This will re-trigger the listener with user=null
+                        await signOut(auth);
                         setCurrentUser(null);
                     }
                 } else {
@@ -889,12 +898,14 @@ const App = () => {
                 console.error("Error during authentication state check:", error);
                 setCurrentUser(null);
             } finally {
-                // This ensures the loading state is turned off after the first auth check.
                 setIsLoading(false);
             }
         });
 
-        return () => unsubscribe();
+        return () => {
+            unsubscribe();
+            clearTimeout(authTimeout);
+        };
     }, [auth, db]);
 
     useEffect(() => {
