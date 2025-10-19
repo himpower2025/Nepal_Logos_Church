@@ -349,43 +349,43 @@ const MCCHEYNE_READING_PLAN = [
     "१ शमूएल ७, यूहन्ना १०, यशैया २५, अय्यूब ३९",
     "१ शमूएल ८, यूहन्ना ११, यशैया २६, अय्यूब ४०",
     "१ शमूएल ९, यूहन्ना १२, यशैया २७, अय्यूब ४१",
-    "१ शमूएल १०, यूहन्ना १३, यशैया २८, अय्यूब ४२",
+    "१ शमूएल १०, यूहन्ना १३, यशैया २８, अय्यूब ४२",
     "१ शमूएल ११, यूहन्ना १४, यशैया २९, भजनसंग्रह १-२",
     "१ शमूएल १२, यूहन्ना १५, यशैया ३०, भजनसंग्रह ३-४",
     "१ शमूएल १३, यूहन्ना १६, यशैया ३१, भजनसंग्रह ५-६",
-    "१ शमूएल १४, यूहन्ना १७, यशैया ३२, भजनसंग्रह ७",
+    "१ शमूएल १४, यूहन्ना १७, यशैया ३２, भजनसंग्रह ७",
     "१ शमूएल १५, यूहन्ना १८, यशैया ३३, भजनसंग्रह ८",
     "१ शमूएल १६, यूहन्ना १९, यशैया ३४, भजनसंग्रह ९",
-    "१ शमूएल १७, यूहन्ना २०, यशैया ३५, भजनसंग्रह १०",
+    "१ शमूएल १७, यूहन्ना २०, यशैया ३５, भजनसंग्रह १०",
     "१ शमूएल १८, यूहन्ना २१, यशैया ३６, भजनसंग्रह ११-१२",
     "१ शमूएल १९, प्रेरित १, यशैया ३७, भजनसंग्रह १३-१४",
     "१ शमूएल २०, प्रेरित २, यशैया ३८, भजनसंग्रह १५-१६",
     "१ शमूएल २१, प्रेरित ३, यशैया ३९, भजनसंग्रह १७",
     "१ शमूएल २२, प्रेरित ४, यशैया ४०, भजनसंग्रह १८",
-    "१ शमूएल २३, प्रेरित ५, यशैया ४१, भजनसंग्रह १९",
+    "१ शमूएल २३, प्रेरित ५, यशैया ४１, भजनसंग्रह १९",
     "१ शमूएल २४, प्रेरित ६, यशैया ४２, भजनसंग्रह २०",
-    "१ शमूएल २५, प्रेरित ७, यशैया ४३, भजनसंग्रह २१",
-    "१ शमूएल २६, प्रेरित ८, यशैया ४४, भजनसंग्रह २२",
-    "१ शमूएल २७, प्रेरित ९, यशैया ४५, भजनसंग्रह २३-२४",
-    "१ शमूएल २८, प्रेरित १०, यशैया ४६, भजनसंग्रह २५",
+    "१ शमूएल २५, प्रेरित ७, यशैया ४３, भजनसंग्रह २१",
+    "१ शमूएल २६, प्रेरित ८, यशैया ४４, भजनसंग्रह २२",
+    "१ शमूएल २७, प्रेरित ९, यशैया ४５, भजनसंग्रह २३-२४",
+    "१ शमूएल २८, प्रेरित १०, यशैया ४６, भजनसंग्रह २५",
     "१ शमूएल २९, प्रेरित ११, यशैया ४７, भजनसंग्रह २६",
-    "१ शमूएल ३०, प्रेरित १२, यशैया ४८, भजनसंग्रह २७",
-    "१ शमूएल ३१, प्रेरित १३, यशैया ४९, भजनसंग्रह २८",
-    "२ शमूएल १, प्रेरित १४, यशैया ५०, भजनसंग्रह २९",
-    "२ शमूएल २, प्रेरित १५, यशैया ५१, भजनसंग्रह ३०",
-    "२ शमूएल ३, प्रेरित १६, यशैया ५२, भजनसंग्रह ३१",
-    "२ शमूएल ४, प्रेरित १७, यशैया ५३, भजनसंग्रह ३２",
-    "२ शमूएल ५, प्रेरित १८, यशैया ५४, भजनसंग्रह ३३",
+    "१ शमूएल ३०, प्रेरित १२, यशैया ४８, भजनसंग्रह २७",
+    "१ शमूएल ३१, प्रेरित १३, यशैया ४９, भजनसंग्रह २८",
+    "२ शमूएल १, प्रेरित १४, यशैया ५０, भजनसंग्रह २९",
+    "२ शमूएल २, प्रेरित १५, यशैया ५１, भजनसंग्रह ३०",
+    "२ शमूएल ३, प्रेरित १६, यशैया ५２, भजनसंग्रह ३१",
+    "२ शमूएल ४, प्रेरित १७, यशैया ५３, भजनसंग्रह ३２",
+    "२ शमूएल ५, प्रेरित १८, यशैया ५４, भजनसंग्रह ३३",
     "२ शमूएल ६, प्रेरित १९, यशैया ५５, भजनसंग्रह ३४",
-    "२ शमूएल ७, प्रेरित २०, यशैया ५६, भजनसंग्रह ३५",
-    "२ शमूएल ८, प्रेरित २१, यशैया ५７, भजनसंग्रह ३६",
-    "२ शमूएल ९, प्रेरित २२, यशैया ५８, भजनसंग्रह ३७",
-    "२ शमूएल १०, प्रेरित २३, यशैया ५９, भजनसंग्रह ३८",
-    "२ शमूएल ११, प्रेरित २४, यशैया ६०, भजनसंग्रह ३९",
-    "२ शमूएल १२, प्रेरित २५, यशैया ६１, भजनसंग्रह ४०",
-    "२ शमूएल १३, प्रेरित २६, यशैया ६２, भजनसंग्रह ४１",
-    "२ शमूएल १४, प्रेरित २७, यशैया ६３, भजनसंग्रह ४२-४३",
-    "२ शमूएल १५, प्रेरित २८, यशैया ६４, भजनसंग्रह ४४",
+    "२ शमूएल ७, प्रेरित २०, यशैया ५６, भजनसंग्रह ३५",
+    "२ शमूएल ८, प्रेरित २१, यशैया ५７, भजनसंग्रह ३６",
+    "२ शमूएल ९, प्रेरित २२, यशैया ५８, भजनसंग्रह ३７",
+    "२ शमूएल १०, प्रेरित २३, यशैया ५９, भजनसंग्रह ३８",
+    "२ शमूएल ११, प्रेरित २४, यशैया ६０, भजनसंग्रह ३９",
+    "२ शमूएल १२, प्रेरित २५, यशैया ६１, भजनसंग्रह ४０",
+    "२ शमूएल १३, प्रेरित २６, यशैया ६２, भजनसंग्रह ४１",
+    "२ शमूएल १४, प्रेरित २７, यशैया ६３, भजनसंग्रह ४２-४३",
+    "२ शमूएल १५, प्रेरित २８, यशैया ६４, भजनसंग्रह ४４",
     "२ शमूएल १६, रोमी १, यशैया ६５, भजनसंग्रह ४５",
     "२ शमूएल १७, रोमी २, यशैया ६６, भजनसंग्रह ४６",
     "२ शमूएल १८, रोमी ३, यर्मिया १, भजनसंग्रह ४７",
@@ -393,7 +393,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ शमूएल २०, रोमी ५, यर्मिया ३, भजनसंग्रह ४９",
     "२ शमूएल २१, रोमी ६, यर्मिया ४, भजनसंग्रह ५０",
     "२ शमूएल २२, रोमी ७, यर्मिया ५, भजनसंग्रह ५１",
-    "२ शमूएल २३, रोमी ८, यर्मिया ६, भजनसंग्रह ५２-५४",
+    "२ शमूएल २३, रोमी ८, यर्मिया ६, भजनसंग्रह ५２-५４",
     "२ शमूएल २४, रोमी ९, यर्मिया ७, भजनसंग्रह ५５",
     "उत्पत्ति १, मत्ती १, एज्रा १, प्रेरित १" // Day 366 (Leap year) - repeat day 1 or last day
 ];
@@ -1076,7 +1076,7 @@ const PrayerDetailsModal = ({ request, currentUser, onClose, onPray, onComment, 
     );
 };
 
-const AddPrayerRequestModal = ({ onClose, onSave, existingRequest }: { onClose: () => void; onSave: (data: { title: string; content: string; imageFile: File | null; imageRemoved: boolean }, id?: string) => void; existingRequest?: PrayerRequest | null; }) => {
+const AddPrayerRequestModal = ({ onClose, onSave, existingRequest }: { onClose: () => void; onSave: (data: { title: string; content: string; imageFile: File | null; imageRemoved: boolean }, id?: string) => Promise<void>; existingRequest?: PrayerRequest | null; }) => {
     const [title, setTitle] = useState(existingRequest?.title || '');
     const [content, setContent] = useState(existingRequest?.content || '');
     const [imageFile, setImageFile] = useState<File | null>(null);
@@ -1102,10 +1102,10 @@ const AddPrayerRequestModal = ({ onClose, onSave, existingRequest }: { onClose: 
             setIsSubmitting(true);
             try {
                 await onSave({ title, content, imageFile, imageRemoved }, existingRequest?.id);
+                // On success, the onSave function will close the modal.
             } catch (error) {
-                console.error("Failed to save prayer request from modal:", error);
-            } finally {
-                // No need to set submitting to false, as the onSave call will close the modal
+                // Error is alerted in onSave. We just need to re-enable the button.
+                setIsSubmitting(false);
             }
         }
     };
@@ -1381,8 +1381,33 @@ const App = () => {
                 }
                 const userDocRef = doc(db, "users", authUser.uid);
                 const userDocSnap = await getDoc(userDocRef);
+
                 if (userDocSnap.exists()) {
-                    const userData = userDocSnap.data();
+                    let userData = userDocSnap.data();
+                    const userEmail = userData.email || authUser.email || '';
+
+                    // Grant admin roles to a specific user for testing purposes
+                    if (userEmail === 'abraham0715@gmail.com') {
+                        const requiredRoles: UserRole[] = ['admin', 'news_contributor', 'podcast_contributor'];
+                        const currentRoles: UserRole[] = userData.roles || [];
+                        const hasAllRequiredRoles = requiredRoles.every(role => currentRoles.includes(role));
+
+                        if (!hasAllRequiredRoles) {
+                            try {
+                                await updateDoc(doc(db, "users", authUser.uid), {
+                                    roles: arrayUnion(...requiredRoles)
+                                });
+                                // Fetch the user data again to get the updated roles for the current session
+                                const updatedUserDocSnap = await getDoc(userDocRef);
+                                if (updatedUserDocSnap.exists()) {
+                                    userData = updatedUserDocSnap.data();
+                                }
+                            } catch (e) {
+                                console.error("Failed to grant admin role:", e);
+                            }
+                        }
+                    }
+
                     const userProfile: User = {
                         id: authUser.uid,
                         name: userData.name || authUser.displayName || 'Unknown User',
@@ -1394,7 +1419,6 @@ const App = () => {
                     setCurrentUser(userProfile);
                     await setupNotifications(userProfile);
                 } else {
-                    // This case means user exists in Auth but not Firestore, log them out.
                     await signOut(auth);
                     setCurrentUser(null);
                 }
@@ -1513,28 +1537,27 @@ const App = () => {
         try {
             let finalImageUrl: string | null = null;
     
-            // Step 1: Handle image upload/delete first
             if (isEditing) {
-                const prayerRef = doc(db, "prayerRequests", id);
+                const prayerRef = doc(db, "prayerRequests", id as string);
                 const prayerSnap = await getDoc(prayerRef);
                 if (!prayerSnap.exists()) throw new Error("Prayer request not found.");
                 
                 const existingImageUrl = prayerSnap.data().image as string | undefined;
     
-                if (imageFile) { // A new file is uploaded
-                    if (existingImageUrl) { // Delete the old one
+                if (imageFile) { 
+                    if (existingImageUrl) {
                         await deleteObject(ref(storage, existingImageUrl)).catch(e => console.warn("Old image deletion failed, but continuing.", e));
                     }
                     const newStorageRef = ref(storage, `prayer_images/${Date.now()}_${imageFile.name}`);
                     const uploadResult = await uploadBytes(newStorageRef, imageFile);
                     finalImageUrl = await getDownloadURL(uploadResult.ref);
-                } else if (imageRemoved && existingImageUrl) { // Image was explicitly removed
+                } else if (imageRemoved && existingImageUrl) {
                     await deleteObject(ref(storage, existingImageUrl)).catch(e => console.warn("Image deletion failed, but continuing.", e));
                     finalImageUrl = null;
-                } else { // No change to image
+                } else {
                     finalImageUrl = existingImageUrl || null;
                 }
-            } else { // Creating new request
+            } else {
                 if (imageFile) {
                     const storageRef = ref(storage, `prayer_images/${Date.now()}_${imageFile.name}`);
                     const uploadResult = await uploadBytes(storageRef, imageFile);
@@ -1542,9 +1565,8 @@ const App = () => {
                 }
             }
     
-            // Step 2: Update/Create Firestore document with final image URL
             if (isEditing) {
-                await updateDoc(doc(db, "prayerRequests", id), {
+                await updateDoc(doc(db, "prayerRequests", id as string), {
                     title,
                     content,
                     image: finalImageUrl,
@@ -1567,6 +1589,7 @@ const App = () => {
         } catch (error) {
             console.error("Error saving prayer request:", error);
             alert("Failed to post request. Please try again.");
+            throw error; // Re-throw the error for the modal to handle UI state
         }
     };
 
@@ -1728,16 +1751,14 @@ const App = () => {
         try {
             const participantIds = [currentUser.id, ...otherUserIds].sort();
             
-            // Check if a chat already exists
             const q = query(collection(db, "chats"), where("participantIds", "==", participantIds));
             const querySnapshot = await getDocs(q);
     
+            let targetChatId: string;
+    
             if (!querySnapshot.empty) {
-                // Chat exists, just navigate to it
-                const existingChatId = querySnapshot.docs[0].id;
-                setActiveChatId(existingChatId);
+                targetChatId = querySnapshot.docs[0].id;
             } else {
-                // Create a new chat
                 const allParticipantUsers = users.filter(u => participantIds.includes(u.id));
                 const participantsObject = allParticipantUsers.reduce((acc, user) => {
                     acc[user.id] = { name: user.name, avatar: user.avatar };
@@ -1747,21 +1768,22 @@ const App = () => {
                 const newChatDocRef = await addDoc(collection(db, "chats"), {
                     participantIds,
                     participants: participantsObject,
+                    createdAt: Timestamp.now(),
                     lastRead: { [currentUser.id]: Timestamp.now() }
                 });
+                targetChatId = newChatDocRef.id;
 
-                // Optimistically add chat to local state to prevent lag
-                const newChat: Chat = {
-                    id: newChatDocRef.id,
-                    participantIds,
-                    participants: participantsObject,
-                    lastRead: { [currentUser.id]: Timestamp.now() }
-                };
-                setChats(prev => [...prev, newChat]);
-
-                setActiveChatId(newChatDocRef.id);
+                // Manually fetch and add to state to avoid waiting for the listener
+                const newDocSnap = await getDoc(newChatDocRef);
+                if (newDocSnap.exists()) {
+                    const newChat = { id: newDocSnap.id, ...newDocSnap.data() } as Chat;
+                    setChats(prev => [...prev, newChat]);
+                }
             }
+            
+            setActiveChatId(targetChatId);
             setShowCreateChatModal(false);
+    
         } catch (error) {
             console.error("Error starting chat:", error);
             alert("च्याट सुरु गर्न असफल भयो।");
@@ -1898,12 +1920,12 @@ const App = () => {
                 currentUser={currentUser} 
                 isStartingChat={isStartingChat} 
             />}
-            {currentUser.roles.includes('news_contributor') && activePage === 'news' && (
+            {currentUser.roles.includes('admin') && activePage === 'news' && (
                 <button className="fab" onClick={() => setShowAddNewsModal(true)} aria-label="Add News">
                     <span className="material-symbols-outlined">add</span>
                 </button>
             )}
-            {currentUser.roles.includes('podcast_contributor') && activePage === 'podcast' && (
+            {currentUser.roles.includes('admin') && activePage === 'podcast' && (
                  <button className="fab" onClick={() => setShowAddPodcastModal(true)} aria-label="Add Podcast">
                     <span className="material-symbols-outlined">add</span>
                 </button>
