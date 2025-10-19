@@ -223,7 +223,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १०, प्रेरित २:२२-४७, भजनसंग्रह ६८, हिब्रू १२",
     "गन्ती ११, प्रेरित ३, भजनसंग्रह ६९, हिब्रू १३",
     "गन्ती १२, प्रेरित ४:१-२२, भजनसंग्रह ७०, याकूब १",
-    "गन्ती १३, प्रेरित ४:२३-३७, भजनसंग्रह ७१, याकूब २",
+    "गन्ती १३, प्रेरित ४:२३-३७, भजनसंग्रह ७１, याकूब २",
     "गन्ती १४, प्रेरित ५:१-२१, भजनसंग्रह ७२, याकूब ३",
     "गन्ती १५, प्रेरित ५:२२-४२, भजनसंग्रह ७३, याकूब ४",
     "गन्ती १६, प्रेरित ६, भजनसंग्रह ७४, याकूब ५",
@@ -347,44 +347,44 @@ const MCCHEYNE_READING_PLAN = [
     "१ शमूएल १५, यूहन्ना १८, यशैया ३३, भजनसंग्रह ८",
     "१ शमूएल १६, यूहन्ना १९, यशैया ३४, भजनसंग्रह ९",
     "१ शमूएल १७, यूहन्ना २०, यशैया ३५, भजनसंग्रह १०",
-    "१ शमूएल १८, यूहन्ना २१, यशैया ३६, भजनसंग्रह ११-१२",
+    "१ शमूएल १८, यूहन्ना २१, यशैया ३６, भजनसंग्रह ११-१२",
     "१ शमूएल १९, प्रेरित १, यशैया ३७, भजनसंग्रह १३-१४",
     "१ शमूएल २०, प्रेरित २, यशैया ३८, भजनसंग्रह १५-१६",
     "१ शमूएल २१, प्रेरित ३, यशैया ३९, भजनसंग्रह १७",
     "१ शमूएल २२, प्रेरित ४, यशैया ४०, भजनसंग्रह १८",
     "१ शमूएल २३, प्रेरित ५, यशैया ४१, भजनसंग्रह १९",
-    "१ शमूएल २४, प्रेरित ६, यशैया ४२, भजनसंग्रह २०",
+    "१ शमूएल २४, प्रेरित ६, यशैया ४２, भजनसंग्रह २०",
     "१ शमूएल २५, प्रेरित ७, यशैया ४३, भजनसंग्रह २१",
     "१ शमूएल २६, प्रेरित ८, यशैया ४४, भजनसंग्रह २२",
     "१ शमूएल २७, प्रेरित ९, यशैया ४५, भजनसंग्रह २३-२४",
     "१ शमूएल २८, प्रेरित १०, यशैया ४६, भजनसंग्रह २५",
-    "१ शमूएल २९, प्रेरित ११, यशैया ४७, भजनसंग्रह २६",
+    "१ शमूएल २९, प्रेरित ११, यशैया ४７, भजनसंग्रह २६",
     "१ शमूएल ३०, प्रेरित १२, यशैया ४८, भजनसंग्रह २७",
     "१ शमूएल ३१, प्रेरित १३, यशैया ४९, भजनसंग्रह २८",
     "२ शमूएल १, प्रेरित १४, यशैया ५०, भजनसंग्रह २९",
     "२ शमूएल २, प्रेरित १५, यशैया ५१, भजनसंग्रह ३०",
     "२ शमूएल ३, प्रेरित १६, यशैया ५२, भजनसंग्रह ३१",
-    "२ शमूएल ४, प्रेरित १७, यशैया ५३, भजनसंग्रह ३२",
+    "२ शमूएल ४, प्रेरित १७, यशैया ५३, भजनसंग्रह ३２",
     "२ शमूएल ५, प्रेरित १८, यशैया ५४, भजनसंग्रह ३३",
-    "२ शमूएल ६, प्रेरित १९, यशैया ५५, भजनसंग्रह ३४",
+    "२ शमूएल ६, प्रेरित १९, यशैया ५５, भजनसंग्रह ३४",
     "२ शमूएल ७, प्रेरित २०, यशैया ५६, भजनसंग्रह ३५",
-    "२ शमूएल ८, प्रेरित २१, यशैया ५७, भजनसंग्रह ३६",
-    "२ शमूएल ९, प्रेरित २२, यशैया ५८, भजनसंग्रह ३७",
-    "२ शमूएल १०, प्रेरित २३, यशैया ५९, भजनसंग्रह ३८",
+    "२ शमूएल ८, प्रेरित २१, यशैया ५７, भजनसंग्रह ३६",
+    "२ शमूएल ९, प्रेरित २२, यशैया ५８, भजनसंग्रह ३७",
+    "२ शमूएल १०, प्रेरित २३, यशैया ५９, भजनसंग्रह ३८",
     "२ शमूएल ११, प्रेरित २४, यशैया ६०, भजनसंग्रह ३९",
-    "२ शमूएल १२, प्रेरित २५, यशैया ६१, भजनसंग्रह ४०",
-    "२ शमूएल १३, प्रेरित २६, यशैया ६२, भजनसंग्रह ४१",
-    "२ शमूएल १४, प्रेरित २७, यशैया ६३, भजनसंग्रह ४२-४३",
-    "२ शमूएल १५, प्रेरित २८, यशैया ६४, भजनसंग्रह ४४",
-    "२ शमूएल १६, रोमी १, यशैया ६५, भजनसंग्रह ४५",
-    "२ शमूएल १७, रोमी २, यशैया ६६, भजनसंग्रह ४६",
-    "२ शमूएल १८, रोमी ३, यर्मिया १, भजनसंग्रह ४७",
-    "२ शमूएल १९, रोमी ४, यर्मिया २, भजनसंग्रह ४८",
-    "२ शमूएल २०, रोमी ५, यर्मिया ३, भजनसंग्रह ४९",
-    "२ शमूएल २१, रोमी ६, यर्मिया ४, भजनसंग्रह ५०",
-    "२ शमूएल २२, रोमी ७, यर्मिया ५, भजनसंग्रह ५१",
-    "२ शमूएल २३, रोमी ८, यर्मिया ६, भजनसंग्रह ५२-५४",
-    "२ शमूएल २४, रोमी ९, यर्मिया ७, भजनसंग्रह ५५",
+    "२ शमूएल १२, प्रेरित २५, यशैया ६１, भजनसंग्रह ४०",
+    "२ शमूएल १३, प्रेरित २६, यशैया ६２, भजनसंग्रह ४１",
+    "२ शमूएल १४, प्रेरित २७, यशैया ६３, भजनसंग्रह ४२-४३",
+    "२ शमूएल १५, प्रेरित २८, यशैया ६４, भजनसंग्रह ४४",
+    "२ शमूएल १६, रोमी १, यशैया ६５, भजनसंग्रह ४５",
+    "२ शमूएल १७, रोमी २, यशैया ६６, भजनसंग्रह ४６",
+    "२ शमूएल १८, रोमी ३, यर्मिया १, भजनसंग्रह ४７",
+    "२ शमूएल १९, रोमी ४, यर्मिया २, भजनसंग्रह ४８",
+    "२ शमूएल २०, रोमी ५, यर्मिया ३, भजनसंग्रह ४９",
+    "२ शमूएल २१, रोमी ६, यर्मिया ४, भजनसंग्रह ५０",
+    "२ शमूएल २२, रोमी ७, यर्मिया ५, भजनसंग्रह ५１",
+    "२ शमूएल २३, रोमी ८, यर्मिया ६, भजनसंग्रह ५２-५４",
+    "२ शमूएल २४, रोमी ९, यर्मिया ७, भजनसंग्रह ५５",
     "उत्पत्ति १, मत्ती १, एज्रा १, प्रेरित १" // Day 366 (Leap year) - repeat day 1 or last day
 ];
 
@@ -1177,7 +1177,7 @@ const AddPodcastModal = ({onClose, onAdd}: {onClose: () => void, onAdd: (data: {
     );
 };
 
-const CreateChatModal = ({ onClose, onStartChat, users, currentUser }: { onClose: () => void; onStartChat: (userIds: string[]) => void; users: User[], currentUser: User }) => {
+const CreateChatModal = ({ onClose, onStartChat, users, currentUser, isStartingChat }: { onClose: () => void; onStartChat: (userIds: string[]) => void; users: User[], currentUser: User, isStartingChat: boolean }) => {
     const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
     const otherUsers = users.filter(u => u.id !== currentUser.id);
 
@@ -1211,10 +1211,10 @@ const CreateChatModal = ({ onClose, onStartChat, users, currentUser }: { onClose
                 <button 
                     className="action-button" 
                     onClick={() => onStartChat(selectedUserIds)} 
-                    disabled={selectedUserIds.length === 0}
+                    disabled={selectedUserIds.length === 0 || isStartingChat}
                     style={{ marginTop: '1rem' }}
                 >
-                    대화 시작
+                    {isStartingChat ? 'सुरु गर्दै...' : 'कुराकानी सुरु गर्नुहोस्'}
                 </button>
             </div>
         </Modal>
@@ -1317,6 +1317,7 @@ const App = () => {
     const [activeChatId, setActiveChatId] = useState<string | null>(null);
     const [selectedPrayerRequest, setSelectedPrayerRequest] = useState<PrayerRequest | null>(null);
     const [prayerRequestToEdit, setPrayerRequestToEdit] = useState<PrayerRequest | null>(null);
+    const [isStartingChat, setIsStartingChat] = useState(false);
     
     // Modal states
     const [showAddPrayerModal, setShowAddPrayerModal] = useState(false);
@@ -1489,46 +1490,61 @@ const App = () => {
 
     const handleSavePrayerRequest = async (data: { title: string; content: string; imageFile: File | null; imageRemoved: boolean }, id?: string) => {
         if (!currentUser || !db || !storage) return;
+    
         try {
+            const { title, content, imageFile, imageRemoved } = data;
             const isEditing = !!id;
-            const originalRequest = isEditing ? prayerRequests.find(p => p.id === id) : null;
-            let imageUrl = originalRequest?.image || null;
+            
+            let imageUrl: string | null = null;
     
-            // Case 1: A new image file is being uploaded.
-            if (data.imageFile) {
-                // If there was an old image, delete it first.
-                if (imageUrl) {
-                    await deleteObject(ref(storage, imageUrl)).catch(e => console.error("Could not delete old image before new upload", e));
+            if (isEditing) {
+                // --- EDIT LOGIC ---
+                const prayerRef = doc(db, "prayerRequests", id);
+                const prayerSnap = await getDoc(prayerRef);
+                if (!prayerSnap.exists()) {
+                    throw new Error("Prayer request to edit not found.");
                 }
-                // Upload the new image
-                const storageRef = ref(storage, `prayer_images/${Date.now()}_${data.imageFile.name}`);
-                const uploadResult = await uploadBytes(storageRef, data.imageFile);
-                imageUrl = await getDownloadURL(uploadResult.ref);
-            } 
-            // Case 2: The existing image is being removed (and no new one is uploaded).
-            else if (data.imageRemoved && imageUrl) {
-                await deleteObject(ref(storage, imageUrl)).catch(e => console.error("Could not delete image to be removed", e));
-                imageUrl = null;
-            }
+                const existingData = prayerSnap.data() as PrayerRequest;
+                imageUrl = existingData.image || null;
     
-            const prayerDataForFirestore = {
-                title: data.title,
-                content: data.content,
-                image: imageUrl,
-            };
+                if (imageFile) { // New image uploaded
+                    if (imageUrl) { // Delete old image
+                        await deleteObject(ref(storage, imageUrl)).catch(e => console.warn("Old image deletion failed, continuing...", e));
+                    }
+                    const storageRef = ref(storage, `prayer_images/${Date.now()}_${imageFile.name}`);
+                    const uploadResult = await uploadBytes(storageRef, imageFile);
+                    imageUrl = await getDownloadURL(uploadResult.ref);
+                } else if (imageRemoved && imageUrl) { // Image removed
+                    await deleteObject(ref(storage, imageUrl)).catch(e => console.warn("Image deletion failed, continuing...", e));
+                    imageUrl = null;
+                }
+                // If no new image and not removed, imageUrl remains the same.
     
-            if (isEditing && id) {
-                await updateDoc(doc(db, "prayerRequests", id), prayerDataForFirestore);
+                await updateDoc(prayerRef, {
+                    title,
+                    content,
+                    image: imageUrl,
+                });
+    
             } else {
-                const fullData = {
-                    ...prayerDataForFirestore,
+                // --- CREATE LOGIC ---
+                if (imageFile) {
+                    const storageRef = ref(storage, `prayer_images/${Date.now()}_${imageFile.name}`);
+                    const uploadResult = await uploadBytes(storageRef, imageFile);
+                    imageUrl = await getDownloadURL(uploadResult.ref);
+                }
+    
+                const newPrayerRequest = {
+                    title,
+                    content,
+                    image: imageUrl,
                     authorId: currentUser.id,
                     authorName: currentUser.name,
-                    createdAt: serverTimestamp(),
+                    createdAt: Timestamp.now(),
                     prayedBy: [],
                     comments: [],
                 };
-                await addDoc(collection(db, "prayerRequests"), fullData);
+                await addDoc(collection(db, "prayerRequests"), newPrayerRequest);
             }
         } catch (error) {
             console.error("Error saving prayer request:", error);
@@ -1688,31 +1704,41 @@ const App = () => {
     };
 
     const handleStartChat = async (otherUserIds: string[]) => {
-        if (!currentUser || !db || otherUserIds.length === 0) return;
-        
-        const participantIds = [currentUser.id, ...otherUserIds].sort();
-        const q = query(collection(db, "chats"), where("participantIds", "==", participantIds));
-        const querySnapshot = await getDocs(q);
+        if (!currentUser || !db || otherUserIds.length === 0 || isStartingChat) return;
     
-        if (!querySnapshot.empty) {
-            setActiveChatId(querySnapshot.docs[0].id);
-        } else {
-            const allParticipantUsers = users.filter(u => participantIds.includes(u.id));
-            const participantsObject = allParticipantUsers.reduce((acc, user) => {
-                acc[user.id] = { name: user.name, avatar: user.avatar };
-                return acc;
-            }, {} as { [key: string]: { name: string; avatar: string; } });
-
-            const newChatDoc = await addDoc(collection(db, "chats"), {
-                participantIds,
-                participants: participantsObject,
-                lastRead: { [currentUser.id]: Timestamp.now() }
-            });
-            setActiveChatId(newChatDoc.id);
+        setIsStartingChat(true);
+        try {
+            const participantIds = [currentUser.id, ...otherUserIds].sort();
+            const q = query(collection(db, "chats"), where("participantIds", "==", participantIds));
+            const querySnapshot = await getDocs(q);
+    
+            let newChatId: string;
+            if (!querySnapshot.empty) {
+                newChatId = querySnapshot.docs[0].id;
+            } else {
+                const allParticipantUsers = users.filter(u => participantIds.includes(u.id));
+                const participantsObject = allParticipantUsers.reduce((acc, user) => {
+                    acc[user.id] = { name: user.name, avatar: user.avatar };
+                    return acc;
+                }, {} as { [key: string]: { name: string; avatar: string; } });
+    
+                const newChatDoc = await addDoc(collection(db, "chats"), {
+                    participantIds,
+                    participants: participantsObject,
+                    lastRead: { [currentUser.id]: Timestamp.now() }
+                });
+                newChatId = newChatDoc.id;
+            }
+            setActiveChatId(newChatId);
+            setShowCreateChatModal(false);
+        } catch (error) {
+            console.error("Error starting chat:", error);
+            alert("च्याट सुरु गर्न असफल भयो।");
+        } finally {
+            setIsStartingChat(false);
         }
-        setShowCreateChatModal(false);
     };
-
+    
     const handleUpdateUserRoles = async (userId: string, newRoles: UserRole[]) => {
         if (!db) return;
         try {
@@ -1836,7 +1862,13 @@ const App = () => {
                 onDelete={handleDeletePrayerRequest}
                 onEdit={openEditPrayerModal}
             />}
-            {showCreateChatModal && <CreateChatModal onClose={() => setShowCreateChatModal(false)} onStartChat={handleStartChat} users={users} currentUser={currentUser} />}
+            {showCreateChatModal && <CreateChatModal 
+                onClose={() => setShowCreateChatModal(false)} 
+                onStartChat={handleStartChat} 
+                users={users} 
+                currentUser={currentUser} 
+                isStartingChat={isStartingChat} 
+            />}
             {currentUser.roles.includes('news_contributor') && activePage === 'news' && (
                 <button className="fab" onClick={() => setShowAddNewsModal(true)} aria-label="Add News">
                     <span className="material-symbols-outlined">add</span>
