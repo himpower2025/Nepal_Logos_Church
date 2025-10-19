@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useCallback, createContext, useContext } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -90,7 +91,16 @@ const CHURCH: Church = {
 
 const MOCK_VERSES_OF_THE_DAY: Verse[] = [
     { verse: 'यूहन्ना ३:१६', text: 'किनभने परमेश्‍वरले संसारलाई यति साह्रो प्रेम गर्नुभयो, कि उहाँले आफ्‍ना एकमात्र पुत्र दिनुभयो, ताकि उहाँमाथि विश्‍वास गर्ने कोही पनि नाश नहोस्, तर त्‍यसले अनन्त जीवन पाओस्।' },
-    { verse: 'फिलिप्पी ४:१३', text: 'जसले मलाई शक्ति दिनuहुन्छ, उहाँमा म सब कुरा गर्न सक्छु।' }
+    { verse: 'फिलिप्पी ४:१३', text: 'जसले मलाई शक्ति दिनuहुन्छ, उहाँमा म सब कुरा गर्न सक्छु।' },
+    { verse: 'रोमी ८:२८', text: 'हामी जान्दछौं, कि परमेश्‍वरलाई प्रेम गर्नेहरूका निम्ति, अर्थात् उहाँको अभिप्रायअनुसार बोलाइएकाहरूका निम्ति हरेक कुरामा परमेश्‍वरले भलाइ नै गर्नुहुन्छ।' },
+    { verse: 'यशैया ४१:१०', text: 'नडरा, किनभने म तँसँग छु। निरुत्साहित नहो, किनभने म तेरो परमेश्‍वर हुँ। म तँलाई बलियो पार्नेछु, म तँलाई सहायता गर्नेछु, म तँलाई मेरो धार्मिकताको दाहिने हातले समाल्नेछु।' },
+    { verse: 'भजनसंग्रह २३:१', text: 'परमप्रभु मेरो गोठालो हुनुहुन्छ, मलाई केही कुराको अभाव हुनेछैन।' },
+    { verse: 'यर्मिया २९:११', text: 'किनभने मैले तिमीहरूका निम्ति बनाएका योजनाहरू म जान्दछु,” परमप्रभु भन्नुहुन्छ, “तिमीहरूलाई हानि गर्ने होइन, तर उन्नति गर्ने योजनाहरू, तिमीहरूलाई आशा र भविष्य दिने योजनाहरू।' },
+    { verse: 'मत्ती ११:२८', text: 'हे सबै थाकेका र बोझले दबिएका हो, मकहाँ आओ, र म तिमीहरूलाई विश्राम दिनेछु।' },
+    { verse: 'हितोपदेश ३:५-६', text: 'तेरो सारा हृदयले परमप्रभुमाथि भरोसा राख्, र तेरो आफ्नै समझशक्तिमाथि भर नपर्। तेरा सबै मार्गहरूमा उहाँलाई स्वीकार गर्, र उहाँले तेरा मार्गहरू सोझो बनाउनुहुनेछ।' },
+    { verse: '२ तिमोथी १:७', text: 'किनभने परमेश्‍वरले हामीलाई डरको आत्मा दिनुभएको छैन, तर शक्ति, प्रेम र आत्मसंयमको आत्मा दिनुभएको छ।' },
+    { verse: 'यहोशू १:९', text: 'के मैले तँलाई आज्ञा दिएको छैनँ र? बलियो र साहसी हो। नडरा, न त निरुत्साहित हो, किनभने तँ जहाँ गए पनि परमप्रभु तेरा परमेश्‍वर तँसँग हुनुहुन्छ।' },
+    { verse: 'भजनसंग्रह ४۶:१', text: 'परमेश्‍वर हाम्रा शरणस्थान र बल हुनुहुन्छ, सङ्कष्टमा तुरुन्तै पाइने सहायक।' }
 ];
 
 const MCCHEYNE_READING_PLAN = [
@@ -383,7 +393,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ शमूएल २०, रोमी ५, यर्मिया ३, भजनसंग्रह ४９",
     "२ शमूएल २१, रोमी ६, यर्मिया ४, भजनसंग्रह ५０",
     "२ शमूएल २२, रोमी ७, यर्मिया ५, भजनसंग्रह ५１",
-    "२ शमूएल २३, रोमी ८, यर्मिया ६, भजनसंग्रह ५２-५４",
+    "२ शमूएल २३, रोमी ८, यर्मिया ६, भजनसंग्रह ५２-५४",
     "२ शमूएल २४, रोमी ९, यर्मिया ७, भजनसंग्रह ५５",
     "उत्पत्ति १, मत्ती १, एज्रा १, प्रेरित १" // Day 366 (Leap year) - repeat day 1 or last day
 ];
@@ -440,6 +450,13 @@ const formatTimestamp = (timestamp: Timestamp | undefined): string => {
 };
 
 // --- Reusable Components ---
+const SplashScreen = () => (
+    <div className="splash-screen-container">
+        <img src={CHURCH.logo} alt={`${CHURCH.name} Logo`} className="splash-logo" />
+        <div className="splash-spinner"></div>
+    </div>
+);
+
 
 const Modal = ({ children, onClose, position = 'center' }: React.PropsWithChildren<{ onClose: () => void; position?: 'center' | 'bottom' }>) => {
     return (
@@ -1088,8 +1105,7 @@ const AddPrayerRequestModal = ({ onClose, onSave, existingRequest }: { onClose: 
             } catch (error) {
                 console.error("Failed to save prayer request from modal:", error);
             } finally {
-                setIsSubmitting(false);
-                onClose();
+                // No need to set submitting to false, as the onSave call will close the modal
             }
         }
     };
@@ -1351,41 +1367,41 @@ const App = () => {
 
 
     useEffect(() => {
-        if (!auth || !db) {
+        if (!auth) {
             setIsLoading(false);
             return;
         }
 
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            try {
-                if (user) {
-                    const userDocRef = doc(db, "users", user.uid);
-                    const userDocSnap = await getDoc(userDocRef);
-                    if (userDocSnap.exists()) {
-                        const userData = userDocSnap.data();
-                        const userProfile: User = {
-                            id: user.uid,
-                            name: userData.name || user.displayName || 'Unknown User',
-                            email: userData.email || user.email || '',
-                            avatar: userData.avatar || (userData.name || user.displayName || '?').split(' ').map((n: string) => n[0]).join('').toUpperCase(),
-                            roles: userData.roles || ['member'],
-                            fcmTokens: userData.fcmTokens || []
-                        };
-                        setCurrentUser(userProfile);
-                        await setupNotifications(userProfile);
-                    } else {
-                        await signOut(auth);
-                        setCurrentUser(null);
-                    }
+        const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
+            if (authUser) {
+                if (!db) {
+                    setCurrentUser(null);
+                    setIsLoading(false);
+                    return;
+                }
+                const userDocRef = doc(db, "users", authUser.uid);
+                const userDocSnap = await getDoc(userDocRef);
+                if (userDocSnap.exists()) {
+                    const userData = userDocSnap.data();
+                    const userProfile: User = {
+                        id: authUser.uid,
+                        name: userData.name || authUser.displayName || 'Unknown User',
+                        email: userData.email || authUser.email || '',
+                        avatar: userData.avatar || (userData.name || authUser.displayName || '?').split(' ').map((n: string) => n[0]).join('').toUpperCase(),
+                        roles: userData.roles || ['member'],
+                        fcmTokens: userData.fcmTokens || []
+                    };
+                    setCurrentUser(userProfile);
+                    await setupNotifications(userProfile);
                 } else {
+                    // This case means user exists in Auth but not Firestore, log them out.
+                    await signOut(auth);
                     setCurrentUser(null);
                 }
-            } catch (error) {
-                console.error("Error during authentication state check:", error);
+            } else {
                 setCurrentUser(null);
-            } finally {
-                setIsLoading(false);
             }
+            setIsLoading(false);
         });
 
         return () => unsubscribe();
@@ -1491,61 +1507,63 @@ const App = () => {
     const handleSavePrayerRequest = async (data: { title: string; content: string; imageFile: File | null; imageRemoved: boolean }, id?: string) => {
         if (!currentUser || !db || !storage) return;
     
+        const { title, content, imageFile, imageRemoved } = data;
+        const isEditing = !!id;
+        
         try {
-            const { title, content, imageFile, imageRemoved } = data;
-            const isEditing = !!id;
-            
-            let imageUrl: string | null = null;
+            let finalImageUrl: string | null = null;
     
+            // Step 1: Handle image upload/delete first
             if (isEditing) {
-                // --- EDIT LOGIC ---
                 const prayerRef = doc(db, "prayerRequests", id);
                 const prayerSnap = await getDoc(prayerRef);
-                if (!prayerSnap.exists()) {
-                    throw new Error("Prayer request to edit not found.");
-                }
-                const existingData = prayerSnap.data() as PrayerRequest;
-                imageUrl = existingData.image || null;
+                if (!prayerSnap.exists()) throw new Error("Prayer request not found.");
+                
+                const existingImageUrl = prayerSnap.data().image as string | undefined;
     
-                if (imageFile) { // New image uploaded
-                    if (imageUrl) { // Delete old image
-                        await deleteObject(ref(storage, imageUrl)).catch(e => console.warn("Old image deletion failed, continuing...", e));
+                if (imageFile) { // A new file is uploaded
+                    if (existingImageUrl) { // Delete the old one
+                        await deleteObject(ref(storage, existingImageUrl)).catch(e => console.warn("Old image deletion failed, but continuing.", e));
                     }
-                    const storageRef = ref(storage, `prayer_images/${Date.now()}_${imageFile.name}`);
-                    const uploadResult = await uploadBytes(storageRef, imageFile);
-                    imageUrl = await getDownloadURL(uploadResult.ref);
-                } else if (imageRemoved && imageUrl) { // Image removed
-                    await deleteObject(ref(storage, imageUrl)).catch(e => console.warn("Image deletion failed, continuing...", e));
-                    imageUrl = null;
+                    const newStorageRef = ref(storage, `prayer_images/${Date.now()}_${imageFile.name}`);
+                    const uploadResult = await uploadBytes(newStorageRef, imageFile);
+                    finalImageUrl = await getDownloadURL(uploadResult.ref);
+                } else if (imageRemoved && existingImageUrl) { // Image was explicitly removed
+                    await deleteObject(ref(storage, existingImageUrl)).catch(e => console.warn("Image deletion failed, but continuing.", e));
+                    finalImageUrl = null;
+                } else { // No change to image
+                    finalImageUrl = existingImageUrl || null;
                 }
-                // If no new image and not removed, imageUrl remains the same.
-    
-                await updateDoc(prayerRef, {
-                    title,
-                    content,
-                    image: imageUrl,
-                });
-    
-            } else {
-                // --- CREATE LOGIC ---
+            } else { // Creating new request
                 if (imageFile) {
                     const storageRef = ref(storage, `prayer_images/${Date.now()}_${imageFile.name}`);
                     const uploadResult = await uploadBytes(storageRef, imageFile);
-                    imageUrl = await getDownloadURL(uploadResult.ref);
+                    finalImageUrl = await getDownloadURL(uploadResult.ref);
                 }
+            }
     
-                const newPrayerRequest = {
+            // Step 2: Update/Create Firestore document with final image URL
+            if (isEditing) {
+                await updateDoc(doc(db, "prayerRequests", id), {
                     title,
                     content,
-                    image: imageUrl,
+                    image: finalImageUrl,
+                });
+            } else {
+                await addDoc(collection(db, "prayerRequests"), {
+                    title,
+                    content,
+                    image: finalImageUrl,
                     authorId: currentUser.id,
                     authorName: currentUser.name,
                     createdAt: Timestamp.now(),
                     prayedBy: [],
                     comments: [],
-                };
-                await addDoc(collection(db, "prayerRequests"), newPrayerRequest);
+                });
             }
+            setShowAddPrayerModal(false);
+            setPrayerRequestToEdit(null);
+    
         } catch (error) {
             console.error("Error saving prayer request:", error);
             alert("Failed to post request. Please try again.");
@@ -1709,27 +1727,40 @@ const App = () => {
         setIsStartingChat(true);
         try {
             const participantIds = [currentUser.id, ...otherUserIds].sort();
+            
+            // Check if a chat already exists
             const q = query(collection(db, "chats"), where("participantIds", "==", participantIds));
             const querySnapshot = await getDocs(q);
     
-            let newChatId: string;
             if (!querySnapshot.empty) {
-                newChatId = querySnapshot.docs[0].id;
+                // Chat exists, just navigate to it
+                const existingChatId = querySnapshot.docs[0].id;
+                setActiveChatId(existingChatId);
             } else {
+                // Create a new chat
                 const allParticipantUsers = users.filter(u => participantIds.includes(u.id));
                 const participantsObject = allParticipantUsers.reduce((acc, user) => {
                     acc[user.id] = { name: user.name, avatar: user.avatar };
                     return acc;
                 }, {} as { [key: string]: { name: string; avatar: string; } });
     
-                const newChatDoc = await addDoc(collection(db, "chats"), {
+                const newChatDocRef = await addDoc(collection(db, "chats"), {
                     participantIds,
                     participants: participantsObject,
                     lastRead: { [currentUser.id]: Timestamp.now() }
                 });
-                newChatId = newChatDoc.id;
+
+                // Optimistically add chat to local state to prevent lag
+                const newChat: Chat = {
+                    id: newChatDocRef.id,
+                    participantIds,
+                    participants: participantsObject,
+                    lastRead: { [currentUser.id]: Timestamp.now() }
+                };
+                setChats(prev => [...prev, newChat]);
+
+                setActiveChatId(newChatDocRef.id);
             }
-            setActiveChatId(newChatId);
             setShowCreateChatModal(false);
         } catch (error) {
             console.error("Error starting chat:", error);
@@ -1765,12 +1796,10 @@ const App = () => {
         setShowAddPrayerModal(true);
     };
 
-    const existingRequest = prayerRequests.find(r => r.id === prayerRequestToEdit?.id);
-
     // --- Render Logic ---
 
     if (isLoading) {
-        return <div className="loading-container">Authenticating...</div>;
+        return <SplashScreen />;
     }
 
     if (!currentUser) {
@@ -1852,7 +1881,7 @@ const App = () => {
             )}
             
             {showNotificationPanel && <NotificationPanel notifications={notifications} onClose={() => setShowNotificationPanel(false)} />}
-            {showAddPrayerModal && <AddPrayerRequestModal onClose={() => setShowAddPrayerModal(false)} onSave={handleSavePrayerRequest} existingRequest={existingRequest} />}
+            {showAddPrayerModal && <AddPrayerRequestModal onClose={() => {setShowAddPrayerModal(false); setPrayerRequestToEdit(null);}} onSave={handleSavePrayerRequest} existingRequest={prayerRequestToEdit} />}
             {selectedPrayerRequest && <PrayerDetailsModal 
                 request={selectedPrayerRequest} 
                 currentUser={currentUser}
@@ -1905,7 +1934,7 @@ const AppInitializer = () => {
     }, []);
 
     if (isInitializing) {
-        return <div className="loading-container">Initializing services...</div>;
+        return <SplashScreen />;
     }
 
     if (error) {
