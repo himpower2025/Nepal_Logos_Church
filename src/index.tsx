@@ -26,7 +26,8 @@ import {
     where,
     arrayRemove,
     deleteDoc,
-    getDocs
+    getDocs,
+    limit
 } from "firebase/firestore";
 import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
 import { getToken, onMessage } from "firebase/messaging";
@@ -79,6 +80,13 @@ type WorshipService = {
     isLive: boolean;
     twitchChannel: string;
     title: string;
+    createdAt: Timestamp;
+};
+
+type PastWorshipService = {
+    id: string;
+    title: string;
+    youtubeUrl: string;
     createdAt: Timestamp;
 };
 
@@ -379,21 +387,21 @@ const MCCHEYNE_READING_PLAN = [
     "२ शमूएल ६, प्रेरित १९, यशैया ५５, भजनसंग्रह ३४",
     "२ शमूएल ७, प्रेरित २०, यशैया ५６, भजनसंग्रह ३५",
     "२ शमूएल ८, प्रेरित २१, यशैया ५７, भजनसंग्रह ३６",
-    "२ शमूएल ९, प्रेरित २२, यशैया ५８, भजनसंग्रह ३７",
+    "२ शमूएल ९, प्रेरित २२, यशैया ५８, भजनसंग्रह ३७",
     "२ शमूएल १०, प्रेरित २३, यशैया ५９, भजनसंग्रह ३８",
-    "२ शमूएल ११, प्रेरित २४, यशैया ६０, भजनसंग्रह ३９",
+    "२ शमूएल ११, प्रेरित २४, यशैया ६０, भजनसंग्रह ३९",
     "२ शमूएल १२, प्रेरित २५, यशैया ६１, भजनसंग्रह ४０",
     "२ शमूएल १३, प्रेरित २６, यशैया ६２, भजनसंग्रह ४１",
     "२ शमूएल १४, प्रेरित २７, यशैया ६３, भजनसंग्रह ४２-४३",
     "२ शमूएल १५, प्रेरित २８, यशैया ६４, भजनसंग्रह ४４",
     "२ शमूएल १६, रोमी १, यशैया ६５, भजनसंग्रह ४５",
     "२ शमूएल १७, रोमी २, यशैया ६６, भजनसंग्रह ४６",
-    "२ शमूएल १८, रोमी ३, यर्मिया १, भजनसंग्रह ४７",
+    "२ शमूएल १८, रोमी ३, यर्मिया १, भजनसंग्रह ४७",
     "२ शमूएल १९, रोमी ४, यर्मिया २, भजनसंग्रह ४８",
     "२ शमूएल २०, रोमी ५, यर्मिया ३, भजनसंग्रह ४９",
     "२ शमूएल २१, रोमी ६, यर्मिया ४, भजनसंग्रह ५０",
     "२ शमूएल २२, रोमी ७, यर्मिया ५, भजनसंग्रह ५１",
-    "२ शमूएल २३, रोमी ८, यर्मिया ६, भजनसंग्रह ५２-५４",
+    "२ शमूएल २३, रोमी ८, यर्मिया ६, भजनसंग्रह ५２-५४",
     "२ शमूएल २४, रोमी ९, यर्मिया ७, भजनसंग्रह ५５",
     "उत्पत्ति १, मत्ती १, एज्रा १, प्रेरित १" // Day 366 (Leap year) - repeat day 1 or last day
 ];
@@ -447,6 +455,20 @@ const formatTimestamp = (timestamp: Timestamp | undefined): string => {
     if (!timestamp || typeof timestamp.toDate !== 'function') return '';
     const date = timestamp.toDate();
     return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+};
+
+const getYoutubeThumbnail = (url: string): string => {
+    try {
+        const videoIdRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+        const match = url.match(videoIdRegex);
+        const videoId = match ? match[1] : null;
+        if (videoId) {
+            return `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+        }
+    } catch (e) {
+        console.error("Could not parse YouTube URL", e);
+    }
+    return 'https://via.placeholder.com/150/004d40/FFFFFF?text=Video';
 };
 
 // --- Reusable Components ---
@@ -612,7 +634,7 @@ const LoginPage = ({ onLoginSuccess }: { onLoginSuccess: () => void }) => {
     );
 };
 
-const WorshipPage = ({services}: {services: WorshipService[]}) => {
+const WorshipPage = ({services, pastServices, currentUser, onAddPastService, onDeletePastService}: {services: WorshipService[], pastServices: PastWorshipService[], currentUser: User | null, onAddPastService: () => void, onDeletePastService: (id: string) => void}) => {
     const [showOfferingModal, setShowOfferingModal] = useState(false);
     const liveService = services.find(s => s.isLive);
 
@@ -658,6 +680,35 @@ const WorshipPage = ({services}: {services: WorshipService[]}) => {
                     </div>
                 </div>
             )}
+
+            <div className="past-worship-section">
+                <h3>지난 예배</h3>
+                {currentUser?.roles.includes('admin') && (
+                     <button className="action-button secondary add-past-worship-button" onClick={onAddPastService}>
+                        <span className="material-symbols-outlined">add</span>
+                        지난 예배 추가
+                    </button>
+                )}
+                {pastServices.length > 0 ? (
+                    <div className="past-worship-list">
+                    {pastServices.map(service => (
+                        <div key={service.id} className="card past-service-card">
+                             <a href={service.youtubeUrl} target="_blank" rel="noopener noreferrer">
+                                <img src={getYoutubeThumbnail(service.youtubeUrl)} alt={service.title} className="past-service-thumbnail" />
+                                <p className="past-service-title">{service.title}</p>
+                            </a>
+                            {currentUser?.roles.includes('admin') && (
+                                <button className="delete-button past-service-delete-button" onClick={() => onDeletePastService(service.id)}>
+                                    <span className="material-symbols-outlined">delete</span>
+                                </button>
+                            )}
+                        </div>
+                    ))}
+                    </div>
+                ) : (
+                    <p>지난 예배 영상이 없습니다.</p>
+                )}
+            </div>
            
             {showOfferingModal && (
                 <Modal onClose={() => setShowOfferingModal(false)}>
@@ -681,6 +732,40 @@ const WorshipPage = ({services}: {services: WorshipService[]}) => {
         </div>
     );
 };
+
+const AddPastWorshipModal = ({onClose, onAdd}: {onClose: () => void, onAdd: (data: {title: string, youtubeUrl: string}) => Promise<void>}) => {
+    const [title, setTitle] = useState('');
+    const [youtubeUrl, setYoutubeUrl] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if(!title.trim() || !youtubeUrl.trim()) return;
+
+        setIsSubmitting(true);
+        try {
+            await onAdd({title, youtubeUrl});
+            onClose();
+        } catch(error) {
+            // Error is alerted in handler
+        } finally {
+            setIsSubmitting(false);
+        }
+    }
+
+    return (
+        <Modal onClose={onClose} position="bottom">
+            <form className="modal-form" onSubmit={handleSubmit}>
+                <h3>지난 예배 추가</h3>
+                <input type="text" placeholder="예배 제목" value={title} onChange={e => setTitle(e.target.value)} required />
+                <input type="url" placeholder="YouTube 링크" value={youtubeUrl} onChange={e => setYoutubeUrl(e.target.value)} required />
+                <button type="submit" className="action-button" disabled={isSubmitting}>
+                    {isSubmitting ? "추가 중..." : "추가"}
+                </button>
+            </form>
+        </Modal>
+    );
+}
 
 const BibleReadingModal = ({ title, content, onClose }: { title: string; content: string; onClose: () => void; }) => {
     return (
@@ -1102,9 +1187,10 @@ const AddPrayerRequestModal = ({ onClose, onSave, existingRequest }: { onClose: 
             setIsSubmitting(true);
             try {
                 await onSave({ title, content, imageFile, imageRemoved }, existingRequest?.id);
-                // On success, the onSave function will close the modal.
+                onClose();
             } catch (error) {
-                // Error is alerted in onSave. We just need to re-enable the button.
+                console.error("Failed to submit prayer request from modal:", error);
+            } finally {
                 setIsSubmitting(false);
             }
         }
@@ -1125,7 +1211,7 @@ const AddPrayerRequestModal = ({ onClose, onSave, existingRequest }: { onClose: 
     );
 };
 
-const AddNewsModal = ({onClose, onAdd}: {onClose: () => void, onAdd: (data: {title: string, content: string, imageFile: File | null}) => void}) => {
+const AddNewsModal = ({onClose, onAdd}: {onClose: () => void, onAdd: (data: {title: string, content: string, imageFile: File | null}) => Promise<void>}) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [imageFile, setImageFile] = useState<File | null>(null);
@@ -1140,10 +1226,16 @@ const AddNewsModal = ({onClose, onAdd}: {onClose: () => void, onAdd: (data: {tit
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!title.trim() || !content.trim()) return;
+        
         setIsSubmitting(true);
-        await onAdd({title, content, imageFile});
-        setIsSubmitting(false);
-        onClose();
+        try {
+            await onAdd({title, content, imageFile});
+            onClose();
+        } catch(error) {
+             console.error("Failed to submit news from modal:", error);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -1159,34 +1251,132 @@ const AddNewsModal = ({onClose, onAdd}: {onClose: () => void, onAdd: (data: {tit
     );
 };
 
-const AddPodcastModal = ({onClose, onAdd}: {onClose: () => void, onAdd: (data: {title: string, audioFile: File}) => void}) => {
+const AddPodcastModal = ({onClose, onAdd}: {onClose: () => void, onAdd: (data: {title: string, audioFile: File}) => Promise<void>}) => {
     const [title, setTitle] = useState('');
     const [audioFile, setAudioFile] = useState<File | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [activeTab, setActiveTab] = useState<'upload' | 'record'>('upload');
+    
+    // Recording state
+    const [isRecording, setIsRecording] = useState(false);
+    const [recordedAudioUrl, setRecordedAudioUrl] = useState<string | null>(null);
+    const [recordingTime, setRecordingTime] = useState(0);
+    const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+    const recordingIntervalRef = useRef<number | null>(null);
+
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleStartRecording = async () => {
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                setIsRecording(true);
+                setRecordingTime(0);
+                setRecordedAudioUrl(null);
+                setAudioFile(null);
+
+                const recorder = new MediaRecorder(stream);
+                mediaRecorderRef.current = recorder;
+                const chunks: BlobPart[] = [];
+
+                recorder.ondataavailable = (e) => chunks.push(e.data);
+                recorder.onstop = () => {
+                    stream.getTracks().forEach(track => track.stop());
+                    const blob = new Blob(chunks, { type: 'audio/webm' });
+                    const url = URL.createObjectURL(blob);
+                    const file = new File([blob], `recording-${Date.now()}.webm`, { type: 'audio/webm' });
+                    setRecordedAudioUrl(url);
+                    setAudioFile(file);
+                };
+
+                recorder.start();
+                recordingIntervalRef.current = window.setInterval(() => {
+                    setRecordingTime(prev => prev + 1);
+                }, 1000);
+
+            } catch (err) {
+                console.error("Error starting recording:", err);
+                alert("마이크에 액세스할 수 없습니다. 권한을 확인해 주세요.");
+            }
+        }
+    };
+
+    const handleStopRecording = () => {
+        if (mediaRecorderRef.current && isRecording) {
+            mediaRecorderRef.current.stop();
+            setIsRecording(false);
+            if(recordingIntervalRef.current) clearInterval(recordingIntervalRef.current);
+        }
+    };
+
+    const formatTime = (seconds: number) => {
+        const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+        const secs = (seconds % 60).toString().padStart(2, '0');
+        return `${mins}:${secs}`;
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!title.trim() || !audioFile) return;
+        if (!title.trim() || !audioFile) {
+            alert("제목과 오디오 파일을 모두 제공해 주세요.");
+            return;
+        }
         setIsSubmitting(true);
-        await onAdd({title, audioFile});
-        setIsSubmitting(false);
-        onClose();
+        try {
+            await onAdd({title, audioFile});
+            onClose();
+        } catch (error) {
+            console.error("Failed to submit podcast from modal:", error);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
         <Modal onClose={onClose} position="bottom">
             <form className="modal-form" onSubmit={handleSubmit}>
                 <h3>Add Podcast</h3>
-                <input type="text" placeholder="Title" value={title} onChange={e => setTitle(e.target.value)} required />
-                 <div className="custom-file-input">
-                    <button type="button" className="action-button secondary" onClick={() => fileInputRef.current?.click()}>
-                        <span className="material-symbols-outlined">audiotrack</span>
-                        Find File
-                    </button>
-                    <span>{audioFile?.name || 'No file selected'}</span>
+                <div className="add-podcast-tabs">
+                    <button type="button" className={activeTab === 'upload' ? 'active' : ''} onClick={() => setActiveTab('upload')}>파일 업로드</button>
+                    <button type="button" className={activeTab === 'record' ? 'active' : ''} onClick={() => setActiveTab('record')}>실시간 녹음</button>
                 </div>
+
+                <input type="text" placeholder="Title" value={title} onChange={e => setTitle(e.target.value)} required />
+
+                {activeTab === 'upload' && (
+                    <div className="custom-file-input">
+                        <button type="button" className="action-button secondary" onClick={() => fileInputRef.current?.click()}>
+                            <span className="material-symbols-outlined">audiotrack</span>
+                            Find File
+                        </button>
+                        <span>{audioFile?.name || 'No file selected'}</span>
+                    </div>
+                )}
                 <input type="file" accept="audio/*" ref={fileInputRef} onChange={e => setAudioFile(e.target.files?.[0] || null)} style={{display: 'none'}} />
+
+                {activeTab === 'record' && (
+                    <div className="record-section">
+                        {!isRecording && !recordedAudioUrl && (
+                            <button type="button" className="record-button" onClick={handleStartRecording}>
+                                <span className="material-symbols-outlined">mic</span> 녹음 시작
+                            </button>
+                        )}
+                        {isRecording && (
+                             <button type="button" className="record-button recording" onClick={handleStopRecording}>
+                                <span className="material-symbols-outlined">stop</span> 녹음 중지
+                                <span className="timer">{formatTime(recordingTime)}</span>
+                            </button>
+                        )}
+                        {recordedAudioUrl && !isRecording && (
+                            <div className="recording-preview">
+                                <p>녹음 미리보기:</p>
+                                <audio src={recordedAudioUrl} controls />
+                                <button type="button" className="action-button secondary" onClick={handleStartRecording}>다시 녹음</button>
+                            </div>
+                        )}
+                    </div>
+                )}
+
                 <button type="submit" className="action-button" disabled={isSubmitting || !audioFile}>{isSubmitting ? 'Uploading...' : 'Upload Podcast'}</button>
             </form>
         </Modal>
@@ -1327,6 +1517,7 @@ const App = () => {
     const [news, setNews] = useState<NewsItem[]>([]);
     const [podcasts, setPodcasts] = useState<Podcast[]>([]);
     const [worshipServices, setWorshipServices] = useState<WorshipService[]>([]);
+    const [pastWorshipServices, setPastWorshipServices] = useState<PastWorshipService[]>([]);
     const [notifications, setNotifications] = useState<Notification[]>([]);
     
     // View states
@@ -1339,6 +1530,7 @@ const App = () => {
     const [showAddPrayerModal, setShowAddPrayerModal] = useState(false);
     const [showAddNewsModal, setShowAddNewsModal] = useState(false);
     const [showAddPodcastModal, setShowAddPodcastModal] = useState(false);
+    const [showAddPastWorshipModal, setShowAddPastWorshipModal] = useState(false);
     const [showCreateChatModal, setShowCreateChatModal] = useState(false);
     const [showManageUsersModal, setShowManageUsersModal] = useState(false);
     const [showNotificationPanel, setShowNotificationPanel] = useState(false);
@@ -1495,6 +1687,15 @@ const App = () => {
     }, [db]);
 
     useEffect(() => {
+        if (!db) return;
+        const q = query(collection(db, "pastWorshipServices"), orderBy("createdAt", "desc"), limit(4));
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            setPastWorshipServices(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PastWorshipService)));
+        });
+        return () => unsubscribe();
+    }, [db]);
+
+    useEffect(() => {
         if (!currentUser || !db) return;
         const q = query(collection(db, "chats"), where("participantIds", "array-contains", currentUser.id));
         const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -1537,6 +1738,7 @@ const App = () => {
         try {
             let finalImageUrl: string | null = null;
     
+            // Step 1: Handle image upload/removal
             if (isEditing) {
                 const prayerRef = doc(db, "prayerRequests", id as string);
                 const prayerSnap = await getDoc(prayerRef);
@@ -1565,6 +1767,7 @@ const App = () => {
                 }
             }
     
+            // Step 2: Save document to Firestore
             if (isEditing) {
                 await updateDoc(doc(db, "prayerRequests", id as string), {
                     title,
@@ -1583,13 +1786,11 @@ const App = () => {
                     comments: [],
                 });
             }
-            setShowAddPrayerModal(false);
             setPrayerRequestToEdit(null);
-    
         } catch (error) {
             console.error("Error saving prayer request:", error);
-            alert("Failed to post request. Please try again.");
-            throw error; // Re-throw the error for the modal to handle UI state
+            alert("게시 요청에 실패했습니다. 다시 시도해 주세요.");
+            throw error;
         }
     };
 
@@ -1624,11 +1825,11 @@ const App = () => {
     const handleAddNews = async (data: {title: string, content: string, imageFile: File | null}) => {
         if (!currentUser || !db || !storage) return;
         try {
-            let imageUrl = undefined;
+            let imageUrl: string | undefined = undefined;
             if (data.imageFile) {
                 const storageRef = ref(storage, `news_images/${Date.now()}_${data.imageFile.name}`);
-                await uploadBytes(storageRef, data.imageFile);
-                imageUrl = await getDownloadURL(storageRef);
+                const uploadResult = await uploadBytes(storageRef, data.imageFile);
+                imageUrl = await getDownloadURL(uploadResult.ref);
             }
             await addDoc(collection(db, "news"), {
                 title: data.title,
@@ -1640,7 +1841,8 @@ const App = () => {
             });
         } catch (error) {
             console.error("Error posting news: ", error);
-            alert("पोस्ट गर्न असफल भयो");
+            alert("게시 실패");
+            throw error;
         }
     };
     
@@ -1662,8 +1864,9 @@ const App = () => {
         if (!currentUser || !db || !storage) return;
         try {
             const storageRef = ref(storage, `podcasts/${Date.now()}_${data.audioFile.name}`);
-            await uploadBytes(storageRef, data.audioFile);
-            const audioUrl = await getDownloadURL(storageRef);
+            const uploadResult = await uploadBytes(storageRef, data.audioFile);
+            const audioUrl = await getDownloadURL(uploadResult.ref);
+            
             await addDoc(collection(db, "podcasts"), {
                 title: data.title,
                 audioUrl,
@@ -1673,7 +1876,8 @@ const App = () => {
             });
         } catch (error) {
             console.error("Error uploading podcast: ", error);
-            alert("पोस्ट गर्न असफल भयो");
+            alert("게시 실패");
+            throw error;
         }
     };
     
@@ -1714,8 +1918,8 @@ const App = () => {
         try {
             if (file) {
                 const storageRef = ref(storage, `chat_media/${activeChatId}/${Date.now()}_${file.name}`);
-                await uploadBytes(storageRef, file);
-                messageData.mediaUrl = await getDownloadURL(storageRef);
+                const uploadResult = await uploadBytes(storageRef, file);
+                messageData.mediaUrl = await getDownloadURL(uploadResult.ref);
             }
             delete messageData.status;
             delete messageData.tempId;
@@ -1732,7 +1936,7 @@ const App = () => {
              });
         } catch (error) {
             console.error("Error sending message:", error);
-            alert("मिडिया अपलोड गर्न असफल भयो");
+            alert("미디어 업로드 실패");
             setMessages(prev => {
                 const newMessages = [...(prev[activeChatId] || [])];
                 const msgIndex = newMessages.findIndex(m => m.tempId === tempId);
@@ -1745,7 +1949,7 @@ const App = () => {
     };
 
     const handleStartChat = async (otherUserIds: string[]) => {
-        if (!currentUser || !db || otherUserIds.length === 0 || isStartingChat) return;
+        if (!currentUser || !db || otherUserIds.length === 0) return;
     
         setIsStartingChat(true);
         try {
@@ -1771,14 +1975,13 @@ const App = () => {
                     createdAt: Timestamp.now(),
                     lastRead: { [currentUser.id]: Timestamp.now() }
                 });
-                targetChatId = newChatDocRef.id;
 
-                // Manually fetch and add to state to avoid waiting for the listener
                 const newDocSnap = await getDoc(newChatDocRef);
                 if (newDocSnap.exists()) {
                     const newChat = { id: newDocSnap.id, ...newDocSnap.data() } as Chat;
                     setChats(prev => [...prev, newChat]);
                 }
+                targetChatId = newChatDocRef.id;
             }
             
             setActiveChatId(targetChatId);
@@ -1786,7 +1989,7 @@ const App = () => {
     
         } catch (error) {
             console.error("Error starting chat:", error);
-            alert("च्याट सुरु गर्न असफल भयो।");
+            alert("채팅 시작 실패.");
         } finally {
             setIsStartingChat(false);
         }
@@ -1798,6 +2001,30 @@ const App = () => {
             await updateDoc(doc(db, "users", userId), { roles: newRoles });
         } catch (error) {
             console.error("Error updating roles:", error);
+        }
+    };
+
+    const handleAddPastWorship = async (data: {title: string, youtubeUrl: string}) => {
+        if(!db || !currentUser?.roles.includes('admin')) return;
+        try {
+            await addDoc(collection(db, "pastWorshipServices"), {
+                ...data,
+                createdAt: serverTimestamp()
+            });
+        } catch (error) {
+            console.error("Error adding past worship:", error);
+            alert("Failed to add past worship service.");
+            throw error;
+        }
+    };
+
+    const handleDeletePastWorship = async (id: string) => {
+        if(!db || !currentUser?.roles.includes('admin') || !window.confirm("Are you sure you want to delete this service?")) return;
+        try {
+            await deleteDoc(doc(db, "pastWorshipServices", id));
+        } catch (error) {
+            console.error("Error deleting past worship:", error);
+            alert("Failed to delete past worship service.");
         }
     };
 
@@ -1833,7 +2060,7 @@ const App = () => {
     const renderPage = () => {
         switch (activePage) {
             case 'news': return <NewsPage news={news} currentUser={currentUser} onDelete={handleDeleteNews} />;
-            case 'worship': return <WorshipPage services={worshipServices} />;
+            case 'worship': return <WorshipPage services={worshipServices} pastServices={pastWorshipServices} currentUser={currentUser} onAddPastService={() => setShowAddPastWorshipModal(true)} onDeletePastService={handleDeletePastWorship} />;
             case 'bible': return <BiblePage />;
             case 'fellowship':
                 if (activeChatId && activeChat) {
@@ -1932,6 +2159,7 @@ const App = () => {
             )}
             {showAddNewsModal && <AddNewsModal onClose={() => setShowAddNewsModal(false)} onAdd={handleAddNews} />}
             {showAddPodcastModal && <AddPodcastModal onClose={() => setShowAddPodcastModal(false)} onAdd={handleAddPodcast} />}
+            {showAddPastWorshipModal && <AddPastWorshipModal onClose={() => setShowAddPastWorshipModal(false)} onAdd={handleAddPastWorship} />}
             {showManageUsersModal && <ManageUsersModal onClose={() => setShowManageUsersModal(false)} users={users} onUpdateRoles={handleUpdateUserRoles} />}
         </div>
     );
