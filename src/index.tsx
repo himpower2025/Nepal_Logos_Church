@@ -1,5 +1,6 @@
 
-import React, { useState, useEffect, useRef, useCallback, createContext, useContext } from 'react';
+
+import React, { useState, useEffect, useRef, useCallback, createContext, useContext, useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
 // Fix: Import `createPortal` from `react-dom` to be used for modals.
 import { createPortal } from 'react-dom';
@@ -50,7 +51,7 @@ type UserRole = 'admin' | 'member' | 'news_contributor' | 'podcast_contributor';
 type User = { id: string; name: string; email: string; avatar: string; roles: UserRole[]; fcmTokens?: string[] };
 type Church = { id: string; name: string; logo: string; offeringDetails: any; };
 type Comment = { id: string; author: User; authorId: string; content: string; createdAt: Timestamp; };
-type PrayerRequest = { id:string; authorId: string; authorName: string; title: string; content: string; image?: string | null; prayedBy: string[]; comments: Comment[]; createdAt: Timestamp; };
+type PrayerRequest = { id:string; authorId: string; authorName: string; title: string; content: string; image?: string; prayedBy: string[]; comments: Comment[]; createdAt: Timestamp; };
 type Podcast = { id: string; title: string; authorId: string; authorName: string; audioUrl: string; createdAt: Timestamp; };
 type NewsItem = { id: string; title: string; content: string; image?: string; createdAt: Timestamp; authorId: string, authorName: string };
 type Verse = { verse: string; text: string; };
@@ -197,7 +198,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान १८, लूका १२:३५-५९, अय्यूब ३５, २ कोरिन्थी ८",
     "प्रस्थान १९, लूका १३, अय्यूब ३６, २ कोरिन्थी ९",
     "प्रस्थान २०, लूका १४:१-२४, अय्यूब ३７, २ कोरिन्थी १०",
-    "प्रस्थान २१, लूका १४:२५-३५, अय्यूब ३８, २ कोरिन्थी ११",
+    "प्रस्थान २१, लूका १४:२५-३५, अय्यूब ३८, २ कोरिन्थी ११",
     "प्रस्थान २２, लूका १५, अय्यूब ३９, २ कोरिन्थी १२",
     "प्रस्थान २३, लूका १६, अय्यूब ४०, २ कोरिन्थी १३",
     "प्रस्थान २४, लूका १७:१-१९, अय्यूब ४१, गलाती १",
@@ -208,7 +209,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान २९, लूका १९:२८-४८, भजनसंग्रह ७, गलाती ६",
     "प्रस्थान ३०, लूका २०:१-१९, भजनसंग्रह ८, एफिसी १",
     "प्रस्थान ३१, लूका २०:२०-४७, भजनसंग्रह ९, एफिसी २",
-    "प्रस्थान ३२, लूका २१, भजनसंग्रह १०, एफिसी ३",
+    "प्रस्थान ३２, लूका २१, भजनसंग्रह १०, एफिसी ३",
     "प्रस्थान ३३, लूका २२:१-३०, भजनसंग्रह ११-१२, एफिसी ४",
     "प्रस्थान ३４, लूका २२:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
     "प्रस्थान ३５, लूका २२:५४-७१, भजनसंग्रह १५-१६, एफिसी ६",
@@ -267,7 +268,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६９, १ पत्रुस ५",
     "गन्ती २２, प्रेरित ९:२２-４３, भजनसंग्रह ७０, २ पत्रुस १",
     "गन्ती २३, प्रेरित १०:१-२३, भजनसंग्रह ७１, २ पत्रुस २",
-    "गन्ती २४, प्रेरित १०:२４-४８, भजनसंग्रह ७２, २ पत्रुस ३",
+    "गन्ती २४, प्रेरित १०:२４-४८, भजनसंग्रह ७２, २ पत्रुस ३",
     "गन्ती २५, प्रेरित ११, भजनसंग्रह ७３, १ यूहन्ना १",
     "गन्ती २६, प्रेरित १२, भजनसंग्रह ७４, १ यूहन्ना २",
     "गन्ती २७, प्रेरित १३:१-२５, भजनसंग्रह ७５, १ यूहन्ना ३",
@@ -899,7 +900,7 @@ const WorshipPage: React.FC<{currentUser: User}> = ({currentUser}) => {
             ) : (
                 <div className="card no-live-service">
                     <span className="material-symbols-outlined">church</span>
-                    <p>There is no live service at the moment.</p>
+                    <p>अहिले कुनै प्रत्यक्ष आरधना छैन।</p>
                 </div>
             )}
              <div className="worship-actions">
@@ -909,10 +910,10 @@ const WorshipPage: React.FC<{currentUser: User}> = ({currentUser}) => {
                 </button>
             </div>
             <div className="past-worship-section">
-                <h3>Past Services</h3>
+                <h3>विगतका आरधना</h3>
                 {currentUser.roles.includes('admin') && (
                     <button className="action-button add-past-worship-button" onClick={() => setIsAddPastWorshipModalOpen(true)}>
-                        <span className="material-symbols-outlined">add</span> Add Past Service
+                        <span className="material-symbols-outlined">add</span> विगतका आरधना थप्नुहोस्।
                     </button>
                 )}
                 <div className="past-worship-list">
@@ -1013,21 +1014,23 @@ const BiblePage: React.FC = () => {
     return (
         <div className="page-content">
             <h2>बाइबल</h2>
-            {verseOfTheDay && (
-                <div className="card verse-card">
-                    <p className="verse-text">"{verseOfTheDay.text}"</p>
-                    <p className="verse-ref">- {verseOfTheDay.verse}</p>
+            <div className="list-container">
+                {verseOfTheDay && (
+                    <div className="card verse-card">
+                        <p className="verse-text">"{verseOfTheDay.text}"</p>
+                        <p className="verse-ref">- {verseOfTheDay.verse}</p>
+                    </div>
+                )}
+                
+                <div className="card bible-card">
+                    <h3>आजको बाइबल पढ्ने योजना</h3>
+                    <p>{todayReading}</p>
                 </div>
-            )}
-            
-            <div className="card bible-card">
-                <h3>आजको बाइबल पढ्ने योजना</h3>
-                <p>{todayReading}</p>
-            </div>
-            
-            <div className="card bible-card">
-                <h3>आजको हितोपदेश</h3>
-                <p>आज {dayOfMonth} तारिख हो, हितोपदेश {dayOfMonth} अध्याय पढ्नुहोस्।</p>
+                
+                <div className="card bible-card">
+                    <h3>आजको हितोपदेश</h3>
+                    <p>आज {dayOfMonth} तारिख हो, हितोपदेश {dayOfMonth} अध्याय पढ्नुहोस्।</p>
+                </div>
             </div>
         </div>
     );
@@ -1507,11 +1510,11 @@ const PrayerPage: React.FC<{ currentUser: User }> = ({ currentUser }) => {
     };
     
     const handleSavePrayerRequest = async (title: string, content: string, imageFile: File | null) => {
-        if (!db || !storage) {
-            throw new Error("Firebase not initialized.");
+        if (!db || !storage || !currentUser) {
+            throw new Error("Firebase not initialized or user not logged in.");
         }
 
-        let imageUrl: string | null = editingRequest?.image || null;
+        let imageUrl: string | undefined = editingRequest?.image || undefined;
 
         if (imageFile) {
             const imageRef = ref(storage, `prayers/${Date.now()}_${imageFile.name}`);
@@ -1835,10 +1838,10 @@ const ChatListPage: React.FC<{ currentUser: User, onSelectChat: (chatId: string)
             const q = query(collection(db, "chats"), where("participantIds", "==", participantIds));
             const existingChatsSnapshot = await getDocs(q);
             
+            let chatId: string;
             if (!existingChatsSnapshot.empty) {
                 // Chat exists, navigate to it
-                const existingChat = existingChatsSnapshot.docs[0];
-                onSelectChat(existingChat.id);
+                chatId = existingChatsSnapshot.docs[0].id;
             } else {
                 // Create new chat
                 const participants: { [key: string]: { name: string; avatar: string; } } = {
@@ -1858,12 +1861,16 @@ const ChatListPage: React.FC<{ currentUser: User, onSelectChat: (chatId: string)
                     createdAt: serverTimestamp(),
                     lastActivity: serverTimestamp(),
                 });
-                onSelectChat(newChatRef.id);
+                chatId = newChatRef.id;
             }
+            onSelectChat(chatId);
+            setIsCreateModalOpen(false);
+            setSelectedUserIds([]);
         } catch (error) {
             console.error("Error starting chat:", error);
             alert("च्याट सुरु गर्न असफल भयो।");
-            setIsCreatingChat(false); // Reset loading state on error only
+        } finally {
+            setIsCreatingChat(false);
         }
     };
     
@@ -1886,9 +1893,9 @@ const ChatListPage: React.FC<{ currentUser: User, onSelectChat: (chatId: string)
 
                     return (
                         <div key={chat.id} className={`list-item chat-item ${isUnread ? 'unread' : ''}`} onClick={() => onSelectChat(chat.id)}>
-                            <div className="chat-avatar">{getAvatarInitial(partner.name)}</div>
+                            <div className="chat-avatar">{getAvatarInitial(partner?.name)}</div>
                             <div className="chat-info">
-                                <span className="chat-name">{partner.name}</span>
+                                <span className="chat-name">{partner?.name}</span>
                                 {chat.lastMessage && (
                                     <p className="chat-last-message">
                                         {chat.lastMessage.type === 'image' && <span className="material-symbols-outlined">image</span>}
@@ -1966,12 +1973,16 @@ const ConversationPage: React.FC<{
                     [`lastRead.${currentUser.id}`]: serverTimestamp()
                 });
             }
+        }, (error) => {
+            console.error("Error fetching chat details:", error);
         });
         
         const messagesQuery = query(collection(db, "chats", chatId, "messages"), orderBy("createdAt", "asc"));
         const unsubscribeMessages = onSnapshot(messagesQuery, (snapshot) => {
             const msgs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Message));
             setMessages(msgs);
+        }, (error) => {
+            console.error("Error fetching chat messages:", error);
         });
 
         return () => {
@@ -2008,7 +2019,16 @@ const ConversationPage: React.FC<{
         });
     };
 
-    const partnerName = chat ? Object.values(chat.participants).find(p => p.name !== currentUser.name)?.name || 'Chat' : 'Chat';
+    const getPartnerName = () => {
+        if (!chat) return 'Chat';
+        const partnerId = chat.participantIds.find(id => id !== currentUser.id);
+        if (partnerId && chat.participants[partnerId]) {
+            return chat.participants[partnerId].name;
+        }
+        return 'Chat';
+    };
+
+    const partnerName = getPartnerName();
 
     return (
         <div className="conversation-page">
