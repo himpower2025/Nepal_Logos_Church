@@ -111,7 +111,19 @@ const MOCK_VERSES_OF_THE_DAY: Verse[] = [
     { verse: 'हितोपदेश ३:५-६', text: 'तेरो सारा हृदयले परमप्रभुमाथि भरोसा राख्, र तेरो आफ्नै समझशक्तिमाथि भर नपर्। तेरा सबै मार्गहरूमा उहाँलाई स्वीकार गर्, र उहाँले तेरा मार्गहरू सोझो बनाउनुहुनेछ।' },
     { verse: '२ तिमोथी १:७', text: 'किनभने परमेश्‍वरले हामीलाई डरको आत्मा दिनुभएको छैन, तर शक्ति, प्रेम र आत्मसंयमको आत्मा दिनुभएको छ।' },
     { verse: 'यहोशू १:९', text: 'के मैले तँलाई आज्ञा दिएको छैनँ र? बलियो र साहसी हो। नडरा, न त निरुत्साहित हो, किनभने तँ जहाँ गए पनि परमप्रभु तेरा परमेश्‍वर तँसँग हुनुहुन्छ।' },
-    { verse: 'भजनसंग्रह ४۶:१', text: 'परमेश्‍वर हाम्रा शरणस्थान र बल हुनुहुन्छ, सङ्कष्टमा तुरुन्तै पाइने सहायक।' }
+    { verse: 'भजनसंग्रह ४६:१', text: 'परमेश्‍वर हाम्रा शरणस्थान र बल हुनुहुन्छ, सङ्कष्टमा तुरुन्तै पाइने सहायक।' },
+    { verse: 'मत्ती ६:३३', text: 'तर पहिले उहाँको राज्य र उहाँको धार्मिकताको खोजी गर, र यी सबै कुरा तिमीहरूलाई थपिनेछन्।' },
+    { verse: 'गलाती ५:२२-२३', text: 'तर पवित्र आत्माको फलचाहिँ प्रेम, आनन्द, शान्ति, धैर्य, दया, भलाइ, विश्वस्तता, नम्रता र आत्मसंयम हो।' },
+    { verse: 'हिब्रू ११:१', text: 'अब विश्वासचाहिँ आशा राखिएका कुराहरूको निश्चय र नदेखिएका कुराहरूको प्रमाण हो।' },
+    { verse: 'रोमी १०:९', text: 'यदि तपाईंले आफ्नो मुखले “येशू नै प्रभु हुनुहुन्छ” भनी स्वीकार गर्नुभयो र परमेश्वरले उहाँलाई मरेकाहरूबाट जीवित पार्नुभयो भनी आफ्नो हृदयमा विश्वास गर्नुभयो भने तपाईंले उद्धार पाउनुहुनेछ।' },
+    { verse: 'भजनसंग्रह १:१-२', text: 'धन्य हो त्यो मानिस, जो दुष्टहरूको सल्लाहमा हिँड्दैन, र पापीहरूको मार्गमा खडा हुँदैन, र गिल्ला गर्नेहरूको संगतमा बस्दैन। तर त्यसको खुशी परमप्रभुको व्यवस्थामा रहन्छ, र त्यसले दिनरात उहाँको व्यवस्थामा ध्यान गर्छ।' },
+    { verse: 'यशैया ४०:३१', text: 'तर परमप्रभुमा आशा राख्नेहरूले नयाँ शक्ति प्राप्त गर्नेछन्। तिनीहरू गरुडझैं पखेटा लाएर माथि उड्नेछन्। तिनीहरू दगुरेर जानेछन् र थकित हुनेछैनन्, तिनीहरू हिँड्नेछन् र मूर्छित हुनेछैनन्।' },
+    { verse: '१ कोरिन्थी १०:१३', text: 'तिमीहरूमाथि आइपरेको कुनै पनि परीक्षा मानिसलाई साधारणतया आइपर्नेभन्दा बाहिरको छैन। र परमेश्वर विश्वासयोग्य हुनुहुन्छ। उहाँले तिमीहरूलाई तिमीहरूको शक्तिभन्दा बाहिरको परीक्षामा पर्न दिनुहुनेछैन।' },
+    { verse: 'एफिसी २:८-९', text: 'किनभने अनुग्रहबाट विश्वासद्वारा तिमीहरूले उद्धार पाएका छौ—र यो तिमीहरू आफैबाट होइन, यो परमेश्वरको वरदान हो—कर्महरूद्वारा होइन, ताकि कसैले घमण्ड गर्न नपाओस्।' },
+    { verse: 'भजनसंग्रह ३७:४', text: 'परमप्रभुमा आनन्दित हो, र उहाँले तेरो हृदयका इच्छाहरू पूरा गर्नुहुनेछ।' },
+    { verse: '२ कोरिन्थी ५:१७', text: 'यसकारण, यदि कोही ख्रीष्टमा छ भने, ऊ नयाँ सृष्टि हो। पुरानो बितिगएको छ, हेर, नयाँ आएको छ!' },
+    { verse: 'हितोपदेश २२:६', text: 'बालकलाई त्यसको हिँड्नुपर्ने बाटोमा तालिम दे, र ऊ बूढो हुँदा पनि त्यसबाट तर्कनेछैन।' },
+    { verse: 'भजनसंग्रह ११९:१०५', text: 'तपाईंको वचन मेरो खुट्टाको निम्ति बत्ती, र मेरो बाटोको निम्ति उज्यालो हो।' }
 ];
 
 const MCCHEYNE_READING_PLAN = [
@@ -200,7 +212,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३३, लूका २२:१-३०, भजनसंग्रह ११-१२, एफिसी ४",
     "प्रस्थान ३४, लूका २२:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
     "प्रस्थान ३५, लूका २२:५४-७१, भजनसंग्रह १५-१६, एफिसी ६",
-    "प्रस्थान ३६, लूका २३:१-२५, भजनसंग्रह १७, फिलिप्पी १",
+    "प्रस्थान ३६, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
     "प्रस्थान ३७, लूका २३:२६-५६, भजनसंग्रह १८, फिलिप्पी २",
     "प्रस्थान ३८, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
     "प्रस्थान ३९, लूका २४:१३-५३, भजनसंग्रह २०, फिलिप्पी ४",
@@ -331,7 +343,7 @@ const MCCHEYNE_READING_PLAN = [
     "न्यायकर्ता ३, गलाती २, यशैया ३९, यशैया ४३",
     "न्यायकर्ता ४, गलाती ३, यशैया ४०, यशैया ४४",
     "न्यायकर्ता ५, गलाती ४, यर्मिया १, यशैया ४५",
-    "न्यायकर्ता ६, गलाती ५, यर्मिया २, यशैया ४६",
+    "न्यायकर्ता ६, गलाती ५, यर्मिया २, यशैया ४６",
     "न्यायकर्ता ७, गलाती ६, यर्मिया ३, यशैया ४७",
     "न्यायकर्ता ८, एफिसी १, यर्मिया ४, यशैया ४८",
     "न्यायकर्ता ९, एफिसी २, यर्मिया ५, यशैया ४९",
@@ -361,8 +373,8 @@ const MCCHEYNE_READING_PLAN = [
     "१ शमूएल ८, १ तिमोथी ४, यर्मिया २९, इजकिएल २",
     "१ शमूएल ९, १ तिमोथी ५, यर्मिया ३०, इजकिएल ३",
     "१ शमूएल १०, १ तिमोथी ६, यर्मिया ३१, इजकिएल ४",
-    "१ शमूएल ११, २ तिमोथी १, यर्मिया ३२, इजकिएल ५",
-    "१ शमूएल १२, २ तिमोथी २, यर्मिया ३३, इजकिएल ६",
+    "१ शमूएल ११, २ तिमोथी १, यर्मिया ३２, इजकिएल ५",
+    "१ शमूएल १२, २ तिमोथी २, यर्मिया ३３, इजकिएल ६",
     "१ शमूएल १३, २ तिमोथी ३, यर्मिया ३４, इजकिएल ७",
     "१ शमूएल १४, २ तिमोथी ४, यर्मिया ३５, इजकिएल ८",
     "१ शमूएल १५, तीतस १, यर्मिया ३６, इजकिएल ९",
@@ -379,7 +391,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ शमूएल २६, हिब्रू ८, यर्मिया ४７, इजकिएल २०",
     "१ शमूएल २７, हिब्रू ९, यर्मिया ४８, इजकिएल २१",
     "१ शमूएल २८, हिब्रू १०, यर्मिया ४９, इजकिएल २२",
-    "१ शमूएल २९, हिब्रू ११, यर्मिया ५०, इजकिएल २३",
+    "१ शमूएल २९, हिब्रू ११, यर्मिया ५０, इजकिएल २३",
     "१ शमूएल ३०, हिब्रू १२, यर्मिया ५１, इजकिएल २४",
     "१ शमूएल ३१, हिब्रू १३, यर्मिया ५２, इजकिएल २५",
     "२ शमूएल १, याकूब १, दानिएल १, इजकिएल २६",
@@ -403,7 +415,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ शमूएल १९, २ यूहन्ना १, होशे ७, इजकिएल ४４",
     "२ शमूएल २०, ३ यूहन्ना १, होशे ८, इजकिएल ४５",
     "२ शमूएल २१, यहूदा १, होशे ९, इजकिएल ४６",
-    "२ शमूएल २२, प्रकाश १, होशे १०, इजकिएल ४７",
+    "२ शमूएल २２, प्रकाश १, होशे १०, इजकिएल ४７",
     "२ शमूएल २३, प्रकाश २, होशे ११, इजकिएल ४８",
     "२ शमूएल २४, प्रकाश ३, होशे १२, योएल १",
     "१ राजा १, प्रकाश ४, होशे १३, योएल २",
@@ -489,10 +501,10 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ५, लूका १७, हितोपदेश २６, भजनसंग्रह ९４",
     "२ इतिहास ६, लूका १८, हितोपदेश २７, भजनसंग्रह ९５",
     "२ इतिहास ७, लूका १९, हितोपदेश २８, भजनसंग्रह ९６",
-    "२ इतिहास ८, लूका २०, हितोपदेश २９, भजनसंग्रह ९７",
+    "२ इतिहास ८, लूका २०, हितोपदेश २९, भजनसंग्रह ९７",
     "२ इतिहास ९, लूका २１, हितोपदेश ३０, भजनसंग्रह ९８",
     "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रह ९９",
-    "२ इतिहास ११, लूका २３, भजनसंग्रह १०４, भजनसंग्रह १००",
+    "२ इतिहास ११, लूका २３, भजनसंग्रह १०४, भजनसंग्रह १००",
     "२ इतिहास १२, लूका २४, भजनसंग्रह १०５, भजनसंग्रह १०１",
     "२ इतिहास १३, यूहन्ना १, भजनसंग्रह १०６, भजनसंग्रह १०２",
     "२ इतिहास १४, यूहन्ना २, भजनसंग्रह १०７, भजनसंग्रह १०３",
@@ -614,7 +626,8 @@ const ImageUpload: React.FC<{
     selectedFile: File | null;
     setSelectedFile: (file: File | null) => void;
     currentImageUrl?: string | null;
-}> = ({ selectedFile, setSelectedFile, currentImageUrl }) => {
+    label?: string;
+}> = ({ selectedFile, setSelectedFile, currentImageUrl, label = 'Add a photo' }) => {
     const [preview, setPreview] = useState<string | null>(currentImageUrl || null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -656,7 +669,7 @@ const ImageUpload: React.FC<{
             ) : (
                 <label htmlFor="image-upload" className="image-upload-label">
                      <span className="material-symbols-outlined">add_photo_alternate</span>
-                    <span>Add a photo</span>
+                    <span>{label}</span>
                     <input
                         id="image-upload"
                         type="file"
@@ -983,6 +996,8 @@ const BiblePage: React.FC = () => {
     const [selectedReading, setSelectedReading] = useState<string | null>(null);
     const [readingContent, setReadingContent] = useState('');
     const [isLoadingReading, setIsLoadingReading] = useState(false);
+    
+    const dayOfMonth = new Date().getDate();
 
     useEffect(() => {
         const dayOfYear = Math.floor((new Date().getTime() - new Date(new Date().getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
@@ -1008,7 +1023,7 @@ const BiblePage: React.FC = () => {
          return Math.floor(diff / oneDay);
     };
 
-    const todayReading = MCCHEYNE_READING_PLAN[getDayOfYear() -1];
+    const todayReading = MCCHEYNE_READING_PLAN[getDayOfYear() -1] || MCCHEYNE_READING_PLAN[0];
 
     return (
         <div className="page-content">
@@ -1021,8 +1036,13 @@ const BiblePage: React.FC = () => {
             )}
             
             <div className="card bible-card" onClick={() => handleReadingClick(todayReading)}>
-                <h3>Today's Reading (M'Cheyne)</h3>
+                <h3>आजको बाइबल पढ्ने योजनाको लागि यहाँ गर्नुहोस्।</h3>
                 <p>{todayReading}</p>
+            </div>
+            
+            <div className="card bible-card">
+                <h3>आजको हितोपदेश</h3>
+                <p>आज {dayOfMonth} तारिख हो, हितोपदेश {dayOfMonth} अध्याय पढ्नुहोस्।</p>
             </div>
 
             <Modal isOpen={selectedReading !== null} onClose={() => setSelectedReading(null)}>
@@ -1074,28 +1094,36 @@ const NewsPage: React.FC<{currentUser: User}> = ({currentUser}) => {
     const handleSaveNews = async (title: string, content: string, imageFile: File | null) => {
         if (!db || !storage || !currentUser) return;
 
-        let imageUrl = editingNews?.image || undefined;
-        if (imageFile) {
-            const imageRef = ref(storage, `news/${Date.now()}_${imageFile.name}`);
-            await uploadBytes(imageRef, imageFile);
-            imageUrl = await getDownloadURL(imageRef);
-        }
+        try {
+            let imageUrl = editingNews?.image || undefined;
+            if (imageFile) {
+                const imageRef = ref(storage, `news/${Date.now()}_${imageFile.name}`);
+                await uploadBytes(imageRef, imageFile);
+                imageUrl = await getDownloadURL(imageRef);
+            }
 
-        const data = {
-            title,
-            content,
-            image: imageUrl,
-            authorId: currentUser.id,
-            authorName: currentUser.name,
-            createdAt: editingNews ? editingNews.createdAt : serverTimestamp()
-        };
+            const data = {
+                title,
+                content,
+                image: imageUrl,
+                authorId: currentUser.id,
+                authorName: currentUser.name,
+            };
 
-        if (editingNews) {
-            await updateDoc(doc(db, "news", editingNews.id), data);
-        } else {
-            await addDoc(collection(db, "news"), data);
+            if (editingNews) {
+                await updateDoc(doc(db, "news", editingNews.id), data);
+            } else {
+                await addDoc(collection(db, "news"), {
+                    ...data,
+                    createdAt: serverTimestamp()
+                });
+            }
+        } catch (error) {
+            console.error("Failed to save news:", error);
+            alert("An error occurred. Could not save the news item.");
+        } finally {
+            handleCloseModal();
         }
-        handleCloseModal();
     };
     
     const handleDeleteNews = async (newsItem: NewsItem) => {
@@ -1198,26 +1226,31 @@ const NewsFormModal: React.FC<{
                 <button type="button" className="modal-close-button" onClick={onClose} aria-label="Close">
                      <span className="material-symbols-outlined">close</span>
                 </button>
-                <h3>{newsItem ? 'Edit News' : 'Add News'}</h3>
+                <h3>{newsItem ? 'सुचना सम्पादन गर्नुहोस्' : 'सुचना थप्नुहोस्।'}</h3>
                 <input
                     type="text"
-                    placeholder="Title"
+                    placeholder="शीर्षक"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     required
                 />
                 <textarea
-                    placeholder="Content"
+                    placeholder="सामग्री"
                     rows={5}
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     required
                 ></textarea>
-                <ImageUpload selectedFile={imageFile} setSelectedFile={setImageFile} currentImageUrl={newsItem?.image} />
+                <ImageUpload 
+                    selectedFile={imageFile} 
+                    setSelectedFile={setImageFile} 
+                    currentImageUrl={newsItem?.image}
+                    label="फोटो थप्नुहोस्।(यदि तपाईं चाहनुहुन्छ भने)"
+                />
 
                 <div className="form-actions">
                     <button type="submit" className="action-button" disabled={isSaving}>
-                        {isSaving ? <div className="spinner"></div> : 'Save'}
+                        {isSaving ? <div className="spinner"></div> : 'सेभ गर्नुहोस्'}
                     </button>
                 </div>
             </form>
@@ -1503,33 +1536,39 @@ const PrayerPage: React.FC<{ currentUser: User }> = ({ currentUser }) => {
     const handleSavePrayerRequest = async (title: string, content: string, imageFile: File | null) => {
         if (!db || !storage) return;
 
-        let imageUrl: string | null = editingRequest?.image || null;
+        try {
+            let imageUrl: string | null = editingRequest?.image || null;
 
-        if (imageFile) {
-            const imageRef = ref(storage, `prayers/${Date.now()}_${imageFile.name}`);
-            await uploadBytes(imageRef, imageFile);
-            imageUrl = await getDownloadURL(imageRef);
+            if (imageFile) {
+                const imageRef = ref(storage, `prayers/${Date.now()}_${imageFile.name}`);
+                await uploadBytes(imageRef, imageFile);
+                imageUrl = await getDownloadURL(imageRef);
+            }
+
+            const data = {
+                title,
+                content,
+                image: imageUrl,
+                authorId: editingRequest?.authorId || currentUser.id,
+                authorName: editingRequest?.authorName || currentUser.name,
+            };
+
+            if (editingRequest) {
+                await updateDoc(doc(db, "prayerRequests", editingRequest.id), data);
+            } else {
+                await addDoc(collection(db, "prayerRequests"), {
+                    ...data,
+                    prayedBy: [],
+                    comments: [],
+                    createdAt: serverTimestamp(),
+                });
+            }
+        } catch (error) {
+            console.error("Failed to save prayer request:", error);
+            alert("An error occurred. Could not save the prayer request.");
+        } finally {
+            handleCloseAddModal();
         }
-
-        const data = {
-            title,
-            content,
-            image: imageUrl,
-            authorId: editingRequest?.authorId || currentUser.id,
-            authorName: editingRequest?.authorName || currentUser.name,
-        };
-
-        if (editingRequest) {
-            await updateDoc(doc(db, "prayerRequests", editingRequest.id), data);
-        } else {
-            await addDoc(collection(db, "prayerRequests"), {
-                ...data,
-                prayedBy: [],
-                comments: [],
-                createdAt: serverTimestamp(),
-            });
-        }
-        handleCloseAddModal();
     };
     
     const handleDeleteRequest = async (request: PrayerRequest) => {
@@ -1645,24 +1684,29 @@ const PrayerFormModal: React.FC<{
                 <button type="button" className="modal-close-button" onClick={onClose} aria-label="Close">
                      <span className="material-symbols-outlined">close</span>
                 </button>
-                <h3>{request ? 'Edit Prayer Request' : 'New Prayer Request'}</h3>
+                <h3>{request ? 'अनुरोध सम्पादन गर्नुहोस्' : 'प्रार्थना अनुरोध'}</h3>
                 <input
                     type="text"
-                    placeholder="Title"
+                    placeholder="शीर्षक"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     required
                 />
                 <textarea
-                    placeholder="Describe your prayer request..."
+                    placeholder="हामीले तपाईंको लागि के प्रार्थना गर्नुपर्छ?"
                     rows={5}
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     required
                 ></textarea>
-                <ImageUpload selectedFile={imageFile} setSelectedFile={setImageFile} currentImageUrl={request?.image} />
+                <ImageUpload 
+                    selectedFile={imageFile} 
+                    setSelectedFile={setImageFile} 
+                    currentImageUrl={request?.image} 
+                    label="फोटो थप्नुहोस्।(यदि तपाईं चाहनुहुन्छ भने)" 
+                />
                 <button type="submit" className="action-button" disabled={isSaving}>
-                    {isSaving ? <div className="spinner"></div> : 'Save Request'}
+                    {isSaving ? <div className="spinner"></div> : 'अनुरोध पठाउनुहोस्।'}
                 </button>
             </form>
         </Modal>
@@ -1809,44 +1853,41 @@ const ChatListPage: React.FC<{ currentUser: User, onSelectChat: (chatId: string)
         if (!db || selectedUserIds.length === 0) return;
         setIsCreatingChat(true);
 
-        const participantIds = [currentUser.id, ...selectedUserIds].sort();
-        
-        // Check if chat already exists
-        const q = query(collection(db, "chats"), where("participantIds", "==", participantIds));
-        const existingChatsSnapshot = await getDocs(q);
-        
-        if (!existingChatsSnapshot.empty) {
-            // Chat exists, navigate to it
-            const existingChat = existingChatsSnapshot.docs[0];
-            onSelectChat(existingChat.id);
-            setIsCreateModalOpen(false);
-            setSelectedUserIds([]);
-            setIsCreatingChat(false);
-            return;
-        }
-
-        // Create new chat
-        const participants = {
-            [currentUser.id]: { name: currentUser.name, avatar: currentUser.avatar }
-        };
-        selectedUserIds.forEach(uid => {
-            const user = users.find(u => u.id === uid);
-            if (user) {
-                participants[uid] = { name: user.name, avatar: user.avatar };
-            }
-        });
-        
         try {
-            const newChatRef = await addDoc(collection(db, "chats"), {
-                participantIds,
-                participants,
-                lastMessage: null,
-                createdAt: serverTimestamp(),
-                lastActivity: serverTimestamp(),
-            });
-            onSelectChat(newChatRef.id);
+            const participantIds = [currentUser.id, ...selectedUserIds].sort();
+            
+            // Check if chat already exists
+            const q = query(collection(db, "chats"), where("participantIds", "==", participantIds));
+            const existingChatsSnapshot = await getDocs(q);
+            
+            if (!existingChatsSnapshot.empty) {
+                // Chat exists, navigate to it
+                const existingChat = existingChatsSnapshot.docs[0];
+                onSelectChat(existingChat.id);
+            } else {
+                // Create new chat
+                const participants: { [key: string]: { name: string; avatar: string; } } = {
+                    [currentUser.id]: { name: currentUser.name, avatar: currentUser.avatar }
+                };
+                selectedUserIds.forEach(uid => {
+                    const user = users.find(u => u.id === uid);
+                    if (user) {
+                        participants[uid] = { name: user.name, avatar: user.avatar };
+                    }
+                });
+                
+                const newChatRef = await addDoc(collection(db, "chats"), {
+                    participantIds,
+                    participants,
+                    lastMessage: null,
+                    createdAt: serverTimestamp(),
+                    lastActivity: serverTimestamp(),
+                });
+                onSelectChat(newChatRef.id);
+            }
         } catch (error) {
-            console.error("Error creating chat:", error);
+            console.error("Error starting chat:", error);
+            alert("च्याट सुरु गर्न असफल भयो।");
         } finally {
             setIsCreateModalOpen(false);
             setSelectedUserIds([]);
