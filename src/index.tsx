@@ -1,5 +1,4 @@
 
-
 import React, { useState, useEffect, useRef, useCallback, createContext, useContext, useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
 // Fix: Import `createPortal` from `react-dom` to be used for modals.
@@ -237,7 +236,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी १७, यूहन्ना १०:१-२१, भजनसंग्रह ३８, १ तिमोथी ६",
     "लेवी १८, यूहन्ना १०:२२-४२, भजनसंग्रह ३９, २ तिमोथी १",
     "लेवी १९, यूहन्ना ११:१-२７, भजनसंग्रह ४०, २ तिमोथी २",
-    "लेवी २०, यूहन्ना ११:२８-५７, भजनसंग्रह ४１, २ तिमोथी ३",
+    "लेवी २०, यूहन्ना ११:२８-５७, भजनसंग्रह ४１, २ तिमोथी ३",
     "लेवी २१, यूहन्ना १२:१-१९, भजनसंग्रह ४２, २ तिमोथी ४",
     "लेवी २２, यूहन्ना १२:२०-५०, भजनसंग्रह ४３, तीतस १",
     "लेवी २३, यूहन्ना १३, भजनसंग्रह ४４, तीतस २",
@@ -261,9 +260,9 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १४, प्रेरित ५:१९-４２, भजनसंग्रह ६２, याकूब ३",
     "गन्ती १५, प्रेरित ६, भजनसंग्रह ६３, याकूब ४",
     "गन्ती १६, प्रेरित ७:१-२１, भजनसंग्रह ६４, याकूब ५",
-    "गन्ती १७, प्रेरित ७:२２-４３, भजनसंग्रह ६５, १ पत्रुस १",
+    "गन्ती १७, प्रेरित ७:२２-４३, भजनसंग्रह ६５, १ पत्रुस १",
     "गन्ती १८, प्रेरित ७:४４-६０, भजनसंग्रह ६６, १ पत्रुस २",
-    "गन्ती १९, प्रेरित ८:१-२５, भजनसंग्रह ६７, १ पत्रुस ३",
+    "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६７, १ पत्रुस ३",
     "गन्ती २०, प्रेरित ८:२６-४०, भजनसंग्रह ६８, १ पत्रुस ४",
     "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६９, १ पत्रुस ५",
     "गन्ती २２, प्रेरित ९:२２-４３, भजनसंग्रह ७０, २ पत्रुस १",
@@ -282,9 +281,9 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ३５, प्रेरित १८, हितोपदेश ६, प्रकाश ३",
     "गन्ती ३６, प्रेरित १९, हितोपदेश ७, प्रकाश ४",
     "व्यवस्था १, प्रेरित २०:१-१６, हितोपदेश ८, प्रकाश ५",
-    "व्यवस्था २, प्रेरित २०:१７-३８, हितोपदेश ९, प्रकाश ६",
+    "व्यवस्था २, प्रेरित २०:१７-३८, हितोपदेश ९, प्रकाश ६",
     "व्यवस्था ३, प्रेरित २१:१-१८, उपदेशक १, प्रकाश ७",
-    "व्यवस्था ४, प्रेरित २१:१९-４３, उपदेशक २, प्रकाश ८",
+    "व्यवस्था ४, प्रेरित २१:१९-４३, उपदेशक २, प्रकाश ८",
     "व्यवस्था ५, प्रेरित २２, उपदेशक ३, प्रकाश ९",
     "व्यवस्था ६, प्रेरित २३, उपदेशक ४, प्रकाश १०",
     "व्यवस्था ७, प्रेरित २४, उपदेशक ५, प्रकाश ११",
@@ -313,7 +312,7 @@ const MCCHEYNE_READING_PLAN = [
     "व्यवस्था ३０, रोमी १६, यशैया ८, यशैया १२",
     "व्यवस्था ३१, १ कोरिन्थी १, यशैया ९, यशैया १३",
     "व्यवस्था ३２, १ कोरिन्थी २, यशैया १०, यशैया १४",
-    "व्यवस्था ३３, १ कोरिन्थी ३, यशैया ११, यशैया १५",
+    "व्यवस्था ३३, १ कोरिन्थी ३, यशैया ११, यशैया १५",
     "व्यवस्था ३４, १ कोरिन्थी ४, यशैया १२, यशैया १६",
     "यहोशू १, १ कोरिन्थी ५, यशैया १३, यशैया १७",
     "यहोशू २, १ कोरिन्थी ६, यशैया १४, यशैया १८",
@@ -395,7 +394,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ शमूएल २९, हिब्रू ११, यर्मिया ५０, इजकिएल २३",
     "१ शमूएल ३०, हिब्रू १२, यर्मिया ५１, इजकिएल २४",
     "१ शमूएल ३１, हिब्रू १३, यर्मिया ५２, इजकिएल २५",
-    "२ शमूएल १, याकूब १, दानिएल १, इजकिएल २६",
+    "२ शमूएल १, याकूब १, दानिएल १, इजकिएल २６",
     "२ शमूएल २, याकूब २, दानिएल २, इजकिएल २７",
     "२ शमूएल ३, याकूब ३, दानिएल ३, इजकिएल २८",
     "२ शमूएल ४, याकूब ४, दानिएल ४, इजकिएल २९",
@@ -457,7 +456,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ राजा १४, मत्ती १७, भजनसंग्रह २०, भजनसंग्रह २१",
     "२ राजा १५, मत्ती १८, भजनसंग्रह २２, भजनसंग्रह २३",
     "२ राजा १६, मत्ती १९, भजनसंग्रह २४, भजनसंग्रह २५",
-    "२ राजा १७, मत्ती २०, भजनसंग्रह २६, भजनसंग्रह २７",
+    "२ राजा १७, मत्ती २०, भजनसंग्रह २６, भजनसंग्रह २７",
     "२ राजा १८, मत्ती २१, भजनसंग्रह २८, भजनसंग्रह २९",
     "२ राजा १९, मत्ती २２, भजनसंग्रह ३०, भजनसंग्रह ३１",
     "२ राजा २०, मत्ती २３, भजनसंग्रह ३２, भजनसंग्रह ३３",
@@ -468,7 +467,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ राजा २५, मत्ती २８, भजनसंग्रह ४２, भजनसंग्रह ४３",
     "१ इतिहास १, मर्कूस १, भजनसंग्रह ४４, भजनसंग्रह ४５",
     "१ इतिहास २, मर्कूस २, भजनसंग्रह ४６, भजनसंग्रह ४７",
-    "१ इतिहास ३, मर्कूस ३, भजनसंग्रह ४８, भजनसंग्रह ४९",
+    "१ इतिहास ३, मर्कूस ३, भजनसंग्रह ४８, भजनसंग्रह ४９",
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रह ५０, भजनसंग्रह ५１",
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रह ५２, भजनसंग्रह ५３",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रह ५４, भजनसंग्रह ५５",
@@ -509,18 +508,18 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १२, लूका २४, भजनसंग्रह १०５, भजनसंग्रह १०１",
     "२ इतिहास १३, यूहन्ना १, भजनसंग्रह १०６, भजनसंग्रह १०２",
     "२ इतिहास १४, यूहन्ना २, भजनसंग्रह १०７, भजनसंग्रह १०３",
-    "२ इतिहास १५, यूहन्ना ३, भजनसंग्रह १०８, भजनसंग्रह १०９",
+    "२ इतिहास १५, यूहन्ना ३, भजनसंग्रह १०８, भजनसंग्रह १०९",
     "२ इतिहास १६, यूहन्ना ४, भजनसंग्रह १１０, भजनसंग्रह ११１",
     "२ इतिहास १७, यूहन्ना ५, भजनसंग्रह १１２, भजनसंग्रह ११３",
     "२ इतिहास १८, यूहन्ना ६, भजनसंग्रह १１４, भजनसंग्रह ११５",
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रह १１６, भजनसंग्रह ११７",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रह १１８, भजनसंग्रह ११९:१-३２",
-    "२ इतिहास २१, यूहन्ना ९, भजनसंग्रह ११९:३३-６４, भजनसंग्रह ११९:６５-९६",
-    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रह ११९:९७-१２８, भजनसंग्रह ११९:१２９-१５２",
+    "२ इतिहास २१, यूहन्ना ९, भजनसंग्रह ११९:३३-６４, भजनसंग्रह ११९:６५-९६",
+    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रह ११९:९७-१２८, भजनसंग्रह ११९:१２９-१５２",
     "२ इतिहास २३, यूहन्ना ११, भजनसंग्रह ११९:१５３-१７６, भजनसंग्रह १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रह १२１, भजनसंग्रह १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रह १२３, भजनसंग्रह १२４",
-    "२ इतिहास २६, यूहन्ना १४, भजनसंग्रह १२５, भजनसंग्रह १२６",
+    "२ इतिहास २６, यूहन्ना १४, भजनसंग्रह १२５, भजनसंग्रह १२６",
     "२ इतिहास २७, यूहन्ना १५, भजनसंग्रह १२７, भजनसंग्रह १२８",
     "२ इतिहास २८, यूहन्ना १६, भजनसंग्रह १२９, भजनसंग्रह १३０",
     "२ इतिहास २९, यूहन्ना १७, भजनसंग्रह १३１, भजनसंग्रह १३２",
@@ -906,7 +905,7 @@ const WorshipPage: React.FC<{currentUser: User}> = ({currentUser}) => {
              <div className="worship-actions">
                 <button className="action-button" onClick={() => setIsOfferingModalOpen(true)}>
                     <span className="material-symbols-outlined">volunteer_activism</span>
-                    Online Offering
+                    अनलाइन भेटी
                 </button>
             </div>
             <div className="past-worship-section">
@@ -1014,7 +1013,7 @@ const BiblePage: React.FC = () => {
     return (
         <div className="page-content">
             <h2>बाइबल</h2>
-            <div className="list-container">
+            <div className="list-container bible-card-list">
                 {verseOfTheDay && (
                     <div className="card verse-card">
                         <p className="verse-text">"{verseOfTheDay.text}"</p>
@@ -1070,20 +1069,23 @@ const NewsPage: React.FC<{currentUser: User}> = ({currentUser}) => {
             throw new Error("Firebase not initialized or user not logged in.");
         }
 
-        let imageUrl = editingNews?.image || undefined;
+        let imageUrl: string | undefined = editingNews?.image;
         if (imageFile) {
             const imageRef = ref(storage, `news/${Date.now()}_${imageFile.name}`);
             await uploadBytes(imageRef, imageFile);
             imageUrl = await getDownloadURL(imageRef);
         }
 
-        const data = {
+        const data: { [key: string]: any } = {
             title,
             content,
-            image: imageUrl,
             authorId: currentUser.id,
             authorName: currentUser.name,
         };
+        
+        if (imageUrl) {
+            data.image = imageUrl;
+        }
 
         if (editingNews) {
             await updateDoc(doc(db, "news", editingNews.id), data);
@@ -1514,7 +1516,7 @@ const PrayerPage: React.FC<{ currentUser: User }> = ({ currentUser }) => {
             throw new Error("Firebase not initialized or user not logged in.");
         }
 
-        let imageUrl: string | undefined = editingRequest?.image || undefined;
+        let imageUrl: string | undefined = editingRequest?.image;
 
         if (imageFile) {
             const imageRef = ref(storage, `prayers/${Date.now()}_${imageFile.name}`);
@@ -1522,13 +1524,16 @@ const PrayerPage: React.FC<{ currentUser: User }> = ({ currentUser }) => {
             imageUrl = await getDownloadURL(imageRef);
         }
 
-        const data = {
+        const data: { [key: string]: any } = {
             title,
             content,
-            image: imageUrl,
             authorId: editingRequest?.authorId || currentUser.id,
             authorName: editingRequest?.authorName || currentUser.name,
         };
+
+        if (imageUrl) {
+            data.image = imageUrl;
+        }
 
         if (editingRequest) {
             await updateDoc(doc(db, "prayerRequests", editingRequest.id), data);
@@ -1863,9 +1868,12 @@ const ChatListPage: React.FC<{ currentUser: User, onSelectChat: (chatId: string)
                 });
                 chatId = newChatRef.id;
             }
-            onSelectChat(chatId);
+            
+            // Close modal and reset state *before* navigating to avoid UI glitches
             setIsCreateModalOpen(false);
             setSelectedUserIds([]);
+            onSelectChat(chatId);
+
         } catch (error) {
             console.error("Error starting chat:", error);
             alert("च्याट सुरु गर्न असफल भयो।");
@@ -1961,7 +1969,7 @@ const ConversationPage: React.FC<{
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!db) return;
+        if (!db || !chatId) return;
         const chatRef = doc(db, "chats", chatId);
         const unsubscribeChat = onSnapshot(chatRef, (doc) => {
             if (doc.exists()) {
@@ -1971,7 +1979,7 @@ const ConversationPage: React.FC<{
                 // Mark as read
                 updateDoc(chatRef, {
                     [`lastRead.${currentUser.id}`]: serverTimestamp()
-                });
+                }).catch(err => console.error("Error marking chat as read:", err));
             }
         }, (error) => {
             console.error("Error fetching chat details:", error);
@@ -2029,6 +2037,21 @@ const ConversationPage: React.FC<{
     };
 
     const partnerName = getPartnerName();
+    
+    if (!chat) {
+        return (
+            <div className="conversation-page">
+                <header className="conversation-header">
+                     <button onClick={onBack} className="back-button" aria-label="Back to chats">
+                        <span className="material-symbols-outlined">arrow_back</span>
+                    </button>
+                    <h3>Loading Chat...</h3>
+                    <div style={{width: '40px'}}></div>
+                </header>
+                <Loading message="Loading conversation..." />
+            </div>
+        )
+    }
 
     return (
         <div className="conversation-page">

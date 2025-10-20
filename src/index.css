@@ -1,3 +1,4 @@
+
 :root {
     --primary-color: #004d40;
     --primary-color-dark: #00251a;
@@ -675,6 +676,10 @@ html, body, #root {
 }
 
 /* --- Bible Page --- */
+.bible-card-list {
+    gap: var(--space-lg);
+}
+
 .verse-card {
     background: linear-gradient(135deg, var(--primary-color), var(--primary-color-dark));
     color: var(--text-color-light);
