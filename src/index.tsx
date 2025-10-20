@@ -49,9 +49,9 @@ type UserRole = 'admin' | 'member' | 'news_contributor' | 'podcast_contributor';
 type User = { id: string; name: string; email: string; avatar: string; roles: UserRole[]; fcmTokens?: string[] };
 type Church = { id: string; name: string; logo: string; offeringDetails: any; };
 type Comment = { id: string; authorId: string; authorName: string; authorAvatar: string; content: string; createdAt: Timestamp; };
-type PrayerRequest = { id:string; authorId: string; authorName: string; title: string; content: string; image?: string; prayedBy: string[]; comments?: Comment[]; createdAt: Timestamp; };
+type PrayerRequest = { id:string; authorId: string; authorName: string; title: string; content: string; image?: string | null; prayedBy: string[]; comments?: Comment[]; createdAt: Timestamp; };
 type Podcast = { id: string; title: string; authorId: string; authorName: string; audioUrl: string; createdAt: Timestamp; };
-type NewsItem = { id: string; title: string; content: string; image?: string; createdAt: Timestamp; authorId: string, authorName: string };
+type NewsItem = { id: string; title: string; content: string; image?: string | null; createdAt: Timestamp; authorId: string, authorName: string };
 type Verse = { verse: string; text: string; };
 type Message = { id: string; senderId: string; content?: string; type: 'text' | 'image' | 'video'; mediaUrl?: string; createdAt: Timestamp; status?: 'uploading' | 'failed'; tempId?: string; };
 
@@ -148,7 +148,7 @@ const MCCHEYNE_READING_PLAN = [
     "उत्पत्ति २०, मत्ती २०, नहेम्याह १०, प्रेरित २०",
     "उत्पत्ति २१, मत्ती २१, नहेम्याह ११, प्रेरित २१",
     "उत्पत्ति २२, मत्ती २२, नहेम्याह १२, प्रेरित २२",
-    "उत्पत्ति २३, मत्ती २३, नहेम्याह १३, प्रेरित २३",
+    "उत्पत्ति २३, मत्ती ২৩, नहेम्याह १३, प्रेरित २३",
     "उत्पत्ति २४, मत्ती २४, एस्तर १, प्रेरित २४",
     "उत्पत्ति २५, मत्ती २५, एस्तर २, प्रेरित २५",
     "उत्पत्ति २६, मत्ती २６, एस्तर ३, प्रेरित २६",
@@ -212,7 +212,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३４, लूका २२:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
     "प्रस्थान ३５, लूका २२:५४-७１, भजनसंग्रह १५-१६, एफिसी ६",
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
-    "प्रस्थान ३７, लूका २३:२６-５６, भजनसंग्रह १८, फिलिप्पी २",
+    "प्रस्थान ३７, लूका २३:२६-५६, भजनसंग्रह १८, फिलिप्पी २",
     "प्रस्थान ३८, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
     "प्रस्थान ३９, लूका २४:१३-५३, भजनसंग्रह २०, फिलिप्पी ४",
     "प्रस्थान ४०, यूहन्ना १:१-२८, भजनसंग्रह २१, कलस्सी १",
@@ -223,14 +223,14 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी ५, यूहन्ना ४:१-३０, भजनसंग्रह २६, १ थिस्सलोनिकी २",
     "लेवी ६, यूहन्ना ४:३१-５４, भजनसंग्रह २७, १ थिस्सलोनिकी ३",
     "लेवी ७, यूहन्ना ५:१-२३, भजनसंग्रह २८, १ थिस्सलोनिकी ४",
-    "लेवी ८, यूहन्ना ५:２४-４７, भजनसंग्रह २९, १ थिस्सलोनिकी ५",
+    "लेवी ८, यूहन्ना ५:２４-４７, भजनसंग्रह २९, १ थिस्सलोनिकी ५",
     "लेवी ९, यूहन्ना ६:१-२１, भजनसंग्रह ३०, २ थिस्सलोनिकी १",
     "लेवी १०, यूहन्ना ६:२２-４०, भजनसंग्रह ३１, २ थिस्सलोनिकी २",
     "लेवी ११, यूहन्ना ६:४१-७１, भजनसंग्रह ३２, २ थिस्सलोनिकी ३",
     "लेवी १२, यूहन्ना ७:१-३１, भजनसंग्रह ३３, १ तिमोथी १",
     "लेवी १३, यूहन्ना ७:३२-５３, भजनसंग्रह ३４, १ तिमोथी २",
     "लेवी १४, यूहन्ना ८:१-३０, भजनसंग्रह ३５, १ तिमोथी ३",
-    "लेवी १५, यूहन्ना ८:३१-５９, भजनसंग्रह ३６, १ तिमोथी ४",
+    "लेवी १५, यूहन्ना ८:३१-５९, भजनसंग्रह ३６, १ तिमोथी ४",
     "लेवी १६, यूहन्ना ९, भजनसंग्रह ३７, १ तिमोथी ५",
     "लेवी १७, यूहन्ना १०:१-२１, भजनसंग्रह ३８, १ तिमोथी ६",
     "लेवी १८, यूहन्ना १०:२२-４２, भजनसंग्रह ३９, २ तिमोथी १",
@@ -273,7 +273,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती २८, प्रेरित १३:२６-５２, भजनसंग्रह ७６, १ यूहन्ना ४",
     "गन्ती २९, प्रेरित १४, भजनसंग्रह ७７, १ यूहन्ना ५",
     "गन्ती ३０, प्रेरित १५:१-२१, हितोपदेश १, २ यूहन्ना १",
-    "गन्ती ३１, प्रेरित १५:२２-４１, हितोपदेश २, ३ यूहन्ना १",
+    "गन्ती ३１, प्रेरित १५:२２-４१, हितोपदेश २, ३ यूहन्ना १",
     "गन्ती ३２, प्रेरित १६, हितोपदेश ३, यहूदा १",
     "गन्ती ३३, प्रेरित १७:१-१５, हितोपदेश ४, प्रकाश १",
     "गन्ती ३４, प्रेरित १७:१６-３４, हितोपदेश ५, प्रकाश २",
@@ -498,7 +498,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ३, लूका १५, हितोपदेश २४, भजनसंग्रह ९２",
     "२ इतिहास ४, लूका १६, हितोपदेश २५, भजनसंग्रह ९３",
     "२ इतिहास ५, लूका १७, हितोपदेश २６, भजनसंग्रह ९４",
-    "२ इतिहास ६, लूका १८, हितोपदेश २７, भजनसंग्रह ९５",
+    "२ इतिहास ६, लूका १८, हितोपदेश २७, भजनसंग्रह ९５",
     "२ इतिहास ७, लूका १९, हितोपदेश २８, भजनसंग्रह ९６",
     "२ इतिहास ८, लूका २०, हितोपदेश २९, भजनसंग्रह ९７",
     "२ इतिहास ९, लूका २１, हितोपदेश ३０, भजनसंग्रह ९８",
@@ -1026,14 +1026,19 @@ const NewsPage: React.FC<{ currentUser: User; news: NewsItem[] }> = ({ currentUs
             throw new Error("Firebase not initialized or user not logged in.");
         }
 
-        let imageUrl: string | undefined;
+        let finalImageUrl: string | null = editingNews?.image || null;
 
         if (imageFile) {
+            if (editingNews?.image) {
+                try {
+                    await deleteObject(ref(storage, editingNews.image));
+                } catch (error) {
+                    console.warn("Could not delete old news image:", error);
+                }
+            }
             const imageRef = ref(storage, `news/${Date.now()}_${imageFile.name}`);
             await uploadBytes(imageRef, imageFile);
-            imageUrl = await getDownloadURL(imageRef);
-        } else if (editingNews?.image) {
-            imageUrl = editingNews.image;
+            finalImageUrl = await getDownloadURL(imageRef);
         }
 
         const payload = {
@@ -1041,14 +1046,11 @@ const NewsPage: React.FC<{ currentUser: User; news: NewsItem[] }> = ({ currentUs
             content,
             authorId: currentUser.id,
             authorName: currentUser.name,
-            ...(imageUrl && { image: imageUrl }),
+            image: finalImageUrl,
         };
 
         if (editingNews) {
-            await updateDoc(doc(db, "news", editingNews.id), {
-                ...payload,
-                image: imageUrl || null
-            });
+            await updateDoc(doc(db, "news", editingNews.id), payload);
         } else {
             await addDoc(collection(db, "news"), {
                 ...payload,
@@ -1442,13 +1444,19 @@ const PrayerPage: React.FC<{ currentUser: User; requests: PrayerRequest[] }> = (
             throw new Error("Firebase not initialized or user not logged in.");
         }
 
-        let imageUrl: string | undefined;
+        let finalImageUrl: string | null = editingRequest?.image || null;
+
         if (imageFile) {
+            if (editingRequest?.image) {
+                try {
+                    await deleteObject(ref(storage, editingRequest.image));
+                } catch (error) {
+                    console.warn("Could not delete old prayer image:", error);
+                }
+            }
             const imageRef = ref(storage, `prayers/${Date.now()}_${imageFile.name}`);
             await uploadBytes(imageRef, imageFile);
-            imageUrl = await getDownloadURL(imageRef);
-        } else if (editingRequest?.image) {
-            imageUrl = editingRequest.image;
+            finalImageUrl = await getDownloadURL(imageRef);
         }
 
         const payload = {
@@ -1456,14 +1464,11 @@ const PrayerPage: React.FC<{ currentUser: User; requests: PrayerRequest[] }> = (
             content,
             authorId: currentUser.id,
             authorName: currentUser.name,
-            ...(imageUrl && { image: imageUrl }),
+            image: finalImageUrl,
         };
 
         if (editingRequest) {
-            await updateDoc(doc(db, "prayerRequests", editingRequest.id), {
-                ...payload,
-                image: imageUrl || null
-            });
+            await updateDoc(doc(db, "prayerRequests", editingRequest.id), payload);
         } else {
             await addDoc(collection(db, "prayerRequests"), {
                 ...payload,
@@ -1648,15 +1653,15 @@ const PrayerDetailsModal: React.FC<{
 
     const handleAddComment = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!db || !newComment.trim() || !request || isCommenting) return;
+        if (!db || !newComment.trim() || !request || !currentUser || isCommenting) return;
 
         setIsCommenting(true);
         try {
             const commentsCollectionRef = collection(db, "prayerRequests", request.id, "comments");
             await addDoc(commentsCollectionRef, {
                 authorId: currentUser.id,
-                authorName: currentUser.name,
-                authorAvatar: currentUser.avatar,
+                authorName: currentUser.name || "Unknown User",
+                authorAvatar: currentUser.avatar || '',
                 content: newComment,
                 createdAt: serverTimestamp(),
             });
@@ -1795,7 +1800,7 @@ const ChatListPage: React.FC<{
                     </div>
                  )}
             </div>
-            <Fab onClick={() => setIsCreateModalOpen(true)} icon="chat" aria-label="New chat" />
+            <Fab onClick={() => setIsCreateModalOpen(true)} icon="groups" aria-label="New chat" />
 
             <CreateChatModal
                 isOpen={isCreateModalOpen}
@@ -1983,6 +1988,8 @@ const ConversationPage: React.FC<{
 
     const getChatTitle = () => {
         if (!currentChat) return "Loading...";
+        if (!currentChat.participants) return "Conversation"; // Safety check for crash
+
         if (currentChat.participantIds.length > 2) {
              return currentChat.participantIds
                 .filter(id => id !== currentUser.id)
@@ -2358,7 +2365,7 @@ const App: React.FC = () => {
         worship: { label: 'आरधना', icon: 'church' },
         podcast: { label: 'Podcast', icon: 'podcasts' },
         bible: { label: 'बाइबल', icon: 'menu_book' },
-        chat: { label: 'संगतिहरु', icon: 'chat' },
+        chat: { label: 'संगतिहरु', icon: 'groups' },
         prayer: { label: 'प्रार्थना', icon: 'volunteer_activism' },
     };
     
