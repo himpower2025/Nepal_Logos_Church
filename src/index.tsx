@@ -49,7 +49,7 @@ export const useFirebase = () => {
 type UserRole = 'admin' | 'member' | 'news_contributor' | 'podcast_contributor';
 type User = { id: string; name: string; email: string; avatar: string; roles: UserRole[]; fcmTokens?: string[] };
 type Church = { id: string; name: string; logo: string; offeringDetails: any; };
-type Comment = { id: string; author: User; authorId: string; content: string; createdAt: Timestamp; };
+type Comment = { id: string; authorId: string; authorName: string; authorAvatar: string; content: string; createdAt: Timestamp; };
 type PrayerRequest = { id:string; authorId: string; authorName: string; title: string; content: string; image?: string; prayedBy: string[]; comments: Comment[]; createdAt: Timestamp; };
 type Podcast = { id: string; title: string; authorId: string; authorName: string; audioUrl: string; createdAt: Timestamp; };
 type NewsItem = { id: string; title: string; content: string; image?: string; createdAt: Timestamp; authorId: string, authorName: string };
@@ -191,7 +191,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान १२, लूका ९:३७-६२, अय्यूब २९, २ कोरिन्थी २",
     "प्रस्थान १३, लूका १०:१-२४, अय्यूब ३०, २ कोरिन्थी ३",
     "प्रस्थान १४, लूका १०:२५-४२, अय्यूब ३१, २ कोरिन्थी ४",
-    "प्रस्थान १५, लूका ११:१-२८, अय्यूब ३२, २ कोरिन्थी ५",
+    "प्रस्थान १५, लूका ११:१-२८, अय्यूब ३２, २ कोरिन्थी ५",
     "प्रस्थान १६, लूका ११:२९-５４, अय्यूब ३३, २ कोरिन्थी ६",
     "प्रस्थान १७, लूका १२:१-३४, अय्यूब ३४, २ कोरिन्थी ७",
     "प्रस्थान १८, लूका १२:३५-५९, अय्यूब ३５, २ कोरिन्थी ८",
@@ -236,7 +236,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी १७, यूहन्ना १०:१-२१, भजनसंग्रह ३８, १ तिमोथी ६",
     "लेवी १८, यूहन्ना १०:२२-४२, भजनसंग्रह ३９, २ तिमोथी १",
     "लेवी १९, यूहन्ना ११:१-२７, भजनसंग्रह ४०, २ तिमोथी २",
-    "लेवी २०, यूहन्ना ११:२８-５७, भजनसंग्रह ४１, २ तिमोथी ३",
+    "लेवी २०, यूहन्ना ११:२８-５７, भजनसंग्रह ४１, २ तिमोथी ३",
     "लेवी २१, यूहन्ना १२:१-१९, भजनसंग्रह ४２, २ तिमोथी ४",
     "लेवी २２, यूहन्ना १२:२०-५०, भजनसंग्रह ४３, तीतस १",
     "लेवी २३, यूहन्ना १३, भजनसंग्रह ४４, तीतस २",
@@ -247,12 +247,12 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १, यूहन्ना १८:१-२३, भजनसंग्रह ४９, हिब्रू ३",
     "गन्ती २, यूहन्ना १८:२４-४०, भजनसंग्रह ५０, हिब्रू ४",
     "गन्ती ३, यूहन्ना १९:१-२２, भजनसंग्रह ५１, हिब्रू ५",
-    "गन्ती ४, यूहन्ना १९:२３-४２, भजनसंग्रह ५２, हिब्रू ६",
+    "गन्ती ४, यूहन्ना १९:२３-४२, भजनसंग्रह ५２, हिब्रू ६",
     "गन्ती ५, यूहन्ना २०, भजनसंग्रह ५３, हिब्रू ७",
     "गन्ती ६, यूहन्ना २１, भजनसंग्रह ५４, हिब्रू ८",
     "गन्ती ७, प्रेरित १, भजनसंग्रह ५５, हिब्रू ९",
     "गन्ती ८, प्रेरित २:१-२１, भजनसंग्रह ५６, हिब्रू १०",
-    "गन्ती ९, प्रेरित २:२２-४７, भजनसंग्रह ५７, हिब्रू ११",
+    "गन्ती ९, प्रेरित २:२２-४७, भजनसंग्रह ५７, हिब्रू ११",
     "गन्ती १०, प्रेरित ३, भजनसंग्रह ५８, हिब्रू १२",
     "गन्ती ११, प्रेरित ४:१-२２, भजनसंग्रह ५９, हिब्रू १३",
     "गन्ती १२, प्रेरित ४:२३-३７, भजनसंग्रह ६０, याकूब १",
@@ -261,7 +261,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १५, प्रेरित ६, भजनसंग्रह ६３, याकूब ४",
     "गन्ती १६, प्रेरित ७:१-२１, भजनसंग्रह ६４, याकूब ५",
     "गन्ती १७, प्रेरित ७:२２-४३, भजनसंग्रह ६５, १ पत्रुस १",
-    "गन्ती १८, प्रेरित ७:४４-६０, भजनसंग्रह ६６, १ पत्रुस २",
+    "गन्ती १८, प्रेरित ७:४４-６０, भजनसंग्रह ६６, १ पत्रुस २",
     "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६７, १ पत्रुस ३",
     "गन्ती २०, प्रेरित ८:२６-४०, भजनसंग्रह ६８, १ पत्रुस ४",
     "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६９, १ पत्रुस ५",
@@ -273,8 +273,8 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती २७, प्रेरित १३:१-२５, भजनसंग्रह ७５, १ यूहन्ना ३",
     "गन्ती २८, प्रेरित १३:२６-５２, भजनसंग्रह ७６, १ यूहन्ना ४",
     "गन्ती २९, प्रेरित १४, भजनसंग्रह ७７, १ यूहन्ना ५",
-    "गन्ती ३０, प्रेरित १५:१-२１, हितोपदेश १, २ यूहन्ना १",
-    "गन्ती ३１, प्रेरित १५:२２-４１, हितोपदेश २, ३ यूहन्ना १",
+    "गन्ती ३０, प्रेरित १५:१-२१, हितोपदेश १, २ यूहन्ना १",
+    "गन्ती ३１, प्रेरित १५:२२-４１, हितोपदेश २, ३ यूहन्ना १",
     "गन्ती ३２, प्रेरित १६, हितोपदेश ३, यहूदा १",
     "गन्ती ३३, प्रेरित १७:१-१５, हितोपदेश ४, प्रकाश १",
     "गन्ती ३４, प्रेरित १७:१６-３４, हितोपदेश ५, प्रकाश २",
@@ -299,20 +299,20 @@ const MCCHEYNE_READING_PLAN = [
     "व्यवस्था १७, रोमी ६, श्रेष्ठगीत ३, प्रकाश २१",
     "व्यवस्था १८, रोमी ७, श्रेष्ठगीत ४, प्रकाश २２",
     "व्यवस्था १९, रोमी ८:१-१८, श्रेष्ठगीत ५, यशैया १",
-    "व्यवस्था २०, रोमी ८:१९-३９, श्रेष्ठगीत ६, यशैया २",
+    "व्यवस्था २०, रोमी ८:१९-३९, श्रेष्ठगीत ६, यशैया २",
     "व्यवस्था २१, रोमी ९, श्रेष्ठगीत ७, यशैया ३",
     "व्यवस्था २２, रोमी १०, श्रेष्ठगीत ८, यशैया ४",
     "व्यवस्था २३, रोमी ११:१-२４, यशैया १, यशैया ५",
     "व्यवस्था २४, रोमी ११:२５-३６, यशैया २, यशैया ६",
     "व्यवस्था २५, रोमी १२, यशैया ३, यशैया ७",
-    "व्यवस्था २६, रोमी १३, यशैया ४, यशैया ८",
+    "व्यवस्था २６, रोमी १३, यशैया ४, यशैया ८",
     "व्यवस्था २७, रोमी १४, यशैया ५, यशैया ९",
     "व्यवस्था २८, रोमी १५:१-१८, यशैया ६, यशैया १०",
     "व्यवस्था २९, रोमी १५:१९-３३, यशैया ७, यशैया ११",
     "व्यवस्था ३０, रोमी १६, यशैया ८, यशैया १२",
     "व्यवस्था ३१, १ कोरिन्थी १, यशैया ९, यशैया १३",
     "व्यवस्था ३２, १ कोरिन्थी २, यशैया १०, यशैया १४",
-    "व्यवस्था ३३, १ कोरिन्थी ३, यशैया ११, यशैया १५",
+    "व्यवस्था ३３, १ कोरिन्थी ३, यशैया ११, यशैया १५",
     "व्यवस्था ३４, १ कोरिन्थी ४, यशैया १२, यशैया १६",
     "यहोशू १, १ कोरिन्थी ५, यशैया १३, यशैया १७",
     "यहोशू २, १ कोरिन्थी ६, यशैया १४, यशैया १८",
@@ -485,7 +485,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास १८, लूका १:३९-８０, हितोपदेश १०, भजनसंग्रह ७８",
     "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रह ७９",
     "१ इतिहास २०, लूका ३, हितोपदेश १२, भजनसंग्रह ८０",
-    "१ इतिहास २१, लूका ४, हितोपदेश १३, भजनसंग्रह ८１",
+    "१ इतिहास २１, लूका ४, हितोपदेश १३, भजनसंग्रह ८１",
     "१ इतिहास २２, लूका ५, हितोपदेश १४, भजनसंग्रह ८２",
     "१ इतिहास २३, लूका ६, हितोपदेश १५, भजनसंग्रह ८３",
     "१ इतिहास २४, लूका ७, हितोपदेश १६, भजनसंग्रह ८４",
@@ -514,8 +514,8 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १८, यूहन्ना ६, भजनसंग्रह १１４, भजनसंग्रह ११５",
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रह १１６, भजनसंग्रह ११７",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रह १１８, भजनसंग्रह ११९:१-३２",
-    "२ इतिहास २１, यूहन्ना ९, भजनसंग्रह ११९:३३-６４, भजनसंग्रह ११९:６५-९६",
-    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रह ११९:९७-१２८, भजनसंग्रह ११९:१２９-१５２",
+    "२ इतिहास २１, यूहन्ना ९, भजनसंग्रह ११९:३३-６४, भजनसंग्रह ११९:६५-९६",
+    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रह ११९:९७-१２८, भजनसंग्रह ११९:१２९-१５２",
     "२ इतिहास २३, यूहन्ना ११, भजनसंग्रह ११९:१５３-१７６, भजनसंग्रह १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रह १२１, भजनसंग्रह १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रह १२３, भजनसंग्रह १२４",
@@ -1024,20 +1024,22 @@ const NewsPage: React.FC<{ currentUser: User; news: NewsItem[] }> = ({ currentUs
             throw new Error("Firebase not initialized or user not logged in.");
         }
 
+        let imageUrl: string | undefined = undefined;
+        if (imageFile) {
+            const imageRef = ref(storage, `news/${Date.now()}_${imageFile.name}`);
+            await uploadBytes(imageRef, imageFile);
+            imageUrl = await getDownloadURL(imageRef);
+        } else if (editingNews?.image) {
+            imageUrl = editingNews.image;
+        }
+
         const payload: { [key: string]: any } = {
             title,
             content,
             authorId: currentUser.id,
             authorName: currentUser.name,
+            ...(imageUrl && { image: imageUrl }),
         };
-
-        if (imageFile) {
-            const imageRef = ref(storage, `news/${Date.now()}_${imageFile.name}`);
-            await uploadBytes(imageRef, imageFile);
-            payload.image = await getDownloadURL(imageRef);
-        } else if (editingNews?.image) {
-            payload.image = editingNews.image;
-        }
 
         if (editingNews) {
             await updateDoc(doc(db, "news", editingNews.id), payload);
@@ -1430,26 +1432,27 @@ const PrayerPage: React.FC<{ currentUser: User; requests: PrayerRequest[] }> = (
             throw new Error("Firebase not initialized or user not logged in.");
         }
 
+        let imageUrl: string | undefined = undefined;
+        if (imageFile) {
+            const imageRef = ref(storage, `prayers/${Date.now()}_${imageFile.name}`);
+            await uploadBytes(imageRef, imageFile);
+            imageUrl = await getDownloadURL(imageRef);
+        } else if (editingRequest?.image) {
+            imageUrl = editingRequest.image;
+        }
+
         const payload: { [key: string]: any } = {
             title,
             content,
             authorId: currentUser.id,
             authorName: currentUser.name,
+            ...(imageUrl && { image: imageUrl }),
         };
-        
-        if (imageFile) {
-            const imageRef = ref(storage, `prayers/${Date.now()}_${imageFile.name}`);
-            await uploadBytes(imageRef, imageFile);
-            payload.image = await getDownloadURL(imageRef);
-        } else if (editingRequest?.image) {
-            payload.image = editingRequest.image;
-        }
 
         if (editingRequest) {
             await updateDoc(doc(db, "prayerRequests", editingRequest.id), payload);
         } else {
             payload.prayedBy = [];
-            payload.comments = [];
             payload.createdAt = serverTimestamp();
             await addDoc(collection(db, "prayerRequests"), payload);
         }
@@ -1470,13 +1473,18 @@ const PrayerPage: React.FC<{ currentUser: User; requests: PrayerRequest[] }> = (
             console.error("Error deleting prayer request: ", error);
         }
     };
+    
+    const handleShowDetails = (req: PrayerRequest) => {
+        setEditingRequest(req); // Set for potential edit/delete
+        setSelectedRequest(req);
+    };
 
     return (
         <div className="page-content">
             <h2>प्रार्थना</h2>
             <div className="list-container">
                 {requests.map(req => (
-                    <div key={req.id} className="card prayer-item" onClick={() => setSelectedRequest(req)}>
+                    <div key={req.id} className="card prayer-item" onClick={() => handleShowDetails(req)}>
                         {req.image && <img src={req.image} alt={req.title} className="prayer-image" loading="lazy" />}
                         <h4>{req.title}</h4>
                         <p className="prayer-content">{req.content}</p>
@@ -1516,8 +1524,6 @@ const PrayerPage: React.FC<{ currentUser: User; requests: PrayerRequest[] }> = (
                     request={selectedRequest}
                     onClose={() => setSelectedRequest(null)}
                     currentUser={currentUser}
-                    onEdit={() => handleOpenAddModal(selectedRequest)}
-                    onDelete={() => handleDeleteRequest(selectedRequest)}
                 />
             )}
             <PrayerFormModal
@@ -1541,11 +1547,13 @@ const PrayerFormModal: React.FC<{
     const [content, setContent] = useState('');
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [isSaving, setIsSaving] = useState(false);
+    const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null);
 
     useEffect(() => {
         if (isOpen) {
             setTitle(request?.title || '');
             setContent(request?.content || '');
+            setCurrentImageUrl(request?.image || null);
             setImageFile(null); // Reset file input
         }
     }, [isOpen, request]);
@@ -1588,7 +1596,7 @@ const PrayerFormModal: React.FC<{
                 <ImageUpload 
                     selectedFile={imageFile} 
                     setSelectedFile={setImageFile} 
-                    currentImageUrl={request?.image} 
+                    currentImageUrl={currentImageUrl} 
                     label="फोटो थप्नुहोस्।(यदि तपाईं चाहनुहुन्छ भने)" 
                 />
                 <button type="submit" className="action-button" disabled={isSaving}>
@@ -1603,15 +1611,14 @@ const PrayerDetailsModal: React.FC<{
     request: PrayerRequest;
     onClose: () => void;
     currentUser: User;
-    onEdit: () => void;
-    onDelete: () => void;
-}> = ({ request, onClose, currentUser, onEdit, onDelete }) => {
+}> = ({ request, onClose, currentUser }) => {
     const { db } = useFirebase();
     const [newComment, setNewComment] = useState('');
     const [comments, setComments] = useState<Comment[]>([]);
+    const [isCommenting, setIsCommenting] = useState(false);
 
     useEffect(() => {
-        if (!db) return;
+        if (!db || !request?.id) return;
         const commentsCol = collection(db, "prayerRequests", request.id, "comments");
         const q = query(commentsCol, orderBy("createdAt", "asc"));
         const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -1619,19 +1626,21 @@ const PrayerDetailsModal: React.FC<{
             setComments(fetchedComments);
         });
         return () => unsubscribe();
-    }, [db, request.id]);
+    }, [db, request?.id]);
 
 
     const handleAddComment = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!db || !newComment.trim()) return;
+        if (!db || !newComment.trim() || !request || isCommenting) return;
 
-        const commentData = {
+        setIsCommenting(true);
+
+        const commentData: Omit<Comment, 'id'> = {
             authorId: currentUser.id,
             authorName: currentUser.name,
             authorAvatar: currentUser.avatar,
             content: newComment,
-            createdAt: serverTimestamp(),
+            createdAt: serverTimestamp() as Timestamp,
         };
 
         try {
@@ -1639,8 +1648,13 @@ const PrayerDetailsModal: React.FC<{
             setNewComment('');
         } catch (error) {
             console.error("Error adding comment: ", error);
+            alert("Failed to post comment.");
+        } finally {
+            setIsCommenting(false);
         }
     };
+    
+     if (!request) return null;
 
     return (
         <Modal isOpen={true} onClose={onClose} position="bottom">
@@ -1650,16 +1664,6 @@ const PrayerDetailsModal: React.FC<{
                 </button>
                 <div className="prayer-details-header">
                     <h3>{request.title}</h3>
-                     {currentUser.id === request.authorId && (
-                        <div className="item-actions-header">
-                            <button onClick={onEdit} className="edit-button" aria-label="Edit prayer request">
-                                <span className="material-symbols-outlined">edit</span>
-                            </button>
-                            <button onClick={onDelete} className="delete-button" aria-label="Delete prayer request">
-                                <span className="material-symbols-outlined">delete</span>
-                            </button>
-                        </div>
-                    )}
                 </div>
                 <p className="prayer-author">By {request.authorName} - {formatDate(request.createdAt)}</p>
                 {request.image && <img src={request.image} alt={request.title} style={{ width: '100%', borderRadius: '8px', marginBottom: '16px' }} />}
@@ -1669,7 +1673,7 @@ const PrayerDetailsModal: React.FC<{
                     <h4>Comments ({comments.length})</h4>
                     <div className="prayer-comment-list">
                         {comments.length > 0 ? (
-                            comments.map((comment: any) => ( // TODO: Fix type
+                            comments.map((comment) => (
                                 <div key={comment.id} className="comment-item">
                                     <strong>{comment.authorName}</strong>
                                     <p>{comment.content}</p>
@@ -1687,8 +1691,8 @@ const PrayerDetailsModal: React.FC<{
                             value={newComment}
                             onChange={(e) => setNewComment(e.target.value)}
                         />
-                        <button type="submit" aria-label="Send comment">
-                             <span className="material-symbols-outlined">send</span>
+                        <button type="submit" aria-label="Send comment" disabled={isCommenting || !newComment.trim()}>
+                            {isCommenting ? <div className="spinner-small"></div> : <span className="material-symbols-outlined">send</span>}
                         </button>
                     </form>
                 </div>
@@ -1698,254 +1702,331 @@ const PrayerDetailsModal: React.FC<{
 };
 
 
-const ChatListPage: React.FC<{ currentUser: User; chats: Chat[]; users: User[]; onSelectChat: (chatId: string) => void }> = ({ currentUser, chats, users, onSelectChat }) => {
+const ChatListPage: React.FC<{
+    currentUser: User;
+    users: User[];
+    onChatSelect: (chat: Chat) => void;
+    onCreateChat: (participants: User[]) => Promise<string | null>;
+}> = ({ currentUser, users, onChatSelect, onCreateChat }) => {
     const { db } = useFirebase();
+    const [chats, setChats] = useState<Chat[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-    const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
-    const [isCreatingChat, setIsCreatingChat] = useState(false);
-    
-    const handleStartChat = async () => {
-        if (!db || selectedUserIds.length === 0) return;
-        setIsCreatingChat(true);
 
-        try {
-            const participantIds = [currentUser.id, ...selectedUserIds].sort();
-            
-            // Check if chat already exists
-            const q = query(collection(db, "chats"), where("participantIds", "==", participantIds));
-            const existingChatsSnapshot = await getDocs(q);
-            
-            let chatId: string;
-            if (!existingChatsSnapshot.empty) {
-                // Chat exists, navigate to it
-                chatId = existingChatsSnapshot.docs[0].id;
-            } else {
-                // Create new chat
-                const participants: { [key: string]: { name: string; avatar: string; } } = {
-                    [currentUser.id]: { name: currentUser.name, avatar: currentUser.avatar }
-                };
-                selectedUserIds.forEach(uid => {
-                    const user = users.find(u => u.id === uid);
-                    if (user) {
-                        participants[uid] = { name: user.name, avatar: user.avatar };
-                    }
-                });
-                
-                const newChatRef = await addDoc(collection(db, "chats"), {
-                    participantIds,
-                    participants,
-                    lastMessage: null,
-                    createdAt: serverTimestamp(),
-                    lastActivity: serverTimestamp(),
-                });
-                chatId = newChatRef.id;
+    useEffect(() => {
+        if (!db || !currentUser?.id) return;
+        setIsLoading(true);
+        const chatsQuery = query(
+            collection(db, "chats"),
+            where("participantIds", "array-contains", currentUser.id),
+            orderBy("lastActivity", "desc")
+        );
+        const unsubscribe = onSnapshot(chatsQuery, (snapshot) => {
+            const fetchedChats = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Chat));
+            setChats(fetchedChats);
+            setIsLoading(false);
+        }, (error) => {
+            console.error("Error fetching chats:", error);
+            setIsLoading(false);
+        });
+
+        return () => unsubscribe();
+    }, [db, currentUser?.id]);
+
+
+    const getOtherParticipant = (chat: Chat, currentUserId: string) => {
+        const otherId = chat.participantIds.find(id => id !== currentUserId);
+        if (otherId && chat.participants[otherId]) {
+            return chat.participants[otherId];
+        }
+        // For group chats
+        if (chat.participantIds.length > 2) {
+            const names = chat.participantIds
+                .filter(id => id !== currentUserId)
+                .map(id => chat.participants[id]?.name.split(' ')[0] || '')
+                .slice(0, 2)
+                .join(', ');
+            return { name: names + (chat.participantIds.length > 3 ? '...' : ''), avatar: '' };
+        }
+        return { name: "Unknown User", avatar: '' };
+    };
+
+    const handleCreateChat = async (selectedUsers: User[]) => {
+        const newChatId = await onCreateChat(selectedUsers);
+        if (newChatId) {
+            const chatDoc = await getDoc(doc(db!, "chats", newChatId));
+            if(chatDoc.exists()) {
+                onChatSelect({ id: chatDoc.id, ...chatDoc.data() } as Chat);
             }
-            
-            // Close modal and reset state *before* navigating to avoid UI glitches
-            setIsCreateModalOpen(false);
-            setSelectedUserIds([]);
-            onSelectChat(chatId);
-
-        } catch (error) {
-            console.error("Error starting chat:", error);
-            alert("च्याट सुरु गर्न असफल भयो।");
-        } finally {
-            setIsCreatingChat(false);
+        }
+        setIsCreateModalOpen(false);
+    };
+    
+    const getLastMessagePreview = (chat: Chat) => {
+        if (!chat.lastMessage) return "No messages yet";
+        switch (chat.lastMessage.type) {
+            case 'image': return '📷 Photo';
+            case 'video': return '📹 Video';
+            default: return chat.lastMessage.content;
         }
     };
-    
-    const getChatPartner = (chat: Chat) => {
-        const partnerId = chat.participantIds.find(id => id !== currentUser.id);
-        return partnerId ? chat.participants[partnerId] : { name: 'Unknown', avatar: '' };
-    };
+
+    if (isLoading) {
+        return <Loading message="Loading conversations..." />;
+    }
 
     return (
         <div className="page-content">
-            <h2>संगतिहरु</h2>
+            <h2>Chat</h2>
             <div className="list-container">
-                {chats.map(chat => {
-                    const partner = getChatPartner(chat);
-                    const lastReadTime = chat.lastRead?.[currentUser.id]?.toDate() || new Date(0);
-                    const lastMessageTime = chat.lastMessage?.createdAt?.toDate() || new Date(0);
-                    const isUnread = lastMessageTime > lastReadTime && chat.lastMessage?.senderId !== currentUser.id;
-
-                    return (
-                        <div key={chat.id} className={`list-item chat-item ${isUnread ? 'unread' : ''}`} onClick={() => onSelectChat(chat.id)}>
-                            <div className="chat-avatar">{getAvatarInitial(partner?.name)}</div>
-                            <div className="chat-info">
-                                <span className="chat-name">{partner?.name}</span>
-                                {chat.lastMessage && (
-                                    <p className="chat-last-message">
-                                        {chat.lastMessage.type === 'image' && <span className="material-symbols-outlined">image</span>}
-                                        {chat.lastMessage.type === 'video' && <span className="material-symbols-outlined">videocam</span>}
-                                        {chat.lastMessage.content}
-                                    </p>
-                                )}
-                            </div>
-                            <div className="chat-meta">
-                                {chat.lastMessage && <span>{formatRelativeTime(chat.lastMessage.createdAt)}</span>}
-                                {isUnread && <div className="unread-dot"></div>}
-                            </div>
-                        </div>
-                    );
-                })}
-            </div>
-            <Fab onClick={() => setIsCreateModalOpen(true)} icon="groups" aria-label="Start new chat" />
-            
-            <Modal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)}>
-                <div className="create-chat-modal">
-                    <h3>Start a new chat</h3>
-                    <div className="user-list">
-                        {users.map(user => {
-                            const isSelected = selectedUserIds.includes(user.id);
-                            return (
-                                <div
-                                    key={user.id}
-                                    className={`list-item user-list-item selectable ${isSelected ? 'selected' : ''}`}
-                                    onClick={() => {
-                                        setSelectedUserIds(prev =>
-                                            isSelected ? prev.filter(id => id !== user.id) : [user.id] // For now, only 1-on-1
-                                            // isSelected ? prev.filter(id => id !== user.id) : [...prev, user.id] // For group chat
-                                        );
-                                    }}
-                                >
-                                    <div className="chat-avatar">{getAvatarInitial(user.name)}</div>
-                                    <p>{user.name}</p>
-                                    <div className="checkbox">
-                                        {isSelected && <span className="material-symbols-outlined">check</span>}
-                                    </div>
+                 {chats.length > 0 ? (
+                    chats.map(chat => {
+                        const otherParticipant = getOtherParticipant(chat, currentUser.id);
+                        const isUnread = chat.lastRead && chat.lastMessage && chat.lastRead[currentUser.id] < chat.lastMessage.createdAt;
+                        return (
+                            <div key={chat.id} className={`list-item chat-item ${isUnread ? 'unread' : ''}`} onClick={() => onChatSelect(chat)}>
+                                <div className="chat-avatar">{getAvatarInitial(otherParticipant.name)}</div>
+                                <div className="chat-info">
+                                    <span className="chat-name">{otherParticipant.name}</span>
+                                    <p className="chat-last-message">{getLastMessagePreview(chat)}</p>
                                 </div>
-                            )
-                        })}
+                                <div className="chat-meta">
+                                    <span>{chat.lastActivity ? formatRelativeTime(chat.lastActivity) : ''}</span>
+                                    {isUnread && <div className="unread-dot"></div>}
+                                </div>
+                            </div>
+                        )
+                    })
+                 ) : (
+                    <div className="card" style={{ textAlign: 'center', padding: '32px' }}>
+                        <p>대화를 시작하려면 오른쪽 하단에 있는 버튼을 클릭하세요.</p>
                     </div>
-                     <button className="action-button" onClick={handleStartChat} disabled={selectedUserIds.length === 0 || isCreatingChat}>
-                        {isCreatingChat ? <Loading message="Starting..." /> : 'Start Chat'}
-                    </button>
-                </div>
-            </Modal>
+                 )}
+            </div>
+            <Fab onClick={() => setIsCreateModalOpen(true)} icon="add_comment" aria-label="New chat" />
+
+            <CreateChatModal
+                isOpen={isCreateModalOpen}
+                onClose={() => setIsCreateModalOpen(false)}
+                currentUser={currentUser}
+                users={users}
+                onCreate={handleCreateChat}
+            />
         </div>
     );
 };
 
+const CreateChatModal: React.FC<{
+    isOpen: boolean;
+    onClose: () => void;
+    currentUser: User;
+    users: User[];
+    onCreate: (participants: User[]) => void;
+}> = ({ isOpen, onClose, currentUser, users, onCreate }) => {
+    const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+
+    const handleToggleUser = (user: User) => {
+        setSelectedUsers(prev =>
+            prev.some(u => u.id === user.id)
+                ? prev.filter(u => u.id !== user.id)
+                : [...prev, user]
+        );
+    };
+
+    const handleCreate = () => {
+        if(selectedUsers.length > 0) {
+            onCreate(selectedUsers);
+            setSelectedUsers([]);
+        }
+    };
+    
+    return (
+        <Modal isOpen={isOpen} onClose={onClose}>
+            <div className="create-chat-modal">
+                <h3>Start a conversation</h3>
+                <div className="user-list">
+                    {users.filter(u => u.id !== currentUser.id).map(user => {
+                        const isSelected = selectedUsers.some(su => su.id === user.id);
+                        return (
+                            <div key={user.id} className={`list-item user-list-item selectable ${isSelected ? 'selected' : ''}`} onClick={() => handleToggleUser(user)}>
+                                <div className="chat-avatar">{getAvatarInitial(user.name)}</div>
+                                <div className="chat-info">
+                                    <span className="chat-name">{user.name}</span>
+                                </div>
+                                <div className="checkbox">
+                                    {isSelected && <span className="material-symbols-outlined">check</span>}
+                                </div>
+                            </div>
+                        )
+                    })}
+                </div>
+                <button
+                    className="action-button"
+                    style={{ marginTop: '16px' }}
+                    onClick={handleCreate}
+                    disabled={selectedUsers.length === 0}
+                >
+                    Start Chat ({selectedUsers.length})
+                </button>
+            </div>
+        </Modal>
+    );
+};
+
 const ConversationPage: React.FC<{
-    chatId: string;
+    chat: Chat;
     currentUser: User;
     onBack: () => void;
-}> = ({ chatId, currentUser, onBack }) => {
+}> = ({ chat, currentUser, onBack }) => {
     const { db, storage } = useFirebase();
-    const [chat, setChat] = useState<Chat | null>(null);
     const [messages, setMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState('');
+    const [currentChat, setCurrentChat] = useState<Chat | null>(null);
     const [loading, setLoading] = useState(true);
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
-    useEffect(() => {
-        if (!db || !chatId) return;
+     useEffect(() => {
+        if (!db || !chat?.id) return;
         setLoading(true);
-        const chatRef = doc(db, "chats", chatId);
+        const chatRef = doc(db, 'chats', chat.id);
         const unsubscribeChat = onSnapshot(chatRef, (doc) => {
             if (doc.exists()) {
-                const chatData = { id: doc.id, ...doc.data() } as Chat;
-                setChat(chatData);
-
-                // Mark as read
-                updateDoc(chatRef, {
-                    [`lastRead.${currentUser.id}`]: serverTimestamp()
-                }).catch(err => console.error("Error marking chat as read:", err));
+                setCurrentChat({ id: doc.id, ...doc.data() } as Chat);
+            } else {
+                onBack();
             }
-             setLoading(false);
-        }, (error) => {
-            console.error("Error fetching chat details:", error);
             setLoading(false);
         });
-        
-        const messagesQuery = query(collection(db, "chats", chatId, "messages"), orderBy("createdAt", "asc"));
-        const unsubscribeMessages = onSnapshot(messagesQuery, (snapshot) => {
-            const msgs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Message));
-            setMessages(msgs);
-        }, (error) => {
-            console.error("Error fetching chat messages:", error);
-        });
 
+        const messagesQuery = query(collection(db, "chats", chat.id, "messages"), orderBy("createdAt", "asc"));
+        const unsubscribeMessages = onSnapshot(messagesQuery, (snapshot) => {
+            const fetchedMessages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Message));
+            setMessages(prev => {
+                const optimisticMessages = prev.filter(m => m.status === 'uploading');
+                const finalMessages = [...fetchedMessages];
+                optimisticMessages.forEach(optMsg => {
+                    if (!finalMessages.some(fm => fm.tempId === optMsg.tempId)) {
+                        finalMessages.push(optMsg);
+                    }
+                });
+                return finalMessages;
+            });
+        });
+        
         return () => {
             unsubscribeChat();
             unsubscribeMessages();
-        };
-    }, [db, chatId, currentUser.id]);
+        }
+    }, [db, chat?.id, onBack]);
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
-    const handleSendMessage = async () => {
-        if (!db || !newMessage.trim() || !chat) return;
-
-        const content = newMessage;
-        setNewMessage('');
-
-        await addDoc(collection(db, "chats", chatId, "messages"), {
-            senderId: currentUser.id,
-            content: content,
-            type: 'text',
-            createdAt: serverTimestamp(),
-        });
+    const handleSendMessage = async (content?: string, file?: File) => {
+        if (!db || !storage || !currentChat || (!content?.trim() && !file)) return;
         
-        await updateDoc(doc(db, "chats", chatId), {
-            lastMessage: {
-                content: content,
-                senderId: currentUser.id,
-                createdAt: serverTimestamp(),
-                type: 'text'
-            },
-            lastActivity: serverTimestamp()
-        });
-    };
+        const tempId = `temp_${Date.now()}`;
+        const messageType = file ? (file.type.startsWith('image/') ? 'image' : 'video') : 'text';
 
-    const getPartnerName = () => {
-        if (!chat) return 'Chat';
-        const partnerId = chat.participantIds.find(id => id !== currentUser.id);
-        if (partnerId && chat.participants && chat.participants[partnerId]) {
-            return chat.participants[partnerId].name;
+        const optimisticMessage: Message = {
+            id: tempId,
+            tempId,
+            senderId: currentUser.id,
+            type: messageType,
+            createdAt: Timestamp.now(),
+            status: file ? 'uploading' : undefined,
+            content: file ? '' : content,
+        };
+        
+        setMessages(prev => [...prev, optimisticMessage]);
+        if(!file) setNewMessage('');
+
+        try {
+            let mediaUrl: string | undefined = undefined;
+            if (file) {
+                const mediaRef = ref(storage, `chat_media/${currentChat.id}/${Date.now()}_${file.name}`);
+                await uploadBytes(mediaRef, file);
+                mediaUrl = await getDownloadURL(mediaRef);
+            }
+
+            const messagePayload = {
+                senderId: currentUser.id,
+                type: messageType,
+                createdAt: serverTimestamp(),
+                ...(content && { content }),
+                ...(mediaUrl && { mediaUrl }),
+            };
+
+            await addDoc(collection(db, "chats", currentChat.id, "messages"), messagePayload);
+
+            await updateDoc(doc(db, "chats", currentChat.id), {
+                lastMessage: {
+                    content: content || (messageType === 'image' ? '📷 Photo' : '📹 Video'),
+                    senderId: currentUser.id,
+                    createdAt: serverTimestamp(),
+                    type: messageType,
+                },
+                lastActivity: serverTimestamp()
+            });
+
+        } catch (error) {
+            console.error("Error sending message:", error);
+            setMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
         }
-        return 'Chat';
     };
     
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            handleSendMessage(undefined, e.target.files[0]);
+        }
+    };
+
+    const getChatTitle = () => {
+        if (!currentChat) return "Loading...";
+        if (currentChat.participantIds.length > 2) {
+             return currentChat.participantIds
+                .filter(id => id !== currentUser.id)
+                .map(id => currentChat.participants[id]?.name.split(' ')[0] || '')
+                .join(', ');
+        }
+        const otherId = currentChat.participantIds.find(id => id !== currentUser.id);
+        return otherId ? currentChat.participants[otherId]?.name : "Chat";
+    };
+
     if (loading) {
-        return (
-             <div className="conversation-page">
-                <header className="conversation-header">
-                     <button onClick={onBack} className="back-button" aria-label="Back to chats">
-                        <span className="material-symbols-outlined">arrow_back</span>
-                    </button>
-                    <h3>Loading Chat...</h3>
-                    <div style={{width: '40px'}}></div>
-                </header>
-                <Loading message="Loading conversation..." />
-            </div>
-        );
+        return <Loading message="Loading chat..." />;
     }
-
-    const partnerName = getPartnerName();
-
+    
     return (
         <div className="conversation-page">
             <header className="conversation-header">
                 <button onClick={onBack} className="back-button" aria-label="Back to chats">
                     <span className="material-symbols-outlined">arrow_back</span>
                 </button>
-                <h3>{partnerName}</h3>
+                <h3>{getChatTitle()}</h3>
                 <div style={{width: '40px'}}></div>
             </header>
             <div className="message-list">
                 {messages.map(msg => (
-                    <div
-                        key={msg.id || msg.tempId}
-                        className={`message-container ${msg.senderId === currentUser.id ? 'sent' : 'received'}`}
-                    >
+                    <div key={msg.id} className={`message-container ${msg.senderId === currentUser.id ? 'sent' : 'received'}`}>
                         <div className="message-bubble">
-                            {msg.content}
-                             <div className="message-footer">
+                            {msg.type === 'text' && <p>{msg.content}</p>}
+                            {msg.type === 'image' && msg.mediaUrl && (
+                                <img src={msg.mediaUrl} alt="Sent media" className="message-media" />
+                            )}
+                            {msg.type === 'video' && msg.mediaUrl && (
+                                <video src={msg.mediaUrl} controls className="message-media" />
+                            )}
+                            {msg.status === 'uploading' && (
+                                <div className="media-upload-overlay">
+                                    <div className="spinner"></div>
+                                </div>
+                            )}
+                            <div className="message-footer">
                                 <span className="message-timestamp">{formatTime(msg.createdAt)}</span>
+                                {msg.status === 'failed' && <span className="material-symbols-outlined message-failed-indicator">error</span>}
                             </div>
                         </div>
                     </div>
@@ -1953,19 +2034,18 @@ const ConversationPage: React.FC<{
                 <div ref={messagesEndRef} />
             </div>
             <div className="message-input-container">
-                 <input
+                <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{display: 'none'}} accept="image/*,video/*" />
+                <button className="input-action-button" onClick={() => fileInputRef.current?.click()} aria-label="Attach file">
+                    <span className="material-symbols-outlined">attach_file</span>
+                </button>
+                <input
                     type="text"
                     placeholder="Type a message..."
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                    onKeyPress={(e) => e.key === 'Enter' && handleSendMessage(newMessage)}
                 />
-                <button
-                    className="send-button"
-                    onClick={handleSendMessage}
-                    disabled={!newMessage.trim()}
-                    aria-label="Send message"
-                >
+                <button className="send-button" onClick={() => handleSendMessage(newMessage)} disabled={!newMessage.trim()}>
                     <span className="material-symbols-outlined">send</span>
                 </button>
             </div>
@@ -1974,266 +2054,360 @@ const ConversationPage: React.FC<{
 };
 
 
-// --- App Structure & Routing ---
-type Page = 'worship' | 'bible' | 'news' | 'podcasts' | 'prayer' | 'chat';
+// --- User Management (Admin) ---
+const ManageUsersModal: React.FC<{
+    isOpen: boolean;
+    onClose: () => void;
+    users: User[];
+}> = ({ isOpen, onClose, users }) => {
+    const { db } = useFirebase();
 
-const App: React.FC = () => {
-    const firebase = useFirebase();
-    const [authReady, setAuthReady] = useState(false);
-    const [user, setUser] = useState<import('firebase/auth').User | null>(null);
-    const [currentUser, setCurrentUser] = useState<User | null>(null);
-    const [activePage, setActivePage] = useState<Page>('news');
-    const [activeChatId, setActiveChatId] = useState<string | null>(null);
-    const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
-
-    // Centralized data states
-    const [news, setNews] = useState<NewsItem[]>([]);
-    const [podcasts, setPodcasts] = useState<Podcast[]>([]);
-    const [prayerRequests, setPrayerRequests] = useState<PrayerRequest[]>([]);
-    const [liveService, setLiveService] = useState<WorshipService | null>(null);
-    const [pastServices, setPastServices] = useState<PastWorshipService[]>([]);
-    const [chats, setChats] = useState<Chat[]>([]);
-    const [users, setUsers] = useState<User[]>([]);
-
-    useEffect(() => {
-        if (!firebase.auth || !firebase.db) return;
-
-        const unsubscribeAuth = onAuthStateChanged(firebase.auth, async (authUser) => {
-            setUser(authUser);
-            if (authUser) {
-                const userDocRef = doc(firebase.db as any, 'users', authUser.uid);
-                const userDoc = await getDoc(userDocRef);
-                
-                let appUser: User;
-                if (userDoc.exists()) {
-                    appUser = { id: authUser.uid, ...userDoc.data() } as User;
-                } else {
-                    appUser = {
-                        id: authUser.uid,
-                        name: authUser.displayName || 'New User',
-                        email: authUser.email || '',
-                        avatar: authUser.photoURL || '',
-                        roles: ['member'],
-                        fcmTokens: []
-                    };
-                    await setDoc(userDocRef, appUser);
-                }
-                setCurrentUser(appUser);
-                setupNotifications(authUser.uid);
-            } else {
-                setCurrentUser(null);
-            }
-            setAuthReady(true);
-        });
-
-        return () => unsubscribeAuth();
-    }, [firebase.auth, firebase.db]);
-
-    // Effect for fetching centralized data
-    useEffect(() => {
-        if (!firebase.db || !currentUser) {
-             // Clear data on logout
-            setNews([]);
-            setPodcasts([]);
-            setPrayerRequests([]);
-            setLiveService(null);
-            setPastServices([]);
-            setChats([]);
-            setUsers([]);
-            return;
-        };
-
-        const newsQuery = query(collection(firebase.db, "news"), orderBy("createdAt", "desc"));
-        const unsubNews = onSnapshot(newsQuery, (snapshot) => {
-            setNews(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as NewsItem)));
-        });
-
-        const podcastsQuery = query(collection(firebase.db, "podcasts"), orderBy("createdAt", "desc"));
-        const unsubPodcasts = onSnapshot(podcastsQuery, (snapshot) => {
-            setPodcasts(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Podcast)));
-        });
-        
-        const prayerQuery = query(collection(firebase.db, "prayerRequests"), orderBy("createdAt", "desc"));
-        const unsubPrayers = onSnapshot(prayerQuery, (snapshot) => {
-            setPrayerRequests(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PrayerRequest)));
-        });
-
-        const qLive = query(collection(firebase.db, "worshipServices"), where("isLive", "==", true), limit(1));
-        const unsubLive = onSnapshot(qLive, (snapshot) => {
-            setLiveService(snapshot.empty ? null : { id: snapshot.docs[0].id, ...snapshot.docs[0].data() } as WorshipService);
-        });
-        
-        const qPast = query(collection(firebase.db, "pastWorshipServices"), orderBy("createdAt", "desc"));
-        const unsubPast = onSnapshot(qPast, (snapshot) => {
-            setPastServices(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PastWorshipService)));
-        });
-
-        const usersQuery = query(collection(firebase.db, "users"));
-        const unsubUsers = onSnapshot(usersQuery, snapshot => {
-            setUsers(snapshot.docs
-                .map(doc => ({ id: doc.id, ...doc.data() } as User))
-                .filter(user => user.id !== currentUser.id));
-        });
-
-        const chatsQuery = query(collection(firebase.db, "chats"), where("participantIds", "array-contains", currentUser.id), orderBy("lastActivity", "desc"));
-        const unsubChats = onSnapshot(chatsQuery, snapshot => {
-            setChats(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Chat)));
-        });
-
-        return () => {
-            unsubNews();
-            unsubPodcasts();
-            unsubPrayers();
-            unsubLive();
-            unsubPast();
-            unsubUsers();
-            unsubChats();
-        };
-
-    }, [firebase.db, currentUser]);
-
-     const setupNotifications = async (userId: string) => {
-        if (!firebase.messaging || !firebase.db) return;
-
-        try {
-            const permission = await Notification.requestPermission();
-            if (permission === 'granted') {
-                const currentToken = await getToken(firebase.messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY });
-                if (currentToken) {
-                    console.log('FCM Token:', currentToken);
-                    const userDocRef = doc(firebase.db, 'users', userId);
-                    const userDoc = await getDoc(userDocRef);
-                    if(userDoc.exists()){
-                        const tokens = userDoc.data().fcmTokens || [];
-                        if(!tokens.includes(currentToken)){
-                             await updateDoc(userDocRef, {
-                                fcmTokens: arrayUnion(currentToken)
-                            });
-                        }
-                    }
-                   
-                } else {
-                    console.log('No registration token available. Request permission to generate one.');
-                }
-            }
-        } catch (error) {
-            console.error('An error occurred while retrieving token. ', error);
-        }
-
-        onMessage(firebase.messaging, (payload) => {
-            console.log('Message received. ', payload);
+    const handleRoleChange = async (userId: string, role: UserRole, isChecked: boolean) => {
+        if (!db) return;
+        const userRef = doc(db, "users", userId);
+        await updateDoc(userRef, {
+            roles: isChecked ? arrayUnion(role) : arrayRemove(role)
         });
     };
 
-    const handleLogout = () => {
-        if (!firebase.auth) return;
-        signOut(firebase.auth);
-    };
-
-    if (firebase.firebaseError) {
-        return <ErrorFallback error={new Error(firebase.firebaseError)} />;
-    }
-    if (!authReady) {
-        return <SplashScreen />;
-    }
-
-    if (!user || !currentUser) {
-        return <LoginPage />;
-    }
-    
-    if (activeChatId) {
-        return <ConversationPage chatId={activeChatId} currentUser={currentUser} onBack={() => setActiveChatId(null)} />;
-    }
-
-    const renderPage = () => {
-        switch (activePage) {
-            case 'worship': return <WorshipPage currentUser={currentUser} liveService={liveService} pastServices={pastServices} />;
-            case 'bible': return <BiblePage />;
-            case 'news': return <NewsPage currentUser={currentUser} news={news} />;
-            case 'podcasts': return <PodcastsPage currentUser={currentUser} podcasts={podcasts} />;
-            case 'prayer': return <PrayerPage currentUser={currentUser} requests={prayerRequests} />;
-            case 'chat': return <ChatListPage currentUser={currentUser} chats={chats} users={users} onSelectChat={setActiveChatId} />;
-            default: return <NewsPage currentUser={currentUser} news={news} />;
-        }
-    };
-    
     return (
-        <div className="app-container">
-            <header className="app-header">
-                <div className="header-content">
-                    <img src={CHURCH.logo} alt="Church Logo" className="header-logo" />
-                    <h1>{CHURCH.name}</h1>
+        <Modal isOpen={isOpen} onClose={onClose}>
+            <div className="manage-users-modal">
+                <h3>Manage User Roles</h3>
+                <div className="user-list user-role-list">
+                    {users.map(user => (
+                        <div key={user.id} className="card user-role-item">
+                            <p className="user-name">{user.name}</p>
+                            <p className="user-email">{user.email}</p>
+                            <div className="role-checkboxes">
+                                {(['admin', 'news_contributor', 'podcast_contributor'] as UserRole[]).map(role => (
+                                    <label key={role}>
+                                        <input
+                                            type="checkbox"
+                                            checked={user.roles.includes(role)}
+                                            onChange={(e) => handleRoleChange(user.id, role, e.target.checked)}
+                                        />
+                                        {role.replace('_', ' ')}
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
                 </div>
-                 <div className="header-actions">
-                    <button className="header-button" onClick={() => setIsNotificationPanelOpen(true)}>
-                        <span className="material-symbols-outlined">notifications</span>
-                    </button>
-                    <button className="header-button" onClick={handleLogout}>
-                        <span className="material-symbols-outlined">logout</span>
-                    </button>
-                </div>
-            </header>
-            <main className="main-content">
-                {renderPage()}
-            </main>
-            <nav className="bottom-nav">
-                <NavItem icon="feed" label="सुचना" page="news" activePage={activePage} setActivePage={setActivePage} />
-                <NavItem icon="church" label="आरधना" page="worship" activePage={activePage} setActivePage={setActivePage} />
-                <NavItem icon="podcasts" label="Podcasts" page="podcasts" activePage={activePage} setActivePage={setActivePage} />
-                <NavItem icon="auto_stories" label="बाइबल" page="bible" activePage={activePage} setActivePage={setActivePage} />
-                <NavItem icon="groups" label="संगतिहरु" page="chat" activePage={activePage} setActivePage={setActivePage} />
-                <NavItem icon="volunteer_activism" label="प्रार्थना" page="prayer" activePage={activePage} setActivePage={setActivePage} />
-            </nav>
-            {isNotificationPanelOpen && <NotificationPanel onClose={() => setIsNotificationPanelOpen(false)} />}
-        </div>
+            </div>
+        </Modal>
     );
 };
 
-const NavItem: React.FC<{
-    icon: string;
-    label: string;
-    page: Page;
-    activePage: Page;
-    setActivePage: (page: Page) => void;
-}> = ({ icon, label, page, activePage, setActivePage }) => (
-    <button className={`nav-item ${activePage === page ? 'active' : ''}`} onClick={() => setActivePage(page)}>
-        <span className="material-symbols-outlined">{icon}</span>
-        <span>{label}</span>
-    </button>
-);
 
-const NotificationPanel: React.FC<{onClose: () => void}> = ({onClose}) => {
-    // Mock data for now
-    const notifications: Notification[] = [];
-    
-    return (
+// --- Notifications ---
+const NotificationPanel: React.FC<{
+    isOpen: boolean;
+    onClose: () => void;
+    notifications: Notification[];
+}> = ({ isOpen, onClose, notifications }) => {
+    if (!isOpen) return null;
+
+    return createPortal(
         <>
-            <div className="modal-backdrop" onClick={onClose} style={{backgroundColor: 'rgba(0,0,0,0.2)'}}></div>
+            <div className="modal-backdrop" onClick={onClose} style={{ backgroundColor: 'rgba(0,0,0,0.3)' }}></div>
             <div className="notification-panel">
-                 <header className="notification-header">
+                <header className="notification-header">
                     <h3>Notifications</h3>
                 </header>
                 <div className="notification-list">
                     {notifications.length > 0 ? (
-                        notifications.map(n => (
-                            <div key={n.id} className="notification-item">
-                                <span className="material-symbols-outlined notification-icon">{n.icon}</span>
-                                <div className="notification-content">
-                                    <p>{n.message}</p>
-                                    <span className="notification-timestamp">{n.timestamp}</span>
+                        notifications.map(notif => (
+                            <div key={notif.id} className="notification-item">
+                                <span className="material-symbols-outlined notification-icon">{notif.icon}</span>
+                                <div>
+                                    <p>{notif.message}</p>
+                                    <p className="notification-timestamp">{notif.timestamp}</p>
                                 </div>
                             </div>
                         ))
                     ) : (
-                        <p className="no-notifications">No new notifications.</p>
+                         <div className="no-notifications">
+                            <p>You have no new notifications.</p>
+                        </div>
                     )}
                 </div>
             </div>
-        </>
-    )
-}
+        </>,
+        document.body
+    );
+};
 
 
+// --- Main App Component ---
+const App: React.FC = () => {
+    const firebaseServices = useFirebase();
+    const { auth, db } = firebaseServices;
+    
+    const [currentUser, setCurrentUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [activePage, setActivePage] = useState<'worship' | 'bible' | 'news' | 'podcast' | 'prayer' | 'chat' | 'conversation'>('worship');
+    const [isManageUsersOpen, setIsManageUsersOpen] = useState(false);
+    const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
+    
+    // Data states
+    const [worshipService, setWorshipService] = useState<WorshipService | null>(null);
+    const [pastServices, setPastServices] = useState<PastWorshipService[]>([]);
+    const [news, setNews] = useState<NewsItem[]>([]);
+    const [podcasts, setPodcasts] = useState<Podcast[]>([]);
+    const [prayerRequests, setPrayerRequests] = useState<PrayerRequest[]>([]);
+    const [users, setUsers] = useState<User[]>([]);
+    const [currentChat, setCurrentChat] = useState<Chat | null>(null);
+    const [notifications, setNotifications] = useState<Notification[]>([]);
+
+    // --- Authentication ---
+    useEffect(() => {
+        if (!auth || !db) return;
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if (user && user.displayName) {
+                const userDocRef = doc(db, "users", user.uid);
+                const userDocSnap = await getDoc(userDocRef);
+                if (userDocSnap.exists()) {
+                    setCurrentUser({ id: user.uid, ...userDocSnap.data() } as User);
+                } else {
+                    const newUser: Omit<User, 'id'> = {
+                        name: user.displayName,
+                        email: user.email!,
+                        avatar: user.photoURL || '',
+                        roles: ['member'],
+                    };
+                    await setDoc(userDocRef, newUser);
+                    setCurrentUser({ id: user.uid, ...newUser });
+                }
+            } else {
+                setCurrentUser(null);
+            }
+            setLoading(false);
+        });
+        return () => unsubscribe();
+    }, [auth, db]);
+
+    // --- Data Fetching ---
+    useEffect(() => {
+        if (!db || !currentUser) return;
+        
+        // Listeners
+        const unsubWorship = onSnapshot(query(collection(db, "worshipServices"), where("isLive", "==", true), limit(1)), (snapshot) => {
+            setWorshipService(snapshot.empty ? null : { id: snapshot.docs[0].id, ...snapshot.docs[0].data() } as WorshipService);
+        });
+        const unsubPastWorship = onSnapshot(query(collection(db, "pastWorshipServices"), orderBy("createdAt", "desc")), (snapshot) => {
+            setPastServices(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PastWorshipService)));
+        });
+        const unsubNews = onSnapshot(query(collection(db, "news"), orderBy("createdAt", "desc")), (snapshot) => {
+            setNews(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as NewsItem)));
+        });
+        const unsubPodcasts = onSnapshot(query(collection(db, "podcasts"), orderBy("createdAt", "desc")), (snapshot) => {
+            setPodcasts(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Podcast)));
+        });
+        const unsubPrayer = onSnapshot(query(collection(db, "prayerRequests"), orderBy("createdAt", "desc")), (snapshot) => {
+            setPrayerRequests(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PrayerRequest)));
+        });
+        const unsubUsers = onSnapshot(query(collection(db, "users"), orderBy("name", "asc")), (snapshot) => {
+            setUsers(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as User)));
+        });
+
+        return () => {
+            unsubWorship();
+            unsubPastWorship();
+            unsubNews();
+            unsubPodcasts();
+            unsubPrayer();
+            unsubUsers();
+        };
+
+    }, [db, currentUser]);
+    
+    // --- FCM/Push Notifications ---
+    useEffect(() => {
+        if (!firebaseServices.messaging || !currentUser || !db) return;
+        const { messaging } = firebaseServices;
+
+        const requestPermissionAndToken = async () => {
+            try {
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    const currentToken = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY });
+                    if (currentToken) {
+                        const userTokens = currentUser.fcmTokens || [];
+                        if (!userTokens.includes(currentToken)) {
+                            await updateDoc(doc(db, "users", currentUser.id), {
+                                fcmTokens: arrayUnion(currentToken)
+                            });
+                        }
+                    } else {
+                        console.log('No registration token available. Request permission to generate one.');
+                    }
+                }
+            } catch (err) {
+                console.error('An error occurred while retrieving token. ', err);
+            }
+        };
+        
+        requestPermissionAndToken();
+
+        const unsubscribeOnMessage = onMessage(messaging, (payload) => {
+             console.log('Message received. ', payload);
+             const newNotification: Notification = {
+                id: payload.messageId || new Date().toISOString(),
+                icon: 'notifications', // default icon
+                message: payload.notification?.body || 'You have a new notification.',
+                timestamp: new Date().toLocaleTimeString()
+             };
+             setNotifications(prev => [newNotification, ...prev]);
+             setIsNotificationPanelOpen(true);
+        });
+
+        return () => unsubscribeOnMessage();
+    }, [firebaseServices.messaging, currentUser, db]);
+
+
+    const handleCreateChat = async (selectedUsers: User[]): Promise<string | null> => {
+        if (!db || !currentUser) return null;
+        
+        const allParticipants = [currentUser, ...selectedUsers];
+        const allParticipantIds = allParticipants.map(p => p.id).sort();
+
+        // Check if a chat with these participants already exists
+        if(allParticipantIds.length === 2) {
+             const q = query(collection(db, "chats"), where("participantIds", "==", allParticipantIds));
+             const existingChats = await getDocs(q);
+             if (!existingChats.empty) {
+                return existingChats.docs[0].id; // Return existing chat ID
+             }
+        }
+       
+        const participantsData = allParticipants.reduce((acc, user) => {
+            acc[user.id] = { name: user.name, avatar: user.avatar };
+            return acc;
+        }, {} as { [key: string]: { name: string, avatar: string }});
+
+        try {
+             const newChatRef = await addDoc(collection(db, "chats"), {
+                participantIds: allParticipantIds,
+                participants: participantsData,
+                lastActivity: serverTimestamp(),
+            });
+            return newChatRef.id;
+        } catch (error) {
+            console.error("Error creating chat:", error);
+            return null;
+        }
+    };
+
+
+    if (firebaseServices.firebaseError) {
+        return <ErrorFallback error={new Error(firebaseServices.firebaseError)} />;
+    }
+    if (loading) {
+        return <SplashScreen />;
+    }
+    if (!currentUser) {
+        return <LoginPage />;
+    }
+
+    const renderPage = () => {
+        switch(activePage) {
+            case 'worship': return <WorshipPage currentUser={currentUser} liveService={worshipService} pastServices={pastServices} />;
+            case 'bible': return <BiblePage />;
+            case 'news': return <NewsPage currentUser={currentUser} news={news} />;
+            case 'podcast': return <PodcastsPage currentUser={currentUser} podcasts={podcasts} />;
+            case 'prayer': return <PrayerPage currentUser={currentUser} requests={prayerRequests} />;
+            case 'chat': return (
+                <ChatListPage
+                    currentUser={currentUser}
+                    users={users}
+                    onChatSelect={(chat) => {
+                        setCurrentChat(chat);
+                        setActivePage('conversation');
+                    }}
+                    onCreateChat={handleCreateChat}
+                />
+            );
+            case 'conversation': 
+                if(!currentChat) {
+                    setActivePage('chat'); // safety net
+                    return null;
+                }
+                return (
+                    <ConversationPage 
+                        chat={currentChat} 
+                        currentUser={currentUser} 
+                        onBack={() => setActivePage('chat')} 
+                    />
+                );
+            default: return <div>Page not found</div>;
+        }
+    };
+
+    const isAdmin = currentUser.roles.includes('admin');
+
+    return (
+        <div className="app-container">
+            {activePage !== 'conversation' && (
+                <header className="app-header">
+                    <div className="header-content">
+                        <img src={CHURCH.logo} alt="Church Logo" className="header-logo" />
+                        <h1>{CHURCH.name}</h1>
+                    </div>
+                    <div className="header-actions">
+                        <button className="header-button" onClick={() => setIsNotificationPanelOpen(true)}>
+                            <span className="material-symbols-outlined">notifications</span>
+                            {notifications.length > 0 && <div className="notification-dot"></div>}
+                        </button>
+                         {isAdmin && (
+                            <button className="header-button" onClick={() => setIsManageUsersOpen(true)}>
+                                <span className="material-symbols-outlined">manage_accounts</span>
+                            </button>
+                         )}
+                        <button className="header-button" onClick={() => auth && signOut(auth)}>
+                            <span className="material-symbols-outlined">logout</span>
+                        </button>
+                    </div>
+                </header>
+            )}
+
+            <main className="main-content">
+                {renderPage()}
+            </main>
+
+            {activePage !== 'conversation' && (
+                <nav className="bottom-nav">
+                    {(['worship', 'bible', 'news', 'podcast', 'prayer', 'chat'] as const).map(page => (
+                        <button key={page} className={`nav-item ${activePage === page ? 'active' : ''}`} onClick={() => setActivePage(page)}>
+                            <span className="material-symbols-outlined">
+                                {{
+                                    worship: 'church', bible: 'menu_book', news: 'feed',
+                                    podcast: 'podcasts', prayer: 'volunteer_activism', chat: 'chat'
+                                }[page]}
+                            </span>
+                            <span>{page.charAt(0).toUpperCase() + page.slice(1)}</span>
+                        </button>
+                    ))}
+                </nav>
+            )}
+            
+            <ManageUsersModal
+                isOpen={isManageUsersOpen}
+                onClose={() => setIsManageUsersOpen(false)}
+                users={users}
+            />
+            
+            <NotificationPanel 
+                isOpen={isNotificationPanelOpen}
+                onClose={() => setIsNotificationPanelOpen(false)}
+                notifications={notifications}
+            />
+        </div>
+    );
+};
+
+
+// --- Error Boundary ---
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; error: Error | null }> {
   constructor(props: { children: React.ReactNode }) {
     super(props);
@@ -2257,17 +2431,25 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
 }
 
 
-const rootElement = document.getElementById('root');
-if (rootElement) {
-    const root = ReactDOM.createRoot(rootElement);
-    const firebaseServices = initializeFirebaseServices();
-    root.render(
-        <React.StrictMode>
-            <ErrorBoundary>
-                <FirebaseContext.Provider value={firebaseServices}>
-                    <App />
-                </FirebaseContext.Provider>
-            </ErrorBoundary>
-        </React.StrictMode>
-    );
+// --- App Root ---
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+root.render(
+    <React.StrictMode>
+        <ErrorBoundary>
+            <FirebaseContext.Provider value={initializeFirebaseServices()}>
+                <App />
+            </FirebaseContext.Provider>
+        </ErrorBoundary>
+    </React.StrictMode>
+);
+
+// --- Service Worker Registration ---
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').then(registration => {
+      console.log('SW registered: ', registration);
+    }).catch(registrationError => {
+      console.log('SW registration failed: ', registrationError);
+    });
+  });
 }
