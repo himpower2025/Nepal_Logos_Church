@@ -193,7 +193,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान १५, लूका ११:१-२८, अय्यूब ३２, २ कोरिन्थी ५",
     "प्रस्थान १६, लूका ११:२९-５４, अय्यूब ३३, २ कोरिन्थी ६",
     "प्रस्थान १७, लूका १२:१-३４, अय्यूब ३४, २ कोरिन्थी ७",
-    "प्रस्थान १८, लूका १२:३५-५９, अय्यूब ३５, २ कोरिन्थी ८",
+    "प्रस्थान १८, लूका १२:३५-५९, अय्यूब ३５, २ कोरिन्थी ८",
     "प्रस्थान १९, लूका १३, अय्यूब ३６, २ कोरिन्थी ९",
     "प्रस्थान २०, लूका १४:१-२４, अय्यूब ३７, २ कोरिन्थी १०",
     "प्रस्थान २१, लूका १४:२५-३５, अय्यूब ३८, २ कोरिन्थी ११",
@@ -202,11 +202,11 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान २४, लूका १७:१-१९, अय्यूब ४१, गलाती १",
     "प्रस्थान २५, लूका १७:२०-३７, अय्यूब ४２, गलाती २",
     "प्रस्थान २६, लूका १८:१-१८, भजनसंग्रह १-२, गलाती ३",
-    "प्रस्थान २७, लूका १८:१९-４３, भजनसंग्रह ३-४, गलाती ४",
+    "प्रस्थान २७, लूका १८:१९-４३, भजनसंग्रह ३-४, गलाती ४",
     "प्रस्थान २८, लूका १९:१-२७, भजनसंग्रह ५-६, गलाती ५",
     "प्रस्थान २९, लूका १९:२८-४８, भजनसंग्रह ७, गलाती ६",
     "प्रस्थान ३०, लूका २०:१-१९, भजनसंग्रह ८, एफिसी १",
-    "प्रस्थान ३१, लूका २०:२०-４７, भजनसंग्रह ९, एफिसी २",
+    "प्रस्थान ३१, लूका २०:२०-４७, भजनसंग्रह ९, एफिसी २",
     "प्रस्थान ३２, लूका २१, भजनसंग्रह १०, एफिसी ३",
     "प्रस्थान ३३, लूका २२:१-३０, भजनसंग्रह ११-१२, एफिसी ४",
     "प्रस्थान ३４, लूका २२:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
@@ -259,7 +259,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १४, प्रेरित ५:१९-４２, भजनसंग्रह ६２, याकूब ३",
     "गन्ती १५, प्रेरित ६, भजनसंग्रह ६３, याकूब ४",
     "गन्ती १६, प्रेरित ७:१-२１, भजनसंग्रह ६４, याकूब ५",
-    "गन्ती १७, प्रेरित ७:२２-４३, भजनसंग्रह ६５, १ पत्रुस १",
+    "गन्ती १७, प्रेरित ७:२２-४३, भजनसंग्रह ६５, १ पत्रुस १",
     "गन्ती १८, प्रेरित ७:४４-６０, भजनसंग्रह ६６, १ पत्रुस २",
     "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६７, १ पत्रुस ३",
     "गन्ती २०, प्रेरित ८:२６-４०, भजनसंग्रह ६８, १ पत्रुस ४",
@@ -273,7 +273,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती २८, प्रेरित १३:२６-５２, भजनसंग्रह ७６, १ यूहन्ना ४",
     "गन्ती २९, प्रेरित १४, भजनसंग्रह ७７, १ यूहन्ना ५",
     "गन्ती ३０, प्रेरित १५:१-२१, हितोपदेश १, २ यूहन्ना १",
-    "गन्ती ३１, प्रेरित १५:२२-４１, हितोपदेश २, ३ यूहन्ना १",
+    "गन्ती ३１, प्रेरित १५:२２-４１, हितोपदेश २, ३ यूहन्ना १",
     "गन्ती ३２, प्रेरित १६, हितोपदेश ३, यहूदा १",
     "गन्ती ३३, प्रेरित १७:१-१５, हितोपदेश ४, प्रकाश १",
     "गन्ती ३４, प्रेरित १७:१６-３４, हितोपदेश ५, प्रकाश २",
@@ -304,7 +304,7 @@ const MCCHEYNE_READING_PLAN = [
     "व्यवस्था २३, रोमी ११:१-२４, यशैया १, यशैया ५",
     "व्यवस्था २४, रोमी ११:२５-३６, यशैया २, यशैया ६",
     "व्यवस्था २५, रोमी १२, यशैया ३, यशैया ७",
-    "व्यवस्था २६, रोमी १३, यशैया ४, यशैया ८",
+    "व्यवस्था २６, रोमी १३, यशैया ४, यशैया ८",
     "व्यवस्था २७, रोमी १४, यशैया ५, यशैया ९",
     "व्यवस्था २८, रोमी १५:१-१८, यशैया ६, यशैया १०",
     "व्यवस्था २९, रोमी १५:१९-３３, यशैया ७, यशैया ११",
@@ -332,7 +332,7 @@ const MCCHEYNE_READING_PLAN = [
     "यहोशू १७, २ कोरिन्थी ५, यशैया २९, यशैया ३３",
     "यहोशू १८, २ कोरिन्थी ६, यशैया ३０, यशैया ३４",
     "यहोशू १९, २ कोरिन्थी ७, यशैया ३１, यशैया ३５",
-    "यहोशू २०, २ कोरिन्थी ८, यशैया ३２, यशैया ३６",
+    "यहोशू ২০, २ कोरिन्थी ८, यशैया ३２, यशैया ३６",
     "यहोशू २१, २ कोरिन्थी ९, यशैया ३３, यशैया ३７",
     "यहोशू २２, २ कोरिन्थी १०, यशैया ३４, यशैया ३८",
     "यहोशू २३, २ कोरिन्थी ११, यशैया ३５, यशैया ३９",
@@ -381,7 +381,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ शमूएल १७, तीतस ३, यर्मिया ३８, इजकिएल ११",
     "१ शमूएल १८, फिलेमोन १, यर्मिया ३９, इजकिएल १२",
     "१ शमूएल १९, हिब्रू १, यर्मिया ४०, इजकिएल १३",
-    "१ शमूएल २०, हिब्रू २, यर्मिया ४१, इजकिएल १४",
+    "१ शमूएल ২০, हिब्रू २, यर्मिया ४१, इजकिएल १४",
     "१ शमूएल २१, हिब्रू ३, यर्मिया ४２, इजकिएल १५",
     "१ शमूएल २２, हिब्रू ४, यर्मिया ४３, इजकिएल १६",
     "१ शमूएल २३, हिब्रू ५, यर्मिया ४４, इजकिएल १७",
@@ -1026,33 +1026,34 @@ const NewsPage: React.FC<{ currentUser: User; news: NewsItem[] }> = ({ currentUs
             throw new Error("Firebase not initialized or user not logged in.");
         }
 
-        let imageUrl: string | undefined = undefined;
-        // 1. If there's a new file, upload it and get the URL
+        let imageUrl: string | undefined;
+
         if (imageFile) {
             const imageRef = ref(storage, `news/${Date.now()}_${imageFile.name}`);
             await uploadBytes(imageRef, imageFile);
             imageUrl = await getDownloadURL(imageRef);
-        // 2. If editing and no new file, keep the existing image URL
         } else if (editingNews?.image) {
             imageUrl = editingNews.image;
         }
 
-        const payload: { [key: string]: any } = {
+        const payload = {
             title,
             content,
             authorId: currentUser.id,
             authorName: currentUser.name,
-            image: imageUrl || null, // Ensure image field is set to null if no image
+            ...(imageUrl && { image: imageUrl }),
         };
-        
-        if (payload.image === null) delete payload.image;
-
 
         if (editingNews) {
-            await updateDoc(doc(db, "news", editingNews.id), payload);
+            await updateDoc(doc(db, "news", editingNews.id), {
+                ...payload,
+                image: imageUrl || null
+            });
         } else {
-            payload.createdAt = serverTimestamp();
-            await addDoc(collection(db, "news"), payload);
+            await addDoc(collection(db, "news"), {
+                ...payload,
+                createdAt: serverTimestamp(),
+            });
         }
     };
 
@@ -1441,7 +1442,7 @@ const PrayerPage: React.FC<{ currentUser: User; requests: PrayerRequest[] }> = (
             throw new Error("Firebase not initialized or user not logged in.");
         }
 
-        let imageUrl: string | undefined = undefined;
+        let imageUrl: string | undefined;
         if (imageFile) {
             const imageRef = ref(storage, `prayers/${Date.now()}_${imageFile.name}`);
             await uploadBytes(imageRef, imageFile);
@@ -1450,23 +1451,25 @@ const PrayerPage: React.FC<{ currentUser: User; requests: PrayerRequest[] }> = (
             imageUrl = editingRequest.image;
         }
 
-        const payload: { [key: string]: any } = {
+        const payload = {
             title,
             content,
             authorId: currentUser.id,
             authorName: currentUser.name,
-            image: imageUrl || null,
+            ...(imageUrl && { image: imageUrl }),
         };
-        
-        if (payload.image === null) delete payload.image;
-
 
         if (editingRequest) {
-            await updateDoc(doc(db, "prayerRequests", editingRequest.id), payload);
+            await updateDoc(doc(db, "prayerRequests", editingRequest.id), {
+                ...payload,
+                image: imageUrl || null
+            });
         } else {
-            payload.prayedBy = [];
-            payload.createdAt = serverTimestamp();
-            await addDoc(collection(db, "prayerRequests"), payload);
+            await addDoc(collection(db, "prayerRequests"), {
+                ...payload,
+                prayedBy: [],
+                createdAt: serverTimestamp(),
+            });
         }
     };
 
@@ -1648,17 +1651,15 @@ const PrayerDetailsModal: React.FC<{
         if (!db || !newComment.trim() || !request || isCommenting) return;
 
         setIsCommenting(true);
-
-        const commentData: Omit<Comment, 'id'> = {
-            authorId: currentUser.id,
-            authorName: currentUser.name,
-            authorAvatar: currentUser.avatar,
-            content: newComment,
-            createdAt: serverTimestamp() as Timestamp,
-        };
-
         try {
-            await addDoc(collection(db, "prayerRequests", request.id, "comments"), commentData);
+            const commentsCollectionRef = collection(db, "prayerRequests", request.id, "comments");
+            await addDoc(commentsCollectionRef, {
+                authorId: currentUser.id,
+                authorName: currentUser.name,
+                authorAvatar: currentUser.avatar,
+                content: newComment,
+                createdAt: serverTimestamp(),
+            });
             setNewComment('');
         } catch (error) {
             console.error("Error adding comment: ", error);
@@ -1719,36 +1720,17 @@ const PrayerDetailsModal: React.FC<{
 const ChatListPage: React.FC<{
     currentUser: User;
     users: User[];
+    chats: Chat[];
     onChatSelect: (chat: Chat) => void;
     onCreateChat: (participants: User[]) => Promise<string | null>;
-}> = ({ currentUser, users, onChatSelect, onCreateChat }) => {
+}> = ({ currentUser, users, chats, onChatSelect, onCreateChat }) => {
     const { db } = useFirebase();
-    const [chats, setChats] = useState<Chat[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-    useEffect(() => {
-        if (!db || !currentUser?.id) return;
-        setIsLoading(true);
-        const chatsQuery = query(
-            collection(db, "chats"),
-            where("participantIds", "array-contains", currentUser.id),
-            orderBy("lastActivity", "desc")
-        );
-        const unsubscribe = onSnapshot(chatsQuery, (snapshot) => {
-            const fetchedChats = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Chat));
-            setChats(fetchedChats);
-            setIsLoading(false);
-        }, (error) => {
-            console.error("Error fetching chats:", error);
-            setIsLoading(false);
-        });
-
-        return () => unsubscribe();
-    }, [db, currentUser?.id]);
-
-
     const getOtherParticipant = (chat: Chat, currentUserId: string) => {
+        if (!chat.participants) {
+            return { name: "Unknown User", avatar: '' };
+        }
         const otherId = chat.participantIds.find(id => id !== currentUserId);
         if (otherId && chat.participants[otherId]) {
             return chat.participants[otherId];
@@ -1785,13 +1767,9 @@ const ChatListPage: React.FC<{
         }
     };
 
-    if (isLoading) {
-        return <Loading message="Loading conversations..." />;
-    }
-
     return (
         <div className="page-content">
-            <h2>Chat</h2>
+            <h2>संगतिहरु</h2>
             <div className="list-container">
                  {chats.length > 0 ? (
                     chats.map(chat => {
@@ -1817,7 +1795,7 @@ const ChatListPage: React.FC<{
                     </div>
                  )}
             </div>
-            <Fab onClick={() => setIsCreateModalOpen(true)} icon="add_comment" aria-label="New chat" />
+            <Fab onClick={() => setIsCreateModalOpen(true)} icon="chat" aria-label="New chat" />
 
             <CreateChatModal
                 isOpen={isCreateModalOpen}
@@ -2166,7 +2144,7 @@ const App: React.FC = () => {
     
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
-    const [activePage, setActivePage] = useState<'worship' | 'bible' | 'news' | 'podcast' | 'prayer' | 'chat' | 'conversation'>('worship');
+    const [activePage, setActivePage] = useState<'worship' | 'bible' | 'news' | 'podcast' | 'prayer' | 'chat' | 'conversation'>('news');
     const [isManageUsersOpen, setIsManageUsersOpen] = useState(false);
     const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
     
@@ -2177,6 +2155,7 @@ const App: React.FC = () => {
     const [podcasts, setPodcasts] = useState<Podcast[]>([]);
     const [prayerRequests, setPrayerRequests] = useState<PrayerRequest[]>([]);
     const [users, setUsers] = useState<User[]>([]);
+    const [chats, setChats] = useState<Chat[]>([]);
     const [currentChat, setCurrentChat] = useState<Chat | null>(null);
     const [notifications, setNotifications] = useState<Notification[]>([]);
 
@@ -2266,6 +2245,13 @@ const App: React.FC = () => {
         const unsubUsers = onSnapshot(query(collection(db, "users"), orderBy("name", "asc")), (snapshot) => {
             setUsers(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as User)));
         });
+        const unsubChats = onSnapshot(
+            query(collection(db, "chats"), where("participantIds", "array-contains", currentUser.id), orderBy("lastActivity", "desc")),
+            (snapshot) => {
+                const fetchedChats = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Chat));
+                setChats(fetchedChats);
+            }
+        );
 
         return () => {
             unsubWorship();
@@ -2274,6 +2260,7 @@ const App: React.FC = () => {
             unsubPodcasts();
             unsubPrayer();
             unsubUsers();
+            unsubChats();
         };
 
     }, [db, currentUser]);
@@ -2365,18 +2352,30 @@ const App: React.FC = () => {
     if (!currentUser) {
         return <LoginPage />;
     }
+    
+    const pageConfig = {
+        news: { label: 'सुचना', icon: 'feed' },
+        worship: { label: 'आरधना', icon: 'church' },
+        podcast: { label: 'Podcast', icon: 'podcasts' },
+        bible: { label: 'बाइबल', icon: 'menu_book' },
+        chat: { label: 'संगतिहरु', icon: 'chat' },
+        prayer: { label: 'प्रार्थना', icon: 'volunteer_activism' },
+    };
+    
+    const navOrder: (keyof typeof pageConfig)[] = ['news', 'worship', 'podcast', 'bible', 'chat', 'prayer'];
+
 
     const renderPage = () => {
         switch(activePage) {
-            case 'worship': return <WorshipPage currentUser={currentUser} liveService={worshipService} pastServices={pastServices} />;
-            case 'bible': return <BiblePage />;
             case 'news': return <NewsPage currentUser={currentUser} news={news} />;
+            case 'worship': return <WorshipPage currentUser={currentUser} liveService={worshipService} pastServices={pastServices} />;
             case 'podcast': return <PodcastsPage currentUser={currentUser} podcasts={podcasts} />;
-            case 'prayer': return <PrayerPage currentUser={currentUser} requests={prayerRequests} />;
+            case 'bible': return <BiblePage />;
             case 'chat': return (
                 <ChatListPage
                     currentUser={currentUser}
                     users={users}
+                    chats={chats}
                     onChatSelect={(chat) => {
                         setCurrentChat(chat);
                         setActivePage('conversation');
@@ -2384,6 +2383,7 @@ const App: React.FC = () => {
                     onCreateChat={handleCreateChat}
                 />
             );
+            case 'prayer': return <PrayerPage currentUser={currentUser} requests={prayerRequests} />;
             case 'conversation': 
                 if(!currentChat) {
                     setActivePage('chat'); // safety net
@@ -2433,15 +2433,12 @@ const App: React.FC = () => {
 
             {activePage !== 'conversation' && (
                 <nav className="bottom-nav">
-                    {(['worship', 'bible', 'news', 'podcast', 'prayer', 'chat'] as const).map(page => (
+                    {navOrder.map(page => (
                         <button key={page} className={`nav-item ${activePage === page ? 'active' : ''}`} onClick={() => setActivePage(page)}>
                             <span className="material-symbols-outlined">
-                                {{
-                                    worship: 'church', bible: 'menu_book', news: 'feed',
-                                    podcast: 'podcasts', prayer: 'volunteer_activism', chat: 'chat'
-                                }[page]}
+                                {pageConfig[page].icon}
                             </span>
-                            <span>{page.charAt(0).toUpperCase() + page.slice(1)}</span>
+                            <span>{pageConfig[page].label}</span>
                         </button>
                     ))}
                 </nav>
