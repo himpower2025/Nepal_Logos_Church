@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useCallback, createContext, useContext, useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
 // Fix: Import `createPortal` from `react-dom` to be used for modals.
@@ -152,7 +151,7 @@ const MCCHEYNE_READING_PLAN = [
     "उत्पत्ति २३, मत्ती २३, नहेम्याह १३, प्रेरित २३",
     "उत्पत्ति २४, मत्ती २४, एस्तर १, प्रेरित २४",
     "उत्पत्ति २५, मत्ती २५, एस्तर २, प्रेरित २५",
-    "उत्पत्ति २६, मत्ती २६, एस्तर ३, प्रेरित २६",
+    "उत्पत्ति २६, मत्ती २６, एस्तर ३, प्रेरित २६",
     "उत्पत्ति २७, मत्ती २७, एस्तर ४, प्रेरित २७",
     "उत्पत्ति २८, मत्ती २८, एस्तर ५, प्रेरित २८",
     "उत्पत्ति २९, मर्कूस १, एस्तर ६, रोमी १",
@@ -165,109 +164,109 @@ const MCCHEYNE_READING_PLAN = [
     "उत्पत्ति ३६, मर्कूस ८, अय्यूब ३, रोमी ८",
     "उत्पत्ति ३७, मर्कूस ९, अय्यूब ४, रोमी ९",
     "उत्पत्ति ३८, मर्कूस १०, अय्यूब ५, रोमी १०",
-    "उत्पत्ति ३९, मर्कूस ११, अय्यूब ६, रोमी ११",
+    "उत्पत्ति ३９, मर्कूस ११, अय्यूब ६, रोमी ११",
     "उत्पत्ति ४०, मर्कूस १२, अय्यूब ७, रोमी १२",
     "उत्पत्ति ४१, मर्कूस १३, अय्यूब ८, रोमी १३",
-    "उत्पत्ति ४२, मर्कूस १४, अय्यूब ९, रोमी १४",
+    "उत्पत्ति ४２, मर्कूस १४, अय्यूब ९, रोमी १४",
     "उत्पत्ति ४३, मर्कूस १५, अय्यूब १०, रोमी १५",
-    "उत्पत्ति ४४, मर्कूस १६, अय्यूब ११, रोमी १६",
+    "उत्पत्ति ४４, मर्कूस १६, अय्यूब ११, रोमी १६",
     "उत्पत्ति ४५, लूका १:१-३८, अय्यूब १२, १ कोरिन्थी १",
     "उत्पत्ति ४६, लूका १:३९-८०, अय्यूब १३, १ कोरिन्थी २",
-    "उत्पत्ति ४७, लूका २:१-२४, अय्यूब १४, १ कोरिन्थी ३",
-    "उत्पत्ति ४८, लूका २:२५-५२, अय्यूब १५, १ कोरिन्थी ४",
-    "उत्पत्ति ४९, लूका ३, अय्यूब १६, १ कोरिन्थी ५",
+    "उत्पत्ति ४７, लूका २:१-२४, अय्यूब १४, १ कोरिन्थी ३",
+    "उत्पत्ति ४८, लूका २:२५-५２, अय्यूब १५, १ कोरिन्थी ४",
+    "उत्पत्ति ४９, लूका ३, अय्यूब १६, १ कोरिन्थी ५",
     "उत्पत्ति ५०, लूका ४:१-३०, अय्यूब १७, १ कोरिन्थी ६",
     "प्रस्थान १, लूका ४:३१-४४, अय्यूब १८, १ कोरिन्थी ७",
-    "प्रस्थान २, लूका ५:१-१६, अय्यूब १९, १ कोरिन्थी ८",
-    "प्रस्थान ३, लूका ५:१७-३९, अय्यूब २०, १ कोरिन्थी ९",
+    "प्रस्थान २, लूका ५:१-१６, अय्यूब १९, १ कोरिन्थी ८",
+    "प्रस्थान ३, लूका ५:१७-३９, अय्यूब २०, १ कोरिन्थी ९",
     "प्रस्थान ४, लूका ६:१-१९, अय्यूब २१, १ कोरिन्थी १०",
-    "प्रस्थान ५, लूका ६:२०-४९, अय्यूब २२, १ कोरिन्थी ११",
+    "प्रस्थान ५, लूका ६:२०-४９, अय्यूब २２, १ कोरिन्थी ११",
     "प्रस्थान ६, लूका ७:१-२३, अय्यूब २३, १ कोरिन्थी १२",
     "प्रस्थान ७, लूका ७:२४-५०, अय्यूब २४, १ कोरिन्थी १३",
     "प्रस्थान ८, लूका ८:१-२५, अय्यूब २५, १ कोरिन्थी १४",
-    "प्रस्थान ९, लूका ८:२६-५६, अय्यूब २६, १ कोरिन्थी १५",
+    "प्रस्थान ९, लूका ८:२६-५６, अय्यूब २६, १ कोरिन्थी १५",
     "प्रस्थान १०, लूका ९:१-१८, अय्यूब २७, १ कोरिन्थी १६",
-    "प्रस्थान ११, लूका ९:१९-३६, अय्यूब २८, २ कोरिन्थी १",
-    "प्रस्थान १२, लूका ९:३७-६२, अय्यूब २९, २ कोरिन्थी २",
-    "प्रस्थान १३, लूका १०:१-२४, अय्यूब ३०, २ कोरिन्थी ३",
-    "प्रस्थान १४, लूका १०:२५-४२, अय्यूब ३१, २ कोरिन्थी ४",
+    "प्रस्थान ११, लूका ९:१९-३６, अय्यूब २८, २ कोरिन्थी १",
+    "प्रस्थान १२, लूका ९:३७-६２, अय्यूब २९, २ कोरिन्थी २",
+    "प्रस्थान १३, लूका १०:१-२４, अय्यूब ३०, २ कोरिन्थी ३",
+    "प्रस्थान १४, लूका १०:२५-４２, अय्यूब ३१, २ कोरिन्थी ४",
     "प्रस्थान १५, लूका ११:१-२८, अय्यूब ३２, २ कोरिन्थी ५",
     "प्रस्थान १६, लूका ११:२९-５４, अय्यूब ३३, २ कोरिन्थी ६",
-    "प्रस्थान १७, लूका १२:१-३४, अय्यूब ३४, २ कोरिन्थी ७",
-    "प्रस्थान १८, लूका १२:३५-५९, अय्यूब ३５, २ कोरिन्थी ८",
+    "प्रस्थान १७, लूका १२:१-३４, अय्यूब ३४, २ कोरिन्थी ७",
+    "प्रस्थान १८, लूका १२:३५-५９, अय्यूब ३５, २ कोरिन्थी ८",
     "प्रस्थान १९, लूका १३, अय्यूब ३６, २ कोरिन्थी ९",
-    "प्रस्थान २०, लूका १४:१-२४, अय्यूब ३７, २ कोरिन्थी १०",
-    "प्रस्थान २१, लूका १४:२५-३५, अय्यूब ३८, २ कोरिन्थी ११",
+    "प्रस्थान २०, लूका १४:१-२４, अय्यूब ३７, २ कोरिन्थी १०",
+    "प्रस्थान २१, लूका १४:२५-३５, अय्यूब ३८, २ कोरिन्थी ११",
     "प्रस्थान २２, लूका १५, अय्यूब ३９, २ कोरिन्थी १२",
     "प्रस्थान २३, लूका १६, अय्यूब ४०, २ कोरिन्थी १३",
     "प्रस्थान २४, लूका १७:१-१९, अय्यूब ४१, गलाती १",
-    "प्रस्थान २५, लूका १७:२०-३७, अय्यूब ४２, गलाती २",
+    "प्रस्थान २५, लूका १७:२०-३７, अय्यूब ४２, गलाती २",
     "प्रस्थान २६, लूका १८:१-१८, भजनसंग्रह १-२, गलाती ३",
-    "प्रस्थान २७, लूका १८:१९-४३, भजनसंग्रह ३-४, गलाती ४",
-    "प्रस्थान २८, लूका १९:१-२७, भजनसंग्रह ५-६, गलाती ५",
-    "प्रस्थान २९, लूका १९:२८-४८, भजनसंग्रह ७, गलाती ६",
+    "प्रस्थान २७, लूका १८:१९-４３, भजनसंग्रह ३-४, गलाती ४",
+    "प्रस्थान २८, लूका १९:१-२７, भजनसंग्रह ५-६, गलाती ५",
+    "प्रस्थान २९, लूका १९:२८-४８, भजनसंग्रह ७, गलाती ६",
     "प्रस्थान ३०, लूका २०:१-१९, भजनसंग्रह ८, एफिसी १",
-    "प्रस्थान ३१, लूका २०:२०-४७, भजनसंग्रह ९, एफिसी २",
+    "प्रस्थान ३१, लूका २०:२०-４７, भजनसंग्रह ९, एफिसी २",
     "प्रस्थान ३２, लूका २१, भजनसंग्रह १०, एफिसी ३",
-    "प्रस्थान ३३, लूका २२:१-३०, भजनसंग्रह ११-१२, एफिसी ४",
-    "प्रस्थान ३４, लूका २२:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
-    "प्रस्थान ३５, लूका २२:५४-७१, भजनसंग्रह १५-१६, एफिसी ६",
+    "प्रस्थान ३३, लूका २२:१-३０, भजनसंग्रह ११-१२, एफिसी ४",
+    "प्रस्थान ३４, लूका २२:३१-５३, भजनसंग्रह १३-१४, एफिसी ५",
+    "प्रस्थान ३５, लूका २२:५४-७１, भजनसंग्रह १५-१६, एफिसी ६",
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
-    "प्रस्थान ३７, लूका २३:२६-५६, भजनसंग्रह १८, फिलिप्पी २",
+    "प्रस्थान ३７, लूका २३:२६-５６, भजनसंग्रह १८, फिलिप्पी २",
     "प्रस्थान ३८, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
-    "प्रस्थान ३９, लूका २४:१३-५३, भजनसंग्रह २०, फिलिप्पी ४",
+    "प्रस्थान ३９, लूका २४:१३-５३, भजनसंग्रह २०, फिलिप्पी ४",
     "प्रस्थान ४०, यूहन्ना १:१-२८, भजनसंग्रह २१, कलस्सी १",
-    "लेवी १, यूहन्ना १:२९-५१, भजनसंग्रह २२, कलस्सी २",
+    "लेवी १, यूहन्ना १:२९-५１, भजनसंग्रह २２, कलस्सी २",
     "लेवी २, यूहन्ना २, भजनसंग्रह २३, कलस्सी ३",
-    "लेवी ३, यूहन्ना ३:१-२१, भजनसंग्रह २४, कलस्सी ४",
-    "लेवी ४, यूहन्ना ३:२२-३६, भजनसंग्रह २५, १ थिस्सलोनिकी १",
-    "लेवी ५, यूहन्ना ४:१-३०, भजनसंग्रह २६, १ थिस्सलोनिकी २",
-    "लेवी ६, यूहन्ना ४:३१-५४, भजनसंग्रह २७, १ थिस्सलोनिकी ३",
+    "लेवी ३, यूहन्ना ३:१-२１, भजनसंग्रह २४, कलस्सी ४",
+    "लेवी ४, यूहन्ना ३:२२-३６, भजनसंग्रह २५, १ थिस्सलोनिकी १",
+    "लेवी ५, यूहन्ना ४:१-३０, भजनसंग्रह २६, १ थिस्सलोनिकी २",
+    "लेवी ६, यूहन्ना ४:३१-５４, भजनसंग्रह २७, १ थिस्सलोनिकी ३",
     "लेवी ७, यूहन्ना ५:१-२३, भजनसंग्रह २८, १ थिस्सलोनिकी ४",
-    "लेवी ८, यूहन्ना ५:२४-४७, भजनसंग्रह २९, १ थिस्सलोनिकी ५",
-    "लेवी ९, यूहन्ना ६:१-२१, भजनसंग्रह ३०, २ थिस्सलोनिकी १",
-    "लेवी १०, यूहन्ना ६:२２-४०, भजनसंग्रह ३１, २ थिस्सलोनिकी २",
-    "लेवी ११, यूहन्ना ६:४१-७१, भजनसंग्रह ३２, २ थिस्सलोनिकी ३",
-    "लेवी १२, यूहन्ना ७:१-३१, भजनसंग्रह ३３, १ तिमोथी १",
-    "लेवी १३, यूहन्ना ७:३२-५३, भजनसंग्रह ३４, १ तिमोथी २",
-    "लेवी १४, यूहन्ना ८:१-३०, भजनसंग्रह ३５, १ तिमोथी ३",
-    "लेवी १५, यूहन्ना ८:३१-५९, भजनसंग्रह ३６, १ तिमोथी ४",
+    "लेवी ८, यूहन्ना ५:२४-４７, भजनसंग्रह २९, १ थिस्सलोनिकी ५",
+    "लेवी ९, यूहन्ना ६:१-२１, भजनसंग्रह ३०, २ थिस्सलोनिकी १",
+    "लेवी १०, यूहन्ना ६:२２-４०, भजनसंग्रह ३１, २ थिस्सलोनिकी २",
+    "लेवी ११, यूहन्ना ६:४१-७１, भजनसंग्रह ३２, २ थिस्सलोनिकी ३",
+    "लेवी १२, यूहन्ना ७:१-३１, भजनसंग्रह ३３, १ तिमोथी १",
+    "लेवी १३, यूहन्ना ७:३२-５３, भजनसंग्रह ३４, १ तिमोथी २",
+    "लेवी १४, यूहन्ना ८:१-३０, भजनसंग्रह ३５, १ तिमोथी ३",
+    "लेवी १५, यूहन्ना ८:३१-５９, भजनसंग्रह ३６, १ तिमोथी ४",
     "लेवी १६, यूहन्ना ९, भजनसंग्रह ३７, १ तिमोथी ५",
-    "लेवी १७, यूहन्ना १०:१-२१, भजनसंग्रह ३８, १ तिमोथी ६",
-    "लेवी १८, यूहन्ना १०:२२-४२, भजनसंग्रह ३９, २ तिमोथी १",
+    "लेवी १७, यूहन्ना १०:१-२１, भजनसंग्रह ३８, १ तिमोथी ६",
+    "लेवी १८, यूहन्ना १०:२२-４２, भजनसंग्रह ३９, २ तिमोथी १",
     "लेवी १९, यूहन्ना ११:१-२７, भजनसंग्रह ४०, २ तिमोथी २",
     "लेवी २०, यूहन्ना ११:२８-５７, भजनसंग्रह ४１, २ तिमोथी ३",
     "लेवी २१, यूहन्ना १२:१-१९, भजनसंग्रह ४２, २ तिमोथी ४",
-    "लेवी २２, यूहन्ना १२:२०-५०, भजनसंग्रह ४３, तीतस १",
+    "लेवी २２, यूहन्ना १२:२०-５０, भजनसंग्रह ४３, तीतस १",
     "लेवी २३, यूहन्ना १३, भजनसंग्रह ४４, तीतस २",
     "लेवी २४, यूहन्ना १४, भजनसंग्रह ४５, तीतस ३",
     "लेवी २५, यूहन्ना १५, भजनसंग्रह ४６, फिलेमोन १",
-    "लेवी २६, यूहन्ना १६, भजनसंग्रह ४７, हिब्रू १",
+    "लेवी २６, यूहन्ना १६, भजनसंग्रह ४７, हिब्रू १",
     "लेवी २७, यूहन्ना १७, भजनसंग्रह ४８, हिब्रू २",
     "गन्ती १, यूहन्ना १८:१-२३, भजनसंग्रह ४９, हिब्रू ३",
-    "गन्ती २, यूहन्ना १८:२４-४०, भजनसंग्रह ५０, हिब्रू ४",
+    "गन्ती २, यूहन्ना १८:२４-４०, भजनसंग्रह ५０, हिब्रू ४",
     "गन्ती ३, यूहन्ना १९:१-२２, भजनसंग्रह ५１, हिब्रू ५",
-    "गन्ती ४, यूहन्ना १९:२３-४२, भजनसंग्रह ५２, हिब्रू ६",
+    "गन्ती ४, यूहन्ना १९:२３-４２, भजनसंग्रह ५２, हिब्रू ६",
     "गन्ती ५, यूहन्ना २०, भजनसंग्रह ५３, हिब्रू ७",
     "गन्ती ६, यूहन्ना २１, भजनसंग्रह ५４, हिब्रू ८",
     "गन्ती ७, प्रेरित १, भजनसंग्रह ५５, हिब्रू ९",
     "गन्ती ८, प्रेरित २:१-२１, भजनसंग्रह ५６, हिब्रू १०",
-    "गन्ती ९, प्रेरित २:२２-४७, भजनसंग्रह ५７, हिब्रू ११",
+    "गन्ती ९, प्रेरित २:२２-４７, भजनसंग्रह ५７, हिब्रू ११",
     "गन्ती १०, प्रेरित ३, भजनसंग्रह ५８, हिब्रू १२",
     "गन्ती ११, प्रेरित ४:१-२２, भजनसंग्रह ५９, हिब्रू १३",
-    "गन्ती १२, प्रेरित ४:२३-३７, भजनसंग्रह ६０, याकूब १",
+    "गन्ती १२, प्रेरित ४:२३-３７, भजनसंग्रह ६０, याकूब १",
     "गन्ती १३, प्रेरित ५:१-१८, भजनसंग्रह ६１, याकूब २",
     "गन्ती १४, प्रेरित ५:१९-４２, भजनसंग्रह ६２, याकूब ३",
     "गन्ती १५, प्रेरित ६, भजनसंग्रह ६３, याकूब ४",
     "गन्ती १६, प्रेरित ७:१-२１, भजनसंग्रह ६４, याकूब ५",
-    "गन्ती १७, प्रेरित ७:२２-४३, भजनसंग्रह ६５, १ पत्रुस १",
+    "गन्ती १७, प्रेरित ७:२２-４３, भजनसंग्रह ६５, १ पत्रुस १",
     "गन्ती १८, प्रेरित ७:४４-６０, भजनसंग्रह ६６, १ पत्रुस २",
     "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६７, १ पत्रुस ३",
-    "गन्ती २०, प्रेरित ८:२６-४०, भजनसंग्रह ६８, १ पत्रुस ४",
+    "गन्ती २०, प्रेरित ८:२６-４०, भजनसंग्रह ६８, १ पत्रुस ४",
     "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६９, १ पत्रुस ५",
-    "गन्ती २２, प्रेरित ९:२２-４३, भजनसंग्रह ७０, २ पत्रुस १",
+    "गन्ती २２, प्रेरित ९:२२-４３, भजनसंग्रह ७０, २ पत्रुस १",
     "गन्ती २३, प्रेरित १०:१-२३, भजनसंग्रह ७１, २ पत्रुस २",
-    "गन्ती २४, प्रेरित १०:२４-४८, भजनसंग्रह ७２, २ पत्रुस ३",
+    "गन्ती २४, प्रेरित १०:२４-４८, भजनसंग्रह ७２, २ पत्रुस ३",
     "गन्ती २५, प्रेरित ११, भजनसंग्रह ७３, १ यूहन्ना १",
     "गन्ती २६, प्रेरित १२, भजनसंग्रह ७４, १ यूहन्ना २",
     "गन्ती २७, प्रेरित १३:१-२５, भजनसंग्रह ७５, १ यूहन्ना ३",
@@ -299,7 +298,7 @@ const MCCHEYNE_READING_PLAN = [
     "व्यवस्था १७, रोमी ६, श्रेष्ठगीत ३, प्रकाश २१",
     "व्यवस्था १८, रोमी ७, श्रेष्ठगीत ४, प्रकाश २２",
     "व्यवस्था १९, रोमी ८:१-१८, श्रेष्ठगीत ५, यशैया १",
-    "व्यवस्था २०, रोमी ८:१९-३९, श्रेष्ठगीत ६, यशैया २",
+    "व्यवस्था २०, रोमी ८:१९-३９, श्रेष्ठगीत ६, यशैया २",
     "व्यवस्था २१, रोमी ९, श्रेष्ठगीत ७, यशैया ३",
     "व्यवस्था २２, रोमी १०, श्रेष्ठगीत ८, यशैया ४",
     "व्यवस्था २३, रोमी ११:१-२４, यशैया १, यशैया ५",
@@ -308,7 +307,7 @@ const MCCHEYNE_READING_PLAN = [
     "व्यवस्था २６, रोमी १३, यशैया ४, यशैया ८",
     "व्यवस्था २७, रोमी १४, यशैया ५, यशैया ९",
     "व्यवस्था २८, रोमी १५:१-१८, यशैया ६, यशैया १०",
-    "व्यवस्था २९, रोमी १५:१९-３३, यशैया ७, यशैया ११",
+    "व्यवस्था २९, रोमी १५:१९-３３, यशैया ७, यशैया ११",
     "व्यवस्था ३０, रोमी १६, यशैया ८, यशैया १२",
     "व्यवस्था ३१, १ कोरिन्थी १, यशैया ९, यशैया १३",
     "व्यवस्था ३２, १ कोरिन्थी २, यशैया १०, यशैया १४",
@@ -336,7 +335,7 @@ const MCCHEYNE_READING_PLAN = [
     "यहोशू २०, २ कोरिन्थी ८, यशैया ३２, यशैया ३６",
     "यहोशू २१, २ कोरिन्थी ९, यशैया ३３, यशैया ३７",
     "यहोशू २２, २ कोरिन्थी १०, यशैया ३４, यशैया ३८",
-    "यहोशू २३, २ कोरिन्थी ११, यशैया ३５, यशैया ३९",
+    "यहोशू २३, २ कोरिन्थी ११, यशैया ३５, यशैया ३９",
     "यहोशू २४, २ कोरिन्थी १२, यशैया ३６, यशैया ४०",
     "न्यायकर्ता १, २ कोरिन्थी १३, यशैया ३７, यशैया ४１",
     "न्यायकर्ता २, गलाती १, यशैया ३８, यशैया ४２",
@@ -347,7 +346,7 @@ const MCCHEYNE_READING_PLAN = [
     "न्यायकर्ता ७, गलाती ६, यर्मिया ३, यशैया ४７",
     "न्यायकर्ता ८, एफिसी १, यर्मिया ४, यशैया ४८",
     "न्यायकर्ता ९, एफिसी २, यर्मिया ५, यशैया ४９",
-    "न्यायकर्ता १०, एफिसी ३, यर्मिया ६, यशैया ५०",
+    "न्यायकर्ता १०, एफिसी ३, यर्मिया ६, यशैया ५０",
     "न्यायकर्ता ११, एफिसी ४, यर्मिया ७, यशैया ५１",
     "न्यायकर्ता १२, एफिसी ५, यर्मिया ८, यशैया ५２",
     "न्यायकर्ता १३, एफिसी ६, यर्मिया ९, यशैया ५３",
@@ -356,7 +355,7 @@ const MCCHEYNE_READING_PLAN = [
     "न्यायकर्ता १६, फिलिप्पी ३, यर्मिया १२, यशैया ५６",
     "न्यायकर्ता १७, फिलिप्पी ४, यर्मिया १३, यशैया ५７",
     "न्यायकर्ता १८, कलस्सी १, यर्मिया १४, यशैया ५８",
-    "न्यायकर्ता १९, कलस्सी २, यर्मिया १५, यशैया ५९",
+    "न्यायकर्ता १९, कलस्सी २, यर्मिया १५, यशैया ५９",
     "न्यायकर्ता २०, कलस्सी ३, यर्मिया १६, यशैया ६０",
     "न्यायकर्ता २१, कलस्सी ४, यर्मिया १७, यशैया ६１",
     "रूथ १, १ थिस्सलोनिकी १, यर्मिया १८, यशैया ६２",
@@ -392,7 +391,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ शमूएल २７, हिब्रू ९, यर्मिया ४８, इजकिएल २१",
     "१ शमूएल २८, हिब्रू १०, यर्मिया ४９, इजकिएल २２",
     "१ शमूएल २९, हिब्रू ११, यर्मिया ५０, इजकिएल २३",
-    "१ शमूएल ३०, हिब्रू १२, यर्मिया ५１, इजकिएल २४",
+    "१ शमूएल ३０, हिब्रू १२, यर्मिया ५１, इजकिएल २४",
     "१ शमूएल ३１, हिब्रू १३, यर्मिया ५２, इजकिएल २५",
     "२ शमूएल १, याकूब १, दानिएल १, इजकिएल २６",
     "२ शमूएल २, याकूब २, दानिएल २, इजकिएल २７",
@@ -504,17 +503,17 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ८, लूका २०, हितोपदेश २९, भजनसंग्रह ९７",
     "२ इतिहास ९, लूका २１, हितोपदेश ३０, भजनसंग्रह ९８",
     "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रह ९９",
-    "२ इतिहास ११, लूका २３, भजनसंग्रह १०४, भजनसंग्रह १००",
+    "२ इतिहास ११, लूका २３, भजनसंग्रह १०４, भजनसंग्रह १००",
     "२ इतिहास १२, लूका २४, भजनसंग्रह १०５, भजनसंग्रह १०１",
     "२ इतिहास १३, यूहन्ना १, भजनसंग्रह १०６, भजनसंग्रह १०２",
     "२ इतिहास १४, यूहन्ना २, भजनसंग्रह १०７, भजनसंग्रह १०३",
-    "२ इतिहास १५, यूहन्ना ३, भजनसंग्रह १०８, भजनसंग्रह १०९",
+    "२ इतिहास १५, यूहन्ना ३, भजनसंग्रह १०８, भजनसंग्रह १०９",
     "२ इतिहास १६, यूहन्ना ४, भजनसंग्रह १１０, भजनसंग्रह ११１",
     "२ इतिहास १७, यूहन्ना ५, भजनसंग्रह १１２, भजनसंग्रह ११३",
     "२ इतिहास १८, यूहन्ना ६, भजनसंग्रह १１４, भजनसंग्रह ११５",
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रह १１６, भजनसंग्रह ११７",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रह १１８, भजनसंग्रह ११९:१-३２",
-    "२ इतिहास २１, यूहन्ना ९, भजनसंग्रह ११९:३३-６४, भजनसंग्रह ११९:६५-९६",
+    "२ इतिहास २１, यूहन्ना ९, भजनसंग्रह ११९:३३-６４, भजनसंग्रह ११९:६५-९６",
     "२ इतिहास २２, यूहन्ना १०, भजनसंग्रह ११९:९७-१２८, भजनसंग्रह ११९:१２९-१５２",
     "२ इतिहास २३, यूहन्ना ११, भजनसंग्रह ११९:१５３-१７６, भजनसंग्रह १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रह १२１, भजनसंग्रह १२２",
@@ -564,7 +563,7 @@ const formatRelativeTime = (timestamp: Timestamp | undefined): string => {
 function getAvatarInitial(name: string | undefined | null): string {
     if (!name) return 'L';
     const parts = name.split(' ');
-    if (parts.length > 1) {
+    if (parts.length > 1 && parts[parts.length - 1]) {
         return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
     }
     return name.substring(0, 1).toUpperCase();
@@ -735,6 +734,7 @@ const LoginPage: React.FC = () => {
             switch (errorCode) {
                 case 'auth/user-not-found':
                 case 'auth/wrong-password':
+                case 'auth/invalid-credential':
                     setError('Invalid email or password.');
                     break;
                 case 'auth/email-already-in-use':
@@ -777,6 +777,7 @@ const LoginPage: React.FC = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
+                        autoComplete="email"
                     />
                     <input
                         type="password"
@@ -785,6 +786,7 @@ const LoginPage: React.FC = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
+                        autoComplete={isRegistering ? "new-password" : "current-password"}
                     />
                     <button type="submit" className="login-button" disabled={loading}>
                         {loading ? <div className="spinner"></div> : (isRegistering ? 'Sign Up' : 'Log In')}
@@ -1025,10 +1027,12 @@ const NewsPage: React.FC<{ currentUser: User; news: NewsItem[] }> = ({ currentUs
         }
 
         let imageUrl: string | undefined = undefined;
+        // 1. If there's a new file, upload it and get the URL
         if (imageFile) {
             const imageRef = ref(storage, `news/${Date.now()}_${imageFile.name}`);
             await uploadBytes(imageRef, imageFile);
             imageUrl = await getDownloadURL(imageRef);
+        // 2. If editing and no new file, keep the existing image URL
         } else if (editingNews?.image) {
             imageUrl = editingNews.image;
         }
@@ -1038,8 +1042,11 @@ const NewsPage: React.FC<{ currentUser: User; news: NewsItem[] }> = ({ currentUs
             content,
             authorId: currentUser.id,
             authorName: currentUser.name,
-            ...(imageUrl && { image: imageUrl }),
+            image: imageUrl || null, // Ensure image field is set to null if no image
         };
+        
+        if (payload.image === null) delete payload.image;
+
 
         if (editingNews) {
             await updateDoc(doc(db, "news", editingNews.id), payload);
@@ -1069,6 +1076,7 @@ const NewsPage: React.FC<{ currentUser: User; news: NewsItem[] }> = ({ currentUs
     };
 
     const canPostNews = currentUser.roles.includes('admin') || currentUser.roles.includes('news_contributor');
+    const canManagePost = (item: NewsItem) => currentUser.id === item.authorId || currentUser.roles.includes('admin');
 
     return (
         <div className="page-content">
@@ -1080,7 +1088,7 @@ const NewsPage: React.FC<{ currentUser: User; news: NewsItem[] }> = ({ currentUs
                         <div className="news-content">
                             <div className="news-header">
                                 <h3>{item.title}</h3>
-                                {currentUser.id === item.authorId && (
+                                {canManagePost(item) && (
                                     <div className="item-actions-header">
                                         <button onClick={() => handleOpenModal(item)} className="edit-button" aria-label="Edit news">
                                             <span className="material-symbols-outlined">edit</span>
@@ -1214,6 +1222,7 @@ const PodcastsPage: React.FC<{currentUser: User, podcasts: Podcast[]}> = ({curre
     };
 
     const canPostPodcast = currentUser.roles.includes('admin') || currentUser.roles.includes('podcast_contributor');
+    const canManagePodcast = (podcast: Podcast) => currentUser.id === podcast.authorId || currentUser.roles.includes('admin');
 
     return (
         <div className="page-content">
@@ -1226,7 +1235,7 @@ const PodcastsPage: React.FC<{currentUser: User, podcasts: Podcast[]}> = ({curre
                                 <p className="podcast-title">{podcast.title}</p>
                                 <p className="podcast-author">By {podcast.authorName} - {formatDate(podcast.createdAt)}</p>
                             </div>
-                            {currentUser.id === podcast.authorId && (
+                            {canManagePodcast(podcast) && (
                                 <button onClick={() => handleDeletePodcast(podcast)} className="delete-button" aria-label="Delete podcast">
                                     <span className="material-symbols-outlined">delete</span>
                                 </button>
@@ -1446,8 +1455,11 @@ const PrayerPage: React.FC<{ currentUser: User; requests: PrayerRequest[] }> = (
             content,
             authorId: currentUser.id,
             authorName: currentUser.name,
-            ...(imageUrl && { image: imageUrl }),
+            image: imageUrl || null,
         };
+        
+        if (payload.image === null) delete payload.image;
+
 
         if (editingRequest) {
             await updateDoc(doc(db, "prayerRequests", editingRequest.id), payload);
@@ -1479,6 +1491,8 @@ const PrayerPage: React.FC<{ currentUser: User; requests: PrayerRequest[] }> = (
         setSelectedRequest(req);
     };
 
+    const canManageRequest = (req: PrayerRequest) => currentUser.id === req.authorId || currentUser.roles.includes('admin');
+
     return (
         <div className="page-content">
             <h2>प्रार्थना</h2>
@@ -1504,7 +1518,7 @@ const PrayerPage: React.FC<{ currentUser: User; requests: PrayerRequest[] }> = (
                                 </div>
                             </div>
                         </div>
-                        {currentUser.id === req.authorId && (
+                        {canManageRequest(req) && (
                             <div className="item-actions-footer">
                                 <button onClick={(e) => { e.stopPropagation(); handleOpenAddModal(req); }} className="edit-button" aria-label="Edit prayer request">
                                     <span className="material-symbols-outlined">edit</span>
@@ -1782,7 +1796,7 @@ const ChatListPage: React.FC<{
                  {chats.length > 0 ? (
                     chats.map(chat => {
                         const otherParticipant = getOtherParticipant(chat, currentUser.id);
-                        const isUnread = chat.lastRead && chat.lastMessage && chat.lastRead[currentUser.id] < chat.lastMessage.createdAt;
+                        const isUnread = chat.lastRead && chat.lastMessage && (!chat.lastRead[currentUser.id] || chat.lastRead[currentUser.id] < chat.lastMessage.createdAt);
                         return (
                             <div key={chat.id} className={`list-item chat-item ${isUnread ? 'unread' : ''}`} onClick={() => onChatSelect(chat)}>
                                 <div className="chat-avatar">{getAvatarInitial(otherParticipant.name)}</div>
@@ -1913,12 +1927,17 @@ const ConversationPage: React.FC<{
                 return finalMessages;
             });
         });
+
+        // Mark messages as read
+        updateDoc(chatRef, {
+            [`lastRead.${currentUser.id}`]: Timestamp.now()
+        }).catch(err => console.error("Error updating lastRead:", err));
         
         return () => {
             unsubscribeChat();
             unsubscribeMessages();
         }
-    }, [db, chat?.id, onBack]);
+    }, [db, chat?.id, onBack, currentUser.id]);
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -1937,7 +1956,8 @@ const ConversationPage: React.FC<{
             type: messageType,
             createdAt: Timestamp.now(),
             status: file ? 'uploading' : undefined,
-            content: file ? '' : content,
+            content: file ? undefined : content,
+            mediaUrl: file ? URL.createObjectURL(file) : undefined
         };
         
         setMessages(prev => [...prev, optimisticMessage]);
@@ -1995,7 +2015,7 @@ const ConversationPage: React.FC<{
         return otherId ? currentChat.participants[otherId]?.name : "Chat";
     };
 
-    if (loading) {
+    if (loading || !currentChat) {
         return <Loading message="Loading chat..." />;
     }
     
@@ -2013,15 +2033,15 @@ const ConversationPage: React.FC<{
                     <div key={msg.id} className={`message-container ${msg.senderId === currentUser.id ? 'sent' : 'received'}`}>
                         <div className="message-bubble">
                             {msg.type === 'text' && <p>{msg.content}</p>}
-                            {msg.type === 'image' && msg.mediaUrl && (
-                                <img src={msg.mediaUrl} alt="Sent media" className="message-media" />
-                            )}
-                            {msg.type === 'video' && msg.mediaUrl && (
-                                <video src={msg.mediaUrl} controls className="message-media" />
-                            )}
-                            {msg.status === 'uploading' && (
-                                <div className="media-upload-overlay">
-                                    <div className="spinner"></div>
+                            {(msg.type === 'image' || msg.type === 'video') && msg.mediaUrl && (
+                                <div className="message-media-container">
+                                    {msg.type === 'image' && <img src={msg.mediaUrl} alt="Sent media" className="message-media" />}
+                                    {msg.type === 'video' && <video src={msg.mediaUrl} controls className="message-media" />}
+                                    {msg.status === 'uploading' && (
+                                        <div className="media-upload-overlay">
+                                            <div className="spinner"></div>
+                                        </div>
+                                    )}
                                 </div>
                             )}
                             <div className="message-footer">
@@ -2167,17 +2187,35 @@ const App: React.FC = () => {
             if (user && user.displayName) {
                 const userDocRef = doc(db, "users", user.uid);
                 const userDocSnap = await getDoc(userDocRef);
+
+                const isAdminByEmail = user.email === 'abraham0715@gmail.com';
+                
                 if (userDocSnap.exists()) {
-                    setCurrentUser({ id: user.uid, ...userDocSnap.data() } as User);
+                    const userData = userDocSnap.data();
+                    let userRoles = userData.roles || ['member'];
+                    
+                    // Ensure the special user always has admin rights
+                    if (isAdminByEmail && !userRoles.includes('admin')) {
+                        userRoles.push('admin');
+                        await updateDoc(userDocRef, { roles: userRoles });
+                    }
+                    
+                    setCurrentUser({ id: user.uid, ...userData, roles: userRoles } as User);
+
                 } else {
+                    // Create new user document
+                    const userRoles: UserRole[] = ['member'];
+                    if (isAdminByEmail) {
+                        userRoles.push('admin');
+                    }
                     const newUser: Omit<User, 'id'> = {
                         name: user.displayName,
                         email: user.email!,
                         avatar: user.photoURL || '',
-                        roles: ['member'],
+                        roles: userRoles,
                     };
                     await setDoc(userDocRef, newUser);
-                    setCurrentUser({ id: user.uid, ...newUser });
+                    setCurrentUser({ id: user.uid, ...newUser } as User);
                 }
             } else {
                 setCurrentUser(null);
@@ -2205,7 +2243,8 @@ const App: React.FC = () => {
             setPodcasts(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Podcast)));
         });
         const unsubPrayer = onSnapshot(query(collection(db, "prayerRequests"), orderBy("createdAt", "desc")), (snapshot) => {
-            setPrayerRequests(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PrayerRequest)));
+            const requests = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data(), comments: [] } as PrayerRequest));
+            setPrayerRequests(requests);
         });
         const unsubUsers = onSnapshot(query(collection(db, "users"), orderBy("name", "asc")), (snapshot) => {
             setUsers(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as User)));
