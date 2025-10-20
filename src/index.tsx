@@ -260,12 +260,12 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १४, प्रेरित ५:१९-４２, भजनसंग्रह ६２, याकूब ३",
     "गन्ती १५, प्रेरित ६, भजनसंग्रह ६３, याकूब ४",
     "गन्ती १६, प्रेरित ७:१-२１, भजनसंग्रह ६４, याकूब ५",
-    "गन्ती १७, प्रेरित ७:२２-４३, भजनसंग्रह ६５, १ पत्रुस १",
+    "गन्ती १७, प्रेरित ७:२２-४३, भजनसंग्रह ६５, १ पत्रुस १",
     "गन्ती १८, प्रेरित ७:४４-६０, भजनसंग्रह ६６, १ पत्रुस २",
     "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६７, १ पत्रुस ३",
     "गन्ती २०, प्रेरित ८:२６-४०, भजनसंग्रह ६８, १ पत्रुस ४",
     "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६９, १ पत्रुस ५",
-    "गन्ती २２, प्रेरित ९:२２-４３, भजनसंग्रह ७０, २ पत्रुस १",
+    "गन्ती २２, प्रेरित ९:२２-４३, भजनसंग्रह ७０, २ पत्रुस १",
     "गन्ती २३, प्रेरित १०:१-२३, भजनसंग्रह ७１, २ पत्रुस २",
     "गन्ती २४, प्रेरित १०:२４-४८, भजनसंग्रह ७２, २ पत्रुस ३",
     "गन्ती २५, प्रेरित ११, भजनसंग्रह ७３, १ यूहन्ना १",
@@ -308,7 +308,7 @@ const MCCHEYNE_READING_PLAN = [
     "व्यवस्था २६, रोमी १३, यशैया ४, यशैया ८",
     "व्यवस्था २७, रोमी १४, यशैया ५, यशैया ९",
     "व्यवस्था २८, रोमी १५:१-१८, यशैया ६, यशैया १०",
-    "व्यवस्था २९, रोमी १५:१९-３３, यशैया ७, यशैया ११",
+    "व्यवस्था २९, रोमी १५:१९-３३, यशैया ७, यशैया ११",
     "व्यवस्था ३０, रोमी १६, यशैया ८, यशैया १२",
     "व्यवस्था ३१, १ कोरिन्थी १, यशैया ९, यशैया १३",
     "व्यवस्था ३２, १ कोरिन्थी २, यशैया १०, यशैया १४",
@@ -335,8 +335,8 @@ const MCCHEYNE_READING_PLAN = [
     "यहोशू १९, २ कोरिन्थी ७, यशैया ३１, यशैया ३５",
     "यहोशू २०, २ कोरिन्थी ८, यशैया ३２, यशैया ३６",
     "यहोशू २१, २ कोरिन्थी ९, यशैया ३３, यशैया ३７",
-    "यहोशू २２, २ कोरिन्थी १०, यशैया ३４, यशैया ३８",
-    "यहोशू २३, २ कोरिन्थी ११, यशैया ३５, यशैया ३９",
+    "यहोशू २２, २ कोरिन्थी १०, यशैया ३４, यशैया ३८",
+    "यहोशू २३, २ कोरिन्थी ११, यशैया ३５, यशैया ३९",
     "यहोशू २४, २ कोरिन्थी १२, यशैया ३６, यशैया ४०",
     "न्यायकर्ता १, २ कोरिन्थी १३, यशैया ३７, यशैया ४１",
     "न्यायकर्ता २, गलाती १, यशैया ३８, यशैया ४２",
@@ -356,7 +356,7 @@ const MCCHEYNE_READING_PLAN = [
     "न्यायकर्ता १६, फिलिप्पी ३, यर्मिया १२, यशैया ५６",
     "न्यायकर्ता १७, फिलिप्पी ४, यर्मिया १३, यशैया ५７",
     "न्यायकर्ता १८, कलस्सी १, यर्मिया १४, यशैया ५８",
-    "न्यायकर्ता १९, कलस्सी २, यर्मिया १५, यशैया ५９",
+    "न्यायकर्ता १९, कलस्सी २, यर्मिया १५, यशैया ५९",
     "न्यायकर्ता २०, कलस्सी ३, यर्मिया १६, यशैया ६０",
     "न्यायकर्ता २१, कलस्सी ४, यर्मिया १७, यशैया ६１",
     "रूथ १, १ थिस्सलोनिकी १, यर्मिया १८, यशैया ६２",
@@ -507,10 +507,10 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ११, लूका २３, भजनसंग्रह १०४, भजनसंग्रह १००",
     "२ इतिहास १२, लूका २४, भजनसंग्रह १०５, भजनसंग्रह १०１",
     "२ इतिहास १३, यूहन्ना १, भजनसंग्रह १०６, भजनसंग्रह १०２",
-    "२ इतिहास १४, यूहन्ना २, भजनसंग्रह १०７, भजनसंग्रह १०３",
+    "२ इतिहास १४, यूहन्ना २, भजनसंग्रह १०７, भजनसंग्रह १०३",
     "२ इतिहास १५, यूहन्ना ३, भजनसंग्रह १०８, भजनसंग्रह १०९",
     "२ इतिहास १६, यूहन्ना ४, भजनसंग्रह १１０, भजनसंग्रह ११１",
-    "२ इतिहास १७, यूहन्ना ५, भजनसंग्रह १１２, भजनसंग्रह ११３",
+    "२ इतिहास १७, यूहन्ना ५, भजनसंग्रह १１２, भजनसंग्रह ११३",
     "२ इतिहास १८, यूहन्ना ६, भजनसंग्रह १１４, भजनसंग्रह ११５",
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रह १１６, भजनसंग्रह ११７",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रह १１８, भजनसंग्रह ११९:१-३２",
@@ -1035,30 +1035,16 @@ const BiblePage: React.FC = () => {
     );
 };
 
-const NewsPage: React.FC<{currentUser: User}> = ({currentUser}) => {
+const NewsPage: React.FC<{ currentUser: User; news: NewsItem[] }> = ({ currentUser, news }) => {
     const { db, storage } = useFirebase();
-    const [news, setNews] = useState<NewsItem[]>([]);
-    const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingNews, setEditingNews] = useState<NewsItem | null>(null);
 
-    useEffect(() => {
-        if (!db) return;
-        setLoading(true);
-        const q = query(collection(db, "news"), orderBy("createdAt", "desc"));
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            const newsItems = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as NewsItem));
-            setNews(newsItems);
-            setLoading(false);
-        });
-        return () => unsubscribe();
-    }, [db]);
-    
     const handleOpenModal = (newsItem: NewsItem | null = null) => {
         setEditingNews(newsItem);
         setIsModalOpen(true);
     };
-    
+
     const handleCloseModal = () => {
         setEditingNews(null);
         setIsModalOpen(false);
@@ -1069,60 +1055,53 @@ const NewsPage: React.FC<{currentUser: User}> = ({currentUser}) => {
             throw new Error("Firebase not initialized or user not logged in.");
         }
 
-        let imageUrl: string | undefined = editingNews?.image;
+        let finalImageUrl: string | undefined = editingNews?.image;
         if (imageFile) {
             const imageRef = ref(storage, `news/${Date.now()}_${imageFile.name}`);
             await uploadBytes(imageRef, imageFile);
-            imageUrl = await getDownloadURL(imageRef);
-        }
-
-        const data: { [key: string]: any } = {
-            title,
-            content,
-            authorId: currentUser.id,
-            authorName: currentUser.name,
-        };
-        
-        if (imageUrl) {
-            data.image = imageUrl;
+            finalImageUrl = await getDownloadURL(imageRef);
         }
 
         if (editingNews) {
-            await updateDoc(doc(db, "news", editingNews.id), data);
+            const payload: { [key: string]: any } = {
+                title,
+                content,
+            };
+            if (finalImageUrl) {
+                payload.image = finalImageUrl;
+            }
+            await updateDoc(doc(db, "news", editingNews.id), payload);
         } else {
-            await addDoc(collection(db, "news"), {
-                ...data,
-                createdAt: serverTimestamp()
-            });
+            const payload = {
+                title,
+                content,
+                authorId: currentUser.id,
+                authorName: currentUser.name,
+                createdAt: serverTimestamp(),
+                ...(finalImageUrl && { image: finalImageUrl }),
+            };
+            await addDoc(collection(db, "news"), payload);
         }
     };
-    
+
     const handleDeleteNews = async (newsItem: NewsItem) => {
-        if(!db || !storage) return;
+        if (!db || !storage) return;
         if (!window.confirm(`Are you sure you want to delete "${newsItem.title}"?`)) return;
 
         try {
-            // Delete image from storage if it exists
             if (newsItem.image) {
                 const imageRef = ref(storage, newsItem.image);
                 await deleteObject(imageRef).catch(error => {
-                    // It's okay if the image doesn't exist, log other errors
-                    if(error.code !== 'storage/object-not-found') {
+                    if (error.code !== 'storage/object-not-found') {
                         console.error("Error deleting image from storage:", error);
                     }
                 });
             }
-            // Delete document from Firestore
             await deleteDoc(doc(db, "news", newsItem.id));
         } catch (error) {
             console.error("Error deleting news item: ", error);
         }
     };
-
-
-    if (loading) {
-        return <Loading message="Loading news..." />;
-    }
 
     const canPostNews = currentUser.roles.includes('admin') || currentUser.roles.includes('news_contributor');
 
@@ -1134,7 +1113,7 @@ const NewsPage: React.FC<{currentUser: User}> = ({currentUser}) => {
                     <div key={item.id} className="card news-item">
                         {item.image && <img src={item.image} alt={item.title} className="news-image" loading="lazy" />}
                         <div className="news-content">
-                             <div className="news-header">
+                            <div className="news-header">
                                 <h3>{item.title}</h3>
                                 {currentUser.id === item.authorId && (
                                     <div className="item-actions-header">
@@ -1154,7 +1133,7 @@ const NewsPage: React.FC<{currentUser: User}> = ({currentUser}) => {
                 ))}
             </div>
             {canPostNews && <Fab onClick={() => handleOpenModal()} icon="feed" aria-label="Add news" />}
-            
+
             <NewsFormModal
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
@@ -1236,23 +1215,9 @@ const NewsFormModal: React.FC<{
     );
 };
 
-const PodcastsPage: React.FC<{currentUser: User}> = ({currentUser}) => {
+const PodcastsPage: React.FC<{currentUser: User, podcasts: Podcast[]}> = ({currentUser, podcasts}) => {
     const { db, storage } = useFirebase();
-    const [podcasts, setPodcasts] = useState<Podcast[]>([]);
-    const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    useEffect(() => {
-        if (!db) return;
-        setLoading(true);
-        const q = query(collection(db, "podcasts"), orderBy("createdAt", "desc"));
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            const podcastItems = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Podcast));
-            setPodcasts(podcastItems);
-            setLoading(false);
-        });
-        return () => unsubscribe();
-    }, [db]);
 
     const handleSavePodcast = async (title: string, audioFile: File) => {
         if (!db || !storage || !currentUser) return;
@@ -1284,11 +1249,6 @@ const PodcastsPage: React.FC<{currentUser: User}> = ({currentUser}) => {
             console.error("Error deleting podcast: ", error);
         }
     };
-
-
-    if (loading) {
-        return <Loading message="Loading podcasts..." />;
-    }
 
     const canPostPodcast = currentUser.roles.includes('admin') || currentUser.roles.includes('podcast_contributor');
 
@@ -1471,28 +1431,14 @@ const AddPodcastModal: React.FC<{
 };
 
 
-const PrayerPage: React.FC<{ currentUser: User }> = ({ currentUser }) => {
+const PrayerPage: React.FC<{ currentUser: User; requests: PrayerRequest[] }> = ({ currentUser, requests }) => {
     const { db, storage } = useFirebase();
-    const [requests, setRequests] = useState<PrayerRequest[]>([]);
-    const [loading, setLoading] = useState(true);
     const [selectedRequest, setSelectedRequest] = useState<PrayerRequest | null>(null);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [editingRequest, setEditingRequest] = useState<PrayerRequest | null>(null);
 
-    useEffect(() => {
-        if (!db) return;
-        setLoading(true);
-        const q = query(collection(db, "prayerRequests"), orderBy("createdAt", "desc"));
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            const prayerData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PrayerRequest));
-            setRequests(prayerData);
-            setLoading(false);
-        });
-        return () => unsubscribe();
-    }, [db]);
-    
     const handleTogglePrayed = async (request: PrayerRequest) => {
-        if(!db) return;
+        if (!db) return;
         const requestRef = doc(db, "prayerRequests", request.id);
         const alreadyPrayed = request.prayedBy.includes(currentUser.id);
 
@@ -1510,45 +1456,45 @@ const PrayerPage: React.FC<{ currentUser: User }> = ({ currentUser }) => {
         setIsAddModalOpen(false);
         setEditingRequest(null);
     };
-    
+
     const handleSavePrayerRequest = async (title: string, content: string, imageFile: File | null) => {
         if (!db || !storage || !currentUser) {
             throw new Error("Firebase not initialized or user not logged in.");
         }
 
-        let imageUrl: string | undefined = editingRequest?.image;
-
+        let finalImageUrl: string | undefined = editingRequest?.image;
         if (imageFile) {
             const imageRef = ref(storage, `prayers/${Date.now()}_${imageFile.name}`);
             await uploadBytes(imageRef, imageFile);
-            imageUrl = await getDownloadURL(imageRef);
-        }
-
-        const data: { [key: string]: any } = {
-            title,
-            content,
-            authorId: editingRequest?.authorId || currentUser.id,
-            authorName: editingRequest?.authorName || currentUser.name,
-        };
-
-        if (imageUrl) {
-            data.image = imageUrl;
+            finalImageUrl = await getDownloadURL(imageRef);
         }
 
         if (editingRequest) {
-            await updateDoc(doc(db, "prayerRequests", editingRequest.id), data);
+            const payload: { [key: string]: any } = {
+                title,
+                content,
+            };
+            if (finalImageUrl) {
+                payload.image = finalImageUrl;
+            }
+            await updateDoc(doc(db, "prayerRequests", editingRequest.id), payload);
         } else {
-            await addDoc(collection(db, "prayerRequests"), {
-                ...data,
+            const payload = {
+                title,
+                content,
+                authorId: currentUser.id,
+                authorName: currentUser.name,
                 prayedBy: [],
                 comments: [],
                 createdAt: serverTimestamp(),
-            });
+                ...(finalImageUrl && { image: finalImageUrl }),
+            };
+            await addDoc(collection(db, "prayerRequests"), payload);
         }
     };
-    
+
     const handleDeleteRequest = async (request: PrayerRequest) => {
-        if(!db || !storage) return;
+        if (!db || !storage) return;
         if (!window.confirm("Are you sure you want to delete this prayer request?")) return;
 
         try {
@@ -1563,11 +1509,6 @@ const PrayerPage: React.FC<{ currentUser: User }> = ({ currentUser }) => {
         }
     };
 
-
-    if (loading) {
-        return <Loading message="Loading prayer requests..." />;
-    }
-
     return (
         <div className="page-content">
             <h2>प्रार्थना</h2>
@@ -1580,7 +1521,7 @@ const PrayerPage: React.FC<{ currentUser: User }> = ({ currentUser }) => {
                         <div className="prayer-meta">
                             <span>By {req.authorName} - {formatRelativeTime(req.createdAt)}</span>
                             <div className="prayer-actions" onClick={(e) => e.stopPropagation()}>
-                                <button 
+                                <button
                                     className={`prayer-action-button ${req.prayedBy.includes(currentUser.id) ? 'prayed' : ''}`}
                                     onClick={() => handleTogglePrayed(req)}
                                 >
@@ -1593,7 +1534,7 @@ const PrayerPage: React.FC<{ currentUser: User }> = ({ currentUser }) => {
                                 </div>
                             </div>
                         </div>
-                         {currentUser.id === req.authorId && (
+                        {currentUser.id === req.authorId && (
                             <div className="item-actions-footer">
                                 <button onClick={(e) => { e.stopPropagation(); handleOpenAddModal(req); }} className="edit-button" aria-label="Edit prayer request">
                                     <span className="material-symbols-outlined">edit</span>
@@ -1617,8 +1558,8 @@ const PrayerPage: React.FC<{ currentUser: User }> = ({ currentUser }) => {
                     onDelete={() => handleDeleteRequest(selectedRequest)}
                 />
             )}
-             <PrayerFormModal 
-                isOpen={isAddModalOpen} 
+            <PrayerFormModal
+                isOpen={isAddModalOpen}
                 onClose={handleCloseAddModal}
                 onSave={handleSavePrayerRequest}
                 request={editingRequest}
@@ -2111,38 +2052,37 @@ const App: React.FC = () => {
     const [activePage, setActivePage] = useState<Page>('news');
     const [activeChatId, setActiveChatId] = useState<string | null>(null);
     const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
-    
-    useEffect(() => {
-        if (!firebase.auth || !firebase.db) {
-            // Wait for Firebase to be ready
-            return;
-        }
 
-        const unsubscribeAuth = onAuthStateChanged(firebase.auth, async (user) => {
-            setUser(user);
-            if (user) {
-                // Fetch user profile from Firestore
-                const userDocRef = doc(firebase.db as any, 'users', user.uid);
+    // Centralized data states
+    const [news, setNews] = useState<NewsItem[]>([]);
+    const [podcasts, setPodcasts] = useState<Podcast[]>([]);
+    const [prayerRequests, setPrayerRequests] = useState<PrayerRequest[]>([]);
+
+    useEffect(() => {
+        if (!firebase.auth || !firebase.db) return;
+
+        const unsubscribeAuth = onAuthStateChanged(firebase.auth, async (authUser) => {
+            setUser(authUser);
+            if (authUser) {
+                const userDocRef = doc(firebase.db as any, 'users', authUser.uid);
                 const userDoc = await getDoc(userDocRef);
+                
+                let appUser: User;
                 if (userDoc.exists()) {
-                    setCurrentUser({ id: user.uid, ...userDoc.data() } as User);
+                    appUser = { id: authUser.uid, ...userDoc.data() } as User;
                 } else {
-                    // Create user profile if it doesn't exist (first login after registration)
-                    const newUser: User = {
-                        id: user.uid,
-                        name: user.displayName || 'New User',
-                        email: user.email || '',
-                        avatar: user.photoURL || '',
+                    appUser = {
+                        id: authUser.uid,
+                        name: authUser.displayName || 'New User',
+                        email: authUser.email || '',
+                        avatar: authUser.photoURL || '',
                         roles: ['member'],
                         fcmTokens: []
                     };
-                    await setDoc(userDocRef, newUser);
-                    setCurrentUser(newUser);
+                    await setDoc(userDocRef, appUser);
                 }
-                
-                // --- Push Notifications Setup ---
-                setupNotifications(user.uid);
-
+                setCurrentUser(appUser);
+                setupNotifications(authUser.uid);
             } else {
                 setCurrentUser(null);
             }
@@ -2151,6 +2091,42 @@ const App: React.FC = () => {
 
         return () => unsubscribeAuth();
     }, [firebase.auth, firebase.db]);
+
+    // Effect for fetching centralized data
+    useEffect(() => {
+        if (!firebase.db || !currentUser) {
+             // Clear data on logout
+            setNews([]);
+            setPodcasts([]);
+            setPrayerRequests([]);
+            return;
+        };
+
+        const newsQuery = query(collection(firebase.db, "news"), orderBy("createdAt", "desc"));
+        const unsubNews = onSnapshot(newsQuery, (snapshot) => {
+            const newsItems = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as NewsItem));
+            setNews(newsItems);
+        });
+
+        const podcastsQuery = query(collection(firebase.db, "podcasts"), orderBy("createdAt", "desc"));
+        const unsubPodcasts = onSnapshot(podcastsQuery, (snapshot) => {
+            const podcastItems = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Podcast));
+            setPodcasts(podcastItems);
+        });
+        
+        const prayerQuery = query(collection(firebase.db, "prayerRequests"), orderBy("createdAt", "desc"));
+        const unsubPrayers = onSnapshot(prayerQuery, (snapshot) => {
+            const prayerData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PrayerRequest));
+            setPrayerRequests(prayerData);
+        });
+
+        return () => {
+            unsubNews();
+            unsubPodcasts();
+            unsubPrayers();
+        };
+
+    }, [firebase.db, currentUser]);
 
      const setupNotifications = async (userId: string) => {
         if (!firebase.messaging || !firebase.db) return;
@@ -2161,7 +2137,6 @@ const App: React.FC = () => {
                 const currentToken = await getToken(firebase.messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY });
                 if (currentToken) {
                     console.log('FCM Token:', currentToken);
-                    // Save the token to the user's document in Firestore
                     const userDocRef = doc(firebase.db, 'users', userId);
                     const userDoc = await getDoc(userDocRef);
                     if(userDoc.exists()){
@@ -2183,8 +2158,6 @@ const App: React.FC = () => {
 
         onMessage(firebase.messaging, (payload) => {
             console.log('Message received. ', payload);
-            // Handle foreground message here
-            // e.g., show a toast notification
         });
     };
 
@@ -2212,11 +2185,11 @@ const App: React.FC = () => {
         switch (activePage) {
             case 'worship': return <WorshipPage currentUser={currentUser} />;
             case 'bible': return <BiblePage />;
-            case 'news': return <NewsPage currentUser={currentUser} />;
-            case 'podcasts': return <PodcastsPage currentUser={currentUser} />;
-            case 'prayer': return <PrayerPage currentUser={currentUser} />;
+            case 'news': return <NewsPage currentUser={currentUser} news={news} />;
+            case 'podcasts': return <PodcastsPage currentUser={currentUser} podcasts={podcasts} />;
+            case 'prayer': return <PrayerPage currentUser={currentUser} requests={prayerRequests} />;
             case 'chat': return <ChatListPage currentUser={currentUser} onSelectChat={setActiveChatId} />;
-            default: return <NewsPage currentUser={currentUser} />;
+            default: return <NewsPage currentUser={currentUser} news={news} />;
         }
     };
     
@@ -2230,7 +2203,6 @@ const App: React.FC = () => {
                  <div className="header-actions">
                     <button className="header-button" onClick={() => setIsNotificationPanelOpen(true)}>
                         <span className="material-symbols-outlined">notifications</span>
-                        {/* <div className="notification-dot"></div> */}
                     </button>
                     <button className="header-button" onClick={handleLogout}>
                         <span className="material-symbols-outlined">logout</span>
@@ -2268,11 +2240,7 @@ const NavItem: React.FC<{
 
 const NotificationPanel: React.FC<{onClose: () => void}> = ({onClose}) => {
     // Mock data for now
-    const notifications: Notification[] = [
-        // { id: '1', icon: 'volunteer_activism', message: 'John Doe prayed for your request.', timestamp: '5m ago'},
-        // { id: '2', icon: 'comment', message: 'Jane Smith commented on your request.', timestamp: '1h ago'},
-        // { id: '3', icon: 'groups', message: 'You have a new message from Support.', timestamp: '2d ago'}
-    ];
+    const notifications: Notification[] = [];
     
     return (
         <>
