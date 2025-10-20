@@ -49,7 +49,7 @@ type UserRole = 'admin' | 'member' | 'news_contributor' | 'podcast_contributor';
 type User = { id: string; name: string; email: string; avatar: string; roles: UserRole[]; fcmTokens?: string[] };
 type Church = { id: string; name: string; logo: string; offeringDetails: any; };
 type Comment = { id: string; authorId: string; authorName: string; authorAvatar: string; content: string; createdAt: Timestamp; };
-type PrayerRequest = { id:string; authorId: string; authorName: string; title: string; content: string; image?: string; prayedBy: string[]; comments: Comment[]; createdAt: Timestamp; };
+type PrayerRequest = { id:string; authorId: string; authorName: string; title: string; content: string; image?: string; prayedBy: string[]; comments?: Comment[]; createdAt: Timestamp; };
 type Podcast = { id: string; title: string; authorId: string; authorName: string; audioUrl: string; createdAt: Timestamp; };
 type NewsItem = { id: string; title: string; content: string; image?: string; createdAt: Timestamp; authorId: string, authorName: string };
 type Verse = { verse: string; text: string; };
@@ -214,7 +214,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
     "प्रस्थान ३７, लूका २३:२६-５６, भजनसंग्रह १८, फिलिप्पी २",
     "प्रस्थान ३८, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
-    "प्रस्थान ३９, लूका २४:१३-５३, भजनसंग्रह २०, फिलिप्पी ४",
+    "प्रस्थान ३９, लूका २४:१३-५३, भजनसंग्रह २०, फिलिप्पी ४",
     "प्रस्थान ४०, यूहन्ना १:१-२८, भजनसंग्रह २१, कलस्सी १",
     "लेवी १, यूहन्ना १:२९-५１, भजनसंग्रह २２, कलस्सी २",
     "लेवी २, यूहन्ना २, भजनसंग्रह २३, कलस्सी ३",
@@ -223,7 +223,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी ५, यूहन्ना ४:१-३０, भजनसंग्रह २६, १ थिस्सलोनिकी २",
     "लेवी ६, यूहन्ना ४:३१-５４, भजनसंग्रह २७, १ थिस्सलोनिकी ३",
     "लेवी ७, यूहन्ना ५:१-२३, भजनसंग्रह २८, १ थिस्सलोनिकी ४",
-    "लेवी ८, यूहन्ना ५:२४-４７, भजनसंग्रह २९, १ थिस्सलोनिकी ५",
+    "लेवी ८, यूहन्ना ५:２४-４７, भजनसंग्रह २९, १ थिस्सलोनिकी ५",
     "लेवी ९, यूहन्ना ६:१-२１, भजनसंग्रह ३०, २ थिस्सलोनिकी १",
     "लेवी १०, यूहन्ना ६:२２-４०, भजनसंग्रह ३１, २ थिस्सलोनिकी २",
     "लेवी ११, यूहन्ना ६:४१-७１, भजनसंग्रह ३２, २ थिस्सलोनिकी ३",
@@ -330,7 +330,7 @@ const MCCHEYNE_READING_PLAN = [
     "यहोशू १५, २ कोरिन्थी ३, यशैया २७, यशैया ३１",
     "यहोशू १६, २ कोरिन्थी ४, यशैया २८, यशैया ३２",
     "यहोशू १७, २ कोरिन्थी ५, यशैया २९, यशैया ३３",
-    "यहोशू १८, २ कोरिन्थी ६, यशैया ३०, यशैया ३４",
+    "यहोशू १८, २ कोरिन्थी ६, यशैया ३０, यशैया ३４",
     "यहोशू १९, २ कोरिन्थी ७, यशैया ३１, यशैया ३５",
     "यहोशू २०, २ कोरिन्थी ८, यशैया ३２, यशैया ३６",
     "यहोशू २१, २ कोरिन्थी ९, यशैया ३３, यशैया ३７",
@@ -368,7 +368,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ शमूएल ४, २ थिस्सलोनिकी ३, यर्मिया २५, विलाप ३",
     "१ शमूएल ५, १ तिमोथी १, यर्मिया २६, विलाप ४",
     "१ शमूएल ६, १ तिमोथी २, यर्मिया २७, विलाप ५",
-    "१ शमूएल ७, १ तिमोथी ३, यर्मिया २८, इजकिएल १",
+    "१ शमूएल ७, १ तिमोथी ३, यर्मिया २８, इजकिएल १",
     "१ शमूएल ८, १ तिमोथी ४, यर्मिया २९, इजकिएल २",
     "१ शमूएल ९, १ तिमोथी ५, यर्मिया ३०, इजकिएल ३",
     "१ शमूएल १०, १ तिमोथी ६, यर्मिया ३１, इजकिएल ४",
@@ -513,7 +513,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १८, यूहन्ना ६, भजनसंग्रह १１４, भजनसंग्रह ११５",
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रह १１６, भजनसंग्रह ११７",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रह १１８, भजनसंग्रह ११९:१-३２",
-    "२ इतिहास २１, यूहन्ना ९, भजनसंग्रह ११९:३३-６４, भजनसंग्रह ११९:६५-९６",
+    "२ इतिहास २１, यूहन्ना ९, भजनसंग्रह ११९:३३-６４, भजनसंग्रह ११९:６५-९６",
     "२ इतिहास २２, यूहन्ना १०, भजनसंग्रह ११९:९७-१２८, भजनसंग्रह ११९:१２९-१５２",
     "२ इतिहास २३, यूहन्ना ११, भजनसंग्रह ११९:१５３-१７６, भजनसंग्रह १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रह १२１, भजनसंग्रह १२２",
@@ -2243,7 +2243,7 @@ const App: React.FC = () => {
             setPodcasts(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Podcast)));
         });
         const unsubPrayer = onSnapshot(query(collection(db, "prayerRequests"), orderBy("createdAt", "desc")), (snapshot) => {
-            const requests = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data(), comments: [] } as PrayerRequest));
+            const requests = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PrayerRequest));
             setPrayerRequests(requests);
         });
         const unsubUsers = onSnapshot(query(collection(db, "users"), orderBy("name", "asc")), (snapshot) => {
