@@ -247,7 +247,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १, यूहन्ना १८:१-२३, भजनसंग्रह ४９, हिब्रू ३",
     "गन्ती २, यूहन्ना १८:२４-४०, भजनसंग्रह ५０, हिब्रू ४",
     "गन्ती ३, यूहन्ना १९:१-२２, भजनसंग्रह ५１, हिब्रू ५",
-    "गन्ती ४, यूहन्ना १९:२３-４２, भजनसंग्रह ५２, हिब्रू ६",
+    "गन्ती ४, यूहन्ना १९:२３-४２, भजनसंग्रह ५２, हिब्रू ६",
     "गन्ती ५, यूहन्ना २०, भजनसंग्रह ५３, हिब्रू ७",
     "गन्ती ६, यूहन्ना २１, भजनसंग्रह ५４, हिब्रू ८",
     "गन्ती ७, प्रेरित १, भजनसंग्रह ५５, हिब्रू ९",
@@ -273,8 +273,8 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती २७, प्रेरित १३:१-२５, भजनसंग्रह ७５, १ यूहन्ना ३",
     "गन्ती २८, प्रेरित १३:२６-５２, भजनसंग्रह ७６, १ यूहन्ना ४",
     "गन्ती २९, प्रेरित १४, भजनसंग्रह ७７, १ यूहन्ना ५",
-    "गन्ती ३०, प्रेरित १५:१-२１, हितोपदेश १, २ यूहन्ना १",
-    "गन्ती ३१, प्रेरित १५:२２-４１, हितोपदेश २, ३ यूहन्ना १",
+    "गन्ती ३０, प्रेरित १५:१-२１, हितोपदेश १, २ यूहन्ना १",
+    "गन्ती ३１, प्रेरित १५:२２-４１, हितोपदेश २, ३ यूहन्ना १",
     "गन्ती ३２, प्रेरित १६, हितोपदेश ३, यहूदा १",
     "गन्ती ३३, प्रेरित १७:१-१５, हितोपदेश ४, प्रकाश १",
     "गन्ती ३４, प्रेरित १७:१６-３４, हितोपदेश ५, प्रकाश २",
@@ -482,7 +482,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रह ७２, भजनसंग्रह ७３",
     "१ इतिहास १६, मर्कूस १६, भजनसंग्रह ७４, भजनसंग्रह ७５",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रह ७６, भजनसंग्रह ७７",
-    "१ इतिहास १८, लूका १:३९-८０, हितोपदेश १०, भजनसंग्रह ७８",
+    "१ इतिहास १८, लूका १:३९-８０, हितोपदेश १०, भजनसंग्रह ७８",
     "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रह ७９",
     "१ इतिहास २०, लूका ३, हितोपदेश १२, भजनसंग्रह ८０",
     "१ इतिहास २१, लूका ४, हितोपदेश १३, भजनसंग्रह ८１",
@@ -514,7 +514,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १८, यूहन्ना ६, भजनसंग्रह १１４, भजनसंग्रह ११５",
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रह १１６, भजनसंग्रह ११７",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रह १１８, भजनसंग्रह ११९:१-३２",
-    "२ इतिहास २१, यूहन्ना ९, भजनसंग्रह ११९:३३-６４, भजनसंग्रह ११९:６५-९६",
+    "२ इतिहास २１, यूहन्ना ९, भजनसंग्रह ११९:३३-６４, भजनसंग्रह ११९:６५-९६",
     "२ इतिहास २２, यूहन्ना १०, भजनसंग्रह ११९:९७-१２८, भजनसंग्रह ११९:१２９-१５２",
     "२ इतिहास २३, यूहन्ना ११, भजनसंग्रह ११९:१５３-१７６, भजनसंग्रह १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रह १२１, भजनसंग्रह १२２",
@@ -806,42 +806,16 @@ const LoginPage: React.FC = () => {
 };
 
 // --- Main App Pages ---
-const WorshipPage: React.FC<{currentUser: User}> = ({currentUser}) => {
+const WorshipPage: React.FC<{
+    currentUser: User;
+    liveService: WorshipService | null;
+    pastServices: PastWorshipService[];
+}> = ({ currentUser, liveService, pastServices }) => {
     const { db } = useFirebase();
-    const [liveService, setLiveService] = useState<WorshipService | null>(null);
-    const [pastServices, setPastServices] = useState<PastWorshipService[]>([]);
-    const [loading, setLoading] = useState(true);
     const [isOfferingModalOpen, setIsOfferingModalOpen] = useState(false);
     const [isAddPastWorshipModalOpen, setIsAddPastWorshipModalOpen] = useState(false);
     const [newPastService, setNewPastService] = useState({ title: '', youtubeUrl: '' });
 
-    useEffect(() => {
-        if (!db) return;
-        setLoading(true);
-
-        const qLive = query(collection(db, "worshipServices"), where("isLive", "==", true), limit(1));
-        const unsubscribeLive = onSnapshot(qLive, (snapshot) => {
-            if (!snapshot.empty) {
-                const serviceDoc = snapshot.docs[0];
-                setLiveService({ id: serviceDoc.id, ...serviceDoc.data() } as WorshipService);
-            } else {
-                setLiveService(null);
-            }
-        });
-        
-        const qPast = query(collection(db, "pastWorshipServices"), orderBy("createdAt", "desc"));
-        const unsubscribePast = onSnapshot(qPast, (snapshot) => {
-            const services = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PastWorshipService));
-            setPastServices(services);
-            setLoading(false);
-        });
-
-        return () => {
-            unsubscribeLive();
-            unsubscribePast();
-        };
-    }, [db]);
-    
     const handleAddPastService = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!db || !newPastService.title || !newPastService.youtubeUrl) return;
@@ -875,11 +849,6 @@ const WorshipPage: React.FC<{currentUser: User}> = ({currentUser}) => {
             return '/placeholder.jpg';
         }
     };
-
-
-    if (loading) {
-        return <Loading message="Loading worship services..." />;
-    }
 
     return (
         <div className="page-content">
@@ -1055,31 +1024,25 @@ const NewsPage: React.FC<{ currentUser: User; news: NewsItem[] }> = ({ currentUs
             throw new Error("Firebase not initialized or user not logged in.");
         }
 
-        let finalImageUrl: string | undefined = editingNews?.image;
+        const payload: { [key: string]: any } = {
+            title,
+            content,
+            authorId: currentUser.id,
+            authorName: currentUser.name,
+        };
+
         if (imageFile) {
             const imageRef = ref(storage, `news/${Date.now()}_${imageFile.name}`);
             await uploadBytes(imageRef, imageFile);
-            finalImageUrl = await getDownloadURL(imageRef);
+            payload.image = await getDownloadURL(imageRef);
+        } else if (editingNews?.image) {
+            payload.image = editingNews.image;
         }
 
         if (editingNews) {
-            const payload: { [key: string]: any } = {
-                title,
-                content,
-            };
-            if (finalImageUrl) {
-                payload.image = finalImageUrl;
-            }
             await updateDoc(doc(db, "news", editingNews.id), payload);
         } else {
-            const payload = {
-                title,
-                content,
-                authorId: currentUser.id,
-                authorName: currentUser.name,
-                createdAt: serverTimestamp(),
-                ...(finalImageUrl && { image: finalImageUrl }),
-            };
+            payload.createdAt = serverTimestamp();
             await addDoc(collection(db, "news"), payload);
         }
     };
@@ -1168,7 +1131,7 @@ const NewsFormModal: React.FC<{
         setIsSaving(true);
         try {
             await onSave(title, content, imageFile);
-            onClose();
+            onClose(); // Close modal on success
         } catch (error) {
             console.error("Failed to save news:", error);
             alert("सुचना पोस्ट गर्न असफल भयो।");
@@ -1233,8 +1196,6 @@ const PodcastsPage: React.FC<{currentUser: User, podcasts: Podcast[]}> = ({curre
             authorName: currentUser.name,
             createdAt: serverTimestamp(),
         });
-        
-        setIsModalOpen(false);
     };
     
     const handleDeletePodcast = async (podcast: Podcast) => {
@@ -1289,7 +1250,7 @@ const PodcastsPage: React.FC<{currentUser: User, podcasts: Podcast[]}> = ({curre
 const AddPodcastModal: React.FC<{
     isOpen: boolean;
     onClose: () => void;
-    onSave: (title: string, audioFile: File) => void;
+    onSave: (title: string, audioFile: File) => Promise<void>;
 }> = ({ isOpen, onClose, onSave }) => {
     const [title, setTitle] = useState('');
     const [audioFile, setAudioFile] = useState<File | null>(null);
@@ -1354,12 +1315,19 @@ const AddPodcastModal: React.FC<{
             return;
         }
         setIsSaving(true);
-        await onSave(title, audioFile);
-        setIsSaving(false);
-        // Reset state
-        setTitle('');
-        setAudioFile(null);
-        handleResetRecording();
+        try {
+            await onSave(title, audioFile);
+            // Reset state on success
+            setTitle('');
+            setAudioFile(null);
+            handleResetRecording();
+            onClose();
+        } catch (error) {
+            console.error("Failed to save podcast:", error);
+            alert("Podcast post failed.");
+        } finally {
+            setIsSaving(false);
+        }
     };
 
     const formatTime = (seconds: number) => {
@@ -1462,33 +1430,27 @@ const PrayerPage: React.FC<{ currentUser: User; requests: PrayerRequest[] }> = (
             throw new Error("Firebase not initialized or user not logged in.");
         }
 
-        let finalImageUrl: string | undefined = editingRequest?.image;
+        const payload: { [key: string]: any } = {
+            title,
+            content,
+            authorId: currentUser.id,
+            authorName: currentUser.name,
+        };
+        
         if (imageFile) {
             const imageRef = ref(storage, `prayers/${Date.now()}_${imageFile.name}`);
             await uploadBytes(imageRef, imageFile);
-            finalImageUrl = await getDownloadURL(imageRef);
+            payload.image = await getDownloadURL(imageRef);
+        } else if (editingRequest?.image) {
+            payload.image = editingRequest.image;
         }
 
         if (editingRequest) {
-            const payload: { [key: string]: any } = {
-                title,
-                content,
-            };
-            if (finalImageUrl) {
-                payload.image = finalImageUrl;
-            }
             await updateDoc(doc(db, "prayerRequests", editingRequest.id), payload);
         } else {
-            const payload = {
-                title,
-                content,
-                authorId: currentUser.id,
-                authorName: currentUser.name,
-                prayedBy: [],
-                comments: [],
-                createdAt: serverTimestamp(),
-                ...(finalImageUrl && { image: finalImageUrl }),
-            };
+            payload.prayedBy = [];
+            payload.comments = [];
+            payload.createdAt = serverTimestamp();
             await addDoc(collection(db, "prayerRequests"), payload);
         }
     };
@@ -1736,42 +1698,11 @@ const PrayerDetailsModal: React.FC<{
 };
 
 
-const ChatListPage: React.FC<{ currentUser: User, onSelectChat: (chatId: string) => void }> = ({ currentUser, onSelectChat }) => {
+const ChatListPage: React.FC<{ currentUser: User; chats: Chat[]; users: User[]; onSelectChat: (chatId: string) => void }> = ({ currentUser, chats, users, onSelectChat }) => {
     const { db } = useFirebase();
-    const [chats, setChats] = useState<Chat[]>([]);
-    const [users, setUsers] = useState<User[]>([]);
-    const [loading, setLoading] = useState(true);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
     const [isCreatingChat, setIsCreatingChat] = useState(false);
-
-    useEffect(() => {
-        if (!db) return;
-        // Fetch all users for chat creation
-        const usersQuery = query(collection(db, "users"));
-        const unsubscribeUsers = onSnapshot(usersQuery, snapshot => {
-            const allUsers = snapshot.docs
-                .map(doc => ({ id: doc.id, ...doc.data() } as User))
-                .filter(user => user.id !== currentUser.id);
-            setUsers(allUsers);
-        });
-
-        // Fetch user's chats
-        const chatsQuery = query(collection(db, "chats"), where("participantIds", "array-contains", currentUser.id), orderBy("lastActivity", "desc"));
-        const unsubscribeChats = onSnapshot(chatsQuery, snapshot => {
-            const userChats = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Chat));
-            setChats(userChats);
-            setLoading(false);
-        }, (error) => {
-            console.error("Error fetching chats: ", error);
-            setLoading(false);
-        });
-        
-        return () => {
-            unsubscribeUsers();
-            unsubscribeChats();
-        };
-    }, [db, currentUser.id]);
     
     const handleStartChat = async () => {
         if (!db || selectedUserIds.length === 0) return;
@@ -1827,8 +1758,6 @@ const ChatListPage: React.FC<{ currentUser: User, onSelectChat: (chatId: string)
         const partnerId = chat.participantIds.find(id => id !== currentUser.id);
         return partnerId ? chat.participants[partnerId] : { name: 'Unknown', avatar: '' };
     };
-
-    if (loading) return <Loading message="Loading chats..." />;
 
     return (
         <div className="page-content">
@@ -1907,10 +1836,12 @@ const ConversationPage: React.FC<{
     const [chat, setChat] = useState<Chat | null>(null);
     const [messages, setMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState('');
+    const [loading, setLoading] = useState(true);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (!db || !chatId) return;
+        setLoading(true);
         const chatRef = doc(db, "chats", chatId);
         const unsubscribeChat = onSnapshot(chatRef, (doc) => {
             if (doc.exists()) {
@@ -1922,8 +1853,10 @@ const ConversationPage: React.FC<{
                     [`lastRead.${currentUser.id}`]: serverTimestamp()
                 }).catch(err => console.error("Error marking chat as read:", err));
             }
+             setLoading(false);
         }, (error) => {
             console.error("Error fetching chat details:", error);
+            setLoading(false);
         });
         
         const messagesQuery = query(collection(db, "chats", chatId, "messages"), orderBy("createdAt", "asc"));
@@ -1971,17 +1904,15 @@ const ConversationPage: React.FC<{
     const getPartnerName = () => {
         if (!chat) return 'Chat';
         const partnerId = chat.participantIds.find(id => id !== currentUser.id);
-        if (partnerId && chat.participants[partnerId]) {
+        if (partnerId && chat.participants && chat.participants[partnerId]) {
             return chat.participants[partnerId].name;
         }
         return 'Chat';
     };
-
-    const partnerName = getPartnerName();
     
-    if (!chat) {
+    if (loading) {
         return (
-            <div className="conversation-page">
+             <div className="conversation-page">
                 <header className="conversation-header">
                      <button onClick={onBack} className="back-button" aria-label="Back to chats">
                         <span className="material-symbols-outlined">arrow_back</span>
@@ -1991,8 +1922,10 @@ const ConversationPage: React.FC<{
                 </header>
                 <Loading message="Loading conversation..." />
             </div>
-        )
+        );
     }
+
+    const partnerName = getPartnerName();
 
     return (
         <div className="conversation-page">
@@ -2057,6 +1990,10 @@ const App: React.FC = () => {
     const [news, setNews] = useState<NewsItem[]>([]);
     const [podcasts, setPodcasts] = useState<Podcast[]>([]);
     const [prayerRequests, setPrayerRequests] = useState<PrayerRequest[]>([]);
+    const [liveService, setLiveService] = useState<WorshipService | null>(null);
+    const [pastServices, setPastServices] = useState<PastWorshipService[]>([]);
+    const [chats, setChats] = useState<Chat[]>([]);
+    const [users, setUsers] = useState<User[]>([]);
 
     useEffect(() => {
         if (!firebase.auth || !firebase.db) return;
@@ -2099,31 +2036,58 @@ const App: React.FC = () => {
             setNews([]);
             setPodcasts([]);
             setPrayerRequests([]);
+            setLiveService(null);
+            setPastServices([]);
+            setChats([]);
+            setUsers([]);
             return;
         };
 
         const newsQuery = query(collection(firebase.db, "news"), orderBy("createdAt", "desc"));
         const unsubNews = onSnapshot(newsQuery, (snapshot) => {
-            const newsItems = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as NewsItem));
-            setNews(newsItems);
+            setNews(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as NewsItem)));
         });
 
         const podcastsQuery = query(collection(firebase.db, "podcasts"), orderBy("createdAt", "desc"));
         const unsubPodcasts = onSnapshot(podcastsQuery, (snapshot) => {
-            const podcastItems = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Podcast));
-            setPodcasts(podcastItems);
+            setPodcasts(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Podcast)));
         });
         
         const prayerQuery = query(collection(firebase.db, "prayerRequests"), orderBy("createdAt", "desc"));
         const unsubPrayers = onSnapshot(prayerQuery, (snapshot) => {
-            const prayerData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PrayerRequest));
-            setPrayerRequests(prayerData);
+            setPrayerRequests(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PrayerRequest)));
+        });
+
+        const qLive = query(collection(firebase.db, "worshipServices"), where("isLive", "==", true), limit(1));
+        const unsubLive = onSnapshot(qLive, (snapshot) => {
+            setLiveService(snapshot.empty ? null : { id: snapshot.docs[0].id, ...snapshot.docs[0].data() } as WorshipService);
+        });
+        
+        const qPast = query(collection(firebase.db, "pastWorshipServices"), orderBy("createdAt", "desc"));
+        const unsubPast = onSnapshot(qPast, (snapshot) => {
+            setPastServices(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PastWorshipService)));
+        });
+
+        const usersQuery = query(collection(firebase.db, "users"));
+        const unsubUsers = onSnapshot(usersQuery, snapshot => {
+            setUsers(snapshot.docs
+                .map(doc => ({ id: doc.id, ...doc.data() } as User))
+                .filter(user => user.id !== currentUser.id));
+        });
+
+        const chatsQuery = query(collection(firebase.db, "chats"), where("participantIds", "array-contains", currentUser.id), orderBy("lastActivity", "desc"));
+        const unsubChats = onSnapshot(chatsQuery, snapshot => {
+            setChats(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Chat)));
         });
 
         return () => {
             unsubNews();
             unsubPodcasts();
             unsubPrayers();
+            unsubLive();
+            unsubPast();
+            unsubUsers();
+            unsubChats();
         };
 
     }, [firebase.db, currentUser]);
@@ -2183,12 +2147,12 @@ const App: React.FC = () => {
 
     const renderPage = () => {
         switch (activePage) {
-            case 'worship': return <WorshipPage currentUser={currentUser} />;
+            case 'worship': return <WorshipPage currentUser={currentUser} liveService={liveService} pastServices={pastServices} />;
             case 'bible': return <BiblePage />;
             case 'news': return <NewsPage currentUser={currentUser} news={news} />;
             case 'podcasts': return <PodcastsPage currentUser={currentUser} podcasts={podcasts} />;
             case 'prayer': return <PrayerPage currentUser={currentUser} requests={prayerRequests} />;
-            case 'chat': return <ChatListPage currentUser={currentUser} onSelectChat={setActiveChatId} />;
+            case 'chat': return <ChatListPage currentUser={currentUser} chats={chats} users={users} onSelectChat={setActiveChatId} />;
             default: return <NewsPage currentUser={currentUser} news={news} />;
         }
     };
