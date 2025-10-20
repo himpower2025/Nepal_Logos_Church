@@ -69,6 +69,7 @@ type Chat = {
     participants: { [key: string]: { name: string; avatar: string; } }; // Simplified participant info
     lastMessage?: LastMessage;
     lastRead?: { [key: string]: Timestamp };
+    lastActivity?: Timestamp;
 };
 
 type Notification = {
@@ -179,7 +180,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान १३, लूका १०:१-२४, अय्यूब ३०, २ कोरिन्थी ३",
     "प्रस्थान १४, लूका १०:२५-४२, अय्यूब ३१, २ कोरिन्थी ४",
     "प्रस्थान १५, लूका ११:१-२८, अय्यूब ३२, २ कोरिन्थी ५",
-    "प्रस्थान १६, लूका ११:२९-५४, अय्यूब ३३, २ कोरिन्थी ६",
+    "प्रस्थान १६, लूका ११:२९-５４, अय्यूब ३३, २ कोरिन्थी ६",
     "प्रस्थान १७, लूका १२:१-३४, अय्यूब ३४, २ कोरिन्थी ७",
     "प्रस्थान १८, लूका १२:३५-५९, अय्यूब ३५, २ कोरिन्थी ८",
     "प्रस्थान १९, लूका १३, अय्यूब ३६, २ कोरिन्थी ९",
@@ -254,7 +255,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती २१, प्रेरित ९:१-२१, भजनसंग्रह ६९, १ पत्रुस ५",
     "गन्ती २२, प्रेरित ९:२२-४३, भजनसंग्रह ७०, २ पत्रुस १",
     "गन्ती २३, प्रेरित १०:१-२३, भजनसंग्रह ७１, २ पत्रुस २",
-    "गन्ती २४, प्रेरित १०:२४-४८, भजनसंग्रह ७२, २ पत्रुस ३",
+    "गन्ती २४, प्रेरित १०:२४-४८, भजनसंग्रह ७２, २ पत्रुस ३",
     "गन्ती २५, प्रेरित ११, भजनसंग्रह ७३, १ यूहन्ना १",
     "गन्ती २६, प्रेरित १२, भजनसंग्रह ७४, १ यूहन्ना २",
     "गन्ती २७, प्रेरित १३:१-२५, भजनसंग्रह ७५, १ यूहन्ना ३",
@@ -320,7 +321,7 @@ const MCCHEYNE_READING_PLAN = [
     "यहोशू १७, २ कोरिन्थी ५, यशैया २९, यशैया ३३",
     "यहोशू १८, २ कोरिन्थी ६, यशैया ३०, यशैया ३४",
     "यहोशू १९, २ कोरिन्थी ७, यशैया ३१, यशैया ३५",
-    "यहोशू २०, २ कोरिन्थी ८, यशैया ३२, यशैया ३६",
+    "यहोशू २०, २ कोरिन्थी ८, यशैया ३２, यशैया ३६",
     "यहोशू २१, २ कोरिन्थी ९, यशैया ३३, यशैया ३७",
     "यहोशू २२, २ कोरिन्थी १०, यशैया ३４, यशैया ३८",
     "यहोशू २३, २ कोरिन्थी ११, यशैया ३५, यशैया ३९",
@@ -454,7 +455,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ राजा २५, मत्ती २８, भजनसंग्रह ४２, भजनसंग्रह ४３",
     "१ इतिहास १, मर्कूस १, भजनसंग्रह ४４, भजनसंग्रह ४５",
     "१ इतिहास २, मर्कूस २, भजनसंग्रह ४６, भजनसंग्रह ४７",
-    "१ इतिहास ३, मर्कूस ३, भजनसंग्रह ४８, भजनसंग्रह ४９",
+    "१ इतिहास ३, मर्कूस ३, भजनसंग्रह ४８, भजनसंग्रह ४९",
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रह ५０, भजनसंग्रह ५１",
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रह ५２, भजनसंग्रह ५３",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रह ५４, भजनसंग्रह ५５",
@@ -469,7 +470,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रह ७２, भजनसंग्रह ७３",
     "१ इतिहास १६, मर्कूस १६, भजनसंग्रह ७４, भजनसंग्रह ७５",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रह ७６, भजनसंग्रह ७７",
-    "१ इतिहास १८, लूका १:३９-८０, हितोपदेश १०, भजनसंग्रह ७８",
+    "१ इतिहास १८, लूका १:३९-८０, हितोपदेश १०, भजनसंग्रह ७８",
     "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रह ७９",
     "१ इतिहास २०, लूका ३, हितोपदेश १२, भजनसंग्रह ८０",
     "१ इतिहास २१, लूका ४, हितोपदेश १३, भजनसंग्रह ८１",
@@ -479,7 +480,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २५, लूका ८, हितोपदेश १७, भजनसंग्रह ८５",
     "१ इतिहास २६, लूका ९, हितोपदेश १८, भजनसंग्रह ८６",
     "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रह ८７",
-    "१ इतिहास २८, लूका ११, हितोपदेश २०, भजनसंग्रह ८８",
+    "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रह ८８",
     "१ इतिहास २९, लूका १२, हितोपदेश २１, भजनसंग्रह ८９",
     "२ इतिहास १, लूका १३, हितोपदेश २２, भजनसंग्रह ९０",
     "२ इतिहास २, लूका १४, हितोपदेश २３, भजनसंग्रह ९１",
@@ -501,8 +502,8 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १८, यूहन्ना ६, भजनसंग्रह १１４, भजनसंग्रह ११５",
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रह १１６, भजनसंग्रह ११７",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रह १１８, भजनसंग्रह ११९:१-३２",
-    "२ इतिहास २१, यूहन्ना ९, भजनसंग्रह ११९:३३-६４, भजनसंग्रह ११९:６５-९６",
-    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रह ११९:９７-१２８, भजनसंग्रह ११९:१２９-१５２",
+    "२ इतिहास २१, यूहन्ना ९, भजनसंग्रह ११९:३३-६４, भजनसंग्रह ११९:６５-९६",
+    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रह ११९:९७-१２８, भजनसंग्रह ११९:१２９-१５２",
     "२ इतिहास २३, यूहन्ना ११, भजनसंग्रह ११९:१５３-१７６, भजनसंग्रह १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रह १२１, भजनसंग्रह १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रह १२３, भजनसंग्रह १२４",
@@ -510,8 +511,8 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास २७, यूहन्ना १५, भजनसंग्रह १२７, भजनसंग्रह १२８",
     "२ इतिहास २८, यूहन्ना १६, भजनसंग्रह १२９, भजनसंग्रह १३０",
     "२ इतिहास २९, यूहन्ना १७, भजनसंग्रह १३１, भजनसंग्रह १३２",
-    "२ इतिहास ३०, यूहन्ना १८, भजनसंग्रह १३３, भजनसंग्रह १३４",
-    "२ इतिहास ३१, यूहन्ना १९, भजनसंग्रह १३５, भजनसंग्रह १३６",
+    "२ इतिहास ३０, यूहन्ना १८, भजनसंग्रह १३３, भजनसंग्रह १३４",
+    "२ इतिहास ३１, यूहन्ना १९, भजनसंग्रह १३５, भजनसंग्रह १३６",
     "२ इतिहास ३２, यूहन्ना २०, भजनसंग्रह १३７, भजनसंग्रह १३８",
     "२ इतिहास ३३, यूहन्ना २１, भजनसंग्रह १३９, भजनसंग्रह १४０",
     "२ इतिहास ३４, प्रेरित १, भजनसंग्रह १४１, भजनसंग्रह १४２",
@@ -869,7 +870,7 @@ const WorshipPage: React.FC<{currentUser: User}> = ({currentUser}) => {
 
     return (
         <div className="page-content">
-            <h2>Worship</h2>
+            <h2>आरधना</h2>
             {liveService ? (
                 <div className="card live-worship-card">
                     <div className="live-badge">LIVE</div>
@@ -1011,7 +1012,7 @@ const BiblePage: React.FC = () => {
 
     return (
         <div className="page-content">
-            <h2>Bible</h2>
+            <h2>बाइबल</h2>
             {verseOfTheDay && (
                 <div className="card verse-card">
                     <p className="verse-text">"{verseOfTheDay.text}"</p>
@@ -1128,6 +1129,7 @@ const NewsPage: React.FC<{currentUser: User}> = ({currentUser}) => {
 
     return (
         <div className="page-content">
+            <h2>सुचना</h2>
             <div className="list-container">
                 {news.map(item => (
                     <div key={item.id} className="card news-item">
@@ -1281,6 +1283,7 @@ const PodcastsPage: React.FC<{currentUser: User}> = ({currentUser}) => {
 
     return (
         <div className="page-content">
+            <h2>Podcasts</h2>
             <div className="list-container">
                 {podcasts.map(podcast => (
                     <div key={podcast.id} className="card podcast-item">
@@ -1552,6 +1555,7 @@ const PrayerPage: React.FC<{ currentUser: User }> = ({ currentUser }) => {
 
     return (
         <div className="page-content">
+            <h2>प्रार्थना</h2>
             <div className="list-container">
                 {requests.map(req => (
                     <div key={req.id} className="card prayer-item" onClick={() => setSelectedRequest(req)}>
@@ -1785,10 +1789,13 @@ const ChatListPage: React.FC<{ currentUser: User, onSelectChat: (chatId: string)
         });
 
         // Fetch user's chats
-        const chatsQuery = query(collection(db, "chats"), where("participantIds", "array-contains", currentUser.id), orderBy("lastMessage.createdAt", "desc"));
+        const chatsQuery = query(collection(db, "chats"), where("participantIds", "array-contains", currentUser.id), orderBy("lastActivity", "desc"));
         const unsubscribeChats = onSnapshot(chatsQuery, snapshot => {
             const userChats = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Chat));
             setChats(userChats);
+            setLoading(false);
+        }, (error) => {
+            console.error("Error fetching chats: ", error);
             setLoading(false);
         });
         
@@ -1835,6 +1842,7 @@ const ChatListPage: React.FC<{ currentUser: User, onSelectChat: (chatId: string)
                 participants,
                 lastMessage: null,
                 createdAt: serverTimestamp(),
+                lastActivity: serverTimestamp(),
             });
             onSelectChat(newChatRef.id);
         } catch (error) {
@@ -1855,6 +1863,7 @@ const ChatListPage: React.FC<{ currentUser: User, onSelectChat: (chatId: string)
 
     return (
         <div className="page-content">
+            <h2>संगतिहरु</h2>
             <div className="list-container">
                 {chats.map(chat => {
                     const partner = getChatPartner(chat);
@@ -1981,7 +1990,8 @@ const ConversationPage: React.FC<{
                 senderId: currentUser.id,
                 createdAt: serverTimestamp(),
                 type: 'text'
-            }
+            },
+            lastActivity: serverTimestamp()
         });
     };
 
@@ -2042,7 +2052,7 @@ const App: React.FC = () => {
     const [authReady, setAuthReady] = useState(false);
     const [user, setUser] = useState<import('firebase/auth').User | null>(null);
     const [currentUser, setCurrentUser] = useState<User | null>(null);
-    const [activePage, setActivePage] = useState<Page>('worship');
+    const [activePage, setActivePage] = useState<Page>('news');
     const [activeChatId, setActiveChatId] = useState<string | null>(null);
     const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
     
@@ -2150,7 +2160,7 @@ const App: React.FC = () => {
             case 'podcasts': return <PodcastsPage currentUser={currentUser} />;
             case 'prayer': return <PrayerPage currentUser={currentUser} />;
             case 'chat': return <ChatListPage currentUser={currentUser} onSelectChat={setActiveChatId} />;
-            default: return <WorshipPage currentUser={currentUser} />;
+            default: return <NewsPage currentUser={currentUser} />;
         }
     };
     
@@ -2175,12 +2185,12 @@ const App: React.FC = () => {
                 {renderPage()}
             </main>
             <nav className="bottom-nav">
-                <NavItem icon="church" label="Worship" page="worship" activePage={activePage} setActivePage={setActivePage} />
-                <NavItem icon="auto_stories" label="Bible" page="bible" activePage={activePage} setActivePage={setActivePage} />
-                <NavItem icon="feed" label="News" page="news" activePage={activePage} setActivePage={setActivePage} />
+                <NavItem icon="feed" label="सुचना" page="news" activePage={activePage} setActivePage={setActivePage} />
+                <NavItem icon="church" label="आरधना" page="worship" activePage={activePage} setActivePage={setActivePage} />
                 <NavItem icon="podcasts" label="Podcasts" page="podcasts" activePage={activePage} setActivePage={setActivePage} />
-                <NavItem icon="volunteer_activism" label="Prayer" page="prayer" activePage={activePage} setActivePage={setActivePage} />
-                <NavItem icon="groups" label="Chat" page="chat" activePage={activePage} setActivePage={setActivePage} />
+                <NavItem icon="auto_stories" label="बाइबल" page="bible" activePage={activePage} setActivePage={setActivePage} />
+                <NavItem icon="groups" label="संगतिहरु" page="chat" activePage={activePage} setActivePage={setActivePage} />
+                <NavItem icon="volunteer_activism" label="प्रार्थना" page="prayer" activePage={activePage} setActivePage={setActivePage} />
             </nav>
             {isNotificationPanelOpen && <NotificationPanel onClose={() => setIsNotificationPanelOpen(false)} />}
         </div>
