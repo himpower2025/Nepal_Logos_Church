@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useCallback, createContext, useContext, useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
 // Fix: Import `createPortal` from `react-dom` to be used for modals.
@@ -112,7 +113,7 @@ const MOCK_VERSES_OF_THE_DAY: Verse[] = [
     { verse: 'यहोशू १:९', text: 'के मैले तँलाई आज्ञा दिएको छैनँ र? बलियो र साहसी हो। नडरा, न त निरुत्साहित हो, किनभने तँ जहाँ गए पनि परमप्रभु तेरा परमेश्‍वर तँसँग हुनुहुन्छ।' },
     { verse: 'भजनसंग्रह ४६:१', text: 'परमेश्‍वर हाम्रा शरणस्थान र बल हुनुहुन्छ, सङ्कष्टमा तुरुन्तै पाइने सहायक।' },
     { verse: 'मत्ती ६:३३', text: 'तर पहिले उहाँको राज्य र उहाँको धार्मिकताको खोजी गर, र यी सबै कुरा तिमीहरूलाई थपिनेछन्।' },
-    { verse: 'गलाती ५:२२-२३', text: 'तर पवित्र आत्माको फलचाहिँ प्रेम, आनन्द, शान्ति, धैर्य, दया, भलाइ, विश्वस्तता, नम्रता र आत्मसंयम हो।' },
+    { verse: 'गलाती ५:२२-২৩', text: 'तर पवित्र आत्माको फलचाहिँ प्रेम, आनन्द, शान्ति, धैर्य, दया, भलाइ, विश्वस्तता, नम्रता र आत्मसंयम हो।' },
     { verse: 'हिब्रू ११:१', text: 'अब विश्वासचाहिँ आशा राखिएका कुराहरूको निश्चय र नदेखिएका कुराहरूको प्रमाण हो।' },
     { verse: 'रोमी १०:९', text: 'यदि तपाईंले आफ्नो मुखले “येशू नै प्रभु हुनुहुन्छ” भनी स्वीकार गर्नुभयो र परमेश्वरले उहाँलाई मरेकाहरूबाट जीवित पार्नुभयो भनी आफ्नो हृदयमा विश्वास गर्नुभयो भने तपाईंले उद्धार पाउनुहुनेछ।' },
     { verse: 'भजनसंग्रह १:१-२', text: 'धन्य हो त्यो मानिस, जो दुष्टहरूको सल्लाहमा हिँड्दैन, र पापीहरूको मार्गमा खडा हुँदैन, र गिल्ला गर्नेहरूको संगतमा बस्दैन। तर त्यसको खुशी परमप्रभुको व्यवस्थामा रहन्छ, र त्यसले दिनरात उहाँको व्यवस्थामा ध्यान गर्छ।' },
@@ -180,7 +181,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान २, लूका ५:१-१６, अय्यूब १९, १ कोरिन्थी ८",
     "प्रस्थान ३, लूका ५:१७-३９, अय्यूब २०, १ कोरिन्थी ९",
     "प्रस्थान ४, लूका ६:१-१९, अय्यूब २१, १ कोरिन्थी १०",
-    "प्रस्थान ५, लूका ६:२०-४９, अय्यूब २２, १ कोरिन्थी ११",
+    "प्रस्थान ५, लूका ६:२०-４９, अय्यूब २２, १ कोरिन्थी ११",
     "प्रस्थान ६, लूका ७:१-२३, अय्यूब २३, १ कोरिन्थी १२",
     "प्रस्थान ७, लूका ७:२४-५०, अय्यूब २४, १ कोरिन्थी १३",
     "प्रस्थान ८, लूका ८:१-२५, अय्यूब २५, १ कोरिन्थी १४",
@@ -206,9 +207,9 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान २८, लूका १९:१-२७, भजनसंग्रह ५-६, गलाती ५",
     "प्रस्थान २९, लूका १९:२८-४８, भजनसंग्रह ७, गलाती ६",
     "प्रस्थान ३०, लूका २०:१-१९, भजनसंग्रह ८, एफिसी १",
-    "प्रस्थान ३१, लूका २०:२०-４७, भजनसंग्रह ९, एफिसी २",
+    "प्रस्थान ३１, लूका २०:२०-４७, भजनसंग्रह ९, एफिसी २",
     "प्रस्थान ३２, लूका २१, भजनसंग्रह १०, एफिसी ३",
-    "प्रस्थान ३३, लूका २२:१-३０, भजनसंग्रह ११-१२, एफिसी ४",
+    "प्रस्थान ३३, लूका २２:१-३０, भजनसंग्रह ११-१२, एफिसी ४",
     "प्रस्थान ३４, लूका २२:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
     "प्रस्थान ३５, लूका २२:५४-७１, भजनसंग्रह १५-१६, एफिसी ६",
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
@@ -237,13 +238,13 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी १९, यूहन्ना ११:१-२７, भजनसंग्रह ४०, २ तिमोथी २",
     "लेवी २०, यूहन्ना ११:२８-５７, भजनसंग्रह ४１, २ तिमोथी ३",
     "लेवी २१, यूहन्ना १२:१-१९, भजनसंग्रह ४２, २ तिमोथी ४",
-    "लेवी २２, यूहन्ना १२:२०-５０, भजनसंग्रह ४３, तीतस १",
+    "लेवी २２, यूहन्ना १२:२०-５０, भजनसंग्रह ४३, तीतस १",
     "लेवी २३, यूहन्ना १३, भजनसंग्रह ४４, तीतस २",
     "लेवी २४, यूहन्ना १४, भजनसंग्रह ४５, तीतस ३",
     "लेवी २५, यूहन्ना १५, भजनसंग्रह ४６, फिलेमोन १",
     "लेवी २６, यूहन्ना १६, भजनसंग्रह ४７, हिब्रू १",
     "लेवी २७, यूहन्ना १७, भजनसंग्रह ४８, हिब्रू २",
-    "गन्ती १, यूहन्ना १८:१-२३, भजनसंग्रह ४９, हिब्रू ३",
+    "गन्ती १, यूहन्ना १८:१-२३, भजनसंग्रह ४९, हिब्रू ३",
     "गन्ती २, यूहन्ना १८:２４-４०, भजनसंग्रह ५０, हिब्रू ४",
     "गन्ती ३, यूहन्ना १९:१-२２, भजनसंग्रह ५１, हिब्रू ५",
     "गन्ती ४, यूहन्ना १९:२３-４２, भजनसंग्रह ५２, हिब्रू ६",
@@ -263,7 +264,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १८, प्रेरित ७:४４-６０, भजनसंग्रह ६６, १ पत्रुस २",
     "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६７, १ पत्रुस ३",
     "गन्ती २०, प्रेरित ८:२６-４०, भजनसंग्रह ६８, १ पत्रुस ४",
-    "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६９, १ पत्रुस ५",
+    "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६९, १ पत्रुस ५",
     "गन्ती २２, प्रेरित ९:२२-４३, भजनसंग्रह ७０, २ पत्रुस १",
     "गन्ती २३, प्रेरित १०:१-२३, भजनसंग्रह ७１, २ पत्रुस २",
     "गन्ती २४, प्रेरित १०:२４-４८, भजनसंग्रह ७２, २ पत्रुस ३",
@@ -276,7 +277,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ३１, प्रेरित १५:२２-４१, हितोपदेश २, ३ यूहन्ना १",
     "गन्ती ३２, प्रेरित १६, हितोपदेश ३, यहूदा १",
     "गन्ती ३३, प्रेरित १७:१-१５, हितोपदेश ४, प्रकाश १",
-    "गन्ती ३４, प्रेरित १७:१６-３４, हितोपदेश ५, प्रकाश २",
+    "गन्ती ३４, प्रेरित १७:१६-３４, हितोपदेश ५, प्रकाश २",
     "गन्ती ३５, प्रेरित १८, हितोपदेश ६, प्रकाश ३",
     "गन्ती ३６, प्रेरित १९, हितोपदेश ७, प्रकाश ४",
     "व्यवस्था १, प्रेरित २०:१-१６, हितोपदेश ८, प्रकाश ५",
@@ -302,14 +303,14 @@ const MCCHEYNE_READING_PLAN = [
     "व्यवस्था २१, रोमी ९, श्रेष्ठगीत ७, यशैया ३",
     "व्यवस्था २２, रोमी १०, श्रेष्ठगीत ८, यशैया ४",
     "व्यवस्था २३, रोमी ११:१-२４, यशैया १, यशैया ५",
-    "व्यवस्था २४, रोमी ११:२５-३６, यशैया २, यशैया ६",
+    "व्यवस्था २४, रोमी ११:२５-३६, यशैया २, यशैया ६",
     "व्यवस्था २५, रोमी १२, यशैया ३, यशैया ७",
     "व्यवस्था २６, रोमी १३, यशैया ४, यशैया ८",
     "व्यवस्था २७, रोमी १४, यशैया ५, यशैया ९",
     "व्यवस्था २८, रोमी १५:१-१८, यशैया ६, यशैया १०",
     "व्यवस्था २९, रोमी १५:१९-３３, यशैया ७, यशैया ११",
     "व्यवस्था ३０, रोमी १६, यशैया ८, यशैया १२",
-    "व्यवस्था ३१, १ कोरिन्थी १, यशैया ९, यशैया १३",
+    "व्यवस्था ३１, १ कोरिन्थी १, यशैया ९, यशैया १३",
     "व्यवस्था ३２, १ कोरिन्थी २, यशैया १०, यशैया १४",
     "व्यवस्था ३３, १ कोरिन्थी ३, यशैया ११, यशैया १५",
     "व्यवस्था ३４, १ कोरिन्थी ४, यशैया १२, यशैया १६",
@@ -332,7 +333,7 @@ const MCCHEYNE_READING_PLAN = [
     "यहोशू १७, २ कोरिन्थी ५, यशैया २९, यशैया ३３",
     "यहोशू १८, २ कोरिन्थी ६, यशैया ३０, यशैया ३４",
     "यहोशू १९, २ कोरिन्थी ७, यशैया ३１, यशैया ३５",
-    "यहोशू ২০, २ कोरिन्थी ८, यशैया ३２, यशैया ३６",
+    "यहोशू २०, २ कोरिन्थी ८, यशैया ३２, यशैया ३６",
     "यहोशू २१, २ कोरिन्थी ९, यशैया ३３, यशैया ३７",
     "यहोशू २２, २ कोरिन्थी १०, यशैया ३４, यशैया ३८",
     "यहोशू २३, २ कोरिन्थी ११, यशैया ३５, यशैया ३９",
@@ -381,7 +382,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ शमूएल १७, तीतस ३, यर्मिया ३８, इजकिएल ११",
     "१ शमूएल १८, फिलेमोन १, यर्मिया ३９, इजकिएल १२",
     "१ शमूएल १९, हिब्रू १, यर्मिया ४०, इजकिएल १३",
-    "१ शमूएल ২০, हिब्रू २, यर्मिया ४१, इजकिएल १४",
+    "१ शमूएल २०, हिब्रू २, यर्मिया ४१, इजकिएल १४",
     "१ शमूएल २१, हिब्रू ३, यर्मिया ४２, इजकिएल १५",
     "१ शमूएल २２, हिब्रू ४, यर्मिया ४３, इजकिएल १६",
     "१ शमूएल २३, हिब्रू ५, यर्मिया ४４, इजकिएल १७",
@@ -513,7 +514,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १८, यूहन्ना ६, भजनसंग्रह १１４, भजनसंग्रह ११５",
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रह १１６, भजनसंग्रह ११７",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रह १１８, भजनसंग्रह ११९:१-३２",
-    "२ इतिहास २１, यूहन्ना ९, भजनसंग्रह ११९:३३-６४, भजनसंग्रह ११९:６५-९६",
+    "२ इतिहास २１, यूहन्ना ९, भजनसंग्रह ११९:३३-６४, भजनसंग्रह ११९:６५-९６",
     "२ इतिहास २２, यूहन्ना १०, भजनसंग्रह ११९:९७-१２८, भजनसंग्रह ११९:१２९-१５２",
     "२ इतिहास २३, यूहन्ना ११, भजनसंग्रह ११९:१５３-१７６, भजनसंग्रह १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रह १२１, भजनसंग्रह १२２",
@@ -1642,9 +1643,10 @@ const PrayerDetailsModal: React.FC<{
     useEffect(() => {
         if (!db || !request?.id) return;
         const commentsCol = collection(db, "prayerRequests", request.id, "comments");
-        const q = query(commentsCol, orderBy("createdAt", "asc"));
+        const q = query(commentsCol);
         const unsubscribe = onSnapshot(q, (snapshot) => {
             const fetchedComments = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() } as Comment));
+            fetchedComments.sort((a, b) => (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0));
             setComments(fetchedComments);
         });
         return () => unsubscribe();
@@ -1795,8 +1797,10 @@ const ChatListPage: React.FC<{
                         )
                     })
                  ) : (
-                    <div className="card" style={{ textAlign: 'center', padding: '32px' }}>
-                        <p>대화를 시작하려면 오른쪽 하단에 있는 버튼을 클릭하세요.</p>
+                    <div className="card" style={{ textAlign: 'center', padding: '32px', color: '#666' }}>
+                        <span className="material-symbols-outlined" style={{ fontSize: '48px', color: '#ccc', marginBottom: '16px' }}>chat_bubble</span>
+                        <p>No conversations yet.</p>
+                        <p style={{ fontSize: 'var(--font-size-sm)', marginTop: '8px' }}>Tap the button below to start a new chat.</p>
                     </div>
                  )}
             </div>
@@ -2228,7 +2232,7 @@ const App: React.FC = () => {
         return () => unsubscribe();
     }, [auth, db]);
 
-    // --- Data Fetching ---
+    // --- Data Fetching (Hardened against missing indexes) ---
     useEffect(() => {
         if (!db || !currentUser) return;
         
@@ -2236,26 +2240,42 @@ const App: React.FC = () => {
         const unsubWorship = onSnapshot(query(collection(db, "worshipServices"), where("isLive", "==", true), limit(1)), (snapshot) => {
             setWorshipService(snapshot.empty ? null : { id: snapshot.docs[0].id, ...snapshot.docs[0].data() } as WorshipService);
         });
-        const unsubPastWorship = onSnapshot(query(collection(db, "pastWorshipServices"), orderBy("createdAt", "desc")), (snapshot) => {
-            setPastServices(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PastWorshipService)));
+
+        const unsubPastWorship = onSnapshot(query(collection(db, "pastWorshipServices")), (snapshot) => {
+            const services = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PastWorshipService));
+            services.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
+            setPastServices(services);
         });
-        const unsubNews = onSnapshot(query(collection(db, "news"), orderBy("createdAt", "desc")), (snapshot) => {
-            setNews(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as NewsItem)));
+
+        const unsubNews = onSnapshot(query(collection(db, "news")), (snapshot) => {
+            const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as NewsItem));
+            items.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
+            setNews(items);
         });
-        const unsubPodcasts = onSnapshot(query(collection(db, "podcasts"), orderBy("createdAt", "desc")), (snapshot) => {
-            setPodcasts(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Podcast)));
+
+        const unsubPodcasts = onSnapshot(query(collection(db, "podcasts")), (snapshot) => {
+            const podcasts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Podcast));
+            podcasts.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
+            setPodcasts(podcasts);
         });
-        const unsubPrayer = onSnapshot(query(collection(db, "prayerRequests"), orderBy("createdAt", "desc")), (snapshot) => {
+
+        const unsubPrayer = onSnapshot(query(collection(db, "prayerRequests")), (snapshot) => {
             const requests = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PrayerRequest));
+            requests.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
             setPrayerRequests(requests);
         });
-        const unsubUsers = onSnapshot(query(collection(db, "users"), orderBy("name", "asc")), (snapshot) => {
-            setUsers(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as User)));
+
+        const unsubUsers = onSnapshot(query(collection(db, "users")), (snapshot) => {
+            const users = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as User));
+            users.sort((a, b) => a.name.localeCompare(b.name));
+            setUsers(users);
         });
+
         const unsubChats = onSnapshot(
-            query(collection(db, "chats"), where("participantIds", "array-contains", currentUser.id), orderBy("lastActivity", "desc")),
+            query(collection(db, "chats"), where("participantIds", "array-contains", currentUser.id)),
             (snapshot) => {
                 const fetchedChats = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Chat));
+                fetchedChats.sort((a, b) => (b.lastActivity?.toMillis() || 0) - (a.lastActivity?.toMillis() || 0));
                 setChats(fetchedChats);
             }
         );
@@ -2322,13 +2342,11 @@ const App: React.FC = () => {
         const allParticipants = [currentUser, ...selectedUsers];
         const allParticipantIds = allParticipants.map(p => p.id).sort();
 
-        // Check if a chat with these participants already exists
-        if(allParticipantIds.length === 2) {
-             const q = query(collection(db, "chats"), where("participantIds", "==", allParticipantIds));
-             const existingChats = await getDocs(q);
-             if (!existingChats.empty) {
-                return existingChats.docs[0].id; // Return existing chat ID
-             }
+        // Check if a chat with these exact participants already exists to avoid duplicates (works for 1-on-1 and groups).
+        const q = query(collection(db, "chats"), where("participantIds", "==", allParticipantIds));
+        const existingChats = await getDocs(q);
+        if (!existingChats.empty) {
+           return existingChats.docs[0].id; // Return existing chat ID
         }
        
         const participantsData = allParticipants.reduce((acc, user) => {
@@ -2468,11 +2486,11 @@ const App: React.FC = () => {
 
 
 // --- Error Boundary ---
+// Fix: Refactor ErrorBoundary to use a class field for state initialization.
+// This is a more modern approach and resolves issues where TypeScript was not
+// correctly identifying `this.state` and `this.props` within the component instance.
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; error: Error | null }> {
-  constructor(props: { children: React.ReactNode }) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
+  state = { hasError: false, error: null };
 
   static getDerivedStateFromError(error: Error) {
     return { hasError: true, error };
