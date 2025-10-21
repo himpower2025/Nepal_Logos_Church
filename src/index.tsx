@@ -11,9 +11,8 @@ import {
     onAuthStateChanged,
     signOut,
     updateProfile,
-    RecaptchaVerifier,
-    signInWithPhoneNumber,
-    ConfirmationResult,
+    GoogleAuthProvider,
+    signInWithPopup,
     User as FirebaseAuthUser,
 } from "firebase/auth";
 import { 
@@ -166,7 +165,7 @@ const MCCHEYNE_READING_PLAN = [
     "उत्पत्ति ३३, मर्कूस ५, एस्तर १०, रोमी ५",
     "उत्पत्ति ३४, मर्कूस ६, अय्यूब १, रोमी ६",
     "उत्पत्ति ३५, मर्कूस ७, अय्यूब २, रोमी ७",
-    "उत्पत्ति ३६, मर्कूस ८, अय्यूब ३, रोमी ८",
+    "उत्पत्ति ३６, मर्कूस ८, अय्यूब ३, रोमी ८",
     "उत्पत्ति ३७, मर्कूस ९, अय्यूब ४, रोमी ९",
     "उत्पत्ति ३८, मर्कूस १०, अय्यूब ५, रोमी १०",
     "उत्पत्ति ३９, मर्कूस ११, अय्यूब ६, रोमी ११",
@@ -209,7 +208,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान २६, लूका १८:१-१८, भजनसंग्रह १-२, गलाती ३",
     "प्रस्थान २७, लूका १८:१९-４３, भजनसंग्रह ३-४, गलाती ४",
     "प्रस्थान २८, लूका १९:१-२७, भजनसंग्रह ५-६, गलाती ५",
-    "प्रस्थान २९, लूका १९:२८-४８, भजनसंग्रह ७, गलाती ६",
+    "प्रस्थान २९, लूका १९:२८-４８, भजनसंग्रह ७, गलाती ६",
     "प्रस्थान ३०, लूका २०:१-१९, भजनसंग्रह ८, एफिसी १",
     "प्रस्थान ३１, लूका २०:२०-４७, भजनसंग्रह ९, एफिसी २",
     "प्रस्थान ३２, लूका २१, भजनसंग्रह १०, एफिसी ३",
@@ -340,7 +339,7 @@ const MCCHEYNE_READING_PLAN = [
     "यहोशू २०, २ कोरिन्थी ८, यशैया ३２, यशैया ३６",
     "यहोशू २१, २ कोरिन्थी ९, यशैया ३３, यशैया ३７",
     "यहोशू २２, २ कोरिन्थी १०, यशैया ३４, यशैया ३८",
-    "यहोशू २३, २ कोरिन्थी ११, यशैया ३５, यशैया ३９",
+    "यहोशू २३, २ कोरिन्थी ११, यशैया ३５, यशैया ३९",
     "यहोशू २४, २ कोरिन्थी १२, यशैया ३６, यशैया ४०",
     "न्यायकर्ता १, २ कोरिन्थी १३, यशैया ३７, यशैया ४１",
     "न्यायकर्ता २, गलाती १, यशैया ३８, यशैया ४２",
@@ -518,7 +517,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १८, यूहन्ना ६, भजनसंग्रह १１４, भजनसंग्रह ११５",
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रह १１６, भजनसंग्रह ११７",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रह १１８, भजनसंग्रह ११९:१-३２",
-    "२ इतिहास २１, यूहन्ना ९, भजनसंग्रह ११९:३३-６४, भजनसंग्रह ११९:６५-९६",
+    "२ इतिहास २１, यूहन्ना ९, भजनसंग्रह ११९:३३-６४, भजनसंग्रह ११९:६५-९६",
     "२ इतिहास २２, यूहन्ना १०, भजनसंग्रह ११९:९७-१２८, भजनसंग्रह ११९:१２९-१５２",
     "२ इतिहास २३, यूहन्ना ११, भजनसंग्रह ११९:१５３-१७६, भजनसंग्रह १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रह १२１, भजनसंग्रह १२２",
@@ -715,35 +714,13 @@ const ImageUpload: React.FC<{
 
 
 const LoginPage: React.FC = () => {
-    const { auth, db } = useFirebase();
+    const { auth } = useFirebase();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const [authMethod, setAuthMethod] = useState<'email' | 'phone'>('email');
-
-    // Email state
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [isRegistering, setIsRegistering] = useState(false);
-
-    // Phone state
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [verificationCode, setVerificationCode] = useState('');
-    const [phoneAuthStage, setPhoneAuthStage] = useState<'enterPhone' | 'enterCode' | 'enterName'>('enterPhone');
-    const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
-    const recaptchaVerifierRef = useRef<RecaptchaVerifier | null>(null);
-    
-    useEffect(() => {
-        if (auth && authMethod === 'phone' && !recaptchaVerifierRef.current) {
-            recaptchaVerifierRef.current = new RecaptchaVerifier(auth, 'recaptcha-container', {
-                'size': 'invisible',
-                'callback': () => {
-                    // reCAPTCHA solved, allow signInWithPhoneNumber.
-                }
-            });
-            recaptchaVerifierRef.current.render();
-        }
-    }, [auth, authMethod]);
 
     const handleEmailAuth = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -763,116 +740,19 @@ const LoginPage: React.FC = () => {
             setLoading(false);
         }
     };
-    
-    const handleSendCode = async (e: React.FormEvent) => {
-        e.preventDefault();
+
+    const handleGoogleSignIn = async () => {
+        if (!auth) return;
         setLoading(true);
         setError('');
         try {
-            const fullPhoneNumber = `+977${phoneNumber}`; // Assuming Nepal country code
-            const confirmation = await signInWithPhoneNumber(auth!, fullPhoneNumber, recaptchaVerifierRef.current!);
-            setConfirmationResult(confirmation);
-            setPhoneAuthStage('enterCode');
+            const provider = new GoogleAuthProvider();
+            await signInWithPopup(auth, provider);
         } catch (err: any) {
-             setError('Failed to send code. Please check the number or try again.');
-             console.error(err);
-             // It's important to render the verifier again if it fails
-             if(recaptchaVerifierRef.current) {
-                recaptchaVerifierRef.current.render().catch(console.error);
-             }
+            setError(err.message);
         } finally {
             setLoading(false);
         }
-    };
-
-    const handleVerifyCode = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoading(true);
-        setError('');
-        try {
-            const userCredential = await confirmationResult!.confirm(verificationCode);
-            // Check if user is new
-            const userDoc = await getDoc(doc(db!, "users", userCredential.user.uid));
-            if (!userDoc.exists()) {
-                setPhoneAuthStage('enterName');
-            }
-            // If user exists, onAuthStateChanged in App component will handle login.
-        } catch (err: any) {
-            setError('Invalid code. Please try again.');
-        } finally {
-            setLoading(false);
-        }
-    };
-    
-    const handleRegisterName = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!name.trim() || !auth?.currentUser) return;
-        setLoading(true);
-        setError('');
-        try {
-            await updateProfile(auth.currentUser, { displayName: name });
-            // The onAuthStateChanged listener in App will now create the Firestore doc
-            // because the user is authenticated but doesn't have a doc yet.
-        } catch(err: any) {
-            setError("Failed to save name.");
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    const renderEmailForm = () => (
-        <form onSubmit={handleEmailAuth}>
-            {isRegistering && (
-                <input type="text" className="login-input" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} required />
-            )}
-            <input type="email" className="login-input" placeholder="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" />
-            <input type="password" className="login-input" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete={isRegistering ? "new-password" : "current-password"} />
-            <button type="submit" className="login-button" disabled={loading}>
-                {loading ? <div className="spinner"></div> : (isRegistering ? 'Sign Up' : 'Log In')}
-            </button>
-            <button type="button" onClick={() => { setIsRegistering(!isRegistering); setError(''); }} className="auth-toggle-link">
-                {isRegistering ? 'Already have an account? Log In' : "Don't have an account? Sign Up"}
-            </button>
-        </form>
-    );
-
-    const renderPhoneForm = () => {
-        if (phoneAuthStage === 'enterName') {
-            return (
-                 <form onSubmit={handleRegisterName}>
-                    <h3>Welcome! What's your name?</h3>
-                    <input type="text" className="login-input" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} required />
-                    <button type="submit" className="login-button" disabled={loading}>
-                        {loading ? <div className="spinner"></div> : 'Complete Sign Up'}
-                    </button>
-                </form>
-            );
-        }
-        if (phoneAuthStage === 'enterCode') {
-            return (
-                <form onSubmit={handleVerifyCode}>
-                    <h3>Enter Verification Code</h3>
-                    <input type="text" className="login-input" placeholder="6-digit code" value={verificationCode} onChange={(e) => setVerificationCode(e.target.value)} required />
-                    <button type="submit" className="login-button" disabled={loading}>
-                        {loading ? <div className="spinner"></div> : 'Verify Code'}
-                    </button>
-                     <button type="button" onClick={() => setPhoneAuthStage('enterPhone')} className="auth-toggle-link">
-                        Change phone number
-                    </button>
-                </form>
-            );
-        }
-        return (
-            <form onSubmit={handleSendCode}>
-                 <div className="phone-input-container">
-                    <span className="country-code">+977</span>
-                    <input type="tel" className="login-input" placeholder="Phone Number" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required />
-                </div>
-                <button type="submit" className="login-button" disabled={loading}>
-                    {loading ? <div className="spinner"></div> : 'Send Code'}
-                </button>
-            </form>
-        );
     };
 
     return (
@@ -881,14 +761,44 @@ const LoginPage: React.FC = () => {
                 <img src={CHURCH.logo} alt="Church Logo" className="login-logo" />
                 <h2>{isRegistering ? 'Create Account' : 'Welcome Back'}</h2>
                 <p>{CHURCH.name}</p>
-                <div id="recaptcha-container"></div>
+
+                <form onSubmit={handleEmailAuth}>
+                    {isRegistering && (
+                        <input type="text" className="login-input" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} required />
+                    )}
+                    <input type="email" className="login-input" placeholder="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" />
+                    <input 
+                        type="password" 
+                        className="login-input" 
+                        placeholder="4-digit PIN" 
+                        value={password} 
+                        onChange={(e) => setPassword(e.target.value)} 
+                        required 
+                        maxLength={4} 
+                        pattern="\d{4}" 
+                        inputMode="numeric"
+                        autoComplete={isRegistering ? "new-password" : "current-password"} 
+                    />
+                    <button type="submit" className="login-button" disabled={loading}>
+                        {loading ? <div className="spinner"></div> : (isRegistering ? 'Sign Up' : 'Log In')}
+                    </button>
+                    <button type="button" onClick={() => { setIsRegistering(!isRegistering); setError(''); }} className="auth-toggle-link">
+                        {isRegistering ? 'Already have an account? Log In' : "Don't have an account? Sign Up"}
+                    </button>
+                </form>
+
+                <div className="login-divider"><span>OR</span></div>
                 
-                <div className="auth-method-tabs">
-                    <button onClick={() => setAuthMethod('email')} className={authMethod === 'email' ? 'active' : ''}>Email</button>
-                    <button onClick={() => setAuthMethod('phone')} className={authMethod === 'phone' ? 'active' : ''}>Phone</button>
-                </div>
-                
-                {authMethod === 'email' ? renderEmailForm() : renderPhoneForm()}
+                <button onClick={handleGoogleSignIn} className="google-signin-button" disabled={loading}>
+                    <svg viewBox="0 0 48 48" width="24px" height="24px">
+                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                        <path fill="none" d="M0 0h48v48H0z"></path>
+                    </svg>
+                    <span>Sign in with Google</span>
+                </button>
 
                 {error && <p className="login-error">{error}</p>}
             </div>
@@ -2315,7 +2225,8 @@ const App: React.FC = () => {
             if (user) { 
                 const userDocRef = doc(db, "users", user.uid);
                 const userDocSnap = await getDoc(userDocRef);
-                const isAdminByEmail = user.email === 'abraham0715@gmail.com';
+                const adminEmail = import.meta.env.VITE_ADMIN_EMAIL;
+                const isAdminByEmail = adminEmail && user.email === adminEmail;
 
                 if (userDocSnap.exists()) {
                     // User document exists, load it.
@@ -2330,26 +2241,31 @@ const App: React.FC = () => {
                     if (!user.displayName && userData.name) {
                         await updateProfile(user, { displayName: userData.name });
                     }
+                     if (!user.photoURL && userData.avatar) {
+                        await updateProfile(user, { photoURL: userData.avatar });
+                    }
                     
-                    setCurrentUser({ id: user.uid, ...userData, roles: userRoles } as User);
+                    setCurrentUser({ 
+                        id: user.uid, 
+                        name: user.displayName || userData.name,
+                        email: user.email || userData.email,
+                        avatar: user.photoURL || userData.avatar,
+                        roles: userRoles
+                    } as User);
 
                 } else {
                     // User document does not exist, create it for new sign-ups.
-                    if (user.displayName) { // Only create doc if name is available (e.g., from phone auth step)
-                        const userRoles: UserRole[] = ['member'];
-                        if (isAdminByEmail) userRoles.push('admin');
-                        
-                        const newUser: Omit<User, 'id'> = {
-                            name: user.displayName,
-                            email: user.email || '', // Email might be null with phone auth
-                            avatar: user.photoURL || '',
-                            roles: userRoles,
-                        };
-                        await setDoc(userDocRef, newUser);
-                        setCurrentUser({ id: user.uid, ...newUser } as User);
-                    }
-                    // If displayName is not yet set (e.g., phone auth pending name),
-                    // currentUser remains null, keeping the user on the LoginPage.
+                    const userRoles: UserRole[] = ['member'];
+                    if (isAdminByEmail) userRoles.push('admin');
+                    
+                    const newUser: Omit<User, 'id'> = {
+                        name: user.displayName || 'New User',
+                        email: user.email || '',
+                        avatar: user.photoURL || '',
+                        roles: userRoles,
+                    };
+                    await setDoc(userDocRef, newUser);
+                    setCurrentUser({ id: user.uid, ...newUser } as User);
                 }
             } else {
                 setCurrentUser(null);
@@ -2658,4 +2574,3 @@ if ('serviceWorker' in navigator) {
     });
   });
 }
-      
