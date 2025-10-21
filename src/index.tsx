@@ -173,7 +173,7 @@ const MCCHEYNE_READING_PLAN = [
     "उत्पत्ति ४१, मर्कूस १३, अय्यूब ८, रोमी १३",
     "उत्पत्ति ४２, मर्कूस १४, अय्यूब ९, रोमी १४",
     "उत्पत्ति ४३, मर्कूस १५, अय्यूब १०, रोमी १५",
-    "उत्पत्ति ४４, मर्कूस १६, अय्यूब ११, रोमी १६",
+    "उत्पत्ति ４４, मर्कूस १६, अय्यूब ११, रोमी १६",
     "उत्पत्ति ४५, लूका १:१-३८, अय्यूब १२, १ कोरिन्थी १",
     "उत्पत्ति ४६, लूका १:३९-८०, अय्यूब १३, १ कोरिन्थी २",
     "उत्पत्ति ४７, लूका २:१-२४, अय्यूब १४, १ कोरिन्थी ३",
@@ -218,7 +218,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
     "प्रस्थान ३７, लूका २३:२६-५６, भजनसंग्रह १८, फिलिप्पी २",
     "प्रस्थान ३८, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
-    "प्रस्थान ३９, लूका २४:१३-५३, भजनसंग्रह २०, फिलिप्पी ४",
+    "प्रस्थान ३９, लूका २४:१३-５३, भजनसंग्रह २०, फिलिप्पी ४",
     "प्रस्थान ४०, यूहन्ना १:१-२८, भजनसंग्रह २१, कलस्सी १",
     "लेवी १, यूहन्ना १:२९-५１, भजनसंग्रह २２, कलस्सी २",
     "लेवी २, यूहन्ना २, भजनसंग्रह २३, कलस्सी ३",
@@ -232,7 +232,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी १०, यूहन्ना ६:२２-４０, भजनसंग्रह ३１, २ थिस्सलोनिकी २",
     "लेवी ११, यूहन्ना ६:४१-७１, भजनसंग्रह ३２, २ थिस्सलोनिकी ३",
     "लेवी १२, यूहन्ना ७:१-३１, भजनसंग्रह ३３, १ तिमोथी १",
-    "लेवी १३, यूहन्ना ७:३２-５３, भजनसंग्रह ३４, १ तिमोथी २",
+    "लेवी १३, यूहन्ना ७:३２-５३, भजनसंग्रह ३４, १ तिमोथी २",
     "लेवी १४, यूहन्ना ८:१-३０, भजनसंग्रह ३５, १ तिमोथी ३",
     "लेवी १५, यूहन्ना ८:३१-५९, भजनसंग्रह ३６, १ तिमोथी ४",
     "लेवी १६, यूहन्ना ९, भजनसंग्रह ३７, १ तिमोथी ५",
@@ -735,7 +735,15 @@ const LoginPage: React.FC = () => {
                 await signInWithEmailAndPassword(auth!, email, password);
             }
         } catch (err: any) {
-            setError(err.message);
+            let friendlyMessage = err.message;
+            if (err.code === 'auth/weak-password') {
+                friendlyMessage = 'Password should be at least 6 characters.';
+            } else if (err.code === 'auth/email-already-in-use') {
+                friendlyMessage = 'This email is already in use. Please log in.';
+            } else if (err.code === 'auth/invalid-credential') {
+                 friendlyMessage = 'Incorrect email or password.';
+            }
+            setError(friendlyMessage);
         } finally {
             setLoading(false);
         }
@@ -770,12 +778,13 @@ const LoginPage: React.FC = () => {
                     <input 
                         type="password" 
                         className="login-input" 
-                        placeholder="4-digit PIN" 
+                        placeholder="6-digit PIN" 
                         value={password} 
                         onChange={(e) => setPassword(e.target.value)} 
                         required 
-                        maxLength={4} 
-                        pattern="\d{4}" 
+                        minLength={6}
+                        maxLength={6} 
+                        pattern="\d{6}" 
                         inputMode="numeric"
                         autoComplete={isRegistering ? "new-password" : "current-password"} 
                     />
