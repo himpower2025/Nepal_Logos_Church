@@ -110,7 +110,7 @@ const MOCK_VERSES_OF_THE_DAY: Verse[] = [
     { verse: 'मत्ती ११:२८', text: 'हे सबै थाकेका र बोझले दबिएका हो, मकहाँ आओ, र म तिमीहरूलाई विश्राम दिनेछु।' },
     { verse: 'हितोपदेश ३:५-६', text: 'तेरो सारा हृदयले परमप्रभुमाथि भरोसा राख्, र तेरो आफ्नै समझशक्तिमाथि भर नपर्। तेरा सबै मार्गहरूमा उहाँलाई स्वीकार गर्, र उहाँले तेरा मार्गहरू सोझो बनाउनुहुनेछ।' },
     { verse: '२ तिमोथी १:७', text: 'किनभने परमेश्‍वरले हामीलाई डरको आत्मा दिनुभएको छैन, तर शक्ति, प्रेम र आत्मसंयमको आत्मा दिनुभएको छ।' },
-    { verse: 'यहोशू १:९', text: 'के मैले तँलाई आज्ञा दिएको छैनँ र? बलियो र साहसी हो। नडरा, न त निरुत्साहित हो, किनभने तँ जहाँ गए पनि परमप्रभु तेरा परमेश्‍वर तँसँग हुनुहुन्छ।' },
+    { verse: 'यहोशू १:९', text: 'के मैले तँलाई आज्ञa दिएको छैनँ र? बलियो र साहसी हो। नडरा, न त निरुत्साहित हो, किनभने तँ जहाँ गए पनि परमप्रभु तेरा परमेश्‍वर तँसँग हुनुहुन्छ।' },
     { verse: 'भजनसंग्रह ४६:१', text: 'परमेश्‍वर हाम्रा शरणस्थान र बल हुनुहुन्छ, सङ्कष्टमा तुरुन्तै पाइने सहायक।' },
     { verse: 'मत्ती ६:३३', text: 'तर पहिले उहाँको राज्य र उहाँको धार्मिकताको खोजी गर, र यी सबै कुरा तिमीहरूलाई थपिनेछन्।' },
     { verse: 'गलाती ५:२२-২৩', text: 'तर पवित्र आत्माको फलचाहिँ प्रेम, आनन्द, शान्ति, धैर्य, दया, भलाइ, विश्वस्तता, नम्रता र आत्मसंयम हो।' },
@@ -211,7 +211,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३２, लूका २१, भजनसंग्रह १०, एफिसी ३",
     "प्रस्थान ३३, लूका २２:१-३０, भजनसंग्रह ११-१२, एफिसी ४",
     "प्रस्थान ३４, लूका २२:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
-    "प्रस्थान ३５, लूका २२:५४-७１, भजनसंग्रह १५-१६, एफिसी ६",
+    "प्रस्थान ३５, लूका २२:५४-७１, भजनसंग्रह १५-१６, एफिसी ६",
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
     "प्रस्थान ३７, लूका २३:२६-५६, भजनसंग्रह १८, फिलिप्पी २",
     "प्रस्थान ३८, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
@@ -514,7 +514,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १८, यूहन्ना ६, भजनसंग्रह १１４, भजनसंग्रह ११５",
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रह १１６, भजनसंग्रह ११７",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रह १１８, भजनसंग्रह ११९:१-३２",
-    "२ इतिहास २１, यूहन्ना ९, भजनसंग्रह ११९:३३-６४, भजनसंग्रह ११९:６५-९６",
+    "२ इतिहास २１, यूहन्ना ९, भजनसंग्रह ११९:३३-６४, भजनसंग्रह ११९:６५-९६",
     "२ इतिहास २２, यूहन्ना १०, भजनसंग्रह ११९:९७-१２८, भजनसंग्रह ११९:१２९-१５２",
     "२ इतिहास २३, यूहन्ना ११, भजनसंग्रह ११९:१５３-१７６, भजनसंग्रह १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रह १२１, भजनसंग्रह १२２",
@@ -1029,7 +1029,9 @@ const NewsPage: React.FC<{ currentUser: User; news: NewsItem[] }> = ({ currentUs
 
         let finalImageUrl: string | null = editingNews?.image || null;
 
+        // Step 1: Upload image if a new one is provided
         if (imageFile) {
+            // Optional: Delete old image if it exists
             if (editingNews?.image) {
                 try {
                     await deleteObject(ref(storage, editingNews.image));
@@ -1050,6 +1052,7 @@ const NewsPage: React.FC<{ currentUser: User; news: NewsItem[] }> = ({ currentUs
             image: finalImageUrl,
         };
 
+        // Step 2: Save document to Firestore
         if (editingNews) {
             await updateDoc(doc(db, "news", editingNews.id), payload);
         } else {
@@ -1199,10 +1202,12 @@ const PodcastsPage: React.FC<{currentUser: User, podcasts: Podcast[]}> = ({curre
     const handleSavePodcast = async (title: string, audioFile: File) => {
         if (!db || !storage || !currentUser) return;
         
+        // Step 1: Upload audio file
         const audioRef = ref(storage, `podcasts/${Date.now()}_${audioFile.name}`);
         await uploadBytes(audioRef, audioFile);
         const audioUrl = await getDownloadURL(audioRef);
 
+        // Step 2: Save document to Firestore
         await addDoc(collection(db, "podcasts"), {
             title,
             audioUrl,
@@ -1304,7 +1309,7 @@ const AddPodcastModal: React.FC<{
             }, 1000);
         } catch (error) {
             console.error("Error starting recording:", error);
-            alert("Could not start recording. Please ensure microphone permissions are granted.");
+            alert("마이크를 시작할 수 없습니다. 브라우저 또는 휴대폰 설정에서 이 사이트에 대한 마이크 권한이 부여되었는지 확인해주세요.");
         }
     };
     
@@ -1447,6 +1452,7 @@ const PrayerPage: React.FC<{ currentUser: User; requests: PrayerRequest[] }> = (
 
         let finalImageUrl: string | null = editingRequest?.image || null;
 
+        // Step 1: Upload image if a new one is provided
         if (imageFile) {
             if (editingRequest?.image) {
                 try {
@@ -1468,6 +1474,7 @@ const PrayerPage: React.FC<{ currentUser: User; requests: PrayerRequest[] }> = (
             image: finalImageUrl,
         };
 
+        // Step 2: Save document to Firestore
         if (editingRequest) {
             await updateDoc(doc(db, "prayerRequests", editingRequest.id), payload);
         } else {
@@ -1734,23 +1741,36 @@ const ChatListPage: React.FC<{
     const { db } = useFirebase();
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-    const getOtherParticipant = (chat: Chat, currentUserId: string) => {
-        if (!chat.participants) {
-            return { name: "Unknown User", avatar: '' };
-        }
+    const getOtherParticipant = (chat: Chat, currentUserId: string, allUsers: User[]) => {
         const otherId = chat.participantIds.find(id => id !== currentUserId);
-        if (otherId && chat.participants[otherId]) {
-            return chat.participants[otherId];
-        }
+
         // For group chats
         if (chat.participantIds.length > 2) {
             const names = chat.participantIds
                 .filter(id => id !== currentUserId)
-                .map(id => chat.participants[id]?.name.split(' ')[0] || '')
+                .map(id => {
+                    const user = allUsers.find(u => u.id === id);
+                    return user ? user.name.split(' ')[0] : '';
+                })
+                .filter(name => name)
                 .slice(0, 2)
                 .join(', ');
             return { name: names + (chat.participantIds.length > 3 ? '...' : ''), avatar: '' };
         }
+        
+        // For 1-on-1 chats, with fallback
+        if (otherId) {
+            // Priority 1: Use data from the chat document if available and valid
+            if (chat.participants && chat.participants[otherId] && chat.participants[otherId].name) {
+                return chat.participants[otherId];
+            }
+            // Priority 2: Fallback to the live user list
+            const userFromList = allUsers.find(u => u.id === otherId);
+            if (userFromList) {
+                return { name: userFromList.name, avatar: userFromList.avatar };
+            }
+        }
+        
         return { name: "Unknown User", avatar: '' };
     };
 
@@ -1780,7 +1800,7 @@ const ChatListPage: React.FC<{
             <div className="list-container">
                  {chats.length > 0 ? (
                     chats.map(chat => {
-                        const otherParticipant = getOtherParticipant(chat, currentUser.id);
+                        const otherParticipant = getOtherParticipant(chat, currentUser.id, users);
                         const isUnread = chat.lastRead && chat.lastMessage && (!chat.lastRead[currentUser.id] || chat.lastRead[currentUser.id] < chat.lastMessage.createdAt);
                         return (
                             <div key={chat.id} className={`list-item chat-item ${isUnread ? 'unread' : ''}`} onClick={() => onChatSelect(chat)}>
@@ -1936,50 +1956,47 @@ const ConversationPage: React.FC<{
         const tempId = `temp_${Date.now()}`;
         const messageType = file ? (file.type.startsWith('image/') ? 'image' : 'video') : 'text';
 
-        const optimisticMessage: Message = {
-            id: tempId,
-            tempId,
-            senderId: currentUser.id,
-            type: messageType,
-            createdAt: Timestamp.now(),
-            status: file ? 'uploading' : undefined,
-            content: file ? undefined : content,
-            mediaUrl: file ? URL.createObjectURL(file) : undefined
-        };
-        
-        setMessages(prev => [...prev, optimisticMessage]);
-        if(!file) setNewMessage('');
+        // Optimistic UI update
+        if (file) {
+            const optimisticMessage: Message = {
+                id: tempId, tempId, senderId: currentUser.id, type: messageType,
+                createdAt: Timestamp.now(), status: 'uploading',
+                mediaUrl: URL.createObjectURL(file)
+            };
+            setMessages(prev => [...prev, optimisticMessage]);
+        } else {
+             setNewMessage(''); // Clear input for text messages immediately
+        }
 
         try {
             let mediaUrl: string | undefined = undefined;
+            // Step 1: Upload file if it exists
             if (file) {
                 const mediaRef = ref(storage, `chat_media/${currentChat.id}/${Date.now()}_${file.name}`);
                 await uploadBytes(mediaRef, file);
                 mediaUrl = await getDownloadURL(mediaRef);
             }
 
+            // Step 2: Create message payload and save to Firestore
             const messagePayload = {
-                senderId: currentUser.id,
-                type: messageType,
-                createdAt: serverTimestamp(),
+                senderId: currentUser.id, type: messageType, createdAt: serverTimestamp(),
                 ...(content && { content }),
                 ...(mediaUrl && { mediaUrl }),
             };
-
             await addDoc(collection(db, "chats", currentChat.id, "messages"), messagePayload);
-
+            
+            // Step 3: Update last message on chat
             await updateDoc(doc(db, "chats", currentChat.id), {
                 lastMessage: {
                     content: content || (messageType === 'image' ? '📷 Photo' : '📹 Video'),
-                    senderId: currentUser.id,
-                    createdAt: serverTimestamp(),
-                    type: messageType,
+                    senderId: currentUser.id, createdAt: serverTimestamp(), type: messageType,
                 },
                 lastActivity: serverTimestamp()
             });
 
         } catch (error) {
             console.error("Error sending message:", error);
+            // Mark optimistic message as failed
             setMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
         }
     };
@@ -1987,6 +2004,7 @@ const ConversationPage: React.FC<{
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             handleSendMessage(undefined, e.target.files[0]);
+            e.target.value = ''; // Reset file input
         }
     };
 
