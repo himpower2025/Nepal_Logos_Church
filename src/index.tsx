@@ -213,7 +213,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३４, लूका २२:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
     "प्रस्थान ३５, लूका २२:५४-७１, भजनसंग्रह १५-१６, एफिसी ६",
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
-    "प्रस्थान ३７, लूका २३:२६-५६, भजनसंग्रह १८, फिलिप्पी २",
+    "प्रस्थान ३７, लूका २३:२६-५６, भजनसंग्रह १८, फिलिप्पी २",
     "प्रस्थान ३८, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
     "प्रस्थान ३９, लूका २४:१३-५३, भजनसंग्रह २०, फिलिप्पी ४",
     "प्रस्थान ४०, यूहन्ना १:१-२८, भजनसंग्रह २१, कलस्सी १",
@@ -229,7 +229,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी १०, यूहन्ना ६:२２-４०, भजनसंग्रह ३１, २ थिस्सलोनिकी २",
     "लेवी ११, यूहन्ना ६:४१-७１, भजनसंग्रह ३２, २ थिस्सलोनिकी ३",
     "लेवी १२, यूहन्ना ७:१-३１, भजनसंग्रह ३３, १ तिमोथी १",
-    "लेवी १३, यूहन्ना ७:३२-５３, भजनसंग्रह ३４, १ तिमोथी २",
+    "लेवी १३, यूहन्ना ७:३２-５３, भजनसंग्रह ३４, १ तिमोथी २",
     "लेवी १४, यूहन्ना ८:१-३０, भजनसंग्रह ३５, १ तिमोथी ३",
     "लेवी १५, यूहन्ना ८:३१-５९, भजनसंग्रह ३６, १ तिमोथी ४",
     "लेवी १६, यूहन्ना ९, भजनसंग्रह ३７, १ तिमोथी ५",
@@ -274,7 +274,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती २८, प्रेरित १३:२６-５２, भजनसंग्रह ७６, १ यूहन्ना ४",
     "गन्ती २९, प्रेरित १४, भजनसंग्रह ७７, १ यूहन्ना ५",
     "गन्ती ३０, प्रेरित १५:१-२१, हितोपदेश १, २ यूहन्ना १",
-    "गन्ती ३１, प्रेरित १५:२２-４१, हितोपदेश २, ३ यूहन्ना १",
+    "गन्ती ३１, प्रेरित १५:२２-４１, हितोपदेश २, ३ यूहन्ना १",
     "गन्ती ३２, प्रेरित १६, हितोपदेश ३, यहूदा १",
     "गन्ती ३३, प्रेरित १७:१-१５, हितोपदेश ४, प्रकाश १",
     "गन्ती ३４, प्रेरित १७:१६-３４, हितोपदेश ५, प्रकाश २",
@@ -516,7 +516,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रह १１８, भजनसंग्रह ११९:१-३２",
     "२ इतिहास २１, यूहन्ना ९, भजनसंग्रह ११९:३३-６४, भजनसंग्रह ११९:６५-९६",
     "२ इतिहास २２, यूहन्ना १०, भजनसंग्रह ११९:९७-१２८, भजनसंग्रह ११९:१２९-१５２",
-    "२ इतिहास २३, यूहन्ना ११, भजनसंग्रह ११९:१５３-१７６, भजनसंग्रह १२०",
+    "२ इतिहास २३, यूहन्ना ११, भजनसंग्रह ११९:१５３-१७６, भजनसंग्रह १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रह १२１, भजनसंग्रह १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रह १२３, भजनसंग्रह १२４",
     "२ इतिहास २６, यूहन्ना १४, भजनसंग्रह १२５, भजनसंग्रह १२６",
@@ -1309,7 +1309,7 @@ const AddPodcastModal: React.FC<{
             }, 1000);
         } catch (error) {
             console.error("Error starting recording:", error);
-            alert("마이크를 시작할 수 없습니다. 브라우저 또는 휴대폰 설정에서 이 사이트에 대한 마이크 권한이 부여되었는지 확인해주세요.");
+            alert("माइकलाई सुरु गर्न सकिएन। कृपया ब्राउजर वा फोन सेटिङहरूमा यो साइटको लागि माइक अनुमति जाँच गर्नुहोस्।");
         }
     };
     
@@ -1520,10 +1520,13 @@ const PrayerPage: React.FC<{ currentUser: User; requests: PrayerRequest[] }> = (
                         <p className="prayer-content">{req.content}</p>
                         <div className="prayer-meta">
                             <span>By {req.authorName} - {formatRelativeTime(req.createdAt)}</span>
-                            <div className="prayer-actions" onClick={(e) => e.stopPropagation()}>
+                            <div className="prayer-actions">
                                 <button
                                     className={`prayer-action-button ${req.prayedBy.includes(currentUser.id) ? 'prayed' : ''}`}
-                                    onClick={() => handleTogglePrayed(req)}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleTogglePrayed(req);
+                                    }}
                                 >
                                     <span className="material-symbols-outlined">volunteer_activism</span>
                                     <span>{req.prayedBy.length}</span>
@@ -1594,9 +1597,32 @@ const PrayerFormModal: React.FC<{
         try {
             await onSave(title, content, imageFile);
             onClose();
-        } catch (error) {
+        } catch (error: any) {
             console.error("Failed to save prayer request:", error);
-            alert("प्रार्थना अनुरोध पोस्ट गर्न असफल भयो।");
+            
+            let errorMessage = "प्रार्थना अनुरोध पोस्ट गर्न असफल भयो।"; // Default: "Prayer request post failed."
+            
+            if (error && error.code) { // Check for specific Firebase Storage error codes
+                switch (error.code) {
+                    case 'storage/unauthorized':
+                        errorMessage = "फोटो अपलोड गर्न अनुमति छैन। कृपया सर्भरको नियमहरू जाँच्नुहोस्।"; // "Permission denied for photo upload. Please check server rules."
+                        break;
+                    case 'storage/canceled':
+                        errorMessage = "फोटो अपलोड रद्द गरियो।"; // "Photo upload was canceled."
+                        break;
+                    case 'storage/retry-limit-exceeded':
+                         errorMessage = "नेटवर्क समय सकियो। कृपया आफ्नो इन्टरनेट जडान जाँच गर्नुहोस्।"; // "Network timeout. Please check your internet connection."
+                         break;
+                    case 'storage/unknown':
+                    default:
+                        errorMessage = `अज्ञात त्रुटि भयो। कृपया फेरि प्रयास गर्नुहोस्। त्रुटि कोड: ${error.code}`; // "An unknown error occurred. Please try again. Error code: ..."
+                        break;
+                }
+            } else if (error instanceof Error) {
+                errorMessage = error.message;
+            }
+    
+            alert(errorMessage);
         } finally {
             setIsSaving(false);
         }
