@@ -10,7 +10,11 @@ import {
     signInWithEmailAndPassword, 
     onAuthStateChanged,
     signOut,
-    updateProfile
+    updateProfile,
+    RecaptchaVerifier,
+    signInWithPhoneNumber,
+    ConfirmationResult,
+    User as FirebaseAuthUser,
 } from "firebase/auth";
 import { 
     collection, 
@@ -81,7 +85,7 @@ type Notification = {
 type WorshipService = {
     id: string;
     isLive: boolean;
-    twitchChannel: string;
+    streamUrl: string;
     title: string;
     createdAt: Timestamp;
 };
@@ -203,7 +207,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान २४, लूका १७:१-१९, अय्यूब ४१, गलाती १",
     "प्रस्थान २५, लूका १७:२०-३７, अय्यूब ४２, गलाती २",
     "प्रस्थान २६, लूका १८:१-१८, भजनसंग्रह १-२, गलाती ३",
-    "प्रस्थान २७, लूका १८:१९-４३, भजनसंग्रह ३-४, गलाती ४",
+    "प्रस्थान २७, लूका १८:१९-４３, भजनसंग्रह ३-४, गलाती ४",
     "प्रस्थान २८, लूका १९:१-२७, भजनसंग्रह ५-६, गलाती ५",
     "प्रस्थान २९, लूका १९:२८-४８, भजनसंग्रह ७, गलाती ६",
     "प्रस्थान ३०, लूका २०:१-१९, भजनसंग्रह ८, एफिसी १",
@@ -224,21 +228,21 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी ५, यूहन्ना ४:१-३０, भजनसंग्रह २६, १ थिस्सलोनिकी २",
     "लेवी ६, यूहन्ना ४:३१-５４, भजनसंग्रह २७, १ थिस्सलोनिकी ३",
     "लेवी ७, यूहन्ना ५:१-२३, भजनसंग्रह २८, १ थिस्सलोनिकी ४",
-    "लेवी ८, यूहन्ना ५:２４-４７, भजनसंग्रह २९, १ थिस्सलोनिकी ५",
+    "लेवी ८, यूहन्ना ५:２４-４७, भजनसंग्रह २९, १ थिस्सलोनिकी ५",
     "लेवी ९, यूहन्ना ६:१-२１, भजनसंग्रह ३०, २ थिस्सलोनिकी १",
-    "लेवी १०, यूहन्ना ६:२２-４०, भजनसंग्रह ३１, २ थिस्सलोनिकी २",
+    "लेवी १०, यूहन्ना ६:२２-４０, भजनसंग्रह ३１, २ थिस्सलोनिकी २",
     "लेवी ११, यूहन्ना ६:४१-७１, भजनसंग्रह ३２, २ थिस्सलोनिकी ३",
     "लेवी १२, यूहन्ना ७:१-३１, भजनसंग्रह ३３, १ तिमोथी १",
     "लेवी १३, यूहन्ना ७:३２-５３, भजनसंग्रह ३４, १ तिमोथी २",
     "लेवी १४, यूहन्ना ८:१-३０, भजनसंग्रह ३５, १ तिमोथी ३",
-    "लेवी १५, यूहन्ना ८:३१-５९, भजनसंग्रह ३６, १ तिमोथी ४",
+    "लेवी १५, यूहन्ना ८:३१-५९, भजनसंग्रह ३６, १ तिमोथी ४",
     "लेवी १६, यूहन्ना ९, भजनसंग्रह ३７, १ तिमोथी ५",
     "लेवी १७, यूहन्ना १०:१-२１, भजनसंग्रह ३８, १ तिमोथी ६",
     "लेवी १८, यूहन्ना १०:२२-４２, भजनसंग्रह ३９, २ तिमोथी १",
     "लेवी १९, यूहन्ना ११:१-२７, भजनसंग्रह ४०, २ तिमोथी २",
     "लेवी २०, यूहन्ना ११:२８-５７, भजनसंग्रह ४１, २ तिमोथी ३",
     "लेवी २१, यूहन्ना १२:१-१९, भजनसंग्रह ४２, २ तिमोथी ४",
-    "लेवी २２, यूहन्ना १२:२०-５０, भजनसंग्रह ४३, तीतस १",
+    "लेवी २２, यूहन्ना १२:२०-５０, भजनसंग्रह ४３, तीतस १",
     "लेवी २३, यूहन्ना १३, भजनसंग्रह ४４, तीतस २",
     "लेवी २४, यूहन्ना १४, भजनसंग्रह ४５, तीतस ३",
     "लेवी २५, यूहन्ना १५, भजनसंग्रह ४６, फिलेमोन १",
@@ -252,16 +256,16 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ६, यूहन्ना २１, भजनसंग्रह ५４, हिब्रू ८",
     "गन्ती ७, प्रेरित १, भजनसंग्रह ५５, हिब्रू ९",
     "गन्ती ८, प्रेरित २:१-२１, भजनसंग्रह ५６, हिब्रू १०",
-    "गन्ती ९, प्रेरित २:२２-４７, भजनसंग्रह ५७, हिब्रू ११",
+    "गन्ती ९, प्रेरित २:२２-４７, भजनसंग्रह ५７, हिब्रू ११",
     "गन्ती १०, प्रेरित ३, भजनसंग्रह ५８, हिब्रू १२",
-    "गन्ती ११, प्रेरित ४:१-२２, भजनसंग्रह ५９, हिब्रू १३",
+    "गन्ती ११, प्रेरित ४:१-२２, भजनसंग्रह ५९, हिब्रू १३",
     "गन्ती १२, प्रेरित ४:२३-３７, भजनसंग्रह ६０, याकूब १",
     "गन्ती १३, प्रेरित ५:१-१८, भजनसंग्रह ६１, याकूब २",
     "गन्ती १४, प्रेरित ५:१९-４２, भजनसंग्रह ६２, याकूब ३",
     "गन्ती १५, प्रेरित ६, भजनसंग्रह ६３, याकूब ४",
     "गन्ती १६, प्रेरित ७:१-२１, भजनसंग्रह ६４, याकूब ५",
-    "गन्ती १७, प्रेरित ७:२２-४३, भजनसंग्रह ६５, १ पत्रुस १",
-    "गन्ती १८, प्रेरित ७:४４-６０, भजनसंग्रह ६６, १ पत्रुस २",
+    "गन्ती १७, प्रेरित ७:२２-４३, भजनसंग्रह ६５, १ पत्रुस १",
+    "गन्ती १८, प्रेरित ७:४４-６०, भजनसंग्रह ६６, १ पत्रुस २",
     "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६７, १ पत्रुस ३",
     "गन्ती २०, प्रेरित ८:२６-４०, भजनसंग्रह ६８, १ पत्रुस ४",
     "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६९, १ पत्रुस ५",
@@ -352,7 +356,7 @@ const MCCHEYNE_READING_PLAN = [
     "न्यायकर्ता १२, एफिसी ५, यर्मिया ८, यशैया ५２",
     "न्यायकर्ता १३, एफिसी ६, यर्मिया ९, यशैया ५３",
     "न्यायकर्ता १४, फिलिप्पी १, यर्मिया १०, यशैया ५４",
-    "न्यायकर्ता १५, फिलिप्पी २, यर्मिया ११, यशैया ५５",
+    "न्यायकर्ता १५, फिलिप्पी २, यर्मिया ११, यशैया ५५",
     "न्यायकर्ता १६, फिलिप्पी ३, यर्मिया १२, यशैया ५６",
     "न्यायकर्ता १७, फिलिप्पी ४, यर्मिया १३, यशैया ५７",
     "न्यायकर्ता १८, कलस्सी १, यर्मिया १४, यशैया ५８",
@@ -505,9 +509,9 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ९, लूका २１, हितोपदेश ३０, भजनसंग्रह ९８",
     "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रह ९９",
     "२ इतिहास ११, लूका २３, भजनसंग्रह १०४, भजनसंग्रह १००",
-    "२ इतिहास १२, लूका २४, भजनसंग्रह १०５, भजनसंग्रह १०１",
+    "२ इतिहास १२, लूका २४, भजनसंग्रह १०５, भजनसंग्रह १०१",
     "२ इतिहास १३, यूहन्ना १, भजनसंग्रह १०６, भजनसंग्रह १०２",
-    "२ इतिहास १४, यूहन्ना २, भजनसंग्रह १०７, भजनसंग्रह १०३",
+    "२ इतिहास १४, यूहन्ना २, भजनसंग्रह १०７, भजनसंग्रह १०３",
     "२ इतिहास १५, यूहन्ना ३, भजनसंग्रह १०８, भजनसंग्रह १०९",
     "२ इतिहास १६, यूहन्ना ४, भजनसंग्रह १１０, भजनसंग्रह ११１",
     "२ इतिहास १७, यूहन्ना ५, भजनसंग्रह १１２, भजनसंग्रह ११३",
@@ -516,7 +520,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रह १１８, भजनसंग्रह ११९:१-३２",
     "२ इतिहास २１, यूहन्ना ९, भजनसंग्रह ११९:३३-６४, भजनसंग्रह ११९:６५-९६",
     "२ इतिहास २２, यूहन्ना १०, भजनसंग्रह ११९:९७-१２८, भजनसंग्रह ११९:१２९-१５２",
-    "२ इतिहास २३, यूहन्ना ११, भजनसंग्रह ११९:१５３-१७６, भजनसंग्रह १२०",
+    "२ इतिहास २३, यूहन्ना ११, भजनसंग्रह ११९:१５３-१७६, भजनसंग्रह १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रह १२１, भजनसंग्रह १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रह १२３, भजनसंग्रह १२４",
     "२ इतिहास २６, यूहन्ना १४, भजनसंग्रह १२５, भजनसंग्रह १२６",
@@ -569,6 +573,31 @@ function getAvatarInitial(name: string | undefined | null): string {
     }
     return name.substring(0, 1).toUpperCase();
 }
+const getEmbedUrl = (url: string): string | null => {
+    if (!url) return null;
+    try {
+        // YouTube URLs (handles watch, embed, live, and youtu.be)
+        const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|live\/)|youtu\.be\/)([\w-]{11})/;
+        const youtubeMatch = url.match(youtubeRegex);
+        if (youtubeMatch && youtubeMatch[1]) {
+            const videoId = youtubeMatch[1];
+            // Autoplay is often restricted by browsers and might require mute=1. playsinline is for iOS.
+            return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1`;
+        }
+
+        // Facebook URLs (handles various video URLs)
+        const facebookRegex = /https?:\/\/(?:www\.|web\.)?facebook\.com\/(?:watch\/?\?v=|.+?\/videos\/|video\.php\?v=)/;
+         if (facebookRegex.test(url)) {
+             // Facebook embedder works best with the full original URL
+            return `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=0&autoplay=1`;
+        }
+        
+        return null; // Fallback for unsupported URLs
+    } catch (error) {
+        console.error("Error parsing stream URL:", url, error);
+        return null;
+    }
+};
 
 
 // --- React Components ---
@@ -686,123 +715,182 @@ const ImageUpload: React.FC<{
 
 
 const LoginPage: React.FC = () => {
-    const { auth } = useFirebase();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [name, setName] = useState(''); // For registration
+    const { auth, db } = useFirebase();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [authMethod, setAuthMethod] = useState<'email' | 'phone'>('email');
+
+    // Email state
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
     const [isRegistering, setIsRegistering] = useState(false);
 
-    if (!auth) {
-        return <Loading message="Initializing authentication..." />;
-    }
+    // Phone state
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [verificationCode, setVerificationCode] = useState('');
+    const [phoneAuthStage, setPhoneAuthStage] = useState<'enterPhone' | 'enterCode' | 'enterName'>('enterPhone');
+    const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
+    const recaptchaVerifierRef = useRef<RecaptchaVerifier | null>(null);
+    
+    useEffect(() => {
+        if (auth && authMethod === 'phone' && !recaptchaVerifierRef.current) {
+            recaptchaVerifierRef.current = new RecaptchaVerifier(auth, 'recaptcha-container', {
+                'size': 'invisible',
+                'callback': () => {
+                    // reCAPTCHA solved, allow signInWithPhoneNumber.
+                }
+            });
+            recaptchaVerifierRef.current.render();
+        }
+    }, [auth, authMethod]);
 
-    const validateForm = () => {
-        if (isRegistering && !name.trim()) {
-            setError('Please enter your full name.');
-            return false;
-        }
-        if (!email.includes('@')) {
-            setError('Please enter a valid email address.');
-            return false;
-        }
-        if (password.length < 6) {
-            setError('Password must be at least 6 characters long.');
-            return false;
-        }
-        setError('');
-        return true;
-    };
-
-    const handleAuthAction = async (e: React.FormEvent) => {
+    const handleEmailAuth = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!validateForm()) return;
-
         setLoading(true);
         setError('');
         try {
             if (isRegistering) {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                if (!name.trim()) { setError('Please enter your name.'); return; }
+                const userCredential = await createUserWithEmailAndPassword(auth!, email, password);
                 await updateProfile(userCredential.user, { displayName: name });
-                 // Firestore user document is created via a Cloud Function trigger (recommended)
-                 // or you'd do it here if not using a trigger.
             } else {
-                await signInWithEmailAndPassword(auth, email, password);
+                await signInWithEmailAndPassword(auth!, email, password);
             }
         } catch (err: any) {
-            const errorCode = err.code || 'unknown';
-            switch (errorCode) {
-                case 'auth/user-not-found':
-                case 'auth/wrong-password':
-                case 'auth/invalid-credential':
-                    setError('Invalid email or password.');
-                    break;
-                case 'auth/email-already-in-use':
-                    setError('This email address is already in use.');
-                    break;
-                case 'auth/invalid-email':
-                    setError('Please enter a valid email address.');
-                    break;
-                default:
-                    setError('An unknown error occurred. Please try again.');
-                    console.error("Auth error:", err);
-                    break;
-            }
+            setError(err.message);
         } finally {
             setLoading(false);
         }
     };
     
+    const handleSendCode = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        setError('');
+        try {
+            const fullPhoneNumber = `+977${phoneNumber}`; // Assuming Nepal country code
+            const confirmation = await signInWithPhoneNumber(auth!, fullPhoneNumber, recaptchaVerifierRef.current!);
+            setConfirmationResult(confirmation);
+            setPhoneAuthStage('enterCode');
+        } catch (err: any) {
+             setError('Failed to send code. Please check the number or try again.');
+             console.error(err);
+             // It's important to render the verifier again if it fails
+             if(recaptchaVerifierRef.current) {
+                recaptchaVerifierRef.current.render().catch(console.error);
+             }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleVerifyCode = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        setError('');
+        try {
+            const userCredential = await confirmationResult!.confirm(verificationCode);
+            // Check if user is new
+            const userDoc = await getDoc(doc(db!, "users", userCredential.user.uid));
+            if (!userDoc.exists()) {
+                setPhoneAuthStage('enterName');
+            }
+            // If user exists, onAuthStateChanged in App component will handle login.
+        } catch (err: any) {
+            setError('Invalid code. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
+    
+    const handleRegisterName = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!name.trim() || !auth?.currentUser) return;
+        setLoading(true);
+        setError('');
+        try {
+            await updateProfile(auth.currentUser, { displayName: name });
+            // The onAuthStateChanged listener in App will now create the Firestore doc
+            // because the user is authenticated but doesn't have a doc yet.
+        } catch(err: any) {
+            setError("Failed to save name.");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const renderEmailForm = () => (
+        <form onSubmit={handleEmailAuth}>
+            {isRegistering && (
+                <input type="text" className="login-input" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} required />
+            )}
+            <input type="email" className="login-input" placeholder="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" />
+            <input type="password" className="login-input" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete={isRegistering ? "new-password" : "current-password"} />
+            <button type="submit" className="login-button" disabled={loading}>
+                {loading ? <div className="spinner"></div> : (isRegistering ? 'Sign Up' : 'Log In')}
+            </button>
+            <button type="button" onClick={() => { setIsRegistering(!isRegistering); setError(''); }} className="auth-toggle-link">
+                {isRegistering ? 'Already have an account? Log In' : "Don't have an account? Sign Up"}
+            </button>
+        </form>
+    );
+
+    const renderPhoneForm = () => {
+        if (phoneAuthStage === 'enterName') {
+            return (
+                 <form onSubmit={handleRegisterName}>
+                    <h3>Welcome! What's your name?</h3>
+                    <input type="text" className="login-input" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} required />
+                    <button type="submit" className="login-button" disabled={loading}>
+                        {loading ? <div className="spinner"></div> : 'Complete Sign Up'}
+                    </button>
+                </form>
+            );
+        }
+        if (phoneAuthStage === 'enterCode') {
+            return (
+                <form onSubmit={handleVerifyCode}>
+                    <h3>Enter Verification Code</h3>
+                    <input type="text" className="login-input" placeholder="6-digit code" value={verificationCode} onChange={(e) => setVerificationCode(e.target.value)} required />
+                    <button type="submit" className="login-button" disabled={loading}>
+                        {loading ? <div className="spinner"></div> : 'Verify Code'}
+                    </button>
+                     <button type="button" onClick={() => setPhoneAuthStage('enterPhone')} className="auth-toggle-link">
+                        Change phone number
+                    </button>
+                </form>
+            );
+        }
+        return (
+            <form onSubmit={handleSendCode}>
+                 <div className="phone-input-container">
+                    <span className="country-code">+977</span>
+                    <input type="tel" className="login-input" placeholder="Phone Number" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required />
+                </div>
+                <button type="submit" className="login-button" disabled={loading}>
+                    {loading ? <div className="spinner"></div> : 'Send Code'}
+                </button>
+            </form>
+        );
+    };
+
     return (
         <div className="login-container">
             <div className="login-box">
                 <img src={CHURCH.logo} alt="Church Logo" className="login-logo" />
                 <h2>{isRegistering ? 'Create Account' : 'Welcome Back'}</h2>
                 <p>{CHURCH.name}</p>
-                <form onSubmit={handleAuthAction}>
-                    {isRegistering && (
-                        <input 
-                            type="text"
-                            className="login-input"
-                            placeholder="Full Name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
-                    )}
-                    <input 
-                        type="email"
-                        className="login-input"
-                        placeholder="Email Address"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        autoComplete="email"
-                    />
-                    <input
-                        type="password"
-                        className="login-input"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        autoComplete={isRegistering ? "new-password" : "current-password"}
-                    />
-                    <button type="submit" className="login-button" disabled={loading}>
-                        {loading ? <div className="spinner"></div> : (isRegistering ? 'Sign Up' : 'Log In')}
-                    </button>
-                    {error && <p className="login-error">{error}</p>}
-                </form>
-                <button 
-                    onClick={() => {
-                        setIsRegistering(!isRegistering);
-                        setError('');
-                    }}
-                    className="auth-toggle-link"
-                >
-                    {isRegistering ? 'Already have an account? Log In' : "Don't have an account? Sign Up"}
-                </button>
+                <div id="recaptcha-container"></div>
+                
+                <div className="auth-method-tabs">
+                    <button onClick={() => setAuthMethod('email')} className={authMethod === 'email' ? 'active' : ''}>Email</button>
+                    <button onClick={() => setAuthMethod('phone')} className={authMethod === 'phone' ? 'active' : ''}>Phone</button>
+                </div>
+                
+                {authMethod === 'email' ? renderEmailForm() : renderPhoneForm()}
+
+                {error && <p className="login-error">{error}</p>}
             </div>
         </div>
     );
@@ -818,6 +906,8 @@ const WorshipPage: React.FC<{
     const [isOfferingModalOpen, setIsOfferingModalOpen] = useState(false);
     const [isAddPastWorshipModalOpen, setIsAddPastWorshipModalOpen] = useState(false);
     const [newPastService, setNewPastService] = useState({ title: '', youtubeUrl: '' });
+    
+    const embedUrl = liveService?.streamUrl ? getEmbedUrl(liveService.streamUrl) : null;
 
     const handleAddPastService = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -856,12 +946,13 @@ const WorshipPage: React.FC<{
     return (
         <div className="page-content">
             <h2>आरधना</h2>
-            {liveService ? (
+            {liveService && embedUrl ? (
                 <div className="card live-worship-card">
                     <div className="live-badge">LIVE</div>
-                    <div className="twitch-container">
+                    <div className="iframe-container">
                         <iframe
-                            src={`https://player.twitch.tv/?channel=${liveService.twitchChannel}&parent=${window.location.hostname}`}
+                            src={embedUrl}
+                            allow="autoplay; encrypted-media"
                             allowFullScreen={true}
                             title="Live Worship Stream"
                         ></iframe>
@@ -1393,6 +1484,9 @@ const AddPodcastModal: React.FC<{
 
                 {activeTab === 'record' && (
                     <div className="record-section">
+                        <p className="permission-helper-text">
+                           녹음을 시작하려면 마이크 권한이 필요합니다. '녹음 시작' 버튼을 누르면 권한을 요청하는 팝업이 나타납니다.
+                        </p>
                         {!recordedBlob ? (
                              <button type="button" className={`record-button ${isRecording ? 'recording' : ''}`} onClick={isRecording ? handleStopRecording : handleStartRecording}>
                                 <span className="material-symbols-outlined">{isRecording ? 'stop_circle' : 'mic'}</span>
@@ -1759,41 +1853,35 @@ const PrayerDetailsModal: React.FC<{
 
 const ChatListPage: React.FC<{
     currentUser: User;
-    users: User[];
+    usersMap: Map<string, User>;
     chats: Chat[];
     onChatSelect: (chat: Chat) => void;
     onCreateChat: (participants: User[]) => Promise<string | null>;
-}> = ({ currentUser, users, chats, onChatSelect, onCreateChat }) => {
+}> = ({ currentUser, usersMap, chats, onChatSelect, onCreateChat }) => {
     const { db } = useFirebase();
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const users = Array.from(usersMap.values());
 
-    const getOtherParticipant = (chat: Chat, currentUserId: string, allUsers: User[]) => {
+    const getOtherParticipant = (chat: Chat, currentUserId: string) => {
         const otherId = chat.participantIds.find(id => id !== currentUserId);
 
-        // For group chats
         if (chat.participantIds.length > 2) {
             const names = chat.participantIds
                 .filter(id => id !== currentUserId)
-                .map(id => {
-                    const user = allUsers.find(u => u.id === id);
-                    return user ? user.name.split(' ')[0] : '';
-                })
+                .map(id => usersMap.get(id)?.name.split(' ')[0] || '')
                 .filter(name => name)
                 .slice(0, 2)
                 .join(', ');
             return { name: names + (chat.participantIds.length > 3 ? '...' : ''), avatar: '' };
         }
         
-        // For 1-on-1 chats, with fallback
         if (otherId) {
-            // Priority 1: Use data from the chat document if available and valid
             if (chat.participants && chat.participants[otherId] && chat.participants[otherId].name) {
                 return chat.participants[otherId];
             }
-            // Priority 2: Fallback to the live user list
-            const userFromList = allUsers.find(u => u.id === otherId);
-            if (userFromList) {
-                return { name: userFromList.name, avatar: userFromList.avatar };
+            const userFromMap = usersMap.get(otherId);
+            if (userFromMap) {
+                return { name: userFromMap.name, avatar: userFromMap.avatar };
             }
         }
         
@@ -1826,7 +1914,7 @@ const ChatListPage: React.FC<{
             <div className="list-container">
                  {chats.length > 0 ? (
                     chats.map(chat => {
-                        const otherParticipant = getOtherParticipant(chat, currentUser.id, users);
+                        const otherParticipant = getOtherParticipant(chat, currentUser.id);
                         const isUnread = chat.lastRead && chat.lastMessage && (!chat.lastRead[currentUser.id] || chat.lastRead[currentUser.id] < chat.lastMessage.createdAt);
                         return (
                             <div key={chat.id} className={`list-item chat-item ${isUnread ? 'unread' : ''}`} onClick={() => onChatSelect(chat)}>
@@ -2214,11 +2302,17 @@ const App: React.FC = () => {
     const [currentChat, setCurrentChat] = useState<Chat | null>(null);
     const [notifications, setNotifications] = useState<Notification[]>([]);
 
+    const usersMap = useMemo(() => {
+        const map = new Map<string, User>();
+        users.forEach(user => map.set(user.id, user));
+        return map;
+    }, [users]);
+
     // --- Authentication ---
     useEffect(() => {
         if (!auth || !db) return;
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            if (user) { // More robust check: only require user object to exist.
+            if (user) { 
                 const userDocRef = doc(db, "users", user.uid);
                 const userDocSnap = await getDoc(userDocRef);
                 const isAdminByEmail = user.email === 'abraham0715@gmail.com';
@@ -2228,13 +2322,11 @@ const App: React.FC = () => {
                     const userData = userDocSnap.data();
                     let userRoles = userData.roles || ['member'];
                     
-                    // Ensure the special user always has admin rights.
                     if (isAdminByEmail && !userRoles.includes('admin')) {
                         userRoles.push('admin');
                         await updateDoc(userDocRef, { roles: userRoles });
                     }
                     
-                    // Sync display name from Firestore to Auth if it's missing in Auth.
                     if (!user.displayName && userData.name) {
                         await updateProfile(user, { displayName: userData.name });
                     }
@@ -2242,33 +2334,24 @@ const App: React.FC = () => {
                     setCurrentUser({ id: user.uid, ...userData, roles: userRoles } as User);
 
                 } else {
-                    // User document does not exist, create it.
-                    // This handles new sign-ups or existing Auth users without a Firestore doc.
-                    
-                    // Create a fallback name from email if displayName is not available.
-                    const name = user.displayName || (user.email ? user.email.split('@')[0] : 'New User');
-
-                    // If displayName was missing in Auth, update it now.
-                    if (!user.displayName) {
-                        await updateProfile(user, { displayName: name });
+                    // User document does not exist, create it for new sign-ups.
+                    if (user.displayName) { // Only create doc if name is available (e.g., from phone auth step)
+                        const userRoles: UserRole[] = ['member'];
+                        if (isAdminByEmail) userRoles.push('admin');
+                        
+                        const newUser: Omit<User, 'id'> = {
+                            name: user.displayName,
+                            email: user.email || '', // Email might be null with phone auth
+                            avatar: user.photoURL || '',
+                            roles: userRoles,
+                        };
+                        await setDoc(userDocRef, newUser);
+                        setCurrentUser({ id: user.uid, ...newUser } as User);
                     }
-
-                    const userRoles: UserRole[] = ['member'];
-                    if (isAdminByEmail) {
-                        userRoles.push('admin');
-                    }
-                    
-                    const newUser: Omit<User, 'id'> = {
-                        name: name,
-                        email: user.email!,
-                        avatar: user.photoURL || '',
-                        roles: userRoles,
-                    };
-                    await setDoc(userDocRef, newUser);
-                    setCurrentUser({ id: user.uid, ...newUser } as User);
+                    // If displayName is not yet set (e.g., phone auth pending name),
+                    // currentUser remains null, keeping the user on the LoginPage.
                 }
             } else {
-                // User is signed out.
                 setCurrentUser(null);
             }
             setLoading(false);
@@ -2443,7 +2526,7 @@ const App: React.FC = () => {
             case 'chat': return (
                 <ChatListPage
                     currentUser={currentUser}
-                    users={users}
+                    usersMap={usersMap}
                     chats={chats}
                     onChatSelect={(chat) => {
                         setCurrentChat(chat);
@@ -2496,7 +2579,7 @@ const App: React.FC = () => {
                 </header>
             )}
 
-            <main className="main-content">
+            <main className={`main-content ${activePage === 'conversation' ? 'full-height' : ''}`}>
                 {renderPage()}
             </main>
 
@@ -2575,3 +2658,4 @@ if ('serviceWorker' in navigator) {
     });
   });
 }
+      

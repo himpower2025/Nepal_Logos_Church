@@ -1,5 +1,4 @@
 
-
 :root {
     --primary-color: #004d40;
     --primary-color-dark: #00251a;
@@ -186,6 +185,10 @@ html, body, #root {
     margin-bottom: var(--space-sm);
     font-size: var(--font-size-h1);
 }
+.login-box h3 {
+    margin-bottom: var(--space-md);
+    font-weight: 500;
+}
 .login-box p {
     margin-bottom: var(--space-lg);
     color: #666;
@@ -230,6 +233,47 @@ html, body, #root {
     margin-top: var(--space-lg);
     font-size: var(--font-size-sm);
 }
+.auth-method-tabs {
+    display: flex;
+    margin-bottom: var(--space-lg);
+    border-bottom: 1px solid #ddd;
+}
+.auth-method-tabs button {
+    flex: 1;
+    padding: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    color: #666;
+    border-bottom: 3px solid transparent;
+}
+.auth-method-tabs button.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+.phone-input-container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding-left: 12px;
+    margin-bottom: var(--space-md);
+}
+.phone-input-container .country-code {
+    font-weight: 500;
+    color: #333;
+}
+.phone-input-container .login-input {
+    border: none;
+    margin-bottom: 0;
+    flex-grow: 1;
+}
+#recaptcha-container {
+    margin: var(--space-md) auto;
+}
+
 
 /* --- App Layout --- */
 .app-container {
@@ -298,6 +342,9 @@ html, body, #root {
     flex-grow: 1;
     overflow-y: auto;
     padding-bottom: 80px; /* Space for bottom nav */
+}
+.main-content.full-height {
+    padding-bottom: 0;
 }
 .page-content {
     padding: var(--space-md);
@@ -580,12 +627,12 @@ html, body, #root {
     font-weight: 500;
     z-index: 10;
 }
-.twitch-container {
+.iframe-container {
     position: relative;
     width: 100%;
     padding-top: 56.25%; /* 16:9 Aspect Ratio */
 }
-.twitch-container iframe {
+.iframe-container iframe {
     position: absolute;
     top: 0;
     left: 0;
@@ -841,6 +888,12 @@ html, body, #root {
 .recording-preview audio {
     width: 100%;
     margin: var(--space-sm) 0;
+}
+.permission-helper-text {
+    font-size: var(--font-size-sm);
+    color: #666;
+    text-align: center;
+    margin-bottom: var(--space-sm);
 }
 
 
@@ -1267,3 +1320,4 @@ html, body, #root {
     padding: var(--space-xl);
     color: #999;
 }
+      
