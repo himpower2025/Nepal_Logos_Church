@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useCallback, createContext, useContext, useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
 // Fix: Import `createPortal` from `react-dom` to be used for modals.
@@ -32,7 +31,8 @@ import {
     arrayRemove,
     deleteDoc,
     getDocs,
-    limit
+    limit,
+    increment
 } from "firebase/firestore";
 import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
 import { getToken, onMessage } from "firebase/messaging";
@@ -53,7 +53,7 @@ type UserRole = 'admin' | 'member' | 'news_contributor' | 'podcast_contributor';
 type User = { id: string; name: string; email: string; avatar: string; roles: UserRole[]; fcmTokens?: string[] };
 type Church = { id: string; name: string; logo: string; offeringDetails: any; };
 type Comment = { id: string; authorId: string; authorName: string; authorAvatar: string; content: string; createdAt: Timestamp; };
-type PrayerRequest = { id:string; authorId: string; authorName: string; title: string; content: string; image?: string | null; prayedBy: string[]; comments?: Comment[]; createdAt: Timestamp; };
+type PrayerRequest = { id:string; authorId: string; authorName: string; title: string; content: string; image?: string | null; prayedBy: string[]; comments?: Comment[]; commentCount?: number; createdAt: Timestamp; };
 type Podcast = { id: string; title: string; authorId: string; authorName: string; audioUrl: string; createdAt: Timestamp; };
 type NewsItem = { id: string; title: string; content: string; image?: string | null; createdAt: Timestamp; authorId: string, authorName: string };
 type Verse = { verse: string; text: string; };
@@ -179,7 +179,7 @@ const MCCHEYNE_READING_PLAN = [
     "उत्पत्ति ४７, लूका २:१-२४, अय्यूब १४, १ कोरिन्थी ३",
     "उत्पत्ति ४८, लूका २:२५-५２, अय्यूब १५, १ कोरिन्थी ४",
     "उत्पत्ति ४９, लूका ३, अय्यूब १६, १ कोरिन्थी ५",
-    "उत्पत्ति ५०, लूका ४:१-३०, अय्यूब १७, १ कोरिन्थी ६",
+    "उत्पत्ति ५०, लूका ४:१-३０, अय्यूब १७, १ कोरिन्थी ६",
     "प्रस्थान १, लूका ४:३१-४४, अय्यूब १८, १ कोरिन्थी ७",
     "प्रस्थान २, लूका ५:१-१６, अय्यूब १९, १ कोरिन्थी ८",
     "प्रस्थान ३, लूका ५:१७-३９, अय्यूब २०, १ कोरिन्थी ९",
@@ -262,13 +262,13 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १३, प्रेरित ५:१-१८, भजनसंग्रह ६１, याकूब २",
     "गन्ती १४, प्रेरित ५:१९-４２, भजनसंग्रह ६２, याकूब ३",
     "गन्ती १५, प्रेरित ६, भजनसंग्रह ६３, याकूब ४",
-    "गन्ती १६, प्रेरित ७:१-२１, भजनसंग्रह ६４, याकूब ५",
+    "गन्ती १६, प्रेरित ७:१-２１, भजनसंग्रह ६４, याकूब ५",
     "गन्ती १७, प्रेरित ७:२２-４३, भजनसंग्रह ६５, १ पत्रुस १",
     "गन्ती १८, प्रेरित ७:४４-６०, भजनसंग्रह ६６, १ पत्रुस २",
     "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६７, १ पत्रुस ३",
-    "गन्ती २०, प्रेरित ८:२６-４०, भजनसंग्रह ६８, १ पत्रुस ४",
+    "गन्ती २०, प्रेरित ८:２６-４०, भजनसंग्रह ६８, १ पत्रुस ४",
     "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६९, १ पत्रुस ५",
-    "गन्ती २２, प्रेरित ९:२२-４३, भजनसंग्रह ७０, २ पत्रुस १",
+    "गन्ती २２, प्रेरित ९:२२-４３, भजनसंग्रह ७０, २ पत्रुस १",
     "गन्ती २३, प्रेरित १०:१-२३, भजनसंग्रह ७１, २ पत्रुस २",
     "गन्ती २४, प्रेरित १०:२４-４८, भजनसंग्रह ७２, २ पत्रुस ३",
     "गन्ती २५, प्रेरित ११, भजनसंग्रह ७３, १ यूहन्ना १",
@@ -340,7 +340,7 @@ const MCCHEYNE_READING_PLAN = [
     "यहोशू २१, २ कोरिन्थी ९, यशैया ३３, यशैया ३７",
     "यहोशू २２, २ कोरिन्थी १०, यशैया ३４, यशैया ३८",
     "यहोशू २३, २ कोरिन्थी ११, यशैया ३５, यशैया ३९",
-    "यहोशू २४, २ कोरिन्थी १२, यशैया ३６, यशैया ४०",
+    "यहोशू २४, २ कोरिन्थी १२, यशैया ३６, यशैया ४０",
     "न्यायकर्ता १, २ कोरिन्थी १३, यशैया ३７, यशैया ४１",
     "न्यायकर्ता २, गलाती १, यशैया ३８, यशैया ४２",
     "न्यायकर्ता ३, गलाती २, यशैया ३９, यशैया ४３",
@@ -510,7 +510,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ११, लूका २３, भजनसंग्रह १०४, भजनसंग्रह १००",
     "२ इतिहास १२, लूका २४, भजनसंग्रह १०５, भजनसंग्रह १०१",
     "२ इतिहास १३, यूहन्ना १, भजनसंग्रह १०６, भजनसंग्रह १०２",
-    "२ इतिहास १४, यूहन्ना २, भजनसंग्रह १०７, भजनसंग्रह १०３",
+    "२ इतिहास १४, यूहन्ना २, भजनसंग्रह १०７, भजनसंग्रह १०३",
     "२ इतिहास १५, यूहन्ना ३, भजनसंग्रह १०８, भजनसंग्रह १०९",
     "२ इतिहास १६, यूहन्ना ४, भजनसंग्रह १１０, भजनसंग्रह ११１",
     "२ इतिहास १७, यूहन्ना ५, भजनसंग्रह १１２, भजनसंग्रह ११३",
@@ -519,7 +519,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रह १１８, भजनसंग्रह ११९:१-३２",
     "२ इतिहास २１, यूहन्ना ९, भजनसंग्रह ११९:३३-６४, भजनसंग्रह ११९:६५-९६",
     "२ इतिहास २２, यूहन्ना १०, भजनसंग्रह ११९:९७-१２८, भजनसंग्रह ११९:१２९-१５２",
-    "२ इतिहास २३, यूहन्ना ११, भजनसंग्रह ११९:१５３-१७६, भजनसंग्रह १२०",
+    "२ इतिहास २३, यूहन्ना ११, भजनसंग्रह ११९:१５３-१७６, भजनसंग्रह १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रह १२１, भजनसंग्रह १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रह १२３, भजनसंग्रह १२４",
     "२ इतिहास २６, यूहन्ना १४, भजनसंग्रह १२５, भजनसंग्रह १२６",
@@ -1319,7 +1319,7 @@ const AddPodcastModal: React.FC<{
             }, 1000);
         } catch (error) {
             console.error("Error starting recording:", error);
-            alert("माइकलाई सुरु गर्न सकिएन। कृपया ब्राउजर वा फोन सेटिङहरूमा यो साइटको लागि माइक अनुमति जाँच गर्नुहोस्।");
+            alert("마이크를 सुरु गर्न सकिएन। कृपया ब्राउजर वा फोन सेटिङहरूमा यो साइटको लागि माइक अनुमति जाँच गर्नुहोस्।");
         }
     };
     
@@ -1546,7 +1546,7 @@ const PrayerPage: React.FC<{ currentUser: User; requests: PrayerRequest[] }> = (
                                 </button>
                                 <div className="prayer-action-button">
                                     <span className="material-symbols-outlined">comment</span>
-                                    <span>{req.comments?.length || 0}</span>
+                                    <span>{req.commentCount || 0}</span>
                                 </div>
                             </div>
                         </div>
@@ -1689,10 +1689,9 @@ const PrayerDetailsModal: React.FC<{
     useEffect(() => {
         if (!db || !request?.id) return;
         const commentsCol = collection(db, "prayerRequests", request.id, "comments");
-        const q = query(commentsCol);
+        const q = query(commentsCol, orderBy("createdAt", "asc"));
         const unsubscribe = onSnapshot(q, (snapshot) => {
             const fetchedComments = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() } as Comment));
-            fetchedComments.sort((a, b) => (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0));
             setComments(fetchedComments);
         });
         return () => unsubscribe();
@@ -1705,15 +1704,24 @@ const PrayerDetailsModal: React.FC<{
 
         setIsCommenting(true);
         try {
-            const commentsCollectionRef = collection(db, "prayerRequests", request.id, "comments");
-            await addDoc(commentsCollectionRef, {
-                authorId: currentUser.id,
-                authorName: currentUser.name || "Unknown User",
-                authorAvatar: currentUser.avatar || '',
-                content: newComment,
-                createdAt: serverTimestamp(),
-            });
+            const prayerRequestRef = doc(db, "prayerRequests", request.id);
+            const commentsCollectionRef = collection(prayerRequestRef, "comments");
+            
+            await Promise.all([
+                addDoc(commentsCollectionRef, {
+                    authorId: currentUser.id,
+                    authorName: currentUser.name || "Unknown User",
+                    authorAvatar: currentUser.avatar || '',
+                    content: newComment,
+                    createdAt: serverTimestamp(),
+                }),
+                updateDoc(prayerRequestRef, {
+                    commentCount: increment(1)
+                })
+            ]);
+            
             setNewComment('');
+            onClose();
         } catch (error) {
             console.error("Error adding comment: ", error);
             alert("Failed to post comment.");
@@ -1956,16 +1964,7 @@ const ConversationPage: React.FC<{
         const messagesQuery = query(collection(db, "chats", chat.id, "messages"), orderBy("createdAt", "asc"));
         const unsubscribeMessages = onSnapshot(messagesQuery, (snapshot) => {
             const fetchedMessages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Message));
-            setMessages(prev => {
-                const optimisticMessages = prev.filter(m => m.status === 'uploading');
-                const finalMessages = [...fetchedMessages];
-                optimisticMessages.forEach(optMsg => {
-                    if (!finalMessages.some(fm => fm.tempId === optMsg.tempId)) {
-                        finalMessages.push(optMsg);
-                    }
-                });
-                return finalMessages;
-            });
+            setMessages(fetchedMessages);
         });
 
         // Mark messages as read
@@ -1989,7 +1988,7 @@ const ConversationPage: React.FC<{
         const tempId = `temp_${Date.now()}`;
         const messageType = file ? (file.type.startsWith('image/') ? 'image' : 'video') : 'text';
 
-        // Optimistic UI update
+        // Optimistic UI update for media
         if (file) {
             const optimisticMessage: Message = {
                 id: tempId, tempId, senderId: currentUser.id, type: messageType,
@@ -1997,20 +1996,21 @@ const ConversationPage: React.FC<{
                 mediaUrl: URL.createObjectURL(file)
             };
             setMessages(prev => [...prev, optimisticMessage]);
-        } else {
-             setNewMessage(''); // Clear input for text messages immediately
+        }
+
+        // Send text message optimistically by clearing input
+        if (content) {
+            setNewMessage('');
         }
 
         try {
             let mediaUrl: string | undefined = undefined;
-            // Step 1: Upload file if it exists
             if (file) {
                 const mediaRef = ref(storage, `chat_media/${currentChat.id}/${Date.now()}_${file.name}`);
                 await uploadBytes(mediaRef, file);
                 mediaUrl = await getDownloadURL(mediaRef);
             }
 
-            // Step 2: Create message payload and save to Firestore
             const messagePayload = {
                 senderId: currentUser.id, type: messageType, createdAt: serverTimestamp(),
                 ...(content && { content }),
@@ -2018,7 +2018,6 @@ const ConversationPage: React.FC<{
             };
             await addDoc(collection(db, "chats", currentChat.id, "messages"), messagePayload);
             
-            // Step 3: Update last message on chat
             await updateDoc(doc(db, "chats", currentChat.id), {
                 lastMessage: {
                     content: content || (messageType === 'image' ? '📷 Photo' : '📹 Video'),
@@ -2029,8 +2028,11 @@ const ConversationPage: React.FC<{
 
         } catch (error) {
             console.error("Error sending message:", error);
-            // Mark optimistic message as failed
-            setMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
+            if (file) {
+                setMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
+            } else {
+                // Optionally handle text message failure (e.g., show an error)
+            }
         }
     };
     
@@ -2040,6 +2042,12 @@ const ConversationPage: React.FC<{
             e.target.value = ''; // Reset file input
         }
     };
+    
+    const handleSendText = () => {
+        if(newMessage.trim()){
+            handleSendMessage(newMessage.trim());
+        }
+    }
 
     const getChatTitle = () => {
         if (!currentChat) return "Loading...";
@@ -2103,9 +2111,9 @@ const ConversationPage: React.FC<{
                     placeholder="Type a message..."
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && handleSendMessage(newMessage)}
+                    onKeyPress={(e) => e.key === 'Enter' && handleSendText()}
                 />
-                <button className="send-button" onClick={() => handleSendMessage(newMessage)} disabled={!newMessage.trim()}>
+                <button className="send-button" onClick={handleSendText} disabled={!newMessage.trim()}>
                     <span className="material-symbols-outlined">send</span>
                 </button>
             </div>
