@@ -268,7 +268,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६７, १ पत्रुस ३",
     "गन्ती २०, प्रेरित ८:２６-４०, भजनसंग्रह ६８, १ पत्रुस ४",
     "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६९, १ पत्रुस ५",
-    "गन्ती २２, प्रेरित ९:२२-４３, भजनसंग्रह ७０, २ पत्रुस १",
+    "गन्ती २２, प्रेरित ९:२२-４३, भजनसंग्रह ७０, २ पत्रुस १",
     "गन्ती ২৩, प्रेरित १०:१-२३, भजनसंग्रह ७１, २ पत्रुस २",
     "गन्ती २४, प्रेरित १०:२４-４८, भजनसंग्रह ७２, २ पत्रुस ३",
     "गन्ती २५, प्रेरित ११, भजनसंग्रह ७３, १ यूहन्ना १",
@@ -653,10 +653,10 @@ const Modal: React.FC<{
 const ImageUpload: React.FC<{
     selectedFile: File | null;
     setSelectedFile: (file: File | null) => void;
-    currentImageUrl?: string | null;
+    currentImageUrl?: string;
     label?: string;
 }> = ({ selectedFile, setSelectedFile, currentImageUrl, label = 'Add a photo' }) => {
-    const [preview, setPreview] = useState<string | null>(currentImageUrl || null);
+    const [preview, setPreview] = useState<string | null>(currentImageUrl ?? null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -664,10 +664,8 @@ const ImageUpload: React.FC<{
             const objectUrl = URL.createObjectURL(selectedFile);
             setPreview(objectUrl);
             return () => URL.revokeObjectURL(objectUrl);
-        } else if (currentImageUrl) {
-            setPreview(currentImageUrl);
         } else {
-            setPreview(null);
+            setPreview(currentImageUrl ?? null);
         }
     }, [selectedFile, currentImageUrl]);
 
@@ -1206,7 +1204,7 @@ const NewsFormModal: React.FC<{
                 <ImageUpload 
                     selectedFile={imageFile} 
                     setSelectedFile={setImageFile} 
-                    currentImageUrl={newsItem?.image}
+                    currentImageUrl={newsItem?.image ?? undefined}
                     label="फोटो थप्नुहोस्।(यदि तपाईं चाहनुहुन्छ भने)"
                 />
 
@@ -1691,7 +1689,7 @@ const PrayerFormModal: React.FC<{
                 <ImageUpload 
                     selectedFile={imageFile} 
                     setSelectedFile={setImageFile} 
-                    currentImageUrl={currentImageUrl} 
+                    currentImageUrl={currentImageUrl ?? undefined} 
                     label="फोटो थप्नुहोस्।(यदि तपाईं चाहनुहुन्छ भने)" 
                 />
                 <button type="submit" className="action-button">
@@ -2296,8 +2294,8 @@ const App: React.FC = () => {
                     setCurrentUser({ 
                         id: user.uid, 
                         name: user.displayName || userData.name,
-                        email: user.email || userData.email,
-                        avatar: user.photoURL || userData.avatar,
+                        email: user.email || userData.email || '',
+                        avatar: user.photoURL || userData.avatar || '',
                         roles: userRoles
                     } as User);
 
