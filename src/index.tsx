@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, createContext, useContext, useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
-// Fix: Import `createPortal` from `react-dom` to be used for modals.
 import { createPortal } from 'react-dom';
 import './index.css';
 import { initializeFirebaseServices, FirebaseServices } from './firebase';
@@ -57,13 +56,26 @@ type PrayerRequest = { id:string; authorId: string; authorName: string; title: s
 type Podcast = { id: string; title: string; authorId: string; authorName: string; audioUrl: string; createdAt: Timestamp; status?: 'uploading' | 'failed'; tempId?: string; localAudioUrl?: string; };
 type NewsItem = { id: string; title: string; content: string; image?: string | null; createdAt: Timestamp; authorId: string, authorName: string; status?: 'uploading' | 'failed'; tempId?: string; localImagePreview?: string; };
 type Verse = { verse: string; text: string; };
-type Message = { id: string; senderId: string; content?: string; type: 'text' | 'image' | 'video'; mediaUrl?: string; createdAt: Timestamp; status?: 'uploading' | 'failed'; tempId?: string; };
+
+type MediaItem = {
+    url: string;
+    type: 'image' | 'video';
+    path?: string; // For deletion from storage
+};
+type Message = {
+    id: string;
+    senderId: string;
+    content?: string;
+    media?: MediaItem[];
+    createdAt: Timestamp;
+    status?: 'uploading' | 'failed';
+    tempId?: string;
+};
 
 type LastMessage = {
     content: string;
     senderId: string;
     createdAt: Timestamp;
-    type: 'text' | 'image' | 'video';
 };
 
 type Chat = { 
@@ -109,7 +121,7 @@ const MOCK_VERSES_OF_THE_DAY: Verse[] = [
     { verse: 'रोमी ८:२८', text: 'हामी जान्दछौं, कि परमेश्‍वरलाई प्रेम गर्नेहरूका निम्ति, अर्थात् उहाँको अभिप्रायअनुसार बोलाइएकाहरूका निम्ति हरेक कुरामा परमेश्‍वरले भलाइ नै गर्नुहुन्छ।' },
     { verse: 'यशैया ४१:१०', text: 'नडरा, किनभने म तँसँग छु। निरुत्साहित नहो, किनभने म तेरो परमेश्‍वर हुँ। म तँलाई बलियो पार्नेछु, म तँलाई सहायता गर्नेछु, म तँलाई मेरो धार्मिकताको दाहिने हातले समाल्नेछु।' },
     { verse: 'भजनसंग्रह २३:१', text: 'परमप्रभु मेरो गोठालो हुनुहुन्छ, मलाई केही कुराको अभाव हुनेछैन।' },
-    { verse: 'यर्मिया २९:११', text: 'किनभने मैले तिमीहरूका निम्ति बनाएका योजनाहरू म जान्दछु,” परमप्रभु भन्नुहुन्छ, “तिमीहरूलाई हानि गर्ने होइन, तर उन्नति गर्ने योजनाहरू, तिमीहरूलाई आशा र भविष्य दिने योजनाहरू।' },
+    { verse: 'यर्मिया २९:११', text: 'किनभने मैले तिमीहरूका निम्ति बनाएका योजनाहरू म जान्दछछु,” परमप्रभु भन्नुहुन्छ, “तिमीहरूलाई हानि गर्ने होइन, तर उन्नति गर्ने योजनाहरू, तिमीहरूलाई आशा र भविष्य दिने योजनाहरू।' },
     { verse: 'मत्ती ११:२८', text: 'हे सबै थाकेका र बोझले दबिएका हो, मकहाँ आओ, र म तिमीहरूलाई विश्राम दिनेछु।' },
     { verse: 'हितोपदेश ३:५-६', text: 'तेरो सारा हृदयले परमप्रभुमाथि भरोसा राख्, र तेरो आफ्नै समझशक्तिमाथि भर नपर्। तेरा सबै मार्गहरूमा उहाँलाई स्वीकार गर्, र उहाँले तेरा मार्गहरू सोझो बनाउनुहुनेछ।' },
     { verse: '२ तिमोथी १:७', text: 'किनभने परमेश्‍वरले हामीलाई डरको आत्मा दिनुभएको छैन, तर शक्ति, प्रेम र आत्मसंयमको आत्मा दिनुभएको छ।' },
@@ -460,7 +472,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ राजा १५, मत्ती १८, भजनसंग्रह २２, भजनसंग्रह ২৩",
     "२ राजा १६, मत्ती १९, भजनसंग्रह २४, भजनसंग्रह २५",
     "२ राजा १७, मत्ती २०, भजनसंग्रह २６, भजनसंग्रह २７",
-    "२ राजा १८, मत्ती २१, भजनसंग्रह २८, भजनसंग्रह २९",
+    "२ राजा १८, मत्ती २१, भजनसंग्रह २８, भजनसंग्रह २९",
     "२ राजा १९, मत्ती २２, भजनसंग्रह ३०, भजनसंग्रह ३１",
     "२ राजा २०, मत्ती ২৩, भजनसंग्रह ३２, भजनसंग्रह ३３",
     "२ राजा २१, मत्ती २४, भजनसंग्रह ३４, भजनसंग्रह ३５",
@@ -638,7 +650,6 @@ const Modal: React.FC<{
 }> = ({ isOpen, onClose, children, position = 'center' }) => {
     if (!isOpen) return null;
 
-    // Fix: Use `createPortal` directly as it's imported from 'react-dom', not from the `react-dom/client` module.
     return createPortal(
         <div className={`modal-backdrop ${position === 'bottom' ? 'modal-is-bottom' : ''}`} onClick={onClose}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -1850,11 +1861,10 @@ const ChatListPage: React.FC<{
     
     const getLastMessagePreview = (chat: Chat) => {
         if (!chat.lastMessage) return "No messages yet";
-        switch (chat.lastMessage.type) {
-            case 'image': return '📷 Photo';
-            case 'video': return '📹 Video';
-            default: return chat.lastMessage.content;
-        }
+        const content = chat.lastMessage.content;
+        if (content.startsWith('📷')) return '📷 Photo(s)';
+        if (content.startsWith('📹')) return '📹 Video(s)';
+        return content;
     };
 
     return (
@@ -1965,118 +1975,131 @@ const ConversationPage: React.FC<{
     const { db, storage } = useFirebase();
     const [messages, setMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState('');
+    const [mediaPreviews, setMediaPreviews] = useState<{ url: string; file: File; type: 'image' | 'video' }[]>([]);
     const [currentChat, setCurrentChat] = useState<Chat | null>(chat);
     const [loading, setLoading] = useState(true);
+    const [deletingMessage, setDeletingMessage] = useState<Message | null>(null);
+    const [viewingMedia, setViewingMedia] = useState<{ media: MediaItem[]; startIndex: number } | null>(null);
+
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-     useEffect(() => {
+    useEffect(() => {
         if (!db || !chat?.id) return;
         setLoading(true);
         const chatRef = doc(db, 'chats', chat.id);
         const unsubscribeChat = onSnapshot(chatRef, (doc) => {
             if (doc.exists()) {
                 setCurrentChat({ id: doc.id, ...doc.data() } as Chat);
-            } else {
-                onBack();
-            }
+            } else { onBack(); }
         });
 
         const messagesQuery = query(collection(db, "chats", chat.id, "messages"), orderBy("createdAt", "asc"));
         const unsubscribeMessages = onSnapshot(messagesQuery, (snapshot) => {
             const fetchedMessages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Message));
             setMessages(fetchedMessages);
-            setLoading(false); // Set loading to false only after messages are fetched
+            setLoading(false);
         });
 
-        // Mark messages as read
-        updateDoc(chatRef, {
-            [`lastRead.${currentUser.id}`]: Timestamp.now()
-        }).catch(err => console.error("Error updating lastRead:", err));
+        updateDoc(chatRef, { [`lastRead.${currentUser.id}`]: Timestamp.now() }).catch(err => console.error("Error updating lastRead:", err));
         
-        return () => {
-            unsubscribeChat();
-            unsubscribeMessages();
-        }
+        return () => { unsubscribeChat(); unsubscribeMessages(); }
     }, [db, chat?.id, onBack, currentUser.id]);
 
     useEffect(() => {
-        if (!loading) {
-            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-        }
+        if (!loading) { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }
     }, [messages, loading]);
 
-    const handleSendMessage = async (content?: string, file?: File) => {
-        if (!db || !storage || !currentChat || (!content?.trim() && !file)) return;
+    const handleSendMessage = async () => {
+        const textContent = newMessage.trim();
+        const mediaFiles = [...mediaPreviews];
+        if (!db || !storage || !currentChat || (!textContent && mediaFiles.length === 0)) return;
+
+        setNewMessage('');
+        setMediaPreviews([]);
         
         const tempId = `temp_${Date.now()}`;
-        const messageType = file ? (file.type.startsWith('image/') ? 'image' : 'video') : 'text';
-
-        // Optimistic UI update for media
-        if (file) {
-            const optimisticMessage: Message = {
-                id: tempId, tempId, senderId: currentUser.id, type: messageType,
-                createdAt: Timestamp.now(), status: 'uploading',
-                mediaUrl: URL.createObjectURL(file)
-            };
-            setMessages(prev => [...prev, optimisticMessage]);
-        }
-
-        // Send text message optimistically by clearing input
-        if (content) {
-            setNewMessage('');
-        }
+        const optimisticMessage: Message = {
+            id: tempId, tempId, senderId: currentUser.id, createdAt: Timestamp.now(), status: 'uploading',
+            ...(textContent && { content: textContent }),
+            ...(mediaFiles.length > 0 && {
+                media: mediaFiles.map(p => ({ url: p.url, type: p.type }))
+            }),
+        };
+        setMessages(prev => [...prev, optimisticMessage]);
 
         try {
-            let mediaUrl: string | undefined = undefined;
-            if (file) {
-                const mediaRef = ref(storage, `chat_media/${currentChat.id}/${Date.now()}_${file.name}`);
-                await uploadBytes(mediaRef, file);
-                mediaUrl = await getDownloadURL(mediaRef);
-            }
+            const uploadedMedia: MediaItem[] = await Promise.all(
+                mediaFiles.map(async (preview) => {
+                    const filePath = `chat_media/${currentChat.id}/${Date.now()}_${preview.file.name}`;
+                    const mediaRef = ref(storage, filePath);
+                    await uploadBytes(mediaRef, preview.file);
+                    const url = await getDownloadURL(mediaRef);
+                    return { url, type: preview.type, path: filePath };
+                })
+            );
 
-            const messagePayload = {
-                senderId: currentUser.id, type: messageType, createdAt: serverTimestamp(),
-                ...(content && { content }),
-                ...(mediaUrl && { mediaUrl }),
+            const messagePayload: Omit<Message, 'id' | 'tempId' | 'status'> = {
+                senderId: currentUser.id,
+                createdAt: serverTimestamp() as Timestamp,
+                ...(textContent && { content: textContent }),
+                ...(uploadedMedia.length > 0 && { media: uploadedMedia }),
             };
+
             await addDoc(collection(db, "chats", currentChat.id, "messages"), messagePayload);
             
+            let lastMessageContent = textContent;
+            if (!lastMessageContent) {
+                if(uploadedMedia.length > 0) {
+                    const hasVideo = uploadedMedia.some(m => m.type === 'video');
+                    lastMessageContent = `${hasVideo ? '📹' : '📷'} ${uploadedMedia.length} item(s)`;
+                }
+            }
+
             await updateDoc(doc(db, "chats", currentChat.id), {
-                lastMessage: {
-                    content: content || (messageType === 'image' ? '📷 Photo' : '📹 Video'),
-                    senderId: currentUser.id, createdAt: serverTimestamp(), type: messageType,
-                },
+                lastMessage: { content: lastMessageContent, senderId: currentUser.id, createdAt: serverTimestamp() },
                 lastActivity: serverTimestamp()
             });
 
         } catch (error) {
             console.error("Error sending message:", error);
-            if (file) {
-                setMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
-            } else {
-                // Optionally handle text message failure (e.g., show an error)
+            setMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
+        }
+    };
+    
+    const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            const files = Array.from(e.target.files);
+            const previews = files.map(file => ({
+                url: URL.createObjectURL(file),
+                file,
+                type: file.type.startsWith('image/') ? 'image' : 'video' as 'image' | 'video'
+            }));
+            setMediaPreviews(prev => [...prev, ...previews]);
+            if (fileInputRef.current) fileInputRef.current.value = "";
+        }
+    };
+    
+    const handleDeleteMessage = async (messageToDelete: Message) => {
+        if (!db || !storage || !messageToDelete) return;
+        setDeletingMessage(null);
+        try {
+            if (messageToDelete.media && messageToDelete.media.length > 0) {
+                await Promise.all(messageToDelete.media.map(item => {
+                    if(item.path) return deleteObject(ref(storage, item.path));
+                    return Promise.resolve();
+                }));
             }
+            await deleteDoc(doc(db, "chats", chat.id, "messages", messageToDelete.id));
+        } catch (error) {
+            console.error("Error deleting message:", error);
+            alert("Failed to delete message.");
         }
     };
-    
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            handleSendMessage(undefined, e.target.files[0]);
-            e.target.value = ''; // Reset file input
-        }
-    };
-    
-    const handleSendText = () => {
-        if(newMessage.trim()){
-            handleSendMessage(newMessage.trim());
-        }
-    }
 
     const getChatTitle = () => {
-        const chatData = currentChat || chat; // Use local state first, fallback to prop for initial render
+        const chatData = currentChat || chat;
         if (!chatData?.participants) return "Conversation";
-
         if (chatData.participantIds.length > 2) {
              return chatData.participantIds
                 .filter(id => id !== currentUser.id)
@@ -2097,57 +2120,151 @@ const ConversationPage: React.FC<{
                 <div style={{width: '40px'}}></div>
             </header>
             <div className="message-list">
-                {loading ? (
-                    <Loading message="Loading messages..." />
-                ) : (
+                {loading ? <Loading message="Loading messages..." /> : (
                     <>
                         {messages.map(msg => (
-                            <div key={msg.id} className={`message-container ${msg.senderId === currentUser.id ? 'sent' : 'received'}`}>
-                                <div className="message-bubble">
-                                    {msg.type === 'text' && <p>{msg.content}</p>}
-                                    {(msg.type === 'image' || msg.type === 'video') && msg.mediaUrl && (
-                                        <div className="message-media-container">
-                                            {msg.type === 'image' && <img src={msg.mediaUrl} alt="Sent media" className="message-media" />}
-                                            {msg.type === 'video' && <video src={msg.mediaUrl} controls className="message-media" />}
-                                            {msg.status === 'uploading' && (
-                                                <div className="media-upload-overlay">
-                                                    <div className="spinner"></div>
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
-                                    <div className="message-footer">
-                                        <span className="message-timestamp">{formatTime(msg.createdAt)}</span>
-                                        {msg.status === 'failed' && <span className="material-symbols-outlined message-failed-indicator">error</span>}
-                                    </div>
-                                </div>
-                            </div>
+                            <MessageBubble 
+                                key={msg.id} 
+                                message={msg} 
+                                isSent={msg.senderId === currentUser.id} 
+                                onMediaClick={(index) => msg.media && setViewingMedia({ media: msg.media, startIndex: index })}
+                                onLongPress={() => msg.senderId === currentUser.id && setDeletingMessage(msg)}
+                            />
                         ))}
                         <div ref={messagesEndRef} />
                     </>
                 )}
             </div>
             <div className="message-input-container">
-                <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{display: 'none'}} accept="image/*,video/*" disabled={loading} />
-                <button className="input-action-button" onClick={() => fileInputRef.current?.click()} aria-label="Attach file" disabled={loading}>
-                    <span className="material-symbols-outlined">attach_file</span>
-                </button>
-                <input
-                    type="text"
-                    placeholder="Type a message..."
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && handleSendText()}
-                    disabled={loading}
+                {mediaPreviews.length > 0 && (
+                    <div className="media-preview-container">
+                        {mediaPreviews.map((p, i) => (
+                            <div key={i} className="media-preview-item">
+                                {p.type === 'image' ? <img src={p.url} alt="preview" /> : <video src={p.url} />}
+                                <button onClick={() => setMediaPreviews(prev => prev.filter((_, idx) => idx !== i))}>
+                                    <span className="material-symbols-outlined">close</span>
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                )}
+                <div className="message-input-row">
+                    <input type="file" ref={fileInputRef} onChange={handleFileSelect} style={{display: 'none'}} multiple accept="image/*,video/*" disabled={loading} />
+                    <button className="input-action-button" onClick={() => fileInputRef.current?.click()} aria-label="Attach file" disabled={loading}>
+                        <span className="material-symbols-outlined">attach_file</span>
+                    </button>
+                    <input
+                        type="text" placeholder="Type a message..." value={newMessage}
+                        onChange={(e) => setNewMessage(e.target.value)}
+                        onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                        disabled={loading}
+                    />
+                    <button className="send-button" onClick={handleSendMessage} disabled={loading || (!newMessage.trim() && mediaPreviews.length === 0)}>
+                        <span className="material-symbols-outlined">send</span>
+                    </button>
+                </div>
+            </div>
+            {deletingMessage && (
+                <Modal isOpen={true} onClose={() => setDeletingMessage(null)}>
+                    <div className="delete-confirmation">
+                        <p>Are you sure you want to delete this message for everyone?</p>
+                        <div className="form-actions">
+                            <button className="action-button secondary" onClick={() => setDeletingMessage(null)}>Cancel</button>
+                            <button className="action-button danger" onClick={() => handleDeleteMessage(deletingMessage)}>Delete</button>
+                        </div>
+                    </div>
+                </Modal>
+            )}
+            {viewingMedia && (
+                <MediaViewer
+                    mediaItems={viewingMedia.media}
+                    startIndex={viewingMedia.startIndex}
+                    onClose={() => setViewingMedia(null)}
                 />
-                <button className="send-button" onClick={handleSendText} disabled={loading || !newMessage.trim()}>
-                    <span className="material-symbols-outlined">send</span>
-                </button>
+            )}
+        </div>
+    );
+};
+
+const MessageBubble: React.FC<{
+    message: Message;
+    isSent: boolean;
+    onMediaClick: (index: number) => void;
+    onLongPress: () => void;
+}> = ({ message, isSent, onMediaClick, onLongPress }) => {
+    return (
+        <div className={`message-container ${isSent ? 'sent' : 'received'}`}>
+            <div 
+                className={`message-bubble ${message.media ? 'has-media' : ''}`}
+                onClick={onLongPress} // Simplified to onClick for web/mobile consistency
+            >
+                {message.media && message.media.length > 0 && (
+                    <MediaGrid media={message.media} onMediaClick={onMediaClick} />
+                )}
+                {message.content && <p className="message-content">{message.content}</p>}
+                <div className="message-footer">
+                    <span className="message-timestamp">{formatTime(message.createdAt)}</span>
+                    {message.status === 'uploading' && <div className="spinner-small" style={{borderColor: '#999', borderTopColor: '#666'}}></div>}
+                    {message.status === 'failed' && <span className="material-symbols-outlined message-failed-indicator">error</span>}
+                </div>
             </div>
         </div>
     );
 };
 
+const MediaGrid: React.FC<{ media: MediaItem[], onMediaClick: (index: number) => void }> = ({ media, onMediaClick }) => {
+    const count = media.length;
+    const displayMedia = count > 4 ? media.slice(0, 4) : media;
+
+    return (
+        <div className={`media-grid count-${Math.min(count, 4)}`}>
+            {displayMedia.map((item, index) => (
+                <div key={index} className="media-grid-item" onClick={() => onMediaClick(index)}>
+                    {item.type === 'image' ? <img src={item.url} alt="media content" /> : <video src={item.url} />}
+                    {item.type === 'video' && (
+                        <div className="video-play-icon">
+                            <span className="material-symbols-outlined">play_circle</span>
+                        </div>
+                    )}
+                    {count > 4 && index === 3 && (
+                        <div className="more-overlay">+{count - 4}</div>
+                    )}
+                </div>
+            ))}
+        </div>
+    );
+};
+
+const MediaViewer: React.FC<{
+    mediaItems: MediaItem[];
+    startIndex: number;
+    onClose: () => void;
+}> = ({ mediaItems, startIndex, onClose }) => {
+    const [currentIndex, setCurrentIndex] = useState(startIndex);
+    const currentItem = mediaItems[currentIndex];
+
+    const goToPrev = () => setCurrentIndex(prev => (prev === 0 ? mediaItems.length - 1 : prev - 1));
+    const goToNext = () => setCurrentIndex(prev => (prev === mediaItems.length - 1 ? 0 : prev + 1));
+
+    return createPortal(
+        <div className="media-viewer-backdrop" onClick={onClose}>
+            <div className="media-viewer-content" onClick={e => e.stopPropagation()}>
+                {currentItem.type === 'image' 
+                    ? <img src={currentItem.url} alt="media" />
+                    : <video src={currentItem.url} controls autoPlay />
+                }
+            </div>
+            <button className="media-viewer-close" onClick={onClose}><span className="material-symbols-outlined">close</span></button>
+            {mediaItems.length > 1 && (
+                <>
+                    <button className="media-viewer-nav prev" onClick={goToPrev}><span className="material-symbols-outlined">arrow_back_ios</span></button>
+                    <button className="media-viewer-nav next" onClick={goToNext}><span className="material-symbols-outlined">arrow_forward_ios</span></button>
+                </>
+            )}
+        </div>,
+        document.body
+    );
+};
 
 // --- User Management (Admin) ---
 const ManageUsersModal: React.FC<{
