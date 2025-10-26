@@ -53,9 +53,9 @@ type UserRole = 'admin' | 'member' | 'news_contributor' | 'podcast_contributor';
 type User = { id: string; name: string; email: string; avatar: string; roles: UserRole[]; fcmTokens?: string[] };
 type Church = { id: string; name: string; logo: string; offeringDetails: any; };
 type Comment = { id: string; authorId: string; authorName: string; authorAvatar: string; content: string; createdAt: Timestamp; };
-type PrayerRequest = { id:string; authorId: string; authorName: string; title: string; content: string; image?: string | null; prayedBy: string[]; comments?: Comment[]; commentCount?: number; createdAt: Timestamp; };
-type Podcast = { id: string; title: string; authorId: string; authorName: string; audioUrl: string; createdAt: Timestamp; };
-type NewsItem = { id: string; title: string; content: string; image?: string | null; createdAt: Timestamp; authorId: string, authorName: string };
+type PrayerRequest = { id:string; authorId: string; authorName: string; title: string; content: string; image?: string | null; prayedBy: string[]; comments?: Comment[]; commentCount?: number; createdAt: Timestamp; status?: 'uploading' | 'failed'; tempId?: string; localImagePreview?: string; };
+type Podcast = { id: string; title: string; authorId: string; authorName: string; audioUrl: string; createdAt: Timestamp; status?: 'uploading' | 'failed'; tempId?: string; localAudioUrl?: string; };
+type NewsItem = { id: string; title: string; content: string; image?: string | null; createdAt: Timestamp; authorId: string, authorName: string; status?: 'uploading' | 'failed'; tempId?: string; localImagePreview?: string; };
 type Verse = { verse: string; text: string; };
 type Message = { id: string; senderId: string; content?: string; type: 'text' | 'image' | 'video'; mediaUrl?: string; createdAt: Timestamp; status?: 'uploading' | 'failed'; tempId?: string; };
 
@@ -152,7 +152,7 @@ const MCCHEYNE_READING_PLAN = [
     "उत्पत्ति २०, मत्ती २०, नहेम्याह १०, प्रेरित २०",
     "उत्पत्ति २१, मत्ती २१, नहेम्याह ११, प्रेरित २१",
     "उत्पत्ति २२, मत्ती २२, नहेम्याह १२, प्रेरित २२",
-    "उत्पत्ति २३, मत्ती ২৩, नहेम्याह १३, प्रेरित २३",
+    "उत्पत्ति ২৩, मत्ती ২৩, नहेम्याह १३, प्रेरित २३",
     "उत्पत्ति २४, मत्ती २४, एस्तर १, प्रेरित २४",
     "उत्पत्ति २५, मत्ती २५, एस्तर २, प्रेरित २५",
     "उत्पत्ति २६, मत्ती २６, एस्तर ३, प्रेरित २६",
@@ -202,7 +202,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान २०, लूका १४:१-२４, अय्यूब ३７, २ कोरिन्थी १०",
     "प्रस्थान २१, लूका १४:२५-३５, अय्यूब ३८, २ कोरिन्थी ११",
     "प्रस्थान २２, लूका १५, अय्यूब ३９, २ कोरिन्थी १२",
-    "प्रस्थान २३, लूका १६, अय्यूब ४०, २ कोरिन्थी १३",
+    "प्रस्थान ২৩, लूका १६, अय्यूब ४०, २ कोरिन्थी १३",
     "प्रस्थान २४, लूका १७:१-१९, अय्यूब ४१, गलाती १",
     "प्रस्थान २५, लूका १७:२०-३７, अय्यूब ४２, गलाती २",
     "प्रस्थान २६, लूका १८:१-१८, भजनसंग्रह १-२, गलाती ३",
@@ -221,7 +221,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३９, लूका २४:१३-５३, भजनसंग्रह २०, फिलिप्पी ४",
     "प्रस्थान ४०, यूहन्ना १:१-२८, भजनसंग्रह २१, कलस्सी १",
     "लेवी १, यूहन्ना १:२९-५１, भजनसंग्रह २２, कलस्सी २",
-    "लेवी २, यूहन्ना २, भजनसंग्रह २३, कलस्सी ३",
+    "लेवी २, यूहन्ना २, भजनसंग्रह ২৩, कलस्सी ३",
     "लेवी ३, यूहन्ना ३:१-२１, भजनसंग्रह २४, कलस्सी ४",
     "लेवी ४, यूहन्ना ३:२२-३６, भजनसंग्रह २५, १ थिस्सलोनिकी १",
     "लेवी ५, यूहन्ना ४:१-३０, भजनसंग्रह २६, १ थिस्सलोनिकी २",
@@ -229,9 +229,9 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी ७, यूहन्ना ५:१-२३, भजनसंग्रह २८, १ थिस्सलोनिकी ४",
     "लेवी ८, यूहन्ना ५:２４-４७, भजनसंग्रह २९, १ थिस्सलोनिकी ५",
     "लेवी ९, यूहन्ना ६:१-२１, भजनसंग्रह ३०, २ थिस्सलोनिकी १",
-    "लेवी १०, यूहन्ना ६:२２-４０, भजनसंग्रह ३１, २ थिस्सलोनिकी २",
+    "लेवी १०, यूहन्ना ६:२２-４०, भजनसंग्रह ३１, २ थिस्सलोनिकी २",
     "लेवी ११, यूहन्ना ६:४१-७１, भजनसंग्रह ३２, २ थिस्सलोनिकी ३",
-    "लेवी १२, यूहन्ना ७:१-३１, भजनसंग्रह ३３, १ तिमोथी १",
+    "लेवी १२, यूहन्ना ७:१-३１, भजनसंग्रह ३३, १ तिमोथी १",
     "लेवी १३, यूहन्ना ७:३２-５३, भजनसंग्रह ३４, १ तिमोथी २",
     "लेवी १४, यूहन्ना ८:१-३０, भजनसंग्रह ३５, १ तिमोथी ३",
     "लेवी १५, यूहन्ना ८:३१-५९, भजनसंग्रह ३６, १ तिमोथी ४",
@@ -241,8 +241,8 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी १९, यूहन्ना ११:१-२７, भजनसंग्रह ४०, २ तिमोथी २",
     "लेवी २०, यूहन्ना ११:२８-５７, भजनसंग्रह ४１, २ तिमोथी ३",
     "लेवी २१, यूहन्ना १२:१-१९, भजनसंग्रह ४２, २ तिमोथी ४",
-    "लेवी २２, यूहन्ना १२:२०-５０, भजनसंग्रह ४３, तीतस १",
-    "लेवी २३, यूहन्ना १३, भजनसंग्रह ४４, तीतस २",
+    "लेवी २２, यूहन्ना १२:२०-５０, भजनसंग्रह ४३, तीतस १",
+    "लेवी ২৩, यूहन्ना १३, भजनसंग्रह ۴４, तीतस २",
     "लेवी २४, यूहन्ना १४, भजनसंग्रह ४５, तीतस ३",
     "लेवी २५, यूहन्ना १५, भजनसंग्रह ४６, फिलेमोन १",
     "लेवी २６, यूहन्ना १६, भजनसंग्रह ४７, हिब्रू १",
@@ -262,14 +262,14 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १३, प्रेरित ५:१-१८, भजनसंग्रह ६１, याकूब २",
     "गन्ती १४, प्रेरित ५:१९-４２, भजनसंग्रह ६２, याकूब ३",
     "गन्ती १५, प्रेरित ६, भजनसंग्रह ६３, याकूब ४",
-    "गन्ती १६, प्रेरित ७:१-２１, भजनसंग्रह ६４, याकूब ५",
+    "गन्ती १६, प्रेरित ७:१-२１, भजनसंग्रह ६４, याकूब ५",
     "गन्ती १७, प्रेरित ७:२２-４३, भजनसंग्रह ६５, १ पत्रुस १",
     "गन्ती १८, प्रेरित ७:४４-６०, भजनसंग्रह ६６, १ पत्रुस २",
     "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६７, १ पत्रुस ३",
     "गन्ती २०, प्रेरित ८:２６-４०, भजनसंग्रह ६８, १ पत्रुस ४",
     "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६९, १ पत्रुस ५",
     "गन्ती २２, प्रेरित ९:२२-４３, भजनसंग्रह ७０, २ पत्रुस १",
-    "गन्ती २३, प्रेरित १०:१-२३, भजनसंग्रह ७１, २ पत्रुस २",
+    "गन्ती ২৩, प्रेरित १०:१-२३, भजनसंग्रह ७１, २ पत्रुस २",
     "गन्ती २४, प्रेरित १०:२４-４८, भजनसंग्रह ७２, २ पत्रुस ३",
     "गन्ती २५, प्रेरित ११, भजनसंग्रह ७３, १ यूहन्ना १",
     "गन्ती २६, प्रेरित १२, भजनसंग्रह ७４, १ यूहन्ना २",
@@ -281,14 +281,14 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ३２, प्रेरित १६, हितोपदेश ३, यहूदा १",
     "गन्ती ३३, प्रेरित १७:१-१５, हितोपदेश ४, प्रकाश १",
     "गन्ती ३４, प्रेरित १७:१६-３４, हितोपदेश ५, प्रकाश २",
-    "गन्ती ३５, प्रेरित १८, हितोपदेश ६, प्रकाश ३",
+    "गन्ती ३५, प्रेरित १८, हितोपदेश ६, प्रकाश ३",
     "गन्ती ३６, प्रेरित १९, हितोपदेश ७, प्रकाश ४",
     "व्यवस्था १, प्रेरित २०:१-१６, हितोपदेश ८, प्रकाश ५",
-    "व्यवस्था २, प्रेरित २०:१７-३८, हितोपदेश ९, प्रकाश ६",
+    "व्यवस्था २, प्रेरित २०:१７-３८, हितोपदेश ९, प्रकाश ६",
     "व्यवस्था ३, प्रेरित २१:१-१८, उपदेशक १, प्रकाश ७",
-    "व्यवस्था ४, प्रेरित २१:१९-４३, उपदेशक २, प्रकाश ८",
+    "व्यवस्था ४, प्रेरित २१:१९-４３, उपदेशक २, प्रकाश ८",
     "व्यवस्था ५, प्रेरित २２, उपदेशक ३, प्रकाश ९",
-    "व्यवस्था ६, प्रेरित २३, उपदेशक ४, प्रकाश १०",
+    "व्यवस्था ६, प्रेरित ২৩, उपदेशक ४, प्रकाश १०",
     "व्यवस्था ७, प्रेरित २४, उपदेशक ५, प्रकाश ११",
     "व्यवस्था ८, प्रेरित २५, उपदेशक ६, प्रकाश १२",
     "व्यवस्था ९, प्रेरित २６, उपदेशक ७, प्रकाश १३",
@@ -305,8 +305,8 @@ const MCCHEYNE_READING_PLAN = [
     "व्यवस्था २०, रोमी ८:१९-३９, श्रेष्ठगीत ६, यशैया २",
     "व्यवस्था २१, रोमी ९, श्रेष्ठगीत ७, यशैया ३",
     "व्यवस्था २２, रोमी १०, श्रेष्ठगीत ८, यशैया ४",
-    "व्यवस्था २३, रोमी ११:१-२４, यशैया १, यशैया ५",
-    "व्यवस्था २४, रोमी ११:२５-३६, यशैया २, यशैया ६",
+    "व्यवस्था ২৩, रोमी ११:१-२４, यशैया १, यशैया ५",
+    "व्यवस्था २४, रोमी ११:२５-३６, यशैया २, यशैया ६",
     "व्यवस्था २५, रोमी १२, यशैया ३, यशैया ७",
     "व्यवस्था २６, रोमी १३, यशैया ४, यशैया ८",
     "व्यवस्था २७, रोमी १४, यशैया ५, यशैया ९",
@@ -323,11 +323,11 @@ const MCCHEYNE_READING_PLAN = [
     "यहोशू ४, १ कोरिन्थी ८, यशैया १६, यशैया २०",
     "यहोशू ५, १ कोरिन्थी ९, यशैया १७, यशैया २१",
     "यहोशू ६, १ कोरिन्थी १०, यशैया १८, यशैया २２",
-    "यहोशू ७, १ कोरिन्थी ११, यशैया १९, यशैया २३",
+    "यहोशू ७, १ कोरिन्थी ११, यशैया १९, यशैया ২৩",
     "यहोशू ८, १ कोरिन्थी १२, यशैया २०, यशैया २४",
     "यहोशू ९, १ कोरिन्थी १३, यशैया २१, यशैया २५",
     "यहोशू १०, १ कोरिन्थी १४, यशैया २２, यशैया २६",
-    "यहोशू ११, १ कोरिन्थी १५, यशैया २३, यशैया २７",
+    "यहोशू ११, १ कोरिन्थी १५, यशैया ২৩, यशैया २７",
     "यहोशू १२, १ कोरिन्थी १६, यशैया २४, यशैया २८",
     "यहोशू १३, २ कोरिन्थी १, यशैया २५, यशैया २९",
     "यहोशू १४, २ कोरिन्थी २, यशैया २६, यशैया ३०",
@@ -339,7 +339,7 @@ const MCCHEYNE_READING_PLAN = [
     "यहोशू २०, २ कोरिन्थी ८, यशैया ३２, यशैया ३６",
     "यहोशू २१, २ कोरिन्थी ९, यशैया ३３, यशैया ३７",
     "यहोशू २２, २ कोरिन्थी १०, यशैया ३４, यशैया ३८",
-    "यहोशू २३, २ कोरिन्थी ११, यशैया ३５, यशैया ३९",
+    "यहोशू ২৩, २ कोरिन्थी ११, यशैया ३５, यशैया ३९",
     "यहोशू २४, २ कोरिन्थी १२, यशैया ३６, यशैया ४０",
     "न्यायकर्ता १, २ कोरिन्थी १३, यशैया ३７, यशैया ४１",
     "न्यायकर्ता २, गलाती १, यशैया ३８, यशैया ४２",
@@ -367,7 +367,7 @@ const MCCHEYNE_READING_PLAN = [
     "रूथ ३, १ थिस्सलोनिकी ३, यर्मिया २०, यशैया ६４",
     "रूथ ४, १ थिस्सलोनिकी ४, यर्मिया २१, यशैया ६５",
     "१ शमूएल १, १ थिस्सलोनिकी ५, यर्मिया २２, यशैया ६６",
-    "१ शमूएल २, २ थिस्सलोनिकी १, यर्मिया २३, विलाप १",
+    "१ शमूएल २, २ थिस्सलोनिकी १, यर्मिया ২৩, विलाप १",
     "१ शमूएल ३, २ थिस्सलोनिकी २, यर्मिया २४, विलाप २",
     "१ शमूएल ४, २ थिस्सलोनिकी ३, यर्मिया २५, विलाप ३",
     "१ शमूएल ५, १ तिमोथी १, यर्मिया २६, विलाप ४",
@@ -388,13 +388,13 @@ const MCCHEYNE_READING_PLAN = [
     "१ शमूएल २०, हिब्रू २, यर्मिया ४१, इजकिएल १४",
     "१ शमूएल २१, हिब्रू ३, यर्मिया ४２, इजकिएल १५",
     "१ शमूएल २２, हिब्रू ४, यर्मिया ४３, इजकिएल १६",
-    "१ शमूएल २३, हिब्रू ५, यर्मिया ४４, इजकिएल १७",
+    "१ शमूएल ২৩, हिब्रू ५, यर्मिया ४４, इजकिएल १७",
     "१ शमूएल २४, हिब्रू ६, यर्मिया ४５, इजकिएल १८",
     "१ शमूएल २५, हिब्रू ७, यर्मिया ४６, इजकिएल १९",
     "१ शमूएल २६, हिब्रू ८, यर्मिया ४７, इजकिएल २०",
     "१ शमूएल २７, हिब्रू ९, यर्मिया ४８, इजकिएल २१",
     "१ शमूएल २८, हिब्रू १०, यर्मिया ४９, इजकिएल २２",
-    "१ शमूएल २९, हिब्रू ११, यर्मिया ५０, इजकिएल २३",
+    "१ शमूएल २९, हिब्रू ११, यर्मिया ५０, इजकिएल ২৩",
     "१ शमूएल ३０, हिब्रू १२, यर्मिया ५１, इजकिएल २४",
     "१ शमूएल ३１, हिब्रू १३, यर्मिया ५２, इजकिएल २५",
     "२ शमूएल १, याकूब १, दानिएल १, इजकिएल २６",
@@ -419,7 +419,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ शमूएल २०, ३ यूहन्ना १, होशे ८, इजकिएल ४５",
     "२ शमूएल २१, यहूदा १, होशे ९, इजकिएल ४６",
     "२ शमूएल २２, प्रकाश १, होशे १०, इजकिएल ४７",
-    "२ शमूएल २३, प्रकाश २, होशे ११, इजकिएल ४８",
+    "२ शमूएल ২৩, प्रकाश २, होशे ११, इजकिएल ४８",
     "२ शमूएल २४, प्रकाश ३, होशे १२, योएल १",
     "१ राजा १, प्रकाश ४, होशे १३, योएल २",
     "१ राजा २, प्रकाश ५, होशे १४, योएल ३",
@@ -457,15 +457,15 @@ const MCCHEYNE_READING_PLAN = [
     "२ राजा १२, मत्ती १५, भजनसंग्रह १६, भजनसंग्रह १७",
     "२ राजा १३, मत्ती १६, भजनसंग्रह १८, भजनसंग्रह १९",
     "२ राजा १४, मत्ती १७, भजनसंग्रह २०, भजनसंग्रह २१",
-    "२ राजा १५, मत्ती १८, भजनसंग्रह २２, भजनसंग्रह २३",
+    "२ राजा १५, मत्ती १८, भजनसंग्रह २２, भजनसंग्रह ২৩",
     "२ राजा १६, मत्ती १९, भजनसंग्रह २४, भजनसंग्रह २५",
     "२ राजा १७, मत्ती २०, भजनसंग्रह २６, भजनसंग्रह २７",
     "२ राजा १८, मत्ती २१, भजनसंग्रह २८, भजनसंग्रह २९",
     "२ राजा १९, मत्ती २２, भजनसंग्रह ३०, भजनसंग्रह ३１",
-    "२ राजा २०, मत्ती २３, भजनसंग्रह ३２, भजनसंग्रह ३３",
+    "२ राजा २०, मत्ती ২৩, भजनसंग्रह ३２, भजनसंग्रह ३３",
     "२ राजा २१, मत्ती २४, भजनसंग्रह ३４, भजनसंग्रह ३５",
     "२ राजा २２, मत्ती २५, भजनसंग्रह ३６, भजनसंग्रह ३７",
-    "२ राजा २३, मत्ती २６, भजनसंग्रह ३８, भजनसंग्रह ३９",
+    "२ राजा ২৩, मत्ती २６, भजनसंग्रह ३８, भजनसंग्रह ३９",
     "२ राजा २४, मत्ती २７, भजनसंग्रह ४०, भजनसंग्रह ४１",
     "२ राजा २५, मत्ती २８, भजनसंग्रह ४２, भजनसंग्रह ४３",
     "१ इतिहास १, मर्कूस १, भजनसंग्रह ४４, भजनसंग्रह ४５",
@@ -490,7 +490,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २०, लूका ३, हितोपदेश १२, भजनसंग्रह ८０",
     "१ इतिहास २１, लूका ४, हितोपदेश १३, भजनसंग्रह ८１",
     "१ इतिहास २２, लूका ५, हितोपदेश १४, भजनसंग्रह ८２",
-    "१ इतिहास २३, लूका ६, हितोपदेश १५, भजनसंग्रह ८３",
+    "१ इतिहास ২৩, लूका ६, हितोपदेश १५, भजनसंग्रह ८３",
     "१ इतिहास २४, लूका ७, हितोपदेश १६, भजनसंग्रह ८４",
     "१ इतिहास २५, लूका ८, हितोपदेश १७, भजनसंग्रह ८５",
     "१ इतिहास २६, लूका ९, हितोपदेश १८, भजनसंग्रह ८６",
@@ -498,16 +498,16 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रह ८８",
     "१ इतिहास २९, लूका १२, हितोपदेश २１, भजनसंग्रह ८９",
     "२ इतिहास १, लूका १३, हितोपदेश २２, भजनसंग्रह ९０",
-    "२ इतिहास २, लूका १४, हितोपदेश २３, भजनसंग्रह ९１",
+    "२ इतिहास २, लूका १४, हितोपदेश ২৩, भजनसंग्रह ९１",
     "२ इतिहास ३, लूका १५, हितोपदेश २४, भजनसंग्रह ९２",
     "२ इतिहास ४, लूका १६, हितोपदेश २५, भजनसंग्रह ९３",
     "२ इतिहास ५, लूका १७, हितोपदेश २６, भजनसंग्रह ९４",
-    "२ इतिहास ६, लूका १८, हितोपदेश २७, भजनसंग्रह ९５",
+    "२ इतिहास ६, लूका १८, हितोपदेश २７, भजनसंग्रह ९５",
     "२ इतिहास ७, लूका १९, हितोपदेश २８, भजनसंग्रह ९６",
     "२ इतिहास ८, लूका २०, हितोपदेश २९, भजनसंग्रह ९７",
     "२ इतिहास ९, लूका २１, हितोपदेश ३０, भजनसंग्रह ९８",
     "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रह ९９",
-    "२ इतिहास ११, लूका २３, भजनसंग्रह १०४, भजनसंग्रह १००",
+    "२ इतिहास ११, लूका ২৩, भजनसंग्रह १०४, भजनसंग्रह १००",
     "२ इतिहास १२, लूका २४, भजनसंग्रह १०５, भजनसंग्रह १०१",
     "२ इतिहास १३, यूहन्ना १, भजनसंग्रह १०６, भजनसंग्रह १०２",
     "२ इतिहास १४, यूहन्ना २, भजनसंग्रह १०７, भजनसंग्रह १०३",
@@ -515,11 +515,11 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १६, यूहन्ना ४, भजनसंग्रह १１０, भजनसंग्रह ११１",
     "२ इतिहास १७, यूहन्ना ५, भजनसंग्रह १１２, भजनसंग्रह ११३",
     "२ इतिहास १८, यूहन्ना ६, भजनसंग्रह १１４, भजनसंग्रह ११５",
-    "२ इतिहास १९, यूहन्ना ७, भजनसंग्रह १１６, भजनसंग्रह ११７",
+    "२ इतिहास १९, यूहन्ना ७, भजनसंग्रह १１６, भजनसंग्रह ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रह १１８, भजनसंग्रह ११९:१-३２",
-    "२ इतिहास २１, यूहन्ना ९, भजनसंग्रह ११९:३३-６४, भजनसंग्रह ११९:६५-९६",
+    "२ इतिहास २１, यूहन्ना ९, भजनसंग्रह ११९:३३-６４, भजनसंग्रह ११९:६५-९६",
     "२ इतिहास २２, यूहन्ना १०, भजनसंग्रह ११९:९७-१２८, भजनसंग्रह ११९:१２९-१５２",
-    "२ इतिहास २३, यूहन्ना ११, भजनसंग्रह ११९:१５３-१७６, भजनसंग्रह १२०",
+    "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रह ११९:१５３-१७６, भजनसंग्रह १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रह १२１, भजनसंग्रह १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रह १२３, भजनसंग्रह १२４",
     "२ इतिहास २６, यूहन्ना १४, भजनसंग्रह १२５, भजनसंग्रह १२６",
@@ -757,7 +757,10 @@ const LoginPage: React.FC = () => {
             const provider = new GoogleAuthProvider();
             await signInWithPopup(auth, provider);
         } catch (err: any) {
-            setError(err.message);
+            // Don't show an error if the user closes the sign-in popup.
+            if (err.code !== 'auth/popup-closed-by-user') {
+                setError(err.message);
+            }
         } finally {
             setLoading(false);
         }
@@ -1017,7 +1020,11 @@ const BiblePage: React.FC = () => {
     );
 };
 
-const NewsPage: React.FC<{ currentUser: User; news: NewsItem[] }> = ({ currentUser, news }) => {
+const NewsPage: React.FC<{ 
+    currentUser: User; 
+    news: NewsItem[];
+    setNews: React.Dispatch<React.SetStateAction<NewsItem[]>>
+}> = ({ currentUser, news, setNews }) => {
     const { db, storage } = useFirebase();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingNews, setEditingNews] = useState<NewsItem | null>(null);
@@ -1032,45 +1039,57 @@ const NewsPage: React.FC<{ currentUser: User; news: NewsItem[] }> = ({ currentUs
         setIsModalOpen(false);
     };
 
-    const handleSaveNews = async (title: string, content: string, imageFile: File | null) => {
-        if (!db || !storage || !currentUser) {
-            throw new Error("Firebase not initialized or user not logged in.");
-        }
-
-        let finalImageUrl: string | null = editingNews?.image || null;
-
-        // Step 1: Upload image if a new one is provided
-        if (imageFile) {
-            // Optional: Delete old image if it exists
-            if (editingNews?.image) {
-                try {
-                    await deleteObject(ref(storage, editingNews.image));
-                } catch (error) {
-                    console.warn("Could not delete old news image:", error);
-                }
-            }
-            const imageRef = ref(storage, `news/${Date.now()}_${imageFile.name}`);
-            await uploadBytes(imageRef, imageFile);
-            finalImageUrl = await getDownloadURL(imageRef);
-        }
-
-        const payload = {
+    const handleSaveNews = (title: string, content: string, imageFile: File | null) => {
+        if (!db || !storage || !currentUser) return;
+    
+        const tempId = `temp_${Date.now()}`;
+        const optimisticNews: NewsItem = {
+            id: tempId,
+            tempId,
             title,
             content,
             authorId: currentUser.id,
             authorName: currentUser.name,
-            image: finalImageUrl,
+            createdAt: Timestamp.now(),
+            status: 'uploading',
+            localImagePreview: imageFile ? URL.createObjectURL(imageFile) : (editingNews?.image || undefined),
         };
-
-        // Step 2: Save document to Firestore
+    
         if (editingNews) {
-            await updateDoc(doc(db, "news", editingNews.id), payload);
+            setNews(prev => prev.map(n => n.id === editingNews.id ? { ...optimisticNews, id: editingNews.id } : n));
         } else {
-            await addDoc(collection(db, "news"), {
-                ...payload,
-                createdAt: serverTimestamp(),
-            });
+            setNews(prev => [optimisticNews, ...prev]);
         }
+    
+        const performSave = async () => {
+            try {
+                let finalImageUrl: string | null = editingNews?.image || null;
+    
+                if (imageFile) {
+                    if (editingNews?.image) {
+                        try {
+                            await deleteObject(ref(storage, editingNews.image));
+                        } catch (error) { console.warn("Could not delete old news image:", error); }
+                    }
+                    const imageRef = ref(storage, `news/${Date.now()}_${imageFile.name}`);
+                    await uploadBytes(imageRef, imageFile);
+                    finalImageUrl = await getDownloadURL(imageRef);
+                }
+    
+                const payload = { title, content, authorId: currentUser.id, authorName: currentUser.name, image: finalImageUrl };
+    
+                if (editingNews) {
+                    await updateDoc(doc(db, "news", editingNews.id), payload);
+                } else {
+                    await addDoc(collection(db, "news"), { ...payload, createdAt: serverTimestamp() });
+                }
+            } catch (error) {
+                console.error("Failed to save news:", error);
+                setNews(prev => prev.map(n => n.tempId === tempId ? { ...n, status: 'failed' } : n));
+            }
+        };
+    
+        performSave();
     };
 
     const handleDeleteNews = async (newsItem: NewsItem) => {
@@ -1100,8 +1119,13 @@ const NewsPage: React.FC<{ currentUser: User; news: NewsItem[] }> = ({ currentUs
             <h2>सुचना</h2>
             <div className="list-container">
                 {news.map(item => (
-                    <div key={item.id} className="card news-item">
-                        {item.image && <img src={item.image} alt={item.title} className="news-image" loading="lazy" />}
+                    <div key={item.tempId || item.id} className="card news-item">
+                         {item.status && (
+                            <div className="upload-status-overlay">
+                                {item.status === 'uploading' ? <div className="spinner"></div> : <span>&#x26A0;</span>}
+                            </div>
+                        )}
+                        {(item.localImagePreview || item.image) && <img src={item.localImagePreview || item.image} alt={item.title} className="news-image" loading="lazy" />}
                         <div className="news-content">
                             <div className="news-header">
                                 <h3>{item.title}</h3>
@@ -1137,14 +1161,13 @@ const NewsPage: React.FC<{ currentUser: User; news: NewsItem[] }> = ({ currentUs
 const NewsFormModal: React.FC<{
     isOpen: boolean;
     onClose: () => void;
-    onSave: (title: string, content: string, imageFile: File | null) => Promise<void>;
+    onSave: (title: string, content: string, imageFile: File | null) => void;
     newsItem: NewsItem | null;
 }> = ({ isOpen, onClose, onSave, newsItem }) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [imageFile, setImageFile] = useState<File | null>(null);
-    const [isSaving, setIsSaving] = useState(false);
-
+    
     useEffect(() => {
         if (isOpen) {
             setTitle(newsItem?.title || '');
@@ -1153,18 +1176,10 @@ const NewsFormModal: React.FC<{
         }
     }, [isOpen, newsItem]);
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        setIsSaving(true);
-        try {
-            await onSave(title, content, imageFile);
-            onClose(); // Close modal on success
-        } catch (error) {
-            console.error("Failed to save news:", error);
-            alert("सुचना पोस्ट गर्न असफल भयो।");
-        } finally {
-            setIsSaving(false);
-        }
+        onSave(title, content, imageFile);
+        onClose();
     };
 
     return (
@@ -1196,8 +1211,8 @@ const NewsFormModal: React.FC<{
                 />
 
                 <div className="form-actions">
-                    <button type="submit" className="action-button" disabled={isSaving}>
-                        {isSaving ? <div className="spinner"></div> : 'सेभ गर्नुहोस्'}
+                    <button type="submit" className="action-button">
+                        सेभ गर्नुहोस्
                     </button>
                 </div>
             </form>
@@ -1205,26 +1220,52 @@ const NewsFormModal: React.FC<{
     );
 };
 
-const PodcastsPage: React.FC<{currentUser: User, podcasts: Podcast[]}> = ({currentUser, podcasts}) => {
+const PodcastsPage: React.FC<{
+    currentUser: User, 
+    podcasts: Podcast[],
+    setPodcasts: React.Dispatch<React.SetStateAction<Podcast[]>>
+}> = ({currentUser, podcasts, setPodcasts}) => {
     const { db, storage } = useFirebase();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const handleSavePodcast = async (title: string, audioFile: File) => {
+    const handleSavePodcast = (title: string, audioFile: File) => {
         if (!db || !storage || !currentUser) return;
-        
-        // Step 1: Upload audio file
-        const audioRef = ref(storage, `podcasts/${Date.now()}_${audioFile.name}`);
-        await uploadBytes(audioRef, audioFile);
-        const audioUrl = await getDownloadURL(audioRef);
-
-        // Step 2: Save document to Firestore
-        await addDoc(collection(db, "podcasts"), {
+    
+        const tempId = `temp_${Date.now()}`;
+        const optimisticPodcast: Podcast = {
+            id: tempId,
+            tempId,
             title,
-            audioUrl,
             authorId: currentUser.id,
             authorName: currentUser.name,
-            createdAt: serverTimestamp(),
-        });
+            audioUrl: '', // Will be filled later
+            createdAt: Timestamp.now(),
+            status: 'uploading',
+            localAudioUrl: URL.createObjectURL(audioFile),
+        };
+    
+        setPodcasts(prev => [optimisticPodcast, ...prev]);
+    
+        const performSave = async () => {
+            try {
+                const audioRef = ref(storage, `podcasts/${Date.now()}_${audioFile.name}`);
+                await uploadBytes(audioRef, audioFile);
+                const audioUrl = await getDownloadURL(audioRef);
+    
+                await addDoc(collection(db, "podcasts"), {
+                    title,
+                    audioUrl,
+                    authorId: currentUser.id,
+                    authorName: currentUser.name,
+                    createdAt: serverTimestamp(),
+                });
+            } catch (error) {
+                console.error("Failed to save podcast:", error);
+                setPodcasts(prev => prev.map(p => p.tempId === tempId ? { ...p, status: 'failed' } : p));
+            }
+        };
+    
+        performSave();
     };
     
     const handleDeletePodcast = async (podcast: Podcast) => {
@@ -1248,7 +1289,12 @@ const PodcastsPage: React.FC<{currentUser: User, podcasts: Podcast[]}> = ({curre
             <h2>Podcasts</h2>
             <div className="list-container">
                 {podcasts.map(podcast => (
-                    <div key={podcast.id} className="card podcast-item">
+                    <div key={podcast.tempId || podcast.id} className="card podcast-item">
+                        {podcast.status && (
+                            <div className="upload-status-overlay">
+                                {podcast.status === 'uploading' ? <div className="spinner"></div> : <span>&#x26A0;</span>}
+                            </div>
+                        )}
                         <div className="podcast-info">
                             <div>
                                 <p className="podcast-title">{podcast.title}</p>
@@ -1260,7 +1306,7 @@ const PodcastsPage: React.FC<{currentUser: User, podcasts: Podcast[]}> = ({curre
                                 </button>
                             )}
                         </div>
-                        <audio controls className="podcast-player" src={podcast.audioUrl}>
+                        <audio controls className="podcast-player" src={podcast.localAudioUrl || podcast.audioUrl}>
                             Your browser does not support the audio element.
                         </audio>
                     </div>
@@ -1280,11 +1326,10 @@ const PodcastsPage: React.FC<{currentUser: User, podcasts: Podcast[]}> = ({curre
 const AddPodcastModal: React.FC<{
     isOpen: boolean;
     onClose: () => void;
-    onSave: (title: string, audioFile: File) => Promise<void>;
+    onSave: (title: string, audioFile: File) => void;
 }> = ({ isOpen, onClose, onSave }) => {
     const [title, setTitle] = useState('');
     const [audioFile, setAudioFile] = useState<File | null>(null);
-    const [isSaving, setIsSaving] = useState(false);
     const [activeTab, setActiveTab] = useState<'upload' | 'record'>('upload');
     
     // Recording state
@@ -1338,26 +1383,17 @@ const AddPodcastModal: React.FC<{
         setRecordingTime(0);
     }
     
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!audioFile || !title) {
-            alert("Please provide a title and select an audio file.");
+        if (!audioFile || !title.trim()) {
+            alert("Please provide a title and select or record an audio file.");
             return;
         }
-        setIsSaving(true);
-        try {
-            await onSave(title, audioFile);
-            // Reset state on success
-            setTitle('');
-            setAudioFile(null);
-            handleResetRecording();
-            onClose();
-        } catch (error) {
-            console.error("Failed to save podcast:", error);
-            alert("Podcast post failed.");
-        } finally {
-            setIsSaving(false);
-        }
+        onSave(title, audioFile);
+        setTitle('');
+        setAudioFile(null);
+        handleResetRecording();
+        onClose();
     };
 
     const formatTime = (seconds: number) => {
@@ -1422,8 +1458,8 @@ const AddPodcastModal: React.FC<{
                 )}
                 
                 <div className="form-actions">
-                    <button type="submit" className="action-button" disabled={isSaving || !audioFile}>
-                        {isSaving ? <div className="spinner"></div> : 'Save Podcast'}
+                    <button type="submit" className="action-button" disabled={!audioFile}>
+                        Save Podcast
                     </button>
                 </div>
             </form>
@@ -1432,14 +1468,18 @@ const AddPodcastModal: React.FC<{
 };
 
 
-const PrayerPage: React.FC<{ currentUser: User; requests: PrayerRequest[] }> = ({ currentUser, requests }) => {
+const PrayerPage: React.FC<{ 
+    currentUser: User; 
+    requests: PrayerRequest[];
+    setRequests: React.Dispatch<React.SetStateAction<PrayerRequest[]>>;
+}> = ({ currentUser, requests, setRequests }) => {
     const { db, storage } = useFirebase();
     const [selectedRequest, setSelectedRequest] = useState<PrayerRequest | null>(null);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [editingRequest, setEditingRequest] = useState<PrayerRequest | null>(null);
 
     const handleTogglePrayed = async (request: PrayerRequest) => {
-        if (!db) return;
+        if (!db || request.status) return; // Don't interact with uploading items
         const requestRef = doc(db, "prayerRequests", request.id);
         const alreadyPrayed = request.prayedBy.includes(currentUser.id);
 
@@ -1457,50 +1497,62 @@ const PrayerPage: React.FC<{ currentUser: User; requests: PrayerRequest[] }> = (
         setIsAddModalOpen(false);
         setEditingRequest(null);
     };
-
-    const handleSavePrayerRequest = async (title: string, content: string, imageFile: File | null) => {
-        if (!db || !storage || !currentUser) {
-            throw new Error("Firebase not initialized or user not logged in.");
-        }
-
-        let finalImageUrl: string | null = editingRequest?.image || null;
-
-        // Step 1: Upload image if a new one is provided
-        if (imageFile) {
-            if (editingRequest?.image) {
-                try {
-                    await deleteObject(ref(storage, editingRequest.image));
-                } catch (error) {
-                    console.warn("Could not delete old prayer image:", error);
-                }
-            }
-            const imageRef = ref(storage, `prayers/${Date.now()}_${imageFile.name}`);
-            await uploadBytes(imageRef, imageFile);
-            finalImageUrl = await getDownloadURL(imageRef);
-        }
-
-        const payload = {
+    
+    const handleSavePrayerRequest = (title: string, content: string, imageFile: File | null) => {
+        if (!db || !storage || !currentUser) return;
+    
+        const tempId = `temp_${Date.now()}`;
+        const optimisticRequest: PrayerRequest = {
+            id: tempId,
+            tempId,
             title,
             content,
             authorId: currentUser.id,
             authorName: currentUser.name,
-            image: finalImageUrl,
+            prayedBy: editingRequest?.prayedBy || [],
+            commentCount: editingRequest?.commentCount || 0,
+            createdAt: Timestamp.now(),
+            status: 'uploading',
+            localImagePreview: imageFile ? URL.createObjectURL(imageFile) : (editingRequest?.image || undefined),
         };
-
-        // Step 2: Save document to Firestore
+    
         if (editingRequest) {
-            await updateDoc(doc(db, "prayerRequests", editingRequest.id), payload);
+            setRequests(prev => prev.map(r => r.id === editingRequest.id ? { ...optimisticRequest, id: editingRequest.id } : r));
         } else {
-            await addDoc(collection(db, "prayerRequests"), {
-                ...payload,
-                prayedBy: [],
-                createdAt: serverTimestamp(),
-            });
+            setRequests(prev => [optimisticRequest, ...prev]);
         }
+    
+        const performSave = async () => {
+            try {
+                let finalImageUrl: string | null = editingRequest?.image || null;
+    
+                if (imageFile) {
+                    if (editingRequest?.image) {
+                        try { await deleteObject(ref(storage, editingRequest.image)); } catch (e) { console.warn("Old image delete failed", e); }
+                    }
+                    const imageRef = ref(storage, `prayers/${Date.now()}_${imageFile.name}`);
+                    await uploadBytes(imageRef, imageFile);
+                    finalImageUrl = await getDownloadURL(imageRef);
+                }
+    
+                const payload = { title, content, authorId: currentUser.id, authorName: currentUser.name, image: finalImageUrl };
+    
+                if (editingRequest) {
+                    await updateDoc(doc(db, "prayerRequests", editingRequest.id), payload);
+                } else {
+                    await addDoc(collection(db, "prayerRequests"), { ...payload, prayedBy: [], createdAt: serverTimestamp() });
+                }
+            } catch (error) {
+                console.error("Failed to save prayer request:", error);
+                setRequests(prev => prev.map(r => r.tempId === tempId ? { ...r, status: 'failed' } : r));
+            }
+        };
+    
+        performSave();
     };
 
     const handleDeleteRequest = async (request: PrayerRequest) => {
-        if (!db || !storage) return;
+        if (!db || !storage || request.status) return;
         if (!window.confirm("Are you sure you want to delete this prayer request?")) return;
 
         try {
@@ -1516,6 +1568,7 @@ const PrayerPage: React.FC<{ currentUser: User; requests: PrayerRequest[] }> = (
     };
     
     const handleShowDetails = (req: PrayerRequest) => {
+        if(req.status) return; // Don't open details for uploading items
         setEditingRequest(req); // Set for potential edit/delete
         setSelectedRequest(req);
     };
@@ -1527,8 +1580,13 @@ const PrayerPage: React.FC<{ currentUser: User; requests: PrayerRequest[] }> = (
             <h2>प्रार्थना</h2>
             <div className="list-container">
                 {requests.map(req => (
-                    <div key={req.id} className="card prayer-item" onClick={() => handleShowDetails(req)}>
-                        {req.image && <img src={req.image} alt={req.title} className="prayer-image" loading="lazy" />}
+                    <div key={req.tempId || req.id} className="card prayer-item" onClick={() => handleShowDetails(req)}>
+                        {req.status && (
+                            <div className="upload-status-overlay">
+                                {req.status === 'uploading' ? <div className="spinner"></div> : <span>&#x26A0;</span>}
+                            </div>
+                        )}
+                        {(req.localImagePreview || req.image) && <img src={req.localImagePreview || req.image} alt={req.title} className="prayer-image" loading="lazy" />}
                         <h4>{req.title}</h4>
                         <p className="prayer-content">{req.content}</p>
                         <div className="prayer-meta">
@@ -1550,7 +1608,7 @@ const PrayerPage: React.FC<{ currentUser: User; requests: PrayerRequest[] }> = (
                                 </div>
                             </div>
                         </div>
-                        {canManageRequest(req) && (
+                        {canManageRequest(req) && !req.status && (
                             <div className="item-actions-footer">
                                 <button onClick={(e) => { e.stopPropagation(); handleOpenAddModal(req); }} className="edit-button" aria-label="Edit prayer request">
                                     <span className="material-symbols-outlined">edit</span>
@@ -1586,13 +1644,12 @@ const PrayerPage: React.FC<{ currentUser: User; requests: PrayerRequest[] }> = (
 const PrayerFormModal: React.FC<{
     isOpen: boolean;
     onClose: () => void;
-    onSave: (title: string, content: string, imageFile: File | null) => Promise<void>;
+    onSave: (title: string, content: string, imageFile: File | null) => void;
     request: PrayerRequest | null;
 }> = ({ isOpen, onClose, onSave, request }) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [imageFile, setImageFile] = useState<File | null>(null);
-    const [isSaving, setIsSaving] = useState(false);
     const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null);
 
     useEffect(() => {
@@ -1604,41 +1661,10 @@ const PrayerFormModal: React.FC<{
         }
     }, [isOpen, request]);
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        setIsSaving(true);
-        try {
-            await onSave(title, content, imageFile);
-            onClose();
-        } catch (error: any) {
-            console.error("Failed to save prayer request:", error);
-            
-            let errorMessage = "प्रार्थना अनुरोध पोस्ट गर्न असफल भयो।"; // Default: "Prayer request post failed."
-            
-            if (error && error.code) { // Check for specific Firebase Storage error codes
-                switch (error.code) {
-                    case 'storage/unauthorized':
-                        errorMessage = "फोटो अपलोड गर्न अनुमति छैन। कृपया सर्भरको नियमहरू जाँच्नुहोस्।"; // "Permission denied for photo upload. Please check server rules."
-                        break;
-                    case 'storage/canceled':
-                        errorMessage = "फोटो अपलोड रद्द गरियो।"; // "Photo upload was canceled."
-                        break;
-                    case 'storage/retry-limit-exceeded':
-                         errorMessage = "नेटवर्क समय सकियो। कृपया आफ्नो इन्टरनेट जडान जाँच गर्नुहोस्।"; // "Network timeout. Please check your internet connection."
-                         break;
-                    case 'storage/unknown':
-                    default:
-                        errorMessage = `अज्ञात त्रुटि भयो। कृपया फेरि प्रयास गर्नुहोस्। त्रुटि कोड: ${error.code}`; // "An unknown error occurred. Please try again. Error code: ..."
-                        break;
-                }
-            } else if (error instanceof Error) {
-                errorMessage = error.message;
-            }
-    
-            alert(errorMessage);
-        } finally {
-            setIsSaving(false);
-        }
+        onSave(title, content, imageFile);
+        onClose();
     };
     
     return (
@@ -1668,8 +1694,8 @@ const PrayerFormModal: React.FC<{
                     currentImageUrl={currentImageUrl} 
                     label="फोटो थप्नुहोस्।(यदि तपाईं चाहनुहुन्छ भने)" 
                 />
-                <button type="submit" className="action-button" disabled={isSaving}>
-                    {isSaving ? <div className="spinner"></div> : 'अनुरोध पठाउनुहोस्।'}
+                <button type="submit" className="action-button">
+                    अनुरोध पठाउनुहोस्।
                 </button>
             </form>
         </Modal>
@@ -1943,7 +1969,7 @@ const ConversationPage: React.FC<{
     const { db, storage } = useFirebase();
     const [messages, setMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState('');
-    const [currentChat, setCurrentChat] = useState<Chat | null>(null);
+    const [currentChat, setCurrentChat] = useState<Chat | null>(chat);
     const [loading, setLoading] = useState(true);
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -1958,13 +1984,13 @@ const ConversationPage: React.FC<{
             } else {
                 onBack();
             }
-            setLoading(false);
         });
 
         const messagesQuery = query(collection(db, "chats", chat.id, "messages"), orderBy("createdAt", "asc"));
         const unsubscribeMessages = onSnapshot(messagesQuery, (snapshot) => {
             const fetchedMessages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Message));
             setMessages(fetchedMessages);
+            setLoading(false); // Set loading to false only after messages are fetched
         });
 
         // Mark messages as read
@@ -1979,8 +2005,10 @@ const ConversationPage: React.FC<{
     }, [db, chat?.id, onBack, currentUser.id]);
 
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messages]);
+        if (!loading) {
+            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [messages, loading]);
 
     const handleSendMessage = async (content?: string, file?: File) => {
         if (!db || !storage || !currentChat || (!content?.trim() && !file)) return;
@@ -2050,22 +2078,18 @@ const ConversationPage: React.FC<{
     }
 
     const getChatTitle = () => {
-        if (!currentChat) return "Loading...";
-        if (!currentChat.participants) return "Conversation"; // Safety check for crash
+        const chatData = currentChat || chat; // Use local state first, fallback to prop for initial render
+        if (!chatData?.participants) return "Conversation";
 
-        if (currentChat.participantIds.length > 2) {
-             return currentChat.participantIds
+        if (chatData.participantIds.length > 2) {
+             return chatData.participantIds
                 .filter(id => id !== currentUser.id)
-                .map(id => currentChat.participants[id]?.name.split(' ')[0] || '')
+                .map(id => chatData.participants[id]?.name.split(' ')[0] || '')
                 .join(', ');
         }
-        const otherId = currentChat.participantIds.find(id => id !== currentUser.id);
-        return otherId ? currentChat.participants[otherId]?.name : "Chat";
+        const otherId = chatData.participantIds.find(id => id !== currentUser.id);
+        return otherId ? chatData.participants[otherId]?.name : "Chat";
     };
-
-    if (loading || !currentChat) {
-        return <Loading message="Loading chat..." />;
-    }
     
     return (
         <div className="conversation-page">
@@ -2077,33 +2101,39 @@ const ConversationPage: React.FC<{
                 <div style={{width: '40px'}}></div>
             </header>
             <div className="message-list">
-                {messages.map(msg => (
-                    <div key={msg.id} className={`message-container ${msg.senderId === currentUser.id ? 'sent' : 'received'}`}>
-                        <div className="message-bubble">
-                            {msg.type === 'text' && <p>{msg.content}</p>}
-                            {(msg.type === 'image' || msg.type === 'video') && msg.mediaUrl && (
-                                <div className="message-media-container">
-                                    {msg.type === 'image' && <img src={msg.mediaUrl} alt="Sent media" className="message-media" />}
-                                    {msg.type === 'video' && <video src={msg.mediaUrl} controls className="message-media" />}
-                                    {msg.status === 'uploading' && (
-                                        <div className="media-upload-overlay">
-                                            <div className="spinner"></div>
+                {loading ? (
+                    <Loading message="Loading messages..." />
+                ) : (
+                    <>
+                        {messages.map(msg => (
+                            <div key={msg.id} className={`message-container ${msg.senderId === currentUser.id ? 'sent' : 'received'}`}>
+                                <div className="message-bubble">
+                                    {msg.type === 'text' && <p>{msg.content}</p>}
+                                    {(msg.type === 'image' || msg.type === 'video') && msg.mediaUrl && (
+                                        <div className="message-media-container">
+                                            {msg.type === 'image' && <img src={msg.mediaUrl} alt="Sent media" className="message-media" />}
+                                            {msg.type === 'video' && <video src={msg.mediaUrl} controls className="message-media" />}
+                                            {msg.status === 'uploading' && (
+                                                <div className="media-upload-overlay">
+                                                    <div className="spinner"></div>
+                                                </div>
+                                            )}
                                         </div>
                                     )}
+                                    <div className="message-footer">
+                                        <span className="message-timestamp">{formatTime(msg.createdAt)}</span>
+                                        {msg.status === 'failed' && <span className="material-symbols-outlined message-failed-indicator">error</span>}
+                                    </div>
                                 </div>
-                            )}
-                            <div className="message-footer">
-                                <span className="message-timestamp">{formatTime(msg.createdAt)}</span>
-                                {msg.status === 'failed' && <span className="material-symbols-outlined message-failed-indicator">error</span>}
                             </div>
-                        </div>
-                    </div>
-                ))}
-                <div ref={messagesEndRef} />
+                        ))}
+                        <div ref={messagesEndRef} />
+                    </>
+                )}
             </div>
             <div className="message-input-container">
-                <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{display: 'none'}} accept="image/*,video/*" />
-                <button className="input-action-button" onClick={() => fileInputRef.current?.click()} aria-label="Attach file">
+                <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{display: 'none'}} accept="image/*,video/*" disabled={loading} />
+                <button className="input-action-button" onClick={() => fileInputRef.current?.click()} aria-label="Attach file" disabled={loading}>
                     <span className="material-symbols-outlined">attach_file</span>
                 </button>
                 <input
@@ -2112,8 +2142,9 @@ const ConversationPage: React.FC<{
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleSendText()}
+                    disabled={loading}
                 />
-                <button className="send-button" onClick={handleSendText} disabled={!newMessage.trim()}>
+                <button className="send-button" onClick={handleSendText} disabled={loading || !newMessage.trim()}>
                     <span className="material-symbols-outlined">send</span>
                 </button>
             </div>
@@ -2427,6 +2458,10 @@ const App: React.FC = () => {
         }
     };
 
+    const handleBackFromConversation = useCallback(() => {
+        setActivePage('chat');
+    }, []);
+
 
     if (firebaseServices.firebaseError) {
         return <ErrorFallback error={new Error(firebaseServices.firebaseError)} />;
@@ -2452,9 +2487,9 @@ const App: React.FC = () => {
 
     const renderPage = () => {
         switch(activePage) {
-            case 'news': return <NewsPage currentUser={currentUser} news={news} />;
+            case 'news': return <NewsPage currentUser={currentUser} news={news} setNews={setNews} />;
             case 'worship': return <WorshipPage currentUser={currentUser} liveService={worshipService} pastServices={pastServices} />;
-            case 'podcast': return <PodcastsPage currentUser={currentUser} podcasts={podcasts} />;
+            case 'podcast': return <PodcastsPage currentUser={currentUser} podcasts={podcasts} setPodcasts={setPodcasts} />;
             case 'bible': return <BiblePage />;
             case 'chat': return (
                 <ChatListPage
@@ -2468,7 +2503,7 @@ const App: React.FC = () => {
                     onCreateChat={handleCreateChat}
                 />
             );
-            case 'prayer': return <PrayerPage currentUser={currentUser} requests={prayerRequests} />;
+            case 'prayer': return <PrayerPage currentUser={currentUser} requests={prayerRequests} setRequests={setPrayerRequests} />;
             case 'conversation': 
                 if(!currentChat) {
                     setActivePage('chat'); // safety net
@@ -2478,7 +2513,7 @@ const App: React.FC = () => {
                     <ConversationPage 
                         chat={currentChat} 
                         currentUser={currentUser} 
-                        onBack={() => setActivePage('chat')} 
+                        onBack={handleBackFromConversation} 
                     />
                 );
             default: return <div>Page not found</div>;
@@ -2546,11 +2581,11 @@ const App: React.FC = () => {
 
 
 // --- Error Boundary ---
-// Fix: Refactor ErrorBoundary to use a class field for state initialization.
-// This is a more modern approach and resolves issues where TypeScript was not
-// correctly identifying `this.state` and `this.props` within the component instance.
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; error: Error | null }> {
-  state = { hasError: false, error: null };
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
 
   static getDerivedStateFromError(error: Error) {
     return { hasError: true, error };
@@ -2567,6 +2602,7 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
     return this.props.children;
   }
 }
+
 
 
 // --- App Root ---
