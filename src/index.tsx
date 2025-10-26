@@ -152,7 +152,7 @@ const MCCHEYNE_READING_PLAN = [
     "उत्पत्ति २०, मत्ती २०, नहेम्याह १०, प्रेरित २०",
     "उत्पत्ति २१, मत्ती २१, नहेम्याह ११, प्रेरित २१",
     "उत्पत्ति २२, मत्ती २२, नहेम्याह १२, प्रेरित २२",
-    "उत्पत्ति ২৩, मत्ती ২৩, नहेम्याह १३, प्रेरित २३",
+    "उत्पत्ति ২৩, मत्ती ২৩, नहेम्याह १३, प्रेरित ২৩",
     "उत्पत्ति २४, मत्ती २४, एस्तर १, प्रेरित २४",
     "उत्पत्ति २५, मत्ती २५, एस्तर २, प्रेरित २५",
     "उत्पत्ति २६, मत्ती २６, एस्तर ३, प्रेरित २६",
@@ -267,7 +267,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १८, प्रेरित ७:४４-６०, भजनसंग्रह ६６, १ पत्रुस २",
     "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६７, १ पत्रुस ३",
     "गन्ती २०, प्रेरित ८:２６-４०, भजनसंग्रह ६８, १ पत्रुस ४",
-    "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६९, १ पत्रुस ५",
+    "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६９, १ पत्रुस ५",
     "गन्ती २２, प्रेरित ९:२२-４३, भजनसंग्रह ७０, २ पत्रुस १",
     "गन्ती ২৩, प्रेरित १०:१-२३, भजनसंग्रह ७１, २ पत्रुस २",
     "गन्ती २४, प्रेरित १०:२４-４८, भजनसंग्रह ७２, २ पत्रुस ३",
@@ -871,7 +871,7 @@ const WorshipPage: React.FC<{
                     <div className="live-badge">LIVE</div>
                     <div className="iframe-container">
                         <iframe
-                            src={embedUrl}
+                            src={embedUrl || ''}
                             allow="autoplay; encrypted-media"
                             allowFullScreen={true}
                             title="Live Worship Stream"
@@ -2291,7 +2291,7 @@ const App: React.FC = () => {
                     
                     setCurrentUser({ 
                         id: user.uid, 
-                        name: user.displayName || userData.name,
+                        name: user.displayName || userData.name || '',
                         email: user.email || userData.email || '',
                         avatar: user.photoURL || userData.avatar || '',
                         roles: userRoles
