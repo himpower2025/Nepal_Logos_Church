@@ -233,7 +233,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी ११, यूहन्ना ६:४१-७１, भजनसंग्रह ३２, २ थिस्सलोनिकी ३",
     "लेवी १२, यूहन्ना ७:१-३１, भजनसंग्रह ३३, १ तिमोथी १",
     "लेवी १३, यूहन्ना ७:३２-５३, भजनसंग्रह ३４, १ तिमोथी २",
-    "लेवी १४, यूहन्ना ८:१-३０, भजनसंग्रह ३５, १ तिमोथी ३",
+    "लेवी १४, यूहन्ना ८:१-३０, भजनसंग्रह ३५, १ तिमोथी ३",
     "लेवी १५, यूहन्ना ८:३१-५९, भजनसंग्रह ३６, १ तिमोथी ४",
     "लेवी १६, यूहन्ना ९, भजनसंग्रह ३７, १ तिमोथी ५",
     "लेवी १७, यूहन्ना १०:१-२１, भजनसंग्रह ३８, १ तिमोथी ६",
@@ -653,7 +653,7 @@ const Modal: React.FC<{
 const ImageUpload: React.FC<{
     selectedFile: File | null;
     setSelectedFile: (file: File | null) => void;
-    currentImageUrl?: string;
+    currentImageUrl?: string | null;
     label?: string;
 }> = ({ selectedFile, setSelectedFile, currentImageUrl, label = 'Add a photo' }) => {
     const [preview, setPreview] = useState<string | null>(currentImageUrl ?? null);
@@ -1204,7 +1204,7 @@ const NewsFormModal: React.FC<{
                 <ImageUpload 
                     selectedFile={imageFile} 
                     setSelectedFile={setImageFile} 
-                    currentImageUrl={newsItem?.image ?? undefined}
+                    currentImageUrl={newsItem?.image}
                     label="फोटो थप्नुहोस्।(यदि तपाईं चाहनुहुन्छ भने)"
                 />
 
@@ -1648,13 +1648,11 @@ const PrayerFormModal: React.FC<{
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [imageFile, setImageFile] = useState<File | null>(null);
-    const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null);
 
     useEffect(() => {
         if (isOpen) {
             setTitle(request?.title || '');
             setContent(request?.content || '');
-            setCurrentImageUrl(request?.image || null);
             setImageFile(null); // Reset file input
         }
     }, [isOpen, request]);
@@ -1689,7 +1687,7 @@ const PrayerFormModal: React.FC<{
                 <ImageUpload 
                     selectedFile={imageFile} 
                     setSelectedFile={setImageFile} 
-                    currentImageUrl={currentImageUrl ?? undefined} 
+                    currentImageUrl={request?.image}
                     label="फोटो थप्नुहोस्।(यदि तपाईं चाहनुहुन्छ भने)" 
                 />
                 <button type="submit" className="action-button">
