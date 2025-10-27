@@ -293,10 +293,10 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ३２, प्रेरित १६, हितोपदेश ३, यहूदा १",
     "गन्ती ३३, प्रेरित १७:१-१５, हितोपदेश ४, प्रकाश १",
     "गन्ती ३４, प्रेरित १७:१६-３４, हितोपदेश ५, प्रकाश २",
-    "गन्ती ३५, प्रेरित १८, हितोपदेश ६, प्रकाश ३",
+    "गन्ती ३５, प्रेरित १८, हितोपदेश ६, प्रकाश ३",
     "गन्ती ३６, प्रेरित १९, हितोपदेश ७, प्रकाश ४",
     "व्यवस्था १, प्रेरित २०:१-१６, हितोपदेश ८, प्रकाश ५",
-    "व्यवस्था २, प्रेरित २०:१７-３८, हितोपदेश ९, प्रकाश ६",
+    "व्यवस्था २, प्रेरित २०:१７-३८, हितोपदेश ९, प्रकाश ६",
     "व्यवस्था ३, प्रेरित २१:१-१८, उपदेशक १, प्रकाश ७",
     "व्यवस्था ४, प्रेरित २१:१९-４३, उपदेशक २, प्रकाश ८",
     "व्यवस्था ५, प्रेरित २２, उपदेशक ३, प्रकाश ९",
@@ -1459,7 +1459,7 @@ const AddPodcastModal: React.FC<{
                         ) : (
                              <div className="recording-preview">
                                 <p>Recording complete:</p>
-                                <audio controls src={URL.createObjectURL(recordedBlob)}></audio>
+                                {recordedBlob && <audio controls src={URL.createObjectURL(recordedBlob)}></audio>}
                                 <button type="button" className="action-button secondary" onClick={handleResetRecording}>Record Again</button>
                             </div>
                         )}
@@ -1818,8 +1818,9 @@ const ChatListPage: React.FC<{
     onChatSelect: (chat: Chat) => void;
     onCreateChat: (participants: User[]) => Promise<string | null>;
 }> = ({ currentUser, usersMap, chats, onChatSelect, onCreateChat }) => {
-    const { db } = useFirebase();
+    const { db, storage } = useFirebase();
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [chatToDelete, setChatToDelete] = useState<Chat | null>(null);
     const users = Array.from(usersMap.values());
 
     const getOtherParticipant = (chat: Chat, currentUserId: string) => {
@@ -1859,6 +1860,39 @@ const ChatListPage: React.FC<{
         setIsCreateModalOpen(false);
     };
     
+    const handleDeleteChat = async (chat: Chat) => {
+        if (!db || !storage) return;
+    
+        try {
+            const messagesQuery = query(collection(db, "chats", chat.id, "messages"));
+            const messagesSnapshot = await getDocs(messagesQuery);
+            
+            const deletePromises: Promise<void>[] = [];
+            
+            messagesSnapshot.forEach(messageDoc => {
+                const message = messageDoc.data() as Message;
+                if (message.media) {
+                    message.media.forEach(mediaItem => {
+                        if (mediaItem.path) {
+                            deletePromises.push(deleteObject(ref(storage, mediaItem.path)).catch(err => console.error("Failed to delete media:", err)));
+                        }
+                    });
+                }
+                deletePromises.push(deleteDoc(doc(db, "chats", chat.id, "messages", messageDoc.id)));
+            });
+    
+            await Promise.all(deletePromises);
+    
+            await deleteDoc(doc(db, "chats", chat.id));
+    
+            setChatToDelete(null);
+        } catch (error) {
+            console.error("Error deleting chat:", error);
+            alert("Failed to delete chat. Please try again.");
+            setChatToDelete(null);
+        }
+    };
+
     const getLastMessagePreview = (chat: Chat) => {
         if (!chat.lastMessage) return "No messages yet";
         const content = chat.lastMessage.content;
@@ -1874,18 +1908,23 @@ const ChatListPage: React.FC<{
                  {chats.length > 0 ? (
                     chats.map(chat => {
                         const otherParticipant = getOtherParticipant(chat, currentUser.id);
-                        const isUnread = chat.lastRead && chat.lastMessage && (!chat.lastRead[currentUser.id] || chat.lastRead[currentUser.id] < chat.lastMessage.createdAt);
+                        const isUnread = chat.lastRead && chat.lastMessage && chat.lastMessage.senderId !== currentUser.id && (!chat.lastRead[currentUser.id] || chat.lastRead[currentUser.id] < chat.lastMessage.createdAt);
                         return (
-                            <div key={chat.id} className={`list-item chat-item ${isUnread ? 'unread' : ''}`} onClick={() => onChatSelect(chat)}>
-                                <div className="chat-avatar">{getAvatarInitial(otherParticipant.name)}</div>
-                                <div className="chat-info">
-                                    <span className="chat-name">{otherParticipant.name}</span>
-                                    <p className="chat-last-message">{getLastMessagePreview(chat)}</p>
+                            <div key={chat.id} className="list-item chat-item">
+                                <div className="chat-content-wrapper" onClick={() => onChatSelect(chat)}>
+                                    <div className="chat-avatar">{getAvatarInitial(otherParticipant.name)}</div>
+                                    <div className="chat-info">
+                                        <span className="chat-name">{otherParticipant.name}</span>
+                                        <p className="chat-last-message">{getLastMessagePreview(chat)}</p>
+                                    </div>
+                                    <div className="chat-meta">
+                                        <span>{chat.lastActivity ? formatRelativeTime(chat.lastActivity) : ''}</span>
+                                        {isUnread && <div className="unread-dot"></div>}
+                                    </div>
                                 </div>
-                                <div className="chat-meta">
-                                    <span>{chat.lastActivity ? formatRelativeTime(chat.lastActivity) : ''}</span>
-                                    {isUnread && <div className="unread-dot"></div>}
-                                </div>
+                                <button className="chat-delete-button" onClick={() => setChatToDelete(chat)} aria-label={`Delete chat with ${otherParticipant.name}`}>
+                                    <span className="material-symbols-outlined">delete</span>
+                                </button>
                             </div>
                         )
                     })
@@ -1906,6 +1945,17 @@ const ChatListPage: React.FC<{
                 users={users}
                 onCreate={handleCreateChat}
             />
+
+            <Modal isOpen={!!chatToDelete} onClose={() => setChatToDelete(null)}>
+                <div className="delete-confirmation">
+                    <h3>Delete Conversation?</h3>
+                    <p>This will permanently delete this conversation for everyone. This action cannot be undone.</p>
+                    <div className="form-actions">
+                        <button className="action-button secondary" onClick={() => setChatToDelete(null)}>Cancel</button>
+                        <button className="action-button danger" onClick={() => chatToDelete && handleDeleteChat(chatToDelete)}>Delete</button>
+                    </div>
+                </div>
+            </Modal>
         </div>
     );
 };
@@ -1918,6 +1968,21 @@ const CreateChatModal: React.FC<{
     onCreate: (participants: User[]) => void;
 }> = ({ isOpen, onClose, currentUser, users, onCreate }) => {
     const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+
+    const uniqueUsers = useMemo(() => {
+        const userMap = new Map<string, User>();
+        users.forEach(user => {
+            if (user.email && !userMap.has(user.email)) {
+                userMap.set(user.email, user);
+            } else if (!user.email) {
+                if (!userMap.has(user.id)) {
+                    userMap.set(user.id, user);
+                }
+            }
+        });
+        return Array.from(userMap.values());
+    }, [users]);
+
 
     const handleToggleUser = (user: User) => {
         setSelectedUsers(prev =>
@@ -1939,7 +2004,7 @@ const CreateChatModal: React.FC<{
             <div className="create-chat-modal">
                 <h3>Start a conversation</h3>
                 <div className="user-list">
-                    {users.filter(u => u.id !== currentUser.id).map(user => {
+                    {uniqueUsers.filter(u => u.id !== currentUser.id).map(user => {
                         const isSelected = selectedUsers.some(su => su.id === user.id);
                         return (
                             <div key={user.id} className={`list-item user-list-item selectable ${isSelected ? 'selected' : ''}`} onClick={() => handleToggleUser(user)}>
@@ -2046,19 +2111,25 @@ const ConversationPage: React.FC<{
                 ...(uploadedMedia.length > 0 && { media: uploadedMedia }),
             };
 
-            await addDoc(collection(db, "chats", currentChat.id, "messages"), messagePayload);
+            const sentMessageRef = await addDoc(collection(db, "chats", currentChat.id, "messages"), messagePayload);
+            const sentMessageSnap = await getDoc(sentMessageRef);
+            const sentMessage = sentMessageSnap.data();
+
             
             let lastMessageContent = textContent;
             if (!lastMessageContent) {
                 if(uploadedMedia.length > 0) {
                     const hasVideo = uploadedMedia.some(m => m.type === 'video');
-                    lastMessageContent = `${hasVideo ? '📹' : '📷'} ${uploadedMedia.length} item(s)`;
+                    lastMessageContent = `${hasVideo ? '📹' : '📷'} ${uploadedMedia.length > 0 ? (uploadedMedia.length === 1 ? 'Item' : `${uploadedMedia.length} items`) : ''}`;
                 }
             }
+            if (!lastMessageContent) lastMessageContent = "Media sent";
+
 
             await updateDoc(doc(db, "chats", currentChat.id), {
-                lastMessage: { content: lastMessageContent, senderId: currentUser.id, createdAt: serverTimestamp() },
-                lastActivity: serverTimestamp()
+                lastMessage: { content: lastMessageContent, senderId: currentUser.id, createdAt: sentMessage?.createdAt || serverTimestamp() },
+                lastActivity: sentMessage?.createdAt || serverTimestamp(),
+                [`lastRead.${currentUser.id}`]: sentMessage?.createdAt || serverTimestamp()
             });
 
         } catch (error) {
