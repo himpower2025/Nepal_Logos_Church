@@ -277,7 +277,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १६, प्रेरित ७:१-२１, भजनसंग्रह ६４, याकूब ५",
     "गन्ती १७, प्रेरित ७:२２-４३, भजनसंग्रह ६５, १ पत्रुस १",
     "गन्ती १८, प्रेरित ७:४４-６०, भजनसंग्रह ६６, १ पत्रुस २",
-    "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६７, १ पत्रुस ३",
+    "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६७, १ पत्रुस ३",
     "गन्ती २०, प्रेरित ८:２６-４०, भजनसंग्रह ६８, १ पत्रुस ४",
     "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६९, १ पत्रुस ५",
     "गन्ती २２, प्रेरित ९:२२-４३, भजनसंग्रह ७０, २ पत्रुस १",
@@ -505,7 +505,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ২৩, लूका ६, हितोपदेश १५, भजनसंग्रह ८３",
     "१ इतिहास २४, लूका ७, हितोपदेश १६, भजनसंग्रह ८４",
     "१ इतिहास २५, लूका ८, हितोपदेश १७, भजनसंग्रह ८５",
-    "१ इतिहास २६, लूका ९, हितोपदेश १८, भजनसंग्रह ८６",
+    "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रह ८６",
     "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रह ८７",
     "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रह ८８",
     "१ इतिहास २९, लूका १२, हितोपदेश २１, भजनसंग्रह ८９",
@@ -1345,8 +1345,18 @@ const AddPodcastModal: React.FC<{
     const [isRecording, setIsRecording] = useState(false);
     const [recordingTime, setRecordingTime] = useState(0);
     const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
+    const [recordedAudioUrl, setRecordedAudioUrl] = useState<string | null>(null);
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const timerIntervalRef = useRef<number | null>(null);
+
+    useEffect(() => {
+        if (recordedBlob) {
+            const url = URL.createObjectURL(recordedBlob);
+            setRecordedAudioUrl(url);
+            return () => URL.revokeObjectURL(url); // Cleanup on component unmount or when blob changes
+        }
+        setRecordedAudioUrl(null);
+    }, [recordedBlob]);
 
     const handleStartRecording = async () => {
         try {
@@ -1459,7 +1469,7 @@ const AddPodcastModal: React.FC<{
                         ) : (
                              <div className="recording-preview">
                                 <p>Recording complete:</p>
-                                {recordedBlob && <audio controls src={URL.createObjectURL(recordedBlob)}></audio>}
+                                {recordedAudioUrl && <audio controls src={recordedAudioUrl}></audio>}
                                 <button type="button" className="action-button secondary" onClick={handleResetRecording}>Record Again</button>
                             </div>
                         )}
@@ -2389,12 +2399,10 @@ const NotificationPanel: React.FC<{
     onClose: () => void;
     notifications: Notification[];
 }> = ({ isOpen, onClose, notifications }) => {
-    if (!isOpen) return null;
-
     return createPortal(
         <>
-            <div className="modal-backdrop" onClick={onClose} style={{ backgroundColor: 'rgba(0,0,0,0.3)' }}></div>
-            <div className="notification-panel">
+            <div className={`notification-backdrop ${isOpen ? 'open' : ''}`} onClick={onClose}></div>
+            <div className={`notification-panel ${isOpen ? 'open' : ''}`}>
                 <header className="notification-header">
                     <h3>Notifications</h3>
                 </header>
@@ -2443,6 +2451,8 @@ const App: React.FC = () => {
     const [chats, setChats] = useState<Chat[]>([]);
     const [currentChat, setCurrentChat] = useState<Chat | null>(null);
     const [notifications, setNotifications] = useState<Notification[]>([]);
+    const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
+
 
     const usersMap = useMemo(() => {
         const map = new Map<string, User>();
@@ -2601,10 +2611,10 @@ const App: React.FC = () => {
                 id: payload.messageId || new Date().toISOString(),
                 icon: 'notifications', // default icon
                 message: payload.notification?.body || 'You have a new notification.',
-                timestamp: new Date().toLocaleTimeString()
+                timestamp: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
              };
              setNotifications(prev => [newNotification, ...prev]);
-             setIsNotificationPanelOpen(true);
+             setHasUnreadNotifications(true);
         });
 
         return () => unsubscribeOnMessage();
@@ -2715,9 +2725,12 @@ const App: React.FC = () => {
                         <h1>{CHURCH.name}</h1>
                     </div>
                     <div className="header-actions">
-                        <button className="header-button" onClick={() => setIsNotificationPanelOpen(true)}>
+                        <button className="header-button" onClick={() => {
+                            setIsNotificationPanelOpen(true);
+                            setHasUnreadNotifications(false);
+                        }}>
                             <span className="material-symbols-outlined">notifications</span>
-                            {notifications.length > 0 && <div className="notification-dot"></div>}
+                            {hasUnreadNotifications && <div className="notification-dot"></div>}
                         </button>
                          {isAdmin && (
                             <button className="header-button" onClick={() => setIsManageUsersOpen(true)}>
@@ -2766,10 +2779,7 @@ const App: React.FC = () => {
 
 // --- Error Boundary ---
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; error: Error | null }> {
-  constructor(props: { children: React.ReactNode }) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
+  state = { hasError: false, error: null };
 
   static getDerivedStateFromError(error: Error) {
     return { hasError: true, error };

@@ -1,5 +1,5 @@
 
-const CACHE_NAME = 'nepal-logos-church-v42'; // Increment version on significant changes
+const CACHE_NAME = 'nepal-logos-church-v44'; // Increment version on significant changes
 
 // These are cached on install for basic offline fallback.
 const APP_SHELL_URLS = [
@@ -56,11 +56,21 @@ self.addEventListener('fetch', event => {
 
 self.addEventListener('push', event => {
   console.log('[Service Worker] Push Received.');
-  const data = event.data ? event.data.json() : {
-      body: 'You have a new notification.',
+  
+  let data = {
+      body: '새로운 알림이 있습니다.',
       url: '/'
   };
-  const title = 'Logos Church, Nepal';
+
+  try {
+      if (event.data) {
+          data = { ...data, ...event.data.json() };
+      }
+  } catch(e) {
+      console.error('Push event data parsing error:', e);
+  }
+
+  const title = '네팔 로고스 교회';
   const options = {
     body: data.body,
     icon: '/logos-church-new-logo.jpg',

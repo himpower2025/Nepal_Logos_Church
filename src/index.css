@@ -1517,6 +1517,24 @@ html, body, #root {
 }
 
 /* --- Notification Panel --- */
+.notification-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+}
+
+.notification-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
 .notification-panel {
     position: fixed;
     top: 0;
@@ -1529,12 +1547,13 @@ html, body, #root {
     z-index: 1001;
     display: flex;
     flex-direction: column;
-    animation: slideIn 0.3s forwards;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
 }
-@keyframes slideIn {
-    from { transform: translateX(100%); }
-    to { transform: translateX(0); }
+.notification-panel.open {
+    transform: translateX(0);
 }
+
 .notification-header {
     padding: var(--space-md);
     border-bottom: 1px solid #eee;
