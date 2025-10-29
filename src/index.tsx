@@ -350,7 +350,7 @@ const MCCHEYNE_READING_PLAN = [
     "यहोशू १९, २ कोरिन्थी ७, यशैया ३１, यशैया ३５",
     "यहोशू २०, २ कोरिन्थी ८, यशैया ३２, यशैया ३６",
     "यहोशू २१, २ कोरिन्थी ९, यशैया ३３, यशैया ३７",
-    "यहोशू २２, २ कोरिन्थी १०, यशैया ३４, यशैया ३८",
+    "यहोशू २２, २ कोरिन्थी १०, यशैया ३４, यशैया ३８",
     "यहोशू ২৩, २ कोरिन्थी ११, यशैया ३５, यशैया ३९",
     "यहोशू २४, २ कोरिन्थी १२, यशैया ३６, यशैया ४０",
     "न्यायकर्ता १, २ कोरिन्थी १३, यशैया ३７, यशैया ४１",
@@ -837,8 +837,10 @@ const WorshipPage: React.FC<{
     const [isOfferingModalOpen, setIsOfferingModalOpen] = useState(false);
     const [isAddPastWorshipModalOpen, setIsAddPastWorshipModalOpen] = useState(false);
     const [newPastService, setNewPastService] = useState({ title: '', youtubeUrl: '' });
-    
+    const [playingService, setPlayingService] = useState<PastWorshipService | null>(null);
+
     const embedUrl = liveService?.streamUrl ? getEmbedUrl(liveService.streamUrl) : null;
+    const playingEmbedUrl = playingService?.youtubeUrl ? getEmbedUrl(playingService.youtubeUrl) : null;
 
     const handleAddPastService = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -867,7 +869,8 @@ const WorshipPage: React.FC<{
 
     const getYoutubeThumbnail = (url: string) => {
         try {
-            const videoId = new URL(url).searchParams.get('v');
+            const videoIdMatch = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]{11})/);
+            const videoId = videoIdMatch ? videoIdMatch[1] : null;
             return videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '/placeholder.jpg';
         } catch {
             return '/placeholder.jpg';
@@ -911,20 +914,21 @@ const WorshipPage: React.FC<{
                 )}
                 <div className="past-worship-list">
                     {pastServices.map(service => (
-                        <div key={service.id} className="card past-service-card">
-                             <a href={service.youtubeUrl} target="_blank" rel="noopener noreferrer">
-                                <img 
-                                    src={getYoutubeThumbnail(service.youtubeUrl)}
-                                    alt={service.title}
-                                    className="past-service-thumbnail"
-                                    loading="lazy"
-                                />
-                                <p className="past-service-title">{service.title}</p>
-                            </a>
+                        <div key={service.id} className="card past-service-card" onClick={() => setPlayingService(service)}>
+                            <img 
+                                src={getYoutubeThumbnail(service.youtubeUrl)}
+                                alt={service.title}
+                                className="past-service-thumbnail"
+                                loading="lazy"
+                            />
+                            <p className="past-service-title">{service.title}</p>
                             {currentUser.roles.includes('admin') && (
                                 <button
                                     className="delete-button past-service-delete-button"
-                                    onClick={() => handleDeletePastService(service.id)}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleDeletePastService(service.id);
+                                    }}
                                     aria-label="Delete past service"
                                 >
                                     <span className="material-symbols-outlined">delete</span>
@@ -979,6 +983,32 @@ const WorshipPage: React.FC<{
                         <button type="button" className="action-button secondary" onClick={() => setIsAddPastWorshipModalOpen(false)}>Cancel</button>
                     </div>
                 </form>
+            </Modal>
+            <Modal isOpen={!!playingService} onClose={() => setPlayingService(null)}>
+                <div className="video-player-modal">
+                     <button type="button" className="modal-close-button" onClick={() => setPlayingService(null)} aria-label="Close">
+                         <span className="material-symbols-outlined">close</span>
+                    </button>
+                    {playingEmbedUrl ? (
+                        <>
+                            <h3>{playingService?.title}</h3>
+                            <div className="iframe-container">
+                                <iframe
+                                    src={playingEmbedUrl}
+                                    allow="autoplay; encrypted-media"
+                                    allowFullScreen={true}
+                                    title={playingService?.title}
+                                ></iframe>
+                            </div>
+                            <a href={playingService?.youtubeUrl} target="_blank" rel="noopener noreferrer" className="view-on-youtube-link">
+                                <span className="material-symbols-outlined">open_in_new</span>
+                                View on YouTube
+                            </a>
+                        </>
+                    ) : (
+                        <p>Could not load video.</p>
+                    )}
+                </div>
             </Modal>
         </div>
     );
@@ -1364,7 +1394,7 @@ const AddPodcastModal: React.FC<{
             mediaRecorderRef.current = new MediaRecorder(stream);
             const chunks: Blob[] = [];
             
-            mediaRecorderRef.current.ondataavailable = (e) => {
+            mediaRecorderRef.current.ondataavailable = (e: BlobEvent) => {
                 chunks.push(e.data);
             };
             
@@ -2778,18 +2808,27 @@ const App: React.FC = () => {
 
 
 // --- Error Boundary ---
-class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; error: Error | null }> {
-  state = { hasError: false, error: null };
+interface ErrorBoundaryProps {
+  children: React.ReactNode;
+}
 
-  static getDerivedStateFromError(error: Error) {
-    return { hasError: true, error };
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+}
+
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  public state: ErrorBoundaryState = { hasError: false, error: null };
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, error: error };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  public componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error("Uncaught error:", error, errorInfo);
   }
 
-  render() {
+  public render() {
     if (this.state.hasError && this.state.error) {
       return <ErrorFallback error={this.state.error} />;
     }

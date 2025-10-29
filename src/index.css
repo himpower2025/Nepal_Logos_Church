@@ -708,6 +708,7 @@ html, body, #root {
 .past-service-card {
     padding: 0;
     overflow: hidden;
+    cursor: pointer;
 }
 .past-service-card a {
     text-decoration: none;
@@ -763,6 +764,34 @@ html, body, #root {
 }
 .copy-button .material-symbols-outlined {
     font-size: 16px;
+}
+
+/* --- Video Player Modal --- */
+.video-player-modal {
+    width: 100%;
+}
+.modal-content .video-player-modal h3 {
+    margin-bottom: var(--space-md);
+}
+.modal-content .video-player-modal .iframe-container {
+    background-color: #000;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.view-on-youtube-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+.view-on-youtube-link:hover {
+    text-decoration: underline;
+}
+.view-on-youtube-link .material-symbols-outlined {
+    font-size: 18px;
 }
 
 /* --- Bible Page --- */
