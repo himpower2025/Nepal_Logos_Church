@@ -230,7 +230,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
     "प्रस्थान ३７, लूका २३:२६-५６, भजनसंग्रह १८, फिलिप्पी २",
     "प्रस्थान ३८, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
-    "प्रस्थान ३９, लूका २४:१३-５३, भजनसंग्रह २०, फिलिप्पी ४",
+    "प्रस्थान ३９, लूका २४:१३-５３, भजनसंग्रह २०, फिलिप्पी ४",
     "प्रस्थान ४०, यूहन्ना १:१-२८, भजनसंग्रह २१, कलस्सी १",
     "लेवी १, यूहन्ना १:२९-५１, भजनसंग्रह २２, कलस्सी २",
     "लेवी २, यूहन्ना २, भजनसंग्रह ২৩, कलस्सी ३",
@@ -267,7 +267,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ६, यूहन्ना २１, भजनसंग्रह ५４, हिब्रू ८",
     "गन्ती ७, प्रेरित १, भजनसंग्रह ५５, हिब्रू ९",
     "गन्ती ८, प्रेरित २:१-२１, भजनसंग्रह ५６, हिब्रू १०",
-    "गन्ती ९, प्रेरित २:२２-４７, भजनसंग्रह ५７, हिब्रू ११",
+    "गन्ती ९, प्रेरित २:२２-４७, भजनसंग्रह ५７, हिब्रू ११",
     "गन्ती १०, प्रेरित ३, भजनसंग्रह ५８, हिब्रू १२",
     "गन्ती ११, प्रेरित ४:१-२２, भजनसंग्रह ५९, हिब्रू १३",
     "गन्ती १२, प्रेरित ४:२३-３７, भजनसंग्रह ६０, याकूब १",
@@ -1399,9 +1399,9 @@ const AddPodcastModal: React.FC<{
             };
             
             mediaRecorderRef.current.onstop = () => {
-                const blob = new Blob(chunks, { type: 'audio/webm' });
+                const blob = new window.Blob(chunks, { type: 'audio/webm' });
                 setRecordedBlob(blob);
-                const audioFile = new File([blob], "recording.webm", { type: 'audio/webm' });
+                const audioFile = new window.File([blob], "recording.webm", { type: 'audio/webm' });
                 setAudioFile(audioFile);
                 stream.getTracks().forEach(track => track.stop());
             };
@@ -2435,6 +2435,9 @@ const NotificationPanel: React.FC<{
             <div className={`notification-panel ${isOpen ? 'open' : ''}`}>
                 <header className="notification-header">
                     <h3>Notifications</h3>
+                    <button className="panel-close-button" onClick={onClose} aria-label="Close notifications">
+                        <span className="material-symbols-outlined">close</span>
+                    </button>
                 </header>
                 <div className="notification-list">
                     {notifications.length > 0 ? (
@@ -2497,18 +2500,24 @@ const App: React.FC = () => {
             if (user) { 
                 const userDocRef = doc(db, "users", user.uid);
                 const userDocSnap = await getDoc(userDocRef);
-                const adminEmail = import.meta.env.VITE_ADMIN_EMAIL;
-                const isAdminByEmail = adminEmail && user.email === adminEmail;
+
+                let rolesToAdd: UserRole[] = [];
+                const existingRoles: UserRole[] = userDocSnap.exists() ? (userDocSnap.data().roles || []) : [];
+
+                if (user.email === 'davidrai441@gmail.com' && !existingRoles.includes('admin')) {
+                    rolesToAdd.push('admin');
+                } else if (user.email === 'koiralacm@gmail.com') {
+                    if (!existingRoles.includes('news_contributor')) rolesToAdd.push('news_contributor');
+                    if (!existingRoles.includes('podcast_contributor')) rolesToAdd.push('podcast_contributor');
+                }
 
                 if (userDocSnap.exists()) {
-                    // User document exists, load it.
-                    const userData = userDocSnap.data();
-                    let userRoles = userData.roles || ['member'];
-                    
-                    if (isAdminByEmail && !userRoles.includes('admin')) {
-                        userRoles.push('admin');
-                        await updateDoc(userDocRef, { roles: userRoles });
+                    if (rolesToAdd.length > 0) {
+                        await updateDoc(userDocRef, { roles: arrayUnion(...rolesToAdd) });
                     }
+                    
+                    const userData = userDocSnap.data();
+                    const finalRoles = [...new Set([...existingRoles, ...rolesToAdd])];
                     
                     if (!user.displayName && userData.name) {
                         await updateProfile(user, { displayName: userData.name });
@@ -2522,19 +2531,18 @@ const App: React.FC = () => {
                         name: user.displayName || userData.name || '',
                         email: user.email || userData.email || '',
                         avatar: user.photoURL || userData.avatar || '',
-                        roles: userRoles
+                        roles: finalRoles
                     } as User);
 
                 } else {
-                    // User document does not exist, create it for new sign-ups.
-                    const userRoles: UserRole[] = ['member'];
-                    if (isAdminByEmail) userRoles.push('admin');
+                    const baseRoles: UserRole[] = ['member'];
+                    const finalRoles = [...new Set([...baseRoles, ...rolesToAdd])];
                     
                     const newUser: Omit<User, 'id'> = {
                         name: user.displayName || 'New User',
                         email: user.email || '',
                         avatar: user.photoURL || '',
-                        roles: userRoles,
+                        roles: finalRoles,
                     };
                     await setDoc(userDocRef, newUser);
                     setCurrentUser({ id: user.uid, ...newUser } as User);
@@ -2546,6 +2554,7 @@ const App: React.FC = () => {
         });
         return () => unsubscribe();
     }, [auth, db]);
+
 
     // --- Data Fetching (Hardened against missing indexes) ---
     useEffect(() => {
@@ -2636,11 +2645,17 @@ const App: React.FC = () => {
         requestPermissionAndToken();
 
         const unsubscribeOnMessage = onMessage(messaging, (payload) => {
-             console.log('Message received. ', payload);
+             console.log('Message received in foreground. ', payload);
+             const notificationData = payload.notification || {};
+             const dataPayload = payload.data || {};
+
+             const messageBody = dataPayload.body || notificationData.body || '새로운 알림이 있습니다.';
+             const messageIcon = dataPayload.icon || notificationData.icon || 'notifications';
+
              const newNotification: Notification = {
                 id: payload.messageId || new Date().toISOString(),
-                icon: 'notifications', // default icon
-                message: payload.notification?.body || 'You have a new notification.',
+                icon: messageIcon,
+                message: messageBody,
                 timestamp: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
              };
              setNotifications(prev => [newNotification, ...prev]);
@@ -2829,10 +2844,12 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   }
 
   public render() {
-    if (this.state.hasError && this.state.error) {
-      return <ErrorFallback error={this.state.error} />;
+    const { hasError, error } = this.state;
+    const { children } = this.props;
+    if (hasError && error) {
+      return <ErrorFallback error={error} />;
     }
-    return this.props.children;
+    return children;
   }
 }
 

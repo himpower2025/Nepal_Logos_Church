@@ -1,6 +1,26 @@
+// Import Firebase SDKs
+// Using compat scripts for broader compatibility within service workers.
+importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js');
 
+// IMPORTANT: Replace the placeholder values below with your actual
+// Firebase project configuration. You can find this in your
+// Firebase project settings under "Your apps" > "Firebase SDK snippet" > "Config".
+const firebaseConfig = {
+  apiKey: "YOUR_VITE_FIREBASE_API_KEY",
+  authDomain: "YOUR_VITE_FIREBASE_AUTH_DOMAIN",
+  projectId: "YOUR_VITE_FIREBASE_PROJECT_ID",
+  storageBucket: "YOUR_VITE_FIREBASE_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_VITE_FIREBASE_MESSAGING_SENDER_ID",
+  appId: "YOUR_VITE_FIREBASE_APP_ID"
+};
 
-const CACHE_NAME = 'nepal-logos-church-v46'; // Increment version on significant changes
+// Initialize Firebase
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+
+const CACHE_NAME = 'nepal-logos-church-v48'; // Increment version on significant changes
 
 // These are cached on install for basic offline fallback.
 const APP_SHELL_URLS = [
@@ -34,23 +54,21 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   if (event.request.method === 'GET') {
     event.respondWith(
-      fetch(event.request)
-        .then(networkResponse => {
-          return caches.open(CACHE_NAME).then(cache => {
-            if (networkResponse.type !== 'opaque') {
-              cache.put(event.request, networkResponse.clone());
-            }
-            return networkResponse;
-          });
-        })
-        .catch(() => {
-          return caches.match(event.request).then(cachedResponse => {
+      caches.open(CACHE_NAME).then(cache => {
+        return fetch(event.request).then(networkResponse => {
+          if (networkResponse.status === 200) {
+            cache.put(event.request, networkResponse.clone());
+          }
+          return networkResponse;
+        }).catch(() => {
+          return cache.match(event.request).then(cachedResponse => {
             if (!cachedResponse && event.request.mode === 'navigate') {
               return caches.match('/index.html');
             }
-            return cachedResponse;
+            return cachedResponse || new Response(null, { status: 404 });
           });
-        })
+        });
+      })
     );
   }
 });
@@ -67,13 +85,17 @@ self.addEventListener('push', event => {
       console.error('[Service Worker] Push event data is not valid JSON.', e);
   }
 
-  const title = payload.title || 'Logos Church, Nepal';
+  // Handle both `notification` and `data` payloads for flexibility
+  const notification = payload.notification || {};
+  const data = payload.data || {};
+
+  const title = notification.title || data.title || 'Logos Church, Nepal';
   const options = {
-    body: payload.body || 'You have a new notification.',
-    icon: '/logos-church-new-logo.jpg',
+    body: notification.body || data.body || 'You have a new notification.',
+    icon: notification.icon || data.icon || '/logos-church-new-logo.jpg',
     badge: '/logos-church-new-logo.jpg',
     data: {
-      url: payload.url || '/'
+      url: data.url || '/'
     }
   };
 

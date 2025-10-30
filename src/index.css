@@ -1,3 +1,4 @@
+
 :root {
     --primary-color: #004d40;
     --primary-color-dark: #00251a;
@@ -1552,40 +1553,60 @@ html, body, #root {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.4);
     z-index: 1000;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
     pointer-events: none;
 }
-
 .notification-backdrop.open {
     opacity: 1;
     pointer-events: auto;
 }
-
 .notification-panel {
     position: fixed;
-    top: 0;
-    right: 0;
-    width: 100%;
-    max-width: 350px;
-    height: 100%;
+    top: var(--space-md);
+    left: 50%;
+    width: 90vw;
+    max-width: 400px;
+    max-height: 50vh;
     background-color: var(--card-background);
-    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
     z-index: 1001;
     display: flex;
     flex-direction: column;
-    transform: translateX(100%);
-    transition: transform 0.3s ease-in-out;
+    border-radius: 16px;
+    transform: translate(-50%, -120%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .notification-panel.open {
-    transform: translateX(0);
+    transform: translate(-50%, 0);
 }
-
 .notification-header {
-    padding: var(--space-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-sm) var(--space-md);
     border-bottom: 1px solid #eee;
+    flex-shrink: 0;
+}
+.notification-header h3 {
+    font-size: var(--font-size-lg);
+}
+.panel-close-button {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    padding: var(--space-sm);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.panel-close-button:hover {
+    background-color: var(--secondary-color);
+    color: var(--text-color-dark);
 }
 .notification-list {
     flex-grow: 1;
@@ -1596,6 +1617,9 @@ html, body, #root {
     gap: var(--space-md);
     padding: var(--space-md);
     border-bottom: 1px solid #eee;
+}
+.notification-item:last-child {
+    border-bottom: none;
 }
 .notification-icon {
     color: var(--primary-color);
