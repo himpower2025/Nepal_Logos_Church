@@ -7,12 +7,13 @@ importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-com
 // Firebase project configuration. You can find this in your
 // Firebase project settings under "Your apps" > "Firebase SDK snippet" > "Config".
 const firebaseConfig = {
-  apiKey: "YOUR_VITE_FIREBASE_API_KEY",
-  authDomain: "YOUR_VITE_FIREBASE_AUTH_DOMAIN",
-  projectId: "YOUR_VITE_FIREBASE_PROJECT_ID",
-  storageBucket: "YOUR_VITE_FIREBASE_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_VITE_FIREBASE_MESSAGING_SENDER_ID",
-  appId: "YOUR_VITE_FIREBASE_APP_ID"
+  apiKey: "AIzaSyD3iY_LJZxOp1Y3i1Z_ZFWU0gk04TKfa-o",
+  authDomain: "logos-church-nepal.firebaseapp.com",
+  projectId: "logos-church-nepal",
+  storageBucket: "logos-church-nepal.firebasestorage.app",
+  messagingSenderId: "869546960167",
+  appId: "1:869546960167:web:19a41c46ef253617683502",
+  measurementId: "G-6DQ7BDJ8GX"
 };
 
 // Initialize Firebase

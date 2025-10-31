@@ -1,4 +1,3 @@
-
 :root {
     --primary-color: #004d40;
     --primary-color-dark: #00251a;
@@ -677,6 +676,26 @@ html, body, #root {
     padding: var(--space-md);
     font-size: var(--font-size-lg);
 }
+.playing-past-service-info {
+    padding: var(--space-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-md);
+}
+.close-player-button {
+    background-color: var(--secondary-color);
+    color: var(--text-color-dark);
+    border: none;
+    border-radius: 8px;
+    padding: var(--space-sm) var(--space-md);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+}
+
 .worship-actions {
     display: flex;
     justify-content: center;
@@ -710,6 +729,7 @@ html, body, #root {
     padding: 0;
     overflow: hidden;
     cursor: pointer;
+    position: relative;
 }
 .past-service-card a {
     text-decoration: none;
@@ -720,6 +740,28 @@ html, body, #root {
     display: block;
     aspect-ratio: 16 / 9;
     object-fit: cover;
+    transition: transform 0.3s ease;
+}
+.past-service-card:hover .past-service-thumbnail {
+    transform: scale(1.05);
+}
+.play-icon-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 48px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.past-service-card:hover .play-icon-overlay {
+    opacity: 1;
 }
 .past-service-title {
     padding: var(--space-md);
@@ -729,6 +771,10 @@ html, body, #root {
     position: absolute;
     top: var(--space-sm);
     right: var(--space-sm);
+    z-index: 1;
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    border-radius: 50%;
 }
 
 /* --- Offering Modal --- */
@@ -1330,6 +1376,7 @@ html, body, #root {
     border-radius: 20px;
     padding: 10px 16px;
     font-size: var(--font-size-base);
+    min-width: 0; /* Fix for flexbox shrinking issue */
 }
 .input-action-button, .send-button {
     background: none;
@@ -1337,6 +1384,7 @@ html, body, #root {
     color: var(--primary-color);
     padding: 8px;
     cursor: pointer;
+    flex-shrink: 0; /* Prevent buttons from shrinking */
 }
 .send-button:disabled {
     color: #ccc;

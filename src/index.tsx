@@ -173,7 +173,7 @@ const MCCHEYNE_READING_PLAN = [
     "उत्पत्ति २९, मर्कूस १, एस्तर ६, रोमी १",
     "उत्पत्ति ३०, मर्कूस २, एस्तर ७, रोमी २",
     "उत्पत्ति ३१, मर्कूस ३, एस्तर ८, रोमी ३",
-    "उत्पत्ति ३२, मर्कूस ४, एस्तर ९, रोमी ४",
+    "उत्पत्ति ३２, मर्कूस ४, एस्तर ९, रोमी ४",
     "उत्पत्ति ३३, मर्कूस ५, एस्तर १०, रोमी ५",
     "उत्पत्ति ३४, मर्कूस ६, अय्यूब १, रोमी ६",
     "उत्पत्ति ३५, मर्कूस ७, अय्यूब २, रोमी ७",
@@ -207,7 +207,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान १३, लूका १०:१-२４, अय्यूब ३०, २ कोरिन्थी ३",
     "प्रस्थान १४, लूका १०:२५-４２, अय्यूब ३१, २ कोरिन्थी ४",
     "प्रस्थान १५, लूका ११:१-२८, अय्यूब ३２, २ कोरिन्थी ५",
-    "प्रस्थान १६, लूका ११:२९-５４, अय्यूब ३३, २ कोरिन्थी ६",
+    "प्रस्थान १६, लूका ११:२९-５４, अय्यूब ३３, २ कोरिन्थी ६",
     "प्रस्थान १७, लूका १२:१-३４, अय्यूब ३४, २ कोरिन्थी ७",
     "प्रस्थान १८, लूका १२:३५-५९, अय्यूब ३５, २ कोरिन्थी ८",
     "प्रस्थान १९, लूका १३, अय्यूब ३６, २ कोरिन्थी ९",
@@ -225,14 +225,14 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३１, लूका २०:२०-４७, भजनसंग्रह ९, एफिसी २",
     "प्रस्थान ३２, लूका २१, भजनसंग्रह १०, एफिसी ३",
     "प्रस्थान ३३, लूका २２:१-३０, भजनसंग्रह ११-१२, एफिसी ४",
-    "प्रस्थान ३４, लूका २२:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
+    "प्रस्थान ३４, लूका २２:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
     "प्रस्थान ३５, लूका २२:५४-७１, भजनसंग्रह १५-१６, एफिसी ६",
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
     "प्रस्थान ३７, लूका २३:२६-५６, भजनसंग्रह १८, फिलिप्पी २",
     "प्रस्थान ३८, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
-    "प्रस्थान ३９, लूका २४:१३-５３, भजनसंग्रह २०, फिलिप्पी ४",
+    "प्रस्थान ३９, लूका २४:१३-５३, भजनसंग्रह २०, फिलिप्पी ४",
     "प्रस्थान ४०, यूहन्ना १:१-२८, भजनसंग्रह २१, कलस्सी १",
-    "लेवी १, यूहन्ना १:२९-५１, भजनसंग्रह २２, कलस्सी २",
+    "लेवी १, यूहन्ना १:२९-５１, भजनसंग्रह २２, कलस्सी २",
     "लेवी २, यूहन्ना २, भजनसंग्रह ২৩, कलस्सी ३",
     "लेवी ३, यूहन्ना ३:१-२１, भजनसंग्रह २४, कलस्सी ४",
     "लेवी ४, यूहन्ना ३:२२-३６, भजनसंग्रह २५, १ थिस्सलोनिकी १",
@@ -350,7 +350,7 @@ const MCCHEYNE_READING_PLAN = [
     "यहोशू १९, २ कोरिन्थी ७, यशैया ३１, यशैया ३５",
     "यहोशू २०, २ कोरिन्थी ८, यशैया ३２, यशैया ३６",
     "यहोशू २१, २ कोरिन्थी ९, यशैया ३３, यशैया ३７",
-    "यहोशू २２, २ कोरिन्थी १०, यशैया ३４, यशैया ३８",
+    "यहोशू २２, २ कोरिन्थी १०, यशैया ३４, यशैया ३८",
     "यहोशू ২৩, २ कोरिन्थी ११, यशैया ३５, यशैया ३९",
     "यहोशू २४, २ कोरिन्थी १२, यशैया ३６, यशैया ४０",
     "न्यायकर्ता १, २ कोरिन्थी १३, यशैया ३７, यशैया ४１",
@@ -523,7 +523,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १२, लूका २४, भजनसंग्रह १०５, भजनसंग्रह १०१",
     "२ इतिहास १३, यूहन्ना १, भजनसंग्रह १०６, भजनसंग्रह १०２",
     "२ इतिहास १४, यूहन्ना २, भजनसंग्रह १०７, भजनसंग्रह १०३",
-    "२ इतिहास १५, यूहन्ना ३, भजनसंग्रह १०８, भजनसंग्रह १०९",
+    "२ इतिहास १५, यूहन्ना ३, भजनसंग्रह १०८, भजनसंग्रह १०९",
     "२ इतिहास १६, यूहन्ना ४, भजनसंग्रह १１０, भजनसंग्रह ११１",
     "२ इतिहास १७, यूहन्ना ५, भजनसंग्रह १１２, भजनसंग्रह ११३",
     "२ इतिहास १८, यूहन्ना ६, भजनसंग्रह १１４, भजनसंग्रह ११５",
@@ -584,26 +584,23 @@ function getAvatarInitial(name: string | undefined | null): string {
     }
     return name.substring(0, 1).toUpperCase();
 }
-const getEmbedUrl = (url: string): string | null => {
+const getEmbedUrl = (url: string, muted: boolean = false): string | null => {
     if (!url) return null;
     try {
-        // YouTube URLs (handles watch, embed, live, and youtu.be)
         const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|live\/)|youtu\.be\/)([\w-]{11})/;
         const youtubeMatch = url.match(youtubeRegex);
         if (youtubeMatch && youtubeMatch[1]) {
             const videoId = youtubeMatch[1];
-            // Autoplay is often restricted by browsers and might require mute=1. playsinline is for iOS.
-            return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1`;
+            // Autoplay requires mute=1 in most modern browsers.
+            return `https://www.youtube.com/embed/${videoId}?autoplay=1&playsinline=1${muted ? '&mute=1' : ''}`;
         }
 
-        // Facebook URLs (handles various video URLs)
         const facebookRegex = /https?:\/\/(?:www\.|web\.)?facebook\.com\/(?:watch\/?\?v=|.+?\/videos\/|video\.php\?v=)/;
          if (facebookRegex.test(url)) {
-             // Facebook embedder works best with the full original URL
             return `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=0&autoplay=1`;
         }
         
-        return null; // Fallback for unsupported URLs
+        return null; 
     } catch (error) {
         console.error("Error parsing stream URL:", url, error);
         return null;
@@ -790,14 +787,11 @@ const LoginPage: React.FC = () => {
                     <input 
                         type="password" 
                         className="login-input" 
-                        placeholder="6-digit PIN" 
+                        placeholder="Password" 
                         value={password} 
                         onChange={(e) => setPassword(e.target.value)} 
                         required 
                         minLength={6}
-                        maxLength={6} 
-                        pattern="\d{6}" 
-                        inputMode="numeric"
                         autoComplete={isRegistering ? "new-password" : "current-password"} 
                     />
                     <button type="submit" className="login-button" disabled={loading}>
@@ -837,10 +831,10 @@ const WorshipPage: React.FC<{
     const [isOfferingModalOpen, setIsOfferingModalOpen] = useState(false);
     const [isAddPastWorshipModalOpen, setIsAddPastWorshipModalOpen] = useState(false);
     const [newPastService, setNewPastService] = useState({ title: '', youtubeUrl: '' });
-    const [playingService, setPlayingService] = useState<PastWorshipService | null>(null);
+    const [playingPastService, setPlayingPastService] = useState<PastWorshipService | null>(null);
 
-    const embedUrl = liveService?.streamUrl ? getEmbedUrl(liveService.streamUrl) : null;
-    const playingEmbedUrl = playingService?.youtubeUrl ? getEmbedUrl(playingService.youtubeUrl) : null;
+    const liveEmbedUrl = liveService?.streamUrl ? getEmbedUrl(liveService.streamUrl) : null;
+    const playingEmbedUrl = playingPastService?.youtubeUrl ? getEmbedUrl(playingPastService.youtubeUrl, true) : null;
 
     const handleAddPastService = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -877,28 +871,46 @@ const WorshipPage: React.FC<{
         }
     };
 
-    return (
-        <div className="page-content">
-            <h2>आरधना</h2>
-            {liveService && embedUrl ? (
+    const renderPlayer = () => {
+        if (liveService && liveEmbedUrl) {
+            return (
                 <div className="card live-worship-card">
                     <div className="live-badge">LIVE</div>
                     <div className="iframe-container">
-                        <iframe
-                            src={embedUrl || ''}
-                            allow="autoplay; encrypted-media"
-                            allowFullScreen={true}
-                            title="Live Worship Stream"
-                        ></iframe>
+                        <iframe src={liveEmbedUrl} allow="autoplay; encrypted-media" allowFullScreen={true} title="Live Worship Stream"></iframe>
                     </div>
                     <h4>{liveService.title}</h4>
                 </div>
-            ) : (
-                <div className="card no-live-service">
-                    <span className="material-symbols-outlined">church</span>
-                    <p>अहिले कुनै प्रत्यक्ष आरधना छैन।</p>
+            );
+        }
+        if (playingPastService && playingEmbedUrl) {
+             return (
+                <div className="card live-worship-card">
+                    <div className="iframe-container">
+                        <iframe src={playingEmbedUrl} allow="autoplay; encrypted-media" allowFullScreen={true} title={playingPastService.title}></iframe>
+                    </div>
+                    <div className="playing-past-service-info">
+                        <h4>{playingPastService.title}</h4>
+                        <button className="close-player-button" onClick={() => setPlayingPastService(null)}>
+                             <span className="material-symbols-outlined">close</span> प्लेयर बन्द गर्नुहोस्
+                        </button>
+                    </div>
                 </div>
-            )}
+            );
+        }
+        return (
+            <div className="card no-live-service">
+                <span className="material-symbols-outlined">church</span>
+                <p>अहिले कुनै प्रत्यक्ष आरधना छैन।</p>
+            </div>
+        );
+    };
+
+    return (
+        <div className="page-content">
+            <h2>आरधना</h2>
+            {renderPlayer()}
+            
              <div className="worship-actions">
                 <button className="action-button" onClick={() => setIsOfferingModalOpen(true)}>
                     <span className="material-symbols-outlined">volunteer_activism</span>
@@ -914,13 +926,16 @@ const WorshipPage: React.FC<{
                 )}
                 <div className="past-worship-list">
                     {pastServices.map(service => (
-                        <div key={service.id} className="card past-service-card" onClick={() => setPlayingService(service)}>
+                        <div key={service.id} className="card past-service-card" onClick={() => setPlayingPastService(service)}>
                             <img 
                                 src={getYoutubeThumbnail(service.youtubeUrl)}
                                 alt={service.title}
                                 className="past-service-thumbnail"
                                 loading="lazy"
                             />
+                            <div className="play-icon-overlay">
+                                <span className="material-symbols-outlined">play_circle</span>
+                            </div>
                             <p className="past-service-title">{service.title}</p>
                             {currentUser.roles.includes('admin') && (
                                 <button
@@ -983,32 +998,6 @@ const WorshipPage: React.FC<{
                         <button type="button" className="action-button secondary" onClick={() => setIsAddPastWorshipModalOpen(false)}>Cancel</button>
                     </div>
                 </form>
-            </Modal>
-            <Modal isOpen={!!playingService} onClose={() => setPlayingService(null)}>
-                <div className="video-player-modal">
-                     <button type="button" className="modal-close-button" onClick={() => setPlayingService(null)} aria-label="Close">
-                         <span className="material-symbols-outlined">close</span>
-                    </button>
-                    {playingEmbedUrl ? (
-                        <>
-                            <h3>{playingService?.title}</h3>
-                            <div className="iframe-container">
-                                <iframe
-                                    src={playingEmbedUrl}
-                                    allow="autoplay; encrypted-media"
-                                    allowFullScreen={true}
-                                    title={playingService?.title}
-                                ></iframe>
-                            </div>
-                            <a href={playingService?.youtubeUrl} target="_blank" rel="noopener noreferrer" className="view-on-youtube-link">
-                                <span className="material-symbols-outlined">open_in_new</span>
-                                View on YouTube
-                            </a>
-                        </>
-                    ) : (
-                        <p>Could not load video.</p>
-                    )}
-                </div>
             </Modal>
         </div>
     );
