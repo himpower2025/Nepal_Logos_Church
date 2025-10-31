@@ -3,23 +3,17 @@
 importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js');
 
-// IMPORTANT: Replace the placeholder values below with your actual
-// Firebase project configuration. You can find this in your
-// Firebase project settings under "Your apps" > "Firebase SDK snippet" > "Config".
-const firebaseConfig = {
-  apiKey: "AIzaSyD3iY_LJZxOp1Y3i1Z_ZFWU0gk04TKfa-o",
-  authDomain: "logos-church-nepal.firebaseapp.com",
-  projectId: "logos-church-nepal",
-  storageBucket: "logos-church-nepal.firebasestorage.app",
-  messagingSenderId: "869546960167",
-  appId: "1:869546960167:web:19a41c46ef253617683502",
-  measurementId: "G-6DQ7BDJ8GX"
-};
+// This event listener waits for the configuration from the main app
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'FIREBASE_CONFIG') {
+    // Initialize Firebase once the config is received
+    if (!firebase.apps.length) {
+        firebase.initializeApp(event.data.config);
+        console.log('[Service Worker] Firebase Initialized.');
+    }
+  }
+});
 
-// Initialize Firebase
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-}
 
 const CACHE_NAME = 'nepal-logos-church-v48'; // Increment version on significant changes
 
