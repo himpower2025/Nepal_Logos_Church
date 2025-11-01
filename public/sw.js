@@ -1,21 +1,8 @@
-// Import Firebase SDKs
-// Using compat scripts for broader compatibility within service workers.
-importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js');
+// This service worker now relies on the browser's native handling of 'notification' payloads for display,
+// which is more robust and works from a cold start without needing complex initialization.
+// The main responsibilities are now caching and handling notification clicks.
 
-// This event listener waits for the configuration from the main app
-self.addEventListener('message', event => {
-  if (event.data && event.data.type === 'FIREBASE_CONFIG') {
-    // Initialize Firebase once the config is received
-    if (!firebase.apps.length) {
-        firebase.initializeApp(event.data.config);
-        console.log('[Service Worker] Firebase Initialized.');
-    }
-  }
-});
-
-
-const CACHE_NAME = 'nepal-logos-church-v48'; // Increment version on significant changes
+const CACHE_NAME = 'nepal-logos-church-v49'; // Increment version to force update
 
 // These are cached on install for basic offline fallback.
 const APP_SHELL_URLS = [
@@ -68,38 +55,11 @@ self.addEventListener('fetch', event => {
   }
 });
 
-self.addEventListener('push', event => {
-  console.log('[Service Worker] Push Received.', event.data);
-  
-  let payload = {};
-  try {
-      if (event.data) {
-          payload = event.data.json();
-      }
-  } catch(e) {
-      console.error('[Service Worker] Push event data is not valid JSON.', e);
-  }
-
-  // Handle both `notification` and `data` payloads for flexibility
-  const notification = payload.notification || {};
-  const data = payload.data || {};
-
-  const title = notification.title || data.title || 'Logos Church, Nepal';
-  const options = {
-    body: notification.body || data.body || 'You have a new notification.',
-    icon: notification.icon || data.icon || '/logos-church-new-logo.jpg',
-    badge: '/logos-church-new-logo.jpg',
-    data: {
-      url: data.url || '/'
-    }
-  };
-
-  event.waitUntil(self.registration.showNotification(title, options));
-});
 
 self.addEventListener('notificationclick', event => {
   console.log('[Service Worker] Notification click Received.');
   event.notification.close();
+  // The 'data' payload from the cloud function is automatically attached to the notification.
   const urlToOpen = new URL(event.notification.data.url, self.location.origin).href;
 
   event.waitUntil(
@@ -107,7 +67,7 @@ self.addEventListener('notificationclick', event => {
       type: 'window',
       includeUncontrolled: true,
     }).then(windowClients => {
-      // Check if a window is already open.
+      // Check if a window is already open and focused.
       for(let i=0; i<windowClients.length; i++) {
         const client = windowClients[i];
         if (client.url === urlToOpen && 'focus' in client) {
