@@ -206,7 +206,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान १०, लूका ९:१-१८, अय्यूब २७, १ कोरिन्थी १६",
     "प्रस्थान ११, लूका ९:१९-३６, अय्यूब २८, २ कोरिन्थी १",
     "प्रस्थान १२, लूका ९:३७-６２, अय्यूब २९, २ कोरिन्थी २",
-    "प्रस्थान १३, लूका १०:१-२４, अय्यूब ३०, २ कोरिन्थी ३",
+    "प्रस्थान १३, लूका १०:१-२４, अय्यूब ३０, २ कोरिन्थी ३",
     "प्रस्थान १४, लूका १०:२५-４２, अय्यूब ३１, २ कोरिन्थी ४",
     "प्रस्थान १५, लूका ११:१-२८, अय्यूब ३２, २ कोरिन्थी ५",
     "प्रस्थान १६, लूका ११:२९-５４, अय्यूब ३３, २ कोरिन्थी ६",
@@ -279,7 +279,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १६, प्रेरित ७:१-२１, भजनसंग्रह ६４, याकूब ५",
     "गन्ती १७, प्रेरित ७:२２-４३, भजनसंग्रह ६５, १ पत्रुस १",
     "गन्ती १८, प्रेरित ७:४４-６०, भजनसंग्रह ६６, १ पत्रुस २",
-    "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६७, १ पत्रुस ३",
+    "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६７, १ पत्रुस ३",
     "गन्ती २०, प्रेरित ८:２６-４०, भजनसंग्रह ६８, १ पत्रुस ४",
     "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६９, १ पत्रुस ५",
     "गन्ती २２, प्रेरित ९:२२-４३, भजनसंग्रह ७０, २ पत्रुस १",
@@ -2184,9 +2184,22 @@ const ConversationPage: React.FC<{
         try {
             const uploadedMedia: MediaItem[] = await Promise.all(
                 mediaFiles.map(async (preview, index) => {
-                    const sanitizedFileName = preview.file.name.replace(/[^\w.-]/g, '_');
-                    const uniqueFileName = `${Date.now()}-${index}-${Math.random().toString(36).substring(2, 9)}_${sanitizedFileName}`;
-                    const filePath = `chat_media/${currentChat.id}/${uniqueFileName}`;
+                    const originalFileName = preview.file.name;
+                    const dotIndex = originalFileName.lastIndexOf('.');
+                    const namePart = dotIndex > -1 ? originalFileName.substring(0, dotIndex) : originalFileName;
+                    const extensionPart = dotIndex > -1 ? originalFileName.substring(dotIndex) : ''; // includes the dot
+
+                    // Sanitize and truncate the name part to prevent overly long paths which fail silently on Firebase Storage
+                    let sanitizedNamePart = namePart.replace(/[^\w.-]/g, '_');
+                    const maxNameLength = 100; 
+                    if (sanitizedNamePart.length > maxNameLength) {
+                        sanitizedNamePart = sanitizedNamePart.substring(0, maxNameLength);
+                    }
+
+                    // Reconstruct with a unique prefix to prevent collisions
+                    const finalFileName = `${Date.now()}-${index}-${Math.random().toString(36).substring(2, 9)}_${sanitizedNamePart}${extensionPart}`;
+                    const filePath = `chat_media/${currentChat.id}/${finalFileName}`;
+                    
                     const mediaRef = ref(storage, filePath);
                     await uploadBytes(mediaRef, preview.file);
                     const url = await getDownloadURL(mediaRef);
