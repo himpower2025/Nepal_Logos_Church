@@ -1,3 +1,4 @@
+
 :root {
     --primary-color: #004d40;
     --primary-color-dark: #00251a;
@@ -1284,19 +1285,53 @@ html, body, #root {
 .conversation-header {
     display: flex;
     align-items: center;
-    gap: var(--space-md);
+    justify-content: space-between;
+    gap: var(--space-sm);
     padding: var(--space-sm) var(--space-md);
     background-color: var(--card-background);
     box-shadow: 0 2px 5px var(--shadow-color);
     flex-shrink: 0;
 }
+.conversation-header h3 {
+    flex-grow: 1;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 var(--space-sm);
+}
+
 .back-button {
     background: none;
     border: none;
     cursor: pointer;
     color: var(--text-color-dark);
-    padding: var(--space-sm);
+    padding: 0;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+.header-action-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-color-dark);
+    padding: 0;
+    border-radius: 50%;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.header-action-button:hover {
+    background-color: var(--secondary-color);
+}
+
 .message-list {
     flex-grow: 1;
     overflow-y: auto;

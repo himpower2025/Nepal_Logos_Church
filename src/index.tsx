@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useCallback, createContext, useContext, useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createPortal } from 'react-dom';
@@ -80,6 +81,7 @@ type LastMessage = {
 
 type Chat = { 
     id: string; 
+    name?: string;
     participantIds: string[]; 
     participants: { [key: string]: { name: string; avatar: string; } }; // Simplified participant info
     lastMessage?: LastMessage;
@@ -203,9 +205,9 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ९, लूका ८:२६-५６, अय्यूब २६, १ कोरिन्थी १५",
     "प्रस्थान १०, लूका ९:१-१८, अय्यूब २७, १ कोरिन्थी १६",
     "प्रस्थान ११, लूका ९:१९-३６, अय्यूब २८, २ कोरिन्थी १",
-    "प्रस्थान १२, लूका ९:३७-६２, अय्यूब २९, २ कोरिन्थी २",
+    "प्रस्थान १२, लूका ९:३७-６２, अय्यूब २९, २ कोरिन्थी २",
     "प्रस्थान १३, लूका १०:१-२４, अय्यूब ३०, २ कोरिन्थी ३",
-    "प्रस्थान १४, लूका १०:२५-４２, अय्यूब ३१, २ कोरिन्थी ४",
+    "प्रस्थान १४, लूका १०:२५-４２, अय्यूब ३１, २ कोरिन्थी ४",
     "प्रस्थान १५, लूका ११:१-२८, अय्यूब ३２, २ कोरिन्थी ५",
     "प्रस्थान १६, लूका ११:२९-５４, अय्यूब ३３, २ कोरिन्थी ६",
     "प्रस्थान १७, लूका १२:१-३４, अय्यूब ३४, २ कोरिन्थी ७",
@@ -222,11 +224,11 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान २८, लूका १९:१-२७, भजनसंग्रह ५-६, गलाती ५",
     "प्रस्थान २९, लूका १९:२८-４８, भजनसंग्रह ७, गलाती ६",
     "प्रस्थान ३०, लूका २०:१-१९, भजनसंग्रह ८, एफिसी १",
-    "प्रस्थान ३１, लूका २०:२०-４７, भजनसंग्रह ९, एफिसी २",
+    "प्रस्थान ३１, लूका २०:२०-４७, भजनसंग्रह ९, एफिसी २",
     "प्रस्थान ३２, लूका २१, भजनसंग्रह १०, एफिसी ३",
     "प्रस्थान ३३, लूका २２:१-३０, भजनसंग्रह ११-१२, एफिसी ४",
     "प्रस्थान ३４, लूका २２:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
-    "प्रस्थान ३५, लूका २２:५४-७१, भजनसंग्रह १५-१６, एफिसी ६",
+    "प्रस्थान ३५, लूका २２:５४-७१, भजनसंग्रह १५-१６, एफिसी ६",
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
     "प्रस्थान ३７, लूका २३:२६-５６, भजनसंग्रह १८, फिलिप्पी २",
     "प्रस्थान ३८, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
@@ -267,7 +269,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ६, यूहन्ना २１, भजनसंग्रह ५４, हिब्रू ८",
     "गन्ती ७, प्रेरित १, भजनसंग्रह ५５, हिब्रू ९",
     "गन्ती ८, प्रेरित २:१-२１, भजनसंग्रह ५６, हिब्रू १०",
-    "गन्ती ९, प्रेरित २:२２-４७, भजनसंग्रह ५７, हिब्रू ११",
+    "गन्ती ९, प्रेरित २:२２-４७, भजनसंग्रह ५७, हिब्रू ११",
     "गन्ती १०, प्रेरित ३, भजनसंग्रह ५８, हिब्रू १२",
     "गन्ती ११, प्रेरित ४:१-२２, भजनसंग्रह ५९, हिब्रू १३",
     "गन्ती १२, प्रेरित ४:२३-３７, भजनसंग्रह ६０, याकूब १",
@@ -369,7 +371,7 @@ const MCCHEYNE_READING_PLAN = [
     "न्यायकर्ता १४, फिलिप्पी १, यर्मिया १०, यशैया ५４",
     "न्यायकर्ता १५, फिलिप्पी २, यर्मिया ११, यशैया ५५",
     "न्यायकर्ता १६, फिलिप्पी ३, यर्मिया १२, यशैया ५６",
-    "न्यायकर्ता १७, फिलिप्पी ४, यर्मिया १३, यशैया ५７",
+    "न्यायकर्ता १७, फिलिप्पी ४, यर्मिया १३, यशैया ५७",
     "न्यायकर्ता १८, कलस्सी १, यर्मिया १४, यशैया ५８",
     "न्यायकर्ता १९, कलस्सी २, यर्मिया १५, यशैया ५９",
     "न्यायकर्ता २०, कलस्सी ३, यर्मिया १६, यशैया ६０",
@@ -397,7 +399,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ शमूएल १७, तीतस ३, यर्मिया ३８, इजकिएल ११",
     "१ शमूएल १८, फिलेमोन १, यर्मिया ३９, इजकिएल १२",
     "१ शमूएल १९, हिब्रू १, यर्मिया ४०, इजकिएल १३",
-    "१ शमूएल २०, हिब्रू २, यर्मिया ४१, इजकिएल १४",
+    "१ शमूएल ২০, हिब्रू २, यर्मिया ४१, इजकिएल १४",
     "१ शमूएल २१, हिब्रू ३, यर्मिया ४２, इजकिएल १५",
     "१ शमूएल २２, हिब्रू ४, यर्मिया ४３, इजकिएल १६",
     "१ शमूएल ২৩, हिब्रू ५, यर्मिया ४４, इजकिएल १७",
@@ -1856,10 +1858,14 @@ const ChatListPage: React.FC<{
     const [chatToDelete, setChatToDelete] = useState<Chat | null>(null);
     const users = Array.from(usersMap.values());
 
-    const getOtherParticipant = (chat: Chat, currentUserId: string) => {
-        const otherId = chat.participantIds.find(id => id !== currentUserId);
+    const getChatDisplayInfo = (chat: Chat, currentUserId: string) => {
+        const isGroupChat = chat.participantIds.length > 2;
 
-        if (chat.participantIds.length > 2) {
+        if (isGroupChat && chat.name) {
+            return { name: chat.name, avatar: '' }; // Use custom group name
+        }
+
+        if (isGroupChat) {
             const names = chat.participantIds
                 .filter(id => id !== currentUserId)
                 .map(id => usersMap.get(id)?.name.split(' ')[0] || '')
@@ -1869,6 +1875,7 @@ const ChatListPage: React.FC<{
             return { name: names + (chat.participantIds.length > 3 ? '...' : ''), avatar: '' };
         }
         
+        const otherId = chat.participantIds.find(id => id !== currentUserId);
         if (otherId) {
             if (chat.participants && chat.participants[otherId] && chat.participants[otherId].name) {
                 return chat.participants[otherId];
@@ -1940,14 +1947,14 @@ const ChatListPage: React.FC<{
             <div className="list-container">
                  {chats.length > 0 ? (
                     chats.map(chat => {
-                        const otherParticipant = getOtherParticipant(chat, currentUser.id);
+                        const displayInfo = getChatDisplayInfo(chat, currentUser.id);
                         const isUnread = chat.lastRead && chat.lastMessage && chat.lastMessage.senderId !== currentUser.id && (!chat.lastRead[currentUser.id] || chat.lastRead[currentUser.id] < chat.lastMessage.createdAt);
                         return (
                             <div key={chat.id} className="list-item chat-item">
                                 <div className="chat-content-wrapper" onClick={() => onChatSelect(chat)}>
-                                    <div className="chat-avatar">{getAvatarInitial(otherParticipant.name)}</div>
+                                    <div className="chat-avatar">{getAvatarInitial(displayInfo.name)}</div>
                                     <div className="chat-info">
-                                        <span className="chat-name">{otherParticipant.name}</span>
+                                        <span className="chat-name">{displayInfo.name}</span>
                                         <p className="chat-last-message">{getLastMessagePreview(chat)}</p>
                                     </div>
                                     <div className="chat-meta">
@@ -1955,7 +1962,7 @@ const ChatListPage: React.FC<{
                                         {isUnread && <div className="unread-dot"></div>}
                                     </div>
                                 </div>
-                                <button className="chat-delete-button" onClick={() => setChatToDelete(chat)} aria-label={`Delete chat with ${otherParticipant.name}`}>
+                                <button className="chat-delete-button" onClick={() => setChatToDelete(chat)} aria-label={`Delete chat with ${displayInfo.name}`}>
                                     <span className="material-symbols-outlined">delete</span>
                                 </button>
                             </div>
@@ -2065,6 +2072,47 @@ const CreateChatModal: React.FC<{
     );
 };
 
+const RenameChatModal: React.FC<{
+    isOpen: boolean;
+    onClose: () => void;
+    onSave: (newName: string) => void;
+    currentName: string;
+}> = ({ isOpen, onClose, onSave, currentName }) => {
+    const [name, setName] = useState('');
+
+    useEffect(() => {
+        if (isOpen) {
+            setName(currentName);
+        }
+    }, [isOpen, currentName]);
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (name.trim()) {
+            onSave(name.trim());
+        }
+    };
+
+    return (
+        <Modal isOpen={isOpen} onClose={onClose}>
+            <form className="modal-form" onSubmit={handleSubmit}>
+                <h3>Rename Group Chat</h3>
+                <input
+                    type="text"
+                    placeholder="Enter new chat name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                />
+                <div className="form-actions">
+                    <button type="button" className="action-button secondary" onClick={onClose}>Cancel</button>
+                    <button type="submit" className="action-button">Save</button>
+                </div>
+            </form>
+        </Modal>
+    );
+};
+
 const ConversationPage: React.FC<{
     chat: Chat;
     currentUser: User;
@@ -2078,6 +2126,7 @@ const ConversationPage: React.FC<{
     const [loading, setLoading] = useState(true);
     const [deletingMessage, setDeletingMessage] = useState<Message | null>(null);
     const [viewingMedia, setViewingMedia] = useState<{ media: MediaItem[]; startIndex: number } | null>(null);
+    const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -2200,9 +2249,23 @@ const ConversationPage: React.FC<{
             alert("Failed to delete message.");
         }
     };
+    
+    const handleRenameChat = async (newName: string) => {
+        if (!db || !currentChat || !newName.trim()) return;
+        try {
+            await updateDoc(doc(db, "chats", currentChat.id), {
+                name: newName.trim()
+            });
+            setIsRenameModalOpen(false);
+        } catch (error) {
+            console.error("Error renaming chat:", error);
+            alert("Failed to rename chat.");
+        }
+    };
 
     const getChatTitle = () => {
         const chatData = currentChat || chat;
+        if (chatData?.name) return chatData.name;
         if (!chatData?.participants) return "Conversation";
         if (chatData.participantIds.length > 2) {
              return chatData.participantIds
@@ -2221,7 +2284,13 @@ const ConversationPage: React.FC<{
                     <span className="material-symbols-outlined">arrow_back</span>
                 </button>
                 <h3>{getChatTitle()}</h3>
-                <div style={{width: '40px'}}></div>
+                {(currentChat || chat).participantIds.length > 2 ? (
+                    <button onClick={() => setIsRenameModalOpen(true)} className="header-action-button" aria-label="Rename chat">
+                        <span className="material-symbols-outlined">edit</span>
+                    </button>
+                ) : (
+                    <div className="header-action-button" style={{ visibility: 'hidden' }}></div>
+                )}
             </header>
             <div className="message-list">
                 {loading ? <Loading message="Loading messages..." /> : (
@@ -2284,6 +2353,14 @@ const ConversationPage: React.FC<{
                     mediaItems={viewingMedia.media}
                     startIndex={viewingMedia.startIndex}
                     onClose={() => setViewingMedia(null)}
+                />
+            )}
+             {isRenameModalOpen && (
+                <RenameChatModal
+                    isOpen={isRenameModalOpen}
+                    onClose={() => setIsRenameModalOpen(false)}
+                    onSave={handleRenameChat}
+                    currentName={getChatTitle()}
                 />
             )}
         </div>
@@ -2479,12 +2556,24 @@ const App: React.FC = () => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
 
+    const deepLinkProcessed = useRef(false);
 
     const usersMap = useMemo(() => {
         const map = new Map<string, User>();
         users.forEach(user => map.set(user.id, user));
         return map;
     }, [users]);
+
+    const pageConfig = {
+        news: { label: 'सुचना', icon: 'feed' },
+        worship: { label: 'आरधना', icon: 'church' },
+        podcast: { label: 'Podcast', icon: 'podcasts' },
+        bible: { label: 'बाइबल', icon: 'menu_book' },
+        chat: { label: 'संगतिहरु', icon: 'groups' },
+        prayer: { label: 'प्रार्थना', icon: 'volunteer_activism' },
+    };
+    
+    const navOrder: (keyof typeof pageConfig)[] = ['news', 'worship', 'podcast', 'bible', 'chat', 'prayer'];
 
     // --- Authentication ---
     useEffect(() => {
@@ -2609,6 +2698,34 @@ const App: React.FC = () => {
 
     }, [db, currentUser]);
     
+    // --- Deep linking from notifications ---
+    useEffect(() => {
+        if (deepLinkProcessed.current) return;
+
+        const params = new URLSearchParams(window.location.search);
+        const page = params.get('page');
+        const chatId = params.get('chatId');
+
+        if (page && navOrder.includes(page as any)) {
+            setActivePage(page as any);
+        }
+
+        if (page === 'chat' && chatId) {
+             if (chats.length > 0) {
+                const targetChat = chats.find(c => c.id === chatId);
+                if (targetChat) {
+                    setCurrentChat(targetChat);
+                    setActivePage('conversation');
+                    deepLinkProcessed.current = true;
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+             }
+        } else if (page) {
+            deepLinkProcessed.current = true;
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    }, [chats]);
+
     // --- FCM/Push Notifications ---
     useEffect(() => {
         if (!firebaseServices.messaging || !currentUser || !db) return;
@@ -2705,18 +2822,6 @@ const App: React.FC = () => {
         return <LoginPage />;
     }
     
-    const pageConfig = {
-        news: { label: 'सुचना', icon: 'feed' },
-        worship: { label: 'आरधना', icon: 'church' },
-        podcast: { label: 'Podcast', icon: 'podcasts' },
-        bible: { label: 'बाइबल', icon: 'menu_book' },
-        chat: { label: 'संगतिहरु', icon: 'groups' },
-        prayer: { label: 'प्रार्थना', icon: 'volunteer_activism' },
-    };
-    
-    const navOrder: (keyof typeof pageConfig)[] = ['news', 'worship', 'podcast', 'bible', 'chat', 'prayer'];
-
-
     const renderPage = () => {
         switch(activePage) {
             case 'news': return <NewsPage currentUser={currentUser} news={news} setNews={setNews} />;
