@@ -34,7 +34,7 @@ import {
     limit,
     increment
 } from "firebase/firestore";
-import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
+import { ref, getDownloadURL, uploadBytes, deleteObject, type UploadMetadata } from "firebase/storage";
 import { getToken, onMessage } from "firebase/messaging";
 
 
@@ -338,7 +338,7 @@ const MCCHEYNE_READING_PLAN = [
     "यहोशू ५, १ कोरिन्थी ९, यशैया १७, यशैया २१",
     "यहोशू ६, १ कोरिन्थी १०, यशैया १८, यशैया २２",
     "यहोशू ७, १ कोरिन्थी ११, यशैया १९, यशैया ২৩",
-    "यहोशू ८, १ कोरिन्थी १२, यशैया २०, यशैया २४",
+    "यहोशू ८, १ कोरिन्थी १२, यशैया ২০, यशैया २४",
     "यहोशू ९, १ कोरिन्थी १३, यशैया २१, यशैया २५",
     "यहोशू १०, १ कोरिन्थी १४, यशैया २２, यशैया २६",
     "यहोशू ११, १ कोरिन्थी १५, यशैया ২৩, यशैया २７",
@@ -2166,7 +2166,7 @@ const ConversationPage: React.FC<{
     const handleSendMessage = async () => {
         const textContent = newMessage.trim();
         const mediaFiles = [...mediaPreviews];
-        if (!db || !storage || !currentChat || (!textContent && mediaFiles.length === 0)) return;
+        if (!db || !storage || !currentChat || !currentUser || (!textContent && mediaFiles.length === 0)) return;
     
         setNewMessage('');
         setMediaPreviews([]);
@@ -2186,12 +2186,19 @@ const ConversationPage: React.FC<{
                 mediaFiles.map(async (preview) => {
                     const originalFileName = preview.file.name;
                     const extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
-                    // Create a completely safe and unique filename, ignoring the original.
                     const uniqueFileName = `${Date.now()}-${Math.random().toString(36).substring(2, 11)}${extension}`;
                     const filePath = `chat_media/${currentChat.id}/${uniqueFileName}`;
                     
                     const mediaRef = ref(storage, filePath);
-                    await uploadBytes(mediaRef, preview.file);
+                    
+                    const metadata: UploadMetadata = {
+                      contentType: preview.file.type,
+                      customMetadata: {
+                        'uploaderUid': currentUser.id
+                      }
+                    };
+
+                    await uploadBytes(mediaRef, preview.file, metadata);
                     const url = await getDownloadURL(mediaRef);
                     return { url, type: preview.type, path: filePath };
                 })
@@ -2227,6 +2234,7 @@ const ConversationPage: React.FC<{
     
         } catch (error) {
             console.error("Error sending message:", error);
+            // alert(`Failed to send message. Error: ${error instanceof Error ? error.message : String(error)}`);
             setMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
         }
     };
@@ -2248,8 +2256,6 @@ const ConversationPage: React.FC<{
         if (!db || !storage || !messageToDelete) return;
         setDeletingMessage(null);
 
-        // If it's an optimistic message (still uploading or failed), just remove it from the local state.
-        // It doesn't exist in the backend, so no server call is needed.
         if (messageToDelete.tempId) {
             setMessages(prev => prev.filter(m => m.id !== messageToDelete.id));
             return;
