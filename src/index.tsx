@@ -189,7 +189,7 @@ const MCCHEYNE_READING_PLAN = [
     "उत्पत्ति ४५, लूका १:१-३८, अय्यूब १२, १ कोरिन्थी १",
     "उत्पत्ति ४६, लूका १:३९-८०, अय्यूब १३, १ कोरिन्थी २",
     "उत्पत्ति ४７, लूका २:१-२४, अय्यूब १४, १ कोरिन्थी ३",
-    "उत्पत्ति ४८, लूका २:२५-५２, अय्यूब १५, १ कोरिन्थी ४",
+    "उत्पत्ति ४८, लूका २:२५-５２, अय्यूब १५, १ कोरिन्थी ४",
     "उत्पत्ति ४९, लूका ३, अय्यूब १६, १ कोरिन्थी ५",
     "उत्पत्ति ५०, लूका ४:१-३０, अय्यूब १७, १ कोरिन्थी ६",
     "प्रस्थान १, लूका ४:३१-४४, अय्यूब १८, १ कोरिन्थी ७",
@@ -222,13 +222,13 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान २८, लूका १९:१-२७, भजनसंग्रह ५-६, गलाती ५",
     "प्रस्थान २९, लूका १९:२८-４８, भजनसंग्रह ७, गलाती ६",
     "प्रस्थान ३०, लूका २०:१-१९, भजनसंग्रह ८, एफिसी १",
-    "प्रस्थान ३１, लूका २०:२०-４७, भजनसंग्रह ९, एफिसी २",
+    "प्रस्थान ३１, लूका २०:२०-４７, भजनसंग्रह ९, एफिसी २",
     "प्रस्थान ३２, लूका २१, भजनसंग्रह १०, एफिसी ३",
     "प्रस्थान ३३, लूका २２:१-३０, भजनसंग्रह ११-१२, एफिसी ४",
     "प्रस्थान ३４, लूका २２:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
-    "प्रस्थान ३५, लूका २２:५४-७１, भजनसंग्रह १५-१６, एफिसी ६",
+    "प्रस्थान ३५, लूका २２:५४-७१, भजनसंग्रह १५-१６, एफिसी ६",
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
-    "प्रस्थान ३７, लूका २३:२६-५６, भजनसंग्रह १८, फिलिप्पी २",
+    "प्रस्थान ३７, लूका २३:२६-５６, भजनसंग्रह १८, फिलिप्पी २",
     "प्रस्थान ३८, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
     "प्रस्थान ३９, लूका २४:१३-５３, भजनसंग्रह २०, फिलिप्पी ४",
     "प्रस्थान ४०, यूहन्ना १:१-२८, भजनसंग्रह २१, कलस्सी १",
@@ -246,7 +246,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी १२, यूहन्ना ७:१-३１, भजनसंग्रह ३३, १ तिमोथी १",
     "लेवी १३, यूहन्ना ७:३２-５३, भजनसंग्रह ३４, १ तिमोथी २",
     "लेवी १४, यूहन्ना ८:१-३０, भजनसंग्रह ३५, १ तिमोथी ३",
-    "लेवी १५, यूहन्ना ८:३१-५९, भजनसंग्रह ३６, १ तिमोथी ४",
+    "लेवी १५, यूहन्ना ८:३१-５९, भजनसंग्रह ३６, १ तिमोथी ४",
     "लेवी १६, यूहन्ना ९, भजनसंग्रह ३７, १ तिमोथी ५",
     "लेवी १७, यूहन्ना १०:१-२１, भजनसंग्रह ३８, १ तिमोथी ६",
     "लेवी १८, यूहन्ना १०:२२-４２, भजनसंग्रह ३９, २ तिमोथी १",
@@ -1366,13 +1366,14 @@ const AddPodcastModal: React.FC<{
     const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
     const [recordedAudioUrl, setRecordedAudioUrl] = useState<string | null>(null);
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+    const mediaStreamRef = useRef<MediaStream | null>(null);
     const timerIntervalRef = useRef<number | null>(null);
 
     useEffect(() => {
         if (recordedBlob) {
             const url = URL.createObjectURL(recordedBlob);
             setRecordedAudioUrl(url);
-            return () => URL.revokeObjectURL(url); // Cleanup on component unmount or when blob changes
+            return () => URL.revokeObjectURL(url);
         }
         setRecordedAudioUrl(null);
     }, [recordedBlob]);
@@ -1380,6 +1381,7 @@ const AddPodcastModal: React.FC<{
     const handleStartRecording = async () => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaStreamRef.current = stream;
             mediaRecorderRef.current = new MediaRecorder(stream);
             const chunks: Blob[] = [];
             
@@ -1388,11 +1390,13 @@ const AddPodcastModal: React.FC<{
             };
             
             mediaRecorderRef.current.onstop = () => {
-                const blob = new window.Blob(chunks, { type: 'audio/webm' });
+                const blob = new Blob(chunks, { type: 'audio/webm' });
                 setRecordedBlob(blob);
-                const audioFile = new window.File([blob], "recording.webm", { type: 'audio/webm' });
+                const audioFile = new File([blob], "recording.webm", { type: 'audio/webm' });
                 setAudioFile(audioFile);
-                stream.getTracks().forEach(track => track.stop());
+                if (mediaStreamRef.current) {
+                    mediaStreamRef.current.getTracks().forEach(track => track.stop());
+                }
             };
             
             mediaRecorderRef.current.start();
@@ -2833,12 +2837,10 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   }
 
   public render() {
-    const { hasError, error } = this.state;
-    const { children } = this.props;
-    if (hasError && error) {
-      return <ErrorFallback error={error} />;
+    if (this.state.hasError && this.state.error) {
+      return <ErrorFallback error={this.state.error} />;
     }
-    return children;
+    return this.props.children;
   }
 }
 
