@@ -17,11 +17,13 @@ interface UserData {
 
 interface NewsData {
     title: string;
+    authorId: string;
 }
 
 interface PrayerRequestData {
     authorName: string;
     title: string;
+    authorId: string;
 }
 
 interface MessageData {
@@ -35,11 +37,14 @@ interface ChatData {
 }
 
 
-// Helper function to get all FCM tokens from all users
-const getAllTokens = async (): Promise<string[]> => {
+// Helper function to get all FCM tokens from all users, optionally excluding one user
+const getAllTokens = async (excludeUserId?: string): Promise<string[]> => {
     const usersSnapshot = await db.collection("users").get();
     const tokens: string[] = [];
     usersSnapshot.forEach((doc) => {
+        if (doc.id === excludeUserId) {
+            return; // Skip the excluded user
+        }
         const user = doc.data() as UserData;
         if (user.fcmTokens && Array.isArray(user.fcmTokens)) {
             tokens.push(...user.fcmTokens);
@@ -50,6 +55,7 @@ const getAllTokens = async (): Promise<string[]> => {
 
 // Helper function to log stale tokens after a multicast send
 const logStaleTokens = (response: admin.messaging.BatchResponse, tokens: string[]) => {
+    if (!response || !response.responses) return;
     response.responses.forEach((result, index) => {
         const error = result.error;
         if (error) {
@@ -74,29 +80,36 @@ export const onNewsCreated = functions.firestore
         const title = "⛪️ New Announcement";
         const body = newsItem.title;
 
-        const allTokens = await getAllTokens();
+        // Get tokens, excluding the author of the news item
+        const allTokens = await getAllTokens(newsItem.authorId);
 
         if (allTokens.length > 0) {
-            const payload: admin.messaging.MulticastMessage = {
-                notification: {
-                    title: title,
-                    body: body,
-                },
+             const payload: admin.messaging.MulticastMessage = {
                 webpush: {
                     notification: {
+                        title: title,
+                        body: body,
                         icon: "/logos-church-new-logo.jpg",
+                        tag: `news-${context.params.newsId}`, // Groups notifications
+                    },
+                    fcm_options: {
+                        link: "/?page=news",
                     },
                 },
+                // data is a fallback for the service worker's on-click event
                 data: {
-                    url: "/",
-                    page: "news",
+                    url: "/?page=news",
                 },
                 tokens: allTokens,
             };
 
             logger.log(`Sending notification to ${allTokens.length} tokens.`);
-            const response = await fcm.sendEachForMulticast(payload);
-            logStaleTokens(response, allTokens);
+            try {
+                const response = await fcm.sendEachForMulticast(payload);
+                logStaleTokens(response, allTokens);
+            } catch(error) {
+                logger.error("Error sending news notification:", error);
+            }
         } else {
              logger.log("No FCM tokens found to send notification.");
         }
@@ -110,27 +123,33 @@ export const onPrayerRequestCreated = functions.firestore
         if (!prayerRequest || !prayerRequest.authorName) {
             return logger.log("Prayer request data is missing authorName.");
         }
+        
+        const allTokens = await getAllTokens(prayerRequest.authorId);
 
-        const allTokens = await getAllTokens();
         if (allTokens.length > 0) {
             const payload: admin.messaging.MulticastMessage = {
-                notification: {
-                    title: "🙏 New Prayer Request",
-                    body: `${prayerRequest.authorName} has shared a new request.`,
-                },
                 webpush: {
                     notification: {
+                        title: "🙏 New Prayer Request",
+                        body: `${prayerRequest.authorName} has shared a new request.`,
                         icon: "/logos-church-new-logo.jpg",
+                        tag: `prayer-${context.params.requestId}`,
+                    },
+                    fcm_options: {
+                        link: "/?page=prayer",
                     },
                 },
                  data: {
-                    url: "/",
-                    page: "prayer",
+                    url: "/?page=prayer",
                 },
                 tokens: allTokens,
             };
-            const response = await fcm.sendEachForMulticast(payload);
-            logStaleTokens(response, allTokens);
+            try {
+                const response = await fcm.sendEachForMulticast(payload);
+                logStaleTokens(response, allTokens);
+            } catch(error) {
+                logger.error("Error sending prayer notification:", error);
+            }
         }
     });
 
@@ -149,11 +168,10 @@ export const onChatMessageCreated = functions.firestore
         const chatDoc = await chatRef.get();
         const chatData = chatDoc.data() as ChatData | undefined;
 
-        if (!chatData || !chatData.participantIds) {
+        if (!chatDoc.exists || !chatData || !chatData.participantIds) {
             return logger.log(`Chat ${chatId} not found or has no participants.`);
         }
         
-        // Get the sender's details
         const senderSnapshot = await db.collection("users").doc(message.senderId).get();
         const senderName = (senderSnapshot.data() as UserData | undefined)?.name || "Someone";
         
@@ -166,7 +184,6 @@ export const onChatMessageCreated = functions.firestore
             }
         }
 
-        // Get tokens of all participants except the sender
         const recipientIds = chatData.participantIds.filter((id: string) => id !== message.senderId);
         if (recipientIds.length === 0) {
             return logger.log("No recipients for this message.");
@@ -185,25 +202,29 @@ export const onChatMessageCreated = functions.firestore
         if (tokens.length > 0) {
             const uniqueTokens = [...new Set(tokens)];
             const payload: admin.messaging.MulticastMessage = {
-                notification: {
-                    title: `💬 New Message from ${senderName}`,
-                    body: messageContent,
-                },
                 webpush: {
                     notification: {
+                        title: `💬 New Message from ${senderName}`,
+                        body: messageContent,
                         icon: "/logos-church-new-logo.jpg",
+                        tag: `chat-${chatId}`, // Group all notifications for the same chat
+                    },
+                    fcm_options: {
+                        link: `/?page=chat&chatId=${chatId}`,
                     },
                 },
                 data: {
-                    url: "/",
-                    page: "chat", // To open the chat page
-                    chatId: chatId,
+                    url: `/?page=chat&chatId=${chatId}`,
                 },
                 tokens: uniqueTokens,
             };
             logger.log(`Sending chat notification to ${uniqueTokens.length} tokens for chat ${chatId}.`);
-            const response = await fcm.sendEachForMulticast(payload);
-            logStaleTokens(response, uniqueTokens);
+             try {
+                const response = await fcm.sendEachForMulticast(payload);
+                logStaleTokens(response, uniqueTokens);
+            } catch(error) {
+                 logger.error("Error sending chat notification:", error);
+            }
         } else {
             logger.log(`No tokens found for recipients in chat ${chatId}.`);
         }

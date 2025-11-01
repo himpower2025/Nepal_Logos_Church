@@ -34,7 +34,7 @@ import {
     limit,
     increment
 } from "firebase/firestore";
-import { ref, getDownloadURL, uploadBytes, deleteObject, type UploadMetadata } from "firebase/storage";
+import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
 import { getToken, onMessage } from "firebase/messaging";
 
 
@@ -185,7 +185,7 @@ const MCCHEYNE_READING_PLAN = [
     "उत्पत्ति ३９, मर्कूस ११, अय्यूब ६, रोमी ११",
     "उत्पत्ति ४०, मर्कूस १२, अय्यूब ७, रोमी १२",
     "उत्पत्ति ४१, मर्कूस १३, अय्यूब ८, रोमी १३",
-    "उत्पत्ति ४２, मर्कूस १४, अय्यूब ९, रोमी १४",
+    "उत्पत्ति ४２, मर्कूस ۱۴, अय्यूब ९, रोमी १४",
     "उत्पत्ति ४३, मर्कूस १५, अय्यूब १०, रोमी १५",
     "उत्पत्ति ４４, मर्कूस १६, अय्यूब ११, रोमी १६",
     "उत्पत्ति ४५, लूका १:१-३८, अय्यूब १२, १ कोरिन्थी १",
@@ -399,7 +399,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ शमूएल १७, तीतस ३, यर्मिया ३８, इजकिएल ११",
     "१ शमूएल १८, फिलेमोन १, यर्मिया ३９, इजकिएल १२",
     "१ शमूएल १९, हिब्रू १, यर्मिया ४०, इजकिएल १३",
-    "१ शमूएल ২০, हिब्रू २, यर्मिया ४१, इजकिएल १४",
+    "१ शमूएल २०, हिब्रू २, यर्मिया ४१, इजकिएल १४",
     "१ शमूएल २१, हिब्रू ३, यर्मिया ४２, इजकिएल १५",
     "१ शमूएल २２, हिब्रू ४, यर्मिया ४３, इजकिएल १६",
     "१ शमूएल ২৩, हिब्रू ५, यर्मिया ४４, इजकिएल १७",
@@ -473,7 +473,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ राजा १४, मत्ती १७, भजनसंग्रह २०, भजनसंग्रह २१",
     "२ राजा १५, मत्ती १८, भजनसंग्रह २２, भजनसंग्रह ২৩",
     "२ राजा १६, मत्ती १९, भजनसंग्रह २४, भजनसंग्रह २५",
-    "२ राजा १७, मत्ती ২০, भजनसंग्रह २６, भजनसंग्रह २７",
+    "२ राजा १७, मत्ती २०, भजनसंग्रह २６, भजनसंग्रह २７",
     "२ राजा १८, मत्ती २१, भजनसंग्रह २８, भजनसंग्रह २९",
     "२ राजा १९, मत्ती २２, भजनसंग्रह ३०, भजनसंग्रह ३１",
     "२ राजा २०, मत्ती ২৩, भजनसंग्रह ३２, भजनसंग्रह ३３",
@@ -520,7 +520,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ७, लूका १९, हितोपदेश २８, भजनसंग्रह ९６",
     "२ इतिहास ८, लूका २०, हितोपदेश २९, भजनसंग्रह ९７",
     "२ इतिहास ९, लूका २１, हितोपदेश ३０, भजनसंग्रह ९８",
-    "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रह ९９",
+    "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रह ९९",
     "२ इतिहास ११, लूका ২৩, भजनसंग्रह १०४, भजनसंग्रह १००",
     "२ इतिहास १२, लूका २४, भजनसंग्रह १०５, भजनसंग्रह १०१",
     "२ इतिहास १३, यूहन्ना १, भजनसंग्रह १०６, भजनसंग्रह १०२",
@@ -607,6 +607,54 @@ const getEmbedUrl = (url: string, muted: boolean = false): string | null => {
         console.error("Error parsing stream URL:", url, error);
         return null;
     }
+};
+
+// Image compression utility
+const compressImage = (file: File): Promise<Blob> => {
+    return new Promise((resolve, reject) => {
+        const MAX_WIDTH = 1920;
+        const MAX_HEIGHT = 1920;
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target?.result as string;
+            img.onload = () => {
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                } else {
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+                }
+
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                if (!ctx) {
+                    return reject(new Error('Could not get canvas context'));
+                }
+                ctx.drawImage(img, 0, 0, width, height);
+                canvas.toBlob((blob) => {
+                    if (blob) {
+                        resolve(blob);
+                    } else {
+                        reject(new Error('Canvas to Blob conversion failed'));
+                    }
+                }, file.type, 0.8); // 80% quality
+            };
+            img.onerror = (error) => reject(error);
+        };
+        reader.onerror = (error) => reject(error);
+    });
 };
 
 
@@ -2184,6 +2232,8 @@ const ConversationPage: React.FC<{
         try {
             const uploadedMedia: MediaItem[] = await Promise.all(
                 mediaFiles.map(async (preview) => {
+                    const fileToUpload = preview.type === 'image' ? await compressImage(preview.file) : preview.file;
+
                     const originalFileName = preview.file.name;
                     const extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
                     const uniqueFileName = `${Date.now()}-${Math.random().toString(36).substring(2, 11)}${extension}`;
@@ -2191,14 +2241,7 @@ const ConversationPage: React.FC<{
                     
                     const mediaRef = ref(storage, filePath);
                     
-                    const metadata: UploadMetadata = {
-                      contentType: preview.file.type,
-                      customMetadata: {
-                        'uploaderUid': currentUser.id
-                      }
-                    };
-
-                    await uploadBytes(mediaRef, preview.file, metadata);
+                    await uploadBytes(mediaRef, fileToUpload);
                     const url = await getDownloadURL(mediaRef);
                     return { url, type: preview.type, path: filePath };
                 })
