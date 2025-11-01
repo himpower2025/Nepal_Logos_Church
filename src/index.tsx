@@ -269,7 +269,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ६, यूहन्ना २１, भजनसंग्रह ५４, हिब्रू ८",
     "गन्ती ७, प्रेरित १, भजनसंग्रह ५５, हिब्रू ९",
     "गन्ती ८, प्रेरित २:१-२１, भजनसंग्रह ५６, हिब्रू १०",
-    "गन्ती ९, प्रेरित २:२２-４७, भजनसंग्रह ५७, हिब्रू ११",
+    "गन्ती ९, प्रेरित २:२２-４７, भजनसंग्रह ५७, हिब्रू ११",
     "गन्ती १०, प्रेरित ३, भजनसंग्रह ५８, हिब्रू १२",
     "गन्ती ११, प्रेरित ४:१-२２, भजनसंग्रह ५९, हिब्रू १३",
     "गन्ती १२, प्रेरित ४:२३-３７, भजनसंग्रह ६０, याकूब १",
@@ -329,7 +329,7 @@ const MCCHEYNE_READING_PLAN = [
     "व्यवस्था ३０, रोमी १६, यशैया ८, यशैया १२",
     "व्यवस्था ३１, १ कोरिन्थी १, यशैया ९, यशैया १३",
     "व्यवस्था ३２, १ कोरिन्थी २, यशैया १०, यशैया १४",
-    "व्यवस्था ३３, १ कोरिन्थी ३, यशैया ११, यशैया १५",
+    "व्यवस्था ३३, १ कोरिन्थी ३, यशैया ११, यशैया १५",
     "व्यवस्था ३４, १ कोरिन्थी ४, यशैया १२, यशैया १६",
     "यहोशू १, १ कोरिन्थी ५, यशैया १३, यशैया १७",
     "यहोशू २, १ कोरिन्थी ६, यशैया १४, यशैया १८",
@@ -479,7 +479,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ राजा २०, मत्ती ২৩, भजनसंग्रह ३２, भजनसंग्रह ३３",
     "२ राजा २१, मत्ती २४, भजनसंग्रह ३４, भजनसंग्रह ३５",
     "२ राजा २２, मत्ती २५, भजनसंग्रह ३６, भजनसंग्रह ३７",
-    "२ राजा ২৩, मत्ती २６, भजनसंग्रह ३８, भजनसंग्रह ३９",
+    "२ राजा ২৩, मत्ती २６, भजनसंग्रह ३८, भजनसंग्रह ३９",
     "२ राजा २४, मत्ती २７, भजनसंग्रह ४०, भजनसंग्रह ४１",
     "२ राजा २५, मत्ती २８, भजनसंग्रह ४２, भजनसंग्रह ४３",
     "१ इतिहास १, मर्कूस १, भजनसंग्रह ४４, भजनसंग्रह ४５",
@@ -2167,7 +2167,7 @@ const ConversationPage: React.FC<{
         const textContent = newMessage.trim();
         const mediaFiles = [...mediaPreviews];
         if (!db || !storage || !currentChat || (!textContent && mediaFiles.length === 0)) return;
-
+    
         setNewMessage('');
         setMediaPreviews([]);
         
@@ -2180,25 +2180,15 @@ const ConversationPage: React.FC<{
             }),
         };
         setMessages(prev => [...prev, optimisticMessage]);
-
+    
         try {
             const uploadedMedia: MediaItem[] = await Promise.all(
-                mediaFiles.map(async (preview, index) => {
+                mediaFiles.map(async (preview) => {
                     const originalFileName = preview.file.name;
-                    const dotIndex = originalFileName.lastIndexOf('.');
-                    const namePart = dotIndex > -1 ? originalFileName.substring(0, dotIndex) : originalFileName;
-                    const extensionPart = dotIndex > -1 ? originalFileName.substring(dotIndex) : ''; // includes the dot
-
-                    // Sanitize and truncate the name part to prevent overly long paths which fail silently on Firebase Storage
-                    let sanitizedNamePart = namePart.replace(/[^\w.-]/g, '_');
-                    const maxNameLength = 100; 
-                    if (sanitizedNamePart.length > maxNameLength) {
-                        sanitizedNamePart = sanitizedNamePart.substring(0, maxNameLength);
-                    }
-
-                    // Reconstruct with a unique prefix to prevent collisions
-                    const finalFileName = `${Date.now()}-${index}-${Math.random().toString(36).substring(2, 9)}_${sanitizedNamePart}${extensionPart}`;
-                    const filePath = `chat_media/${currentChat.id}/${finalFileName}`;
+                    const extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+                    // Create a completely safe and unique filename, ignoring the original.
+                    const uniqueFileName = `${Date.now()}-${Math.random().toString(36).substring(2, 11)}${extension}`;
+                    const filePath = `chat_media/${currentChat.id}/${uniqueFileName}`;
                     
                     const mediaRef = ref(storage, filePath);
                     await uploadBytes(mediaRef, preview.file);
@@ -2206,18 +2196,18 @@ const ConversationPage: React.FC<{
                     return { url, type: preview.type, path: filePath };
                 })
             );
-
+    
             const messagePayload: Omit<Message, 'id' | 'tempId' | 'status'> = {
                 senderId: currentUser.id,
                 createdAt: serverTimestamp() as Timestamp,
                 ...(textContent && { content: textContent }),
                 ...(uploadedMedia.length > 0 && { media: uploadedMedia }),
             };
-
+    
             const sentMessageRef = await addDoc(collection(db, "chats", currentChat.id, "messages"), messagePayload);
             const sentMessageSnap = await getDoc(sentMessageRef);
             const sentMessage = sentMessageSnap.data();
-
+    
             let lastMessageContent = textContent;
             if (!textContent && uploadedMedia.length > 0) {
                 if (uploadedMedia.length > 1) {
@@ -2228,13 +2218,13 @@ const ConversationPage: React.FC<{
                 }
             }
             if (!lastMessageContent) lastMessageContent = "Sent a message";
-
+    
             await updateDoc(doc(db, "chats", currentChat.id), {
                 lastMessage: { content: lastMessageContent, senderId: currentUser.id, createdAt: sentMessage?.createdAt || serverTimestamp() },
                 lastActivity: sentMessage?.createdAt || serverTimestamp(),
                 [`lastRead.${currentUser.id}`]: sentMessage?.createdAt || serverTimestamp()
             });
-
+    
         } catch (error) {
             console.error("Error sending message:", error);
             setMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
@@ -2333,7 +2323,7 @@ const ConversationPage: React.FC<{
                                 message={msg} 
                                 isSent={msg.senderId === currentUser.id} 
                                 onMediaClick={(index) => msg.media && setViewingMedia({ media: msg.media, startIndex: index })}
-                                onLongPress={() => msg.senderId === currentUser.id && setDeletingMessage(msg)}
+                                onLongPress={() => setDeletingMessage(msg)}
                             />
                         ))}
                         <div ref={messagesEndRef} />
@@ -2405,11 +2395,40 @@ const MessageBubble: React.FC<{
     onMediaClick: (index: number) => void;
     onLongPress: () => void;
 }> = ({ message, isSent, onMediaClick, onLongPress }) => {
+    const timerRef = useRef<number | null>(null);
+
+    const handlePointerDown = () => {
+        if (isSent) { // Only sent messages can be deleted
+            timerRef.current = window.setTimeout(() => {
+                onLongPress();
+                timerRef.current = null; // Prevent clear on pointer up
+            }, 700); // 700ms threshold for long press
+        }
+    };
+
+    const handlePointerUp = () => {
+        if (timerRef.current) {
+            clearTimeout(timerRef.current);
+            timerRef.current = null;
+        }
+    };
+    
+    const handleContextMenu = (e: React.MouseEvent) => {
+         if (isSent) {
+            e.preventDefault();
+            onLongPress();
+         }
+    };
+
     return (
         <div className={`message-container ${isSent ? 'sent' : 'received'}`}>
             <div 
                 className={`message-bubble ${message.media ? 'has-media' : ''}`}
-                onClick={onLongPress} // Simplified to onClick for web/mobile consistency
+                onMouseDown={handlePointerDown}
+                onMouseUp={handlePointerUp}
+                onTouchStart={handlePointerDown}
+                onTouchEnd={handlePointerUp}
+                onContextMenu={handleContextMenu}
             >
                 {message.media && message.media.length > 0 && (
                     <MediaGrid media={message.media} onMediaClick={onMediaClick} />
@@ -2432,7 +2451,10 @@ const MediaGrid: React.FC<{ media: MediaItem[], onMediaClick: (index: number) =>
     return (
         <div className={`media-grid count-${Math.min(count, 4)}`}>
             {displayMedia.map((item, index) => (
-                <div key={index} className="media-grid-item" onClick={() => onMediaClick(index)}>
+                <div key={index} className="media-grid-item" onClick={(e) => {
+                    e.stopPropagation(); // Prevents the parent bubble's long press logic from interfering
+                    onMediaClick(index);
+                }}>
                     {item.type === 'image' ? <img src={item.url} alt="media content" /> : <video src={item.url} />}
                     {item.type === 'video' && (
                         <div className="video-play-icon">
@@ -2456,8 +2478,14 @@ const MediaViewer: React.FC<{
     const [currentIndex, setCurrentIndex] = useState(startIndex);
     const currentItem = mediaItems[currentIndex];
 
-    const goToPrev = () => setCurrentIndex(prev => (prev === 0 ? mediaItems.length - 1 : prev - 1));
-    const goToNext = () => setCurrentIndex(prev => (prev === mediaItems.length - 1 ? 0 : prev + 1));
+    const goToPrev = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setCurrentIndex(prev => (prev === 0 ? mediaItems.length - 1 : prev - 1));
+    }
+    const goToNext = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setCurrentIndex(prev => (prev === mediaItems.length - 1 ? 0 : prev + 1));
+    }
 
     return createPortal(
         <div className="media-viewer-backdrop" onClick={onClose}>
