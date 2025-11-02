@@ -270,7 +270,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ७, प्रेरित १, भजनसंग्रह ५５, हिब्रू ९",
     "गन्ती ८, प्रेरित २:१-२１, भजनसंग्रह ५६, हिब्रू १०",
     "गन्ती ९, प्रेरित २:२２-４７, भजनसंग्रह ५७, हिब्रू ११",
-    "गन्ती १०, प्रेरित ३, भजनसंग्रह ५８, हिब्रू १२",
+    "गन्ती १०, प्रेरित ३, भजनसंग्रह ५८, हिब्रू १२",
     "गन्ती ११, प्रेरित ४:१-२２, भजनसंग्रह ५९, हिब्रू १३",
     "गन्ती १२, प्रेरित ४:२३-３７, भजनसंग्रह ६０, याकूब १",
     "गन्ती १३, प्रेरित ५:१-१८, भजनसंग्रह ६１, याकूब २",
@@ -548,7 +548,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ३５, प्रेरित २, भजनसंग्रह १४３, भजनसंग्रह १४４",
     "२ इतिहास ३６, प्रेरित ३, भजनसंग्रह १४５, भजनसंग्रह १४６",
     "एज्रा १, प्रेरित ४, भजनसंग्रह १४７, भजनसंग्रह १४８",
-    "एज्रा २, प्रेरित ५, भजनसंग्रह १४９, भजनसंग्रह १५０",
+    "एज्रा २, प्रेरित ५, भजनसंग्रह ۱۴９, भजनसंग्रह १५０",
 ];
 
 
@@ -609,7 +609,7 @@ const getEmbedUrl = (url: string, muted: boolean = false): string | null => {
     }
 };
 
-// Image compression utility
+// Image compression utility - standardizes output to JPEG for reliability
 const compressImage = (file: File): Promise<Blob> => {
     return new Promise((resolve, reject) => {
         const MAX_WIDTH = 1920;
@@ -649,7 +649,7 @@ const compressImage = (file: File): Promise<Blob> => {
                     } else {
                         reject(new Error('Canvas to Blob conversion failed'));
                     }
-                }, file.type, 0.8); // 80% quality
+                }, 'image/jpeg', 0.85); // 85% quality JPEG
             };
             img.onerror = (error) => reject(error);
         };
@@ -1364,7 +1364,7 @@ const PodcastsPage: React.FC<{
 
     return (
         <div className="page-content">
-            <h2>Podcasts</h2>
+            <h2>Podcast</h2>
             <div className="list-container">
                 {podcasts.map(podcast => (
                     <div key={podcast.tempId || podcast.id} className="card podcast-item">
@@ -2233,22 +2233,19 @@ const ConversationPage: React.FC<{
             const uploadedMedia: MediaItem[] = await Promise.all(
                 mediaFiles.map(async (preview) => {
                     const originalFile = preview.file;
-                    const fileToUpload: Blob = preview.type === 'image' ? await compressImage(originalFile) : originalFile;
-                    
-                    // Robust extension detection: 1. from filename, 2. from MIME type.
-                    let extension = 'tmp';
-                    const fileNameParts = originalFile.name.split('.');
-                    if (fileNameParts.length > 1) {
-                        extension = fileNameParts.pop()!.toLowerCase();
+                    let fileToUpload: Blob;
+                    let fileExtension: string;
+    
+                    if (preview.type === 'image') {
+                        fileToUpload = await compressImage(originalFile);
+                        fileExtension = 'jpg';
                     } else {
-                        const mimeParts = fileToUpload.type.split('/');
-                        if (mimeParts.length > 1) {
-                             // Handles cases like 'image/svg+xml' -> 'svg'
-                            extension = mimeParts[1].split('+')[0];
-                        }
+                        fileToUpload = originalFile;
+                        const fileNameParts = originalFile.name.split('.');
+                        fileExtension = fileNameParts.length > 1 ? fileNameParts.pop()!.toLowerCase() : 'mp4'; // Fallback for videos
                     }
-
-                    const safeFileName = `${Date.now()}-${Math.random().toString(36).slice(2, 11)}.${extension}`;
+    
+                    const safeFileName = `${Date.now()}-${Math.random().toString(36).slice(2, 11)}.${fileExtension}`;
                     const filePath = `chat_media/${currentChat.id}/${safeFileName}`;
                     
                     const mediaRef = ref(storage, filePath);

@@ -1,4 +1,3 @@
-// functions/src/index.ts 파일의 전체 내용을 아래 코드로 교체해주세요.
 
 import {onDocumentCreated} from "firebase-functions/v2/firestore";
 import * as admin from "firebase-admin";
@@ -54,18 +53,65 @@ const getAllTokens = async (excludeUserId?: string): Promise<string[]> => {
     return [...new Set(tokens)]; // Return unique tokens
 };
 
-// Helper function to log stale tokens after a multicast send
-const logStaleTokens = (response: admin.messaging.BatchResponse, tokens: string[]) => {
-    if (!response || !response.responses) return;
+// Helper to remove stale FCM tokens from Firestore to prevent sending to invalid endpoints.
+const cleanStaleTokens = async (tokensToRemove: string[]) => {
+    if (tokensToRemove.length === 0) {
+        return;
+    }
+    logger.log(`Attempting to clean ${tokensToRemove.length} stale tokens.`);
+    try {
+        const usersRef = db.collection("users");
+        // Firestore 'in' queries are limited to 30 items. A more robust solution
+        // would batch this for large numbers of stale tokens.
+        const snapshot = await usersRef.where("fcmTokens", "array-contains-any", tokensToRemove).get();
+
+        if (snapshot.empty) {
+            logger.log("No users found with the specified stale tokens.");
+            return;
+        }
+
+        const updates: Promise<FirebaseFirestore.WriteResult>[] = [];
+        snapshot.forEach((doc) => {
+            updates.push(doc.ref.update({
+                fcmTokens: admin.firestore.FieldValue.arrayRemove(...tokensToRemove),
+            }));
+        });
+
+        await Promise.all(updates);
+        logger.log(`Cleaned stale tokens from ${updates.length} user documents.`);
+    } catch (error) {
+        logger.error("Error cleaning stale tokens:", error);
+    }
+};
+
+// Helper function to process FCM send responses, logging errors and cleaning stale tokens.
+const handleSendResponse = (response: admin.messaging.BatchResponse, tokens: string[]) => {
+    if (!response || !response.responses) {
+        logger.log("No response object from FCM send.");
+        return;
+    }
+    const staleTokens: string[] = [];
+    let successCount = 0;
+
     response.responses.forEach((result, index) => {
         const error = result.error;
-        if (error) {
-            logger.error("Failure sending notification to", tokens[index], error);
-            if (error.code === "messaging/invalid-registration-token" || error.code === "messaging/registration-token-not-registered") {
-               logger.warn(`Stale token found: ${tokens[index]}`);
+        if (result.success) {
+            successCount++;
+        } else if (error) {
+            logger.error(`Failure sending notification to token: ${tokens[index]}`, error);
+            // Check for codes indicating a token is no longer valid.
+            if (error.code === "messaging/invalid-registration-token" ||
+                error.code === "messaging/registration-token-not-registered") {
+                staleTokens.push(tokens[index]);
             }
         }
     });
+
+    logger.log(`FCM send complete. Success: ${successCount}, Failures: ${response.failureCount}.`);
+
+    if (staleTokens.length > 0) {
+        cleanStaleTokens(staleTokens);
+    }
 };
 
 
@@ -83,34 +129,31 @@ export const onNewsCreated = onDocumentCreated("news/{newsId}", async (event) =>
 
     const title = "⛪️ New Announcement";
     const body = newsItem.title;
+    const link = "/?page=news";
 
-    // Get tokens, excluding the author of the news item
     const allTokens = await getAllTokens(newsItem.authorId);
 
     if (allTokens.length > 0) {
          const payload: MulticastMessage = {
-            webpush: {
+            notification: { // Common notification payload for foreground display
+                title: title,
+                body: body,
+            },
+            webpush: { // Web-specific overrides for background display
                 notification: {
-                    title: title,
-                    body: body,
                     icon: "/logos-church-new-logo.jpg",
-                    tag: `news-${event.params.newsId}`, // Groups notifications
+                    tag: `news-${event.params.newsId}`,
                 },
-                fcmOptions: {
-                    link: "/?page=news",
-                },
+                fcmOptions: { link: link },
             },
-            // data is a fallback for the service worker's on-click event
-            data: {
-                url: "/?page=news",
-            },
+            data: { url: link, icon: "feed" }, // Custom data for SW click and foreground icon
             tokens: allTokens,
         };
 
-        logger.log(`Sending notification to ${allTokens.length} tokens.`);
+        logger.log(`Sending 'news' notification to ${allTokens.length} tokens.`);
         try {
             const response = await fcm.sendEachForMulticast(payload);
-            logStaleTokens(response, allTokens);
+            handleSendResponse(response, allTokens);
         } catch(error) {
             logger.error("Error sending news notification:", error);
         }
@@ -130,30 +173,29 @@ export const onPrayerRequestCreated = onDocumentCreated("prayerRequests/{request
     if (!prayerRequest || !prayerRequest.authorName) {
         return logger.log("Prayer request data is missing authorName.");
     }
-
+    const link = "/?page=prayer";
     const allTokens = await getAllTokens(prayerRequest.authorId);
 
     if (allTokens.length > 0) {
         const payload: MulticastMessage = {
+            notification: {
+                title: "🙏 New Prayer Request",
+                body: `${prayerRequest.authorName} has shared a new request.`,
+            },
             webpush: {
                 notification: {
-                    title: "🙏 New Prayer Request",
-                    body: `${prayerRequest.authorName} has shared a new request.`,
                     icon: "/logos-church-new-logo.jpg",
                     tag: `prayer-${event.params.requestId}`,
                 },
-                fcmOptions: {
-                    link: "/?page=prayer",
-                },
+                fcmOptions: { link: link },
             },
-             data: {
-                url: "/?page=prayer",
-            },
+            data: { url: link, icon: "volunteer_activism" },
             tokens: allTokens,
         };
+        logger.log(`Sending 'prayer' notification to ${allTokens.length} tokens.`);
         try {
             const response = await fcm.sendEachForMulticast(payload);
-            logStaleTokens(response, allTokens);
+            handleSendResponse(response, allTokens);
         } catch(error) {
             logger.error("Error sending prayer notification:", error);
         }
@@ -212,27 +254,26 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
 
     if (tokens.length > 0) {
         const uniqueTokens = [...new Set(tokens)];
+        const link = `/?page=chat&chatId=${chatId}`;
         const payload: MulticastMessage = {
+            notification: {
+                title: `💬 New Message from ${senderName}`,
+                body: messageContent,
+            },
             webpush: {
                 notification: {
-                    title: `💬 New Message from ${senderName}`,
-                    body: messageContent,
                     icon: "/logos-church-new-logo.jpg",
                     tag: `chat-${chatId}`, // Group all notifications for the same chat
                 },
-                fcmOptions: {
-                    link: `/?page=chat&chatId=${chatId}`,
-                },
+                fcmOptions: { link: link },
             },
-            data: {
-                url: `/?page=chat&chatId=${chatId}`,
-            },
+            data: { url: link, icon: "chat" },
             tokens: uniqueTokens,
         };
         logger.log(`Sending chat notification to ${uniqueTokens.length} tokens for chat ${chatId}.`);
          try {
             const response = await fcm.sendEachForMulticast(payload);
-            logStaleTokens(response, uniqueTokens);
+            handleSendResponse(response, uniqueTokens);
         } catch(error) {
              logger.error("Error sending chat notification:", error);
         }
