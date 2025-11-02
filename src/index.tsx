@@ -288,7 +288,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती २५, प्रेरित ११, भजनसंग्रह ७３, १ यूहन्ना १",
     "गन्ती २६, प्रेरित १२, भजनसंग्रह ७４, १ यूहन्ना २",
     "गन्ती २७, प्रेरित १३:१-२５, भजनसंग्रह ७５, १ यूहन्ना ३",
-    "गन्ती २८, प्रेरित १३:२６-５２, भजनसंग्रह ७６, १ यूहन्ना ४",
+    "गन्ती २८, प्रेरित १३:２６-５２, भजनसंग्रह ७６, १ यूहन्ना ४",
     "गन्ती २९, प्रेरित १४, भजनसंग्रह ७７, १ यूहन्ना ५",
     "गन्ती ३０, प्रेरित १५:१-२१, हितोपदेश १, २ यूहन्ना १",
     "गन्ती ३１, प्रेरित १५:२２-４１, हितोपदेश २, ३ यूहन्ना १",
@@ -300,7 +300,7 @@ const MCCHEYNE_READING_PLAN = [
     "व्यवस्था १, प्रेरित २०:१-१６, हितोपदेश ८, प्रकाश ५",
     "व्यवस्था २, प्रेरित २०:१７-३८, हितोपदेश ९, प्रकाश ६",
     "व्यवस्था ३, प्रेरित २१:१-१८, उपदेशक १, प्रकाश ७",
-    "व्यवस्था ४, प्रेरित २१:१९-４३, उपदेशक २, प्रकाश ८",
+    "व्यवस्था ४, प्रेरित २१:१९-４３, उपदेशक २, प्रकाश ८",
     "व्यवस्था ५, प्रेरित २２, उपदेशक ३, प्रकाश ९",
     "व्यवस्था ६, प्रेरित ২৩, उपदेशक ४, प्रकाश १०",
     "व्यवस्था ७, प्रेरित २४, उपदेशक ५, प्रकाश ११",
@@ -2232,12 +2232,22 @@ const ConversationPage: React.FC<{
         try {
             const uploadedMedia: MediaItem[] = await Promise.all(
                 mediaFiles.map(async (preview) => {
-                    // Compress images, but upload videos as-is
-                    const fileToUpload = preview.type === 'image' ? await compressImage(preview.file) : preview.file;
+                    const originalFile = preview.file;
+                    const fileToUpload: Blob = preview.type === 'image' ? await compressImage(originalFile) : originalFile;
                     
-                    // Generate a safe, unique filename, ignoring the original.
-                    const mimeType = fileToUpload.type;
-                    const extension = mimeType.split('/')[1] || 'tmp';
+                    // Robust extension detection: 1. from filename, 2. from MIME type.
+                    let extension = 'tmp';
+                    const fileNameParts = originalFile.name.split('.');
+                    if (fileNameParts.length > 1) {
+                        extension = fileNameParts.pop()!.toLowerCase();
+                    } else {
+                        const mimeParts = fileToUpload.type.split('/');
+                        if (mimeParts.length > 1) {
+                             // Handles cases like 'image/svg+xml' -> 'svg'
+                            extension = mimeParts[1].split('+')[0];
+                        }
+                    }
+
                     const safeFileName = `${Date.now()}-${Math.random().toString(36).slice(2, 11)}.${extension}`;
                     const filePath = `chat_media/${currentChat.id}/${safeFileName}`;
                     
@@ -2809,31 +2819,30 @@ const App: React.FC = () => {
     
     // --- Deep linking from notifications ---
     useEffect(() => {
-        if (deepLinkProcessed.current) return;
+        // This effect runs whenever 'chats' updates. This handles the race condition
+        // where the app opens via notification before the chat list is loaded.
+        if (deepLinkProcessed.current || chats.length === 0) return;
 
         const params = new URLSearchParams(window.location.search);
         const page = params.get('page');
         const chatId = params.get('chatId');
 
-        if (page && navOrder.includes(page as any)) {
-            setActivePage(page as any);
-        }
-
         if (page === 'chat' && chatId) {
-             if (chats.length > 0) {
-                const targetChat = chats.find(c => c.id === chatId);
-                if (targetChat) {
-                    setCurrentChat(targetChat);
-                    setActivePage('conversation');
-                    deepLinkProcessed.current = true;
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                }
-             }
-        } else if (page) {
+            const targetChat = chats.find(c => c.id === chatId);
+            if (targetChat) {
+                setCurrentChat(targetChat);
+                setActivePage('conversation');
+                deepLinkProcessed.current = true; // Mark as processed
+                // Clean the URL to prevent re-triggering
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        } else if (page && navOrder.includes(page as any)) {
+             // Handle deep links to other pages that don't depend on loaded data
+            setActivePage(page as any);
             deepLinkProcessed.current = true;
             window.history.replaceState({}, document.title, window.location.pathname);
         }
-    }, [chats]);
+    }, [chats]); // Dependency on `chats` is key to solving the race condition.
 
     // --- FCM/Push Notifications ---
     useEffect(() => {
@@ -3040,17 +3049,17 @@ interface ErrorBoundaryState {
 }
 
 class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  public state: ErrorBoundaryState = { hasError: false, error: null };
+  state: ErrorBoundaryState = { hasError: false, error: null };
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return { hasError: true, error: error };
   }
 
-  public componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error("Uncaught error:", error, errorInfo);
   }
 
-  public render() {
+  render() {
     if (this.state.hasError && this.state.error) {
       return <ErrorFallback error={this.state.error} />;
     }
