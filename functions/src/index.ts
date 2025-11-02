@@ -1,4 +1,3 @@
-
 import {onDocumentCreated} from "firebase-functions/v2/firestore";
 import * as admin from "firebase-admin";
 import * as logger from "firebase-functions/logger";
@@ -33,6 +32,7 @@ interface MessageData {
 }
 
 interface ChatData {
+    name?: string;
     participantIds: string[];
 }
 
@@ -63,7 +63,7 @@ const cleanStaleTokens = async (tokensToRemove: string[]) => {
         const usersRef = db.collection("users");
         // Firestore 'in' queries are limited to 30 items. A more robust solution
         // would batch this for large numbers of stale tokens.
-        const snapshot = await usersRef.where("fcmTokens", "array-contains-any", tokensToRemove).get();
+        const snapshot = await usersRef.where("fcmTokens", "array-contains-any", tokensToRemove.slice(0, 30)).get();
 
         if (snapshot.empty) {
             logger.log("No users found with the specified stale tokens.");
@@ -135,18 +135,22 @@ export const onNewsCreated = onDocumentCreated("news/{newsId}", async (event) =>
 
     if (allTokens.length > 0) {
          const payload: MulticastMessage = {
-            notification: { // Common notification payload for foreground display
+            notification: {
                 title: title,
                 body: body,
             },
-            webpush: { // Web-specific overrides for background display
+            webpush: {
                 notification: {
                     icon: "/logos-church-new-logo.jpg",
                     tag: `news-${event.params.newsId}`,
                 },
                 fcmOptions: { link: link },
+                headers: {Urgency: "high"},
             },
-            data: { url: link, icon: "feed" }, // Custom data for SW click and foreground icon
+            android: {
+                priority: "high",
+            },
+            data: { url: link, icon: "feed" },
             tokens: allTokens,
         };
 
@@ -188,6 +192,10 @@ export const onPrayerRequestCreated = onDocumentCreated("prayerRequests/{request
                     tag: `prayer-${event.params.requestId}`,
                 },
                 fcmOptions: { link: link },
+                headers: {Urgency: "high"},
+            },
+            android: {
+                priority: "high",
             },
             data: { url: link, icon: "volunteer_activism" },
             tokens: allTokens,
@@ -255,10 +263,18 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
     if (tokens.length > 0) {
         const uniqueTokens = [...new Set(tokens)];
         const link = `/?page=chat&chatId=${chatId}`;
+        const truncatedBody = messageContent.length > 100 ? messageContent.substring(0, 97) + "..." : messageContent;
+
+        const isGroupChat = chatData.participantIds.length > 2;
+        const chatName = chatData.name;
+
+        const notificationTitle = isGroupChat && chatName ? `💬 ${chatName}` : `💬 New Message from ${senderName}`;
+        const notificationBody = isGroupChat ? `${senderName}: ${truncatedBody}` : truncatedBody;
+
         const payload: MulticastMessage = {
             notification: {
-                title: `💬 New Message from ${senderName}`,
-                body: messageContent,
+                title: notificationTitle,
+                body: notificationBody,
             },
             webpush: {
                 notification: {
@@ -266,6 +282,10 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
                     tag: `chat-${chatId}`, // Group all notifications for the same chat
                 },
                 fcmOptions: { link: link },
+                headers: {Urgency: "high"},
+            },
+            android: {
+                priority: "high",
             },
             data: { url: link, icon: "chat" },
             tokens: uniqueTokens,

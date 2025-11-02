@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect, useRef, useCallback, createContext, useContext, useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createPortal } from 'react-dom';
@@ -199,7 +200,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३, लूका ५:१७-३９, अय्यूब २०, १ कोरिन्थी ९",
     "प्रस्थान ४, लूका ६:१-१९, अय्यूब २१, १ कोरिन्थी १०",
     "प्रस्थान ५, लूका ६:२०-４９, अय्यूब २２, १ कोरिन्थी ११",
-    "प्रस्थान ६, लूका ७:१-२३, अय्यूब २३, १ कोरिन्थी १२",
+    "प्रस्थान ६, लूका ७:१-२३, अय्यूब ২৩, १ कोरिन्थी १२",
     "प्रस्थान ७, लूका ७:२४-५०, अय्यूब २४, १ कोरिन्थी १३",
     "प्रस्थान ८, लूका ८:१-२५, अय्यूब २५, १ कोरिन्थी १४",
     "प्रस्थान ९, लूका ८:२६-५６, अय्यूब २६, १ कोरिन्थी १५",
@@ -232,7 +233,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
     "प्रस्थान ३७, लूका २३:२६-５６, भजनसंग्रह १८, फिलिप्पी २",
     "प्रस्थान ३८, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
-    "प्रस्थान ३９, लूका २४:१३-５３, भजनसंग्रह २०, फिलिप्पी ४",
+    "प्रस्थान ३９, लूका २४:१३-５३, भजनसंग्रह २०, फिलिप्पी ४",
     "प्रस्थान ४०, यूहन्ना १:१-२८, भजनसंग्रह २१, कलस्सी १",
     "लेवी १, यूहन्ना १:२९-５１, भजनसंग्रह २２, कलस्सी २",
     "लेवी २, यूहन्ना २, भजनसंग्रह ২৩, कलस्सी ३",
@@ -248,7 +249,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी १२, यूहन्ना ७:१-३１, भजनसंग्रह ३३, १ तिमोथी १",
     "लेवी १३, यूहन्ना ७:३２-５३, भजनसंग्रह ३４, १ तिमोथी २",
     "लेवी १४, यूहन्ना ८:१-३０, भजनसंग्रह ३५, १ तिमोथी ३",
-    "लेवी १५, यूहन्ना ८:३१-５९, भजनसंग्रह ३６, १ तिमोथी ४",
+    "लेवी १५, यूहन्ना ८:३१-५९, भजनसंग्रह ३６, १ तिमोथी ४",
     "लेवी १६, यूहन्ना ९, भजनसंग्रह ३７, १ तिमोथी ५",
     "लेवी १७, यूहन्ना १०:१-२１, भजनसंग्रह ३８, १ तिमोथी ६",
     "लेवी १८, यूहन्ना १०:२२-４２, भजनसंग्रह ३９, २ तिमोथी १",
@@ -300,7 +301,7 @@ const MCCHEYNE_READING_PLAN = [
     "व्यवस्था १, प्रेरित २०:१-१６, हितोपदेश ८, प्रकाश ५",
     "व्यवस्था २, प्रेरित २०:१７-३८, हितोपदेश ९, प्रकाश ६",
     "व्यवस्था ३, प्रेरित २१:१-१८, उपदेशक १, प्रकाश ७",
-    "व्यवस्था ४, प्रेरित २१:१९-４３, उपदेशक २, प्रकाश ८",
+    "व्यवस्था ४, प्रेरित २१:१९-４३, उपदेशक २, प्रकाश ८",
     "व्यवस्था ५, प्रेरित २２, उपदेशक ३, प्रकाश ९",
     "व्यवस्था ६, प्रेरित ২৩, उपदेशक ४, प्रकाश १०",
     "व्यवस्था ७, प्रेरित २४, उपदेशक ५, प्रकाश ११",
@@ -316,7 +317,7 @@ const MCCHEYNE_READING_PLAN = [
     "व्यवस्था १७, रोमी ६, श्रेष्ठगीत ३, प्रकाश २१",
     "व्यवस्था १८, रोमी ७, श्रेष्ठगीत ४, प्रकाश २２",
     "व्यवस्था १९, रोमी ८:१-१८, श्रेष्ठगीत ५, यशैया १",
-    "व्यवस्था २०, रोमी ८:१९-३９, श्रेष्ठगीत ६, यशैया २",
+    "व्यवस्था २०, रोमी ८:१९-३९, श्रेष्ठगीत ६, यशैया २",
     "व्यवस्था २१, रोमी ९, श्रेष्ठगीत ७, यशैया ३",
     "व्यवस्था २２, रोमी १०, श्रेष्ठगीत ८, यशैया ४",
     "व्यवस्था ২৩, रोमी ११:१-२４, यशैया १, यशैया ५",
@@ -531,7 +532,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १८, यूहन्ना ६, भजनसंग्रह १１４, भजनसंग्रह ११５",
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रह १１６, भजनसंग्रह ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रह १１８, भजनसंग्रह ११९:१-३２",
-    "२ इतिहास २१, यूहन्ना ९, भजनसंग्रह ११९:३३-６４, भजनसंग्रह ११९:६५-९६",
+    "२ इतिहास २१, यूहन्ना ९, भजनसंग्रह ११९:३३-６４, भजनसंग्रह ११९:६५-९６",
     "२ इतिहास २２, यूहन्ना १०, भजनसंग्रह ११९:९७-१２८, भजनसंग्रह ११९:१２९-१５２",
     "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रह ११९:१５３-१७６, भजनसंग्रह १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रह १२１, भजनसंग्रह १२２",
@@ -607,54 +608,6 @@ const getEmbedUrl = (url: string, muted: boolean = false): string | null => {
         console.error("Error parsing stream URL:", url, error);
         return null;
     }
-};
-
-// Image compression utility - standardizes output to JPEG for reliability
-const compressImage = (file: File): Promise<Blob> => {
-    return new Promise((resolve, reject) => {
-        const MAX_WIDTH = 1920;
-        const MAX_HEIGHT = 1920;
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = (event) => {
-            const img = new Image();
-            img.src = event.target?.result as string;
-            img.onload = () => {
-                let width = img.width;
-                let height = img.height;
-
-                if (width > height) {
-                    if (width > MAX_WIDTH) {
-                        height *= MAX_WIDTH / width;
-                        width = MAX_WIDTH;
-                    }
-                } else {
-                    if (height > MAX_HEIGHT) {
-                        width *= MAX_HEIGHT / height;
-                        height = MAX_HEIGHT;
-                    }
-                }
-
-                const canvas = document.createElement('canvas');
-                canvas.width = width;
-                canvas.height = height;
-                const ctx = canvas.getContext('2d');
-                if (!ctx) {
-                    return reject(new Error('Could not get canvas context'));
-                }
-                ctx.drawImage(img, 0, 0, width, height);
-                canvas.toBlob((blob) => {
-                    if (blob) {
-                        resolve(blob);
-                    } else {
-                        reject(new Error('Canvas to Blob conversion failed'));
-                    }
-                }, 'image/jpeg', 0.85); // 85% quality JPEG
-            };
-            img.onerror = (error) => reject(error);
-        };
-        reader.onerror = (error) => reject(error);
-    });
 };
 
 
@@ -2233,23 +2186,17 @@ const ConversationPage: React.FC<{
             const uploadedMedia: MediaItem[] = await Promise.all(
                 mediaFiles.map(async (preview) => {
                     const originalFile = preview.file;
-                    let fileToUpload: Blob;
-                    let fileExtension: string;
-    
-                    if (preview.type === 'image') {
-                        fileToUpload = await compressImage(originalFile);
-                        fileExtension = 'jpg';
-                    } else {
-                        fileToUpload = originalFile;
-                        const fileNameParts = originalFile.name.split('.');
-                        fileExtension = fileNameParts.length > 1 ? fileNameParts.pop()!.toLowerCase() : 'mp4'; // Fallback for videos
-                    }
+                    
+                    // Get file extension from original name
+                    const fileNameParts = originalFile.name.split('.');
+                    const fileExtension = fileNameParts.length > 1 ? fileNameParts.pop()!.toLowerCase() : '';
     
                     const safeFileName = `${Date.now()}-${Math.random().toString(36).slice(2, 11)}.${fileExtension}`;
                     const filePath = `chat_media/${currentChat.id}/${safeFileName}`;
                     
                     const mediaRef = ref(storage, filePath);
-                    await uploadBytes(mediaRef, fileToUpload);
+                    // Upload the original file directly, no compression
+                    await uploadBytes(mediaRef, originalFile); 
                     const url = await getDownloadURL(mediaRef);
                     return { url, type: preview.type, path: filePath };
                 })
@@ -2671,8 +2618,18 @@ const App: React.FC = () => {
     const [currentChat, setCurrentChat] = useState<Chat | null>(null);
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
+    const [notificationPermissionStatus, setNotificationPermissionStatus] = useState('default');
 
     const deepLinkProcessed = useRef(false);
+
+    useEffect(() => {
+        // Check and update permission status whenever the current user changes.
+        // This ensures it's checked after login.
+        if (currentUser) {
+            setNotificationPermissionStatus(Notification.permission);
+        }
+    }, [currentUser]);
+
 
     const usersMap = useMemo(() => {
         const map = new Map<string, User>();
@@ -2848,8 +2805,13 @@ const App: React.FC = () => {
 
         const requestPermissionAndToken = async () => {
             try {
-                const permission = await Notification.requestPermission();
-                if (permission === 'granted') {
+                // We request permission only if it's 'default'. If 'denied', we rely on the banner.
+                if (Notification.permission === 'default') {
+                    const permission = await Notification.requestPermission();
+                     setNotificationPermissionStatus(permission); // Update UI based on user's choice
+                }
+               
+                if (Notification.permission === 'granted') {
                     const currentToken = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY });
                     if (currentToken) {
                         const userTokens = currentUser.fcmTokens || [];
@@ -2976,6 +2938,13 @@ const App: React.FC = () => {
 
     return (
         <div className="app-container">
+            {notificationPermissionStatus === 'denied' && activePage !== 'conversation' && (
+                <div className="notification-permission-banner">
+                    <span className="material-symbols-outlined">notifications_off</span>
+                    <p>알림이 차단되었습니다. 메시지 및 업데이트를 받으려면 브라우저 설정에서 이 사이트의 알림을 허용해 주세요.</p>
+                </div>
+            )}
+
             {activePage !== 'conversation' && (
                 <header className="app-header">
                     <div className="header-content">

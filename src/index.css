@@ -411,6 +411,27 @@ html, body, #root {
     color: var(--accent-color);
 }
 
+/* --- Notification Permission Banner --- */
+.notification-permission-banner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    background-color: #fffbeb; /* Light yellow */
+    color: #92400e; /* Dark yellow/brown text */
+    border-bottom: 1px solid #fde68a; /* Yellow border */
+    font-size: var(--font-size-sm);
+}
+.notification-permission-banner .material-symbols-outlined {
+    font-size: 24px;
+    flex-shrink: 0;
+}
+.notification-permission-banner p {
+    flex-grow: 1;
+    text-align: left;
+    line-height: 1.4;
+}
+
 /* --- Reusable Components --- */
 .card {
     background-color: var(--card-background);
