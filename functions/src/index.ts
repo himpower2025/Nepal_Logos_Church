@@ -271,7 +271,25 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
         let notificationBody: string;
 
         if (isGroupChat) {
-            notificationTitle = `💬 ${chatData.name || "Group Chat"}`;
+            let groupTitle = chatData.name;
+            if (!groupTitle) {
+                // Construct a title from participant names if the group is unnamed
+                const recipientDocs = await db.collection("users")
+                    .where(admin.firestore.FieldPath.documentId(), "in", recipientIds.slice(0, 10)) // Limit to 10 for performance and query limits
+                    .get();
+
+                const recipientNames = recipientDocs.docs
+                    .map((doc) => (doc.data() as UserData)?.name?.split(" ")[0] || "")
+                    .filter((name) => name);
+
+                if (recipientNames.length > 0) {
+                    groupTitle = recipientNames.slice(0, 2).join(", ");
+                    if (recipientIds.length > 2) {
+                        groupTitle += "...";
+                    }
+                }
+            }
+            notificationTitle = `💬 ${groupTitle || "Group Chat"}`; // Fallback to "Group Chat"
             notificationBody = `${senderName}: ${truncatedBody}`;
         } else {
             notificationTitle = `💬 ${senderName}`;
@@ -294,7 +312,7 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
             android: {
                 priority: "high",
             },
-            data: { url: link, icon: "chat" },
+            data: { url: link, icon: "chat", chatId: chatId, senderName: senderName, body: truncatedBody, title: notificationTitle },
             tokens: uniqueTokens,
         };
         logger.log(`Sending chat notification to ${uniqueTokens.length} tokens for chat ${chatId}.`);
