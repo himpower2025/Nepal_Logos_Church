@@ -49,6 +49,84 @@ export const useFirebase = () => {
     return context;
 };
 
+// --- Toast Context ---
+type ToastMessage = { id: number; title: string; body: string; onClick?: () => void; };
+type ToastContextType = {
+  showToast: (title: string, body: string, onClick?: () => void) => void;
+};
+const ToastContext = createContext<ToastContextType | null>(null);
+export const useToast = () => {
+    const context = useContext(ToastContext);
+    if (!context) throw new Error("useToast must be used within a ToastProvider");
+    return context;
+};
+
+const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const [toasts, setToasts] = useState<ToastMessage[]>([]);
+    const toastIdRef = useRef(0);
+
+    const showToast = useCallback((title: string, body: string, onClick?: () => void) => {
+        const id = toastIdRef.current++;
+        const newToast: ToastMessage = { id, title, body, onClick };
+        setToasts(prev => [newToast, ...prev]);
+
+        // Play a notification sound
+        try {
+            const audio = new Audio('https://firebasestorage.googleapis.com/v0/b/logos-church-nepal.appspot.com/o/assets%2Fnotification.mp3?alt=media&token=24838a14-a901-469b-9a4f-56193796537b'); // Use a publicly accessible sound file
+            audio.play().catch(e => console.warn("Audio playback failed:", e));
+        } catch(e) {
+            console.error("Failed to create or play audio:", e);
+        }
+
+        setTimeout(() => {
+            setToasts(prev => prev.filter(t => t.id !== id));
+        }, 5000);
+    }, []);
+    
+    return (
+        <ToastContext.Provider value={{ showToast }}>
+            {children}
+            <ToastContainer toasts={toasts} />
+        </ToastContext.Provider>
+    );
+};
+
+const ToastContainer: React.FC<{ toasts: ToastMessage[] }> = ({ toasts }) => {
+    const [exitingToasts, setExitingToasts] = useState<number[]>([]);
+
+    useEffect(() => {
+        const timers: NodeJS.Timeout[] = [];
+        toasts.forEach(toast => {
+            if (!exitingToasts.includes(toast.id)) {
+                const timer = setTimeout(() => {
+                    setExitingToasts(prev => [...prev, toast.id]);
+                }, 4500); // Start exiting animation before removal
+                timers.push(timer);
+            }
+        });
+        return () => timers.forEach(clearTimeout);
+    }, [toasts, exitingToasts]);
+    
+    return createPortal(
+        <div className="toast-container">
+            {toasts.map(toast => (
+                <div 
+                    key={toast.id} 
+                    className={`toast-item ${exitingToasts.includes(toast.id) ? 'exiting' : ''}`}
+                    onClick={toast.onClick}
+                >
+                    <div className="toast-content">
+                        <div className="toast-title">{toast.title}</div>
+                        <div className="toast-body">{toast.body}</div>
+                    </div>
+                </div>
+            ))}
+        </div>,
+        document.body
+    );
+};
+
+
 // --- Types ---
 type UserRole = 'admin' | 'member' | 'news_contributor' | 'podcast_contributor';
 type User = { id: string; name: string; email: string; avatar: string; roles: UserRole[]; fcmTokens?: string[] };
@@ -252,7 +330,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी १५, यूहन्ना ८:३१-५९, भजनसंग्रह ३６, १ तिमोथी ४",
     "लेवी १६, यूहन्ना ९, भजनसंग्रह ३７, १ तिमोथी ५",
     "लेवी १७, यूहन्ना १०:१-२１, भजनसंग्रह ३８, १ तिमोथी ६",
-    "लेवी १८, यूहन्ना १०:२२-４２, भजनसंग्रह ३９, २ तिमोथी १",
+    "लेवी १८, यूहन्ना १०:२२-４२, भजनसंग्रह ३９, २ तिमोथी १",
     "लेवी १९, यूहन्ना ११:१-२７, भजनसंग्रह ४०, २ तिमोथी २",
     "लेवी २०, यूहन्ना ११:२８-５७, भजनसंग्रह ४१, २ तिमोथी ३",
     "लेवी २१, यूहन्ना १२:१-१९, भजनसंग्रह ४２, २ तिमोथी ४",
@@ -544,7 +622,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ३０, यूहन्ना १८, भजनसंग्रह १३３, भजनसंग्रह १३４",
     "२ इतिहास ३１, यूहन्ना १९, भजनसंग्रह १३５, भजनसंग्रह १३６",
     "२ इतिहास ३２, यूहन्ना २०, भजनसंग्रह १३７, भजनसंग्रह १३８",
-    "२ इतिहास ३３, यूहन्ना २１, भजनसंग्रह १३９, भजनसंग्रह १४０",
+    "२ इतिहास ३३, यूहन्ना २１, भजनसंग्रह १३９, भजनसंग्रह १४０",
     "२ इतिहास ३４, प्रेरित १, भजनसंग्रह १४１, भजनसंग्रह १४２",
     "२ इतिहास ३５, प्रेरित २, भजनसंग्रह १४３, भजनसंग्रह १४４",
     "२ इतिहास ३６, प्रेरित ३, भजनसंग्रह १४５, भजनसंग्रह १४６",
@@ -2126,6 +2204,7 @@ const ConversationPage: React.FC<{
     onBack: () => void;
 }> = ({ chat, currentUser, onBack }) => {
     const { db, storage } = useFirebase();
+    const { showToast } = useToast();
     const [messages, setMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState('');
     const [mediaPreviews, setMediaPreviews] = useState<{ url: string; file: File; type: 'image' | 'video' }[]>([]);
@@ -2151,7 +2230,18 @@ const ConversationPage: React.FC<{
         const messagesQuery = query(collection(db, "chats", chat.id, "messages"), orderBy("createdAt", "asc"));
         const unsubscribeMessages = onSnapshot(messagesQuery, (snapshot) => {
             const fetchedMessages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Message));
-            setMessages(fetchedMessages);
+            setMessages(prevMessages => {
+                // This logic preserves the status of failed messages during updates
+                const messageMap = new Map(prevMessages.map(m => [m.id, m]));
+                fetchedMessages.forEach(fm => {
+                    const existing = messageMap.get(fm.id);
+                    // Only update if it's not a failed message or the new one is not failed
+                    if (!existing || existing.status !== 'failed' || fm.status !== 'failed') {
+                         messageMap.set(fm.id, fm);
+                    }
+                });
+                return Array.from(messageMap.values()).sort((a,b) => (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0));
+            });
             setLoading(false);
         });
 
@@ -2183,56 +2273,53 @@ const ConversationPage: React.FC<{
         setMessages(prev => [...prev, optimisticMessage]);
     
         try {
-            const uploadedMedia: MediaItem[] = await Promise.all(
-                mediaFiles.map(async (preview) => {
-                    const originalFile = preview.file;
-                    
-                    // Get file extension from original name
-                    const fileNameParts = originalFile.name.split('.');
-                    const fileExtension = fileNameParts.length > 1 ? fileNameParts.pop()!.toLowerCase() : '';
-    
-                    const safeFileName = `${Date.now()}-${Math.random().toString(36).slice(2, 11)}.${fileExtension}`;
-                    const filePath = `chat_media/${currentChat.id}/${safeFileName}`;
-                    
-                    const mediaRef = ref(storage, filePath);
-                    // Upload the original file directly, no compression
-                    await uploadBytes(mediaRef, originalFile); 
-                    const url = await getDownloadURL(mediaRef);
-                    return { url, type: preview.type, path: filePath };
-                })
-            );
-    
-            const messagePayload: Omit<Message, 'id' | 'tempId' | 'status'> = {
-                senderId: currentUser.id,
-                createdAt: serverTimestamp() as Timestamp,
-                ...(textContent && { content: textContent }),
-                ...(uploadedMedia.length > 0 && { media: uploadedMedia }),
-            };
-    
-            const sentMessageRef = await addDoc(collection(db, "chats", currentChat.id, "messages"), messagePayload);
-            const sentMessageSnap = await getDoc(sentMessageRef);
-            const sentMessage = sentMessageSnap.data();
-    
-            let lastMessageContent = textContent;
-            if (!textContent && uploadedMedia.length > 0) {
-                if (uploadedMedia.length > 1) {
-                    lastMessageContent = '📷 Media';
-                } else {
-                    const item = uploadedMedia[0];
-                    lastMessageContent = item.type === 'video' ? '📹 Video' : '📷 Photo';
-                }
-            }
-            if (!lastMessageContent) lastMessageContent = "Sent a message";
-    
-            await updateDoc(doc(db, "chats", currentChat.id), {
-                lastMessage: { content: lastMessageContent, senderId: currentUser.id, createdAt: sentMessage?.createdAt || serverTimestamp() },
-                lastActivity: sentMessage?.createdAt || serverTimestamp(),
-                [`lastRead.${currentUser.id}`]: sentMessage?.createdAt || serverTimestamp()
+            const uploadPromises = mediaFiles.map(async (preview) => {
+                const originalFile = preview.file;
+                const fileNameParts = originalFile.name.split('.');
+                const fileExtension = fileNameParts.length > 1 ? fileNameParts.pop()!.toLowerCase() : '';
+                const safeFileName = `${Date.now()}-${Math.random().toString(36).slice(2, 11)}.${fileExtension}`;
+                const filePath = `chat_media/${currentChat.id}/${safeFileName}`;
+                
+                const mediaRef = ref(storage, filePath);
+                await uploadBytes(mediaRef, originalFile); 
+                const url = await getDownloadURL(mediaRef);
+                return { url, type: preview.type, path: filePath };
             });
+
+            const results = await Promise.all(uploadPromises);
+            const uploadedMedia: MediaItem[] = results;
+    
+            // Only proceed if there's text or at least one media uploaded
+            if (textContent || uploadedMedia.length > 0) {
+                const messagePayload: Omit<Message, 'id' | 'tempId' | 'status'> = {
+                    senderId: currentUser.id,
+                    createdAt: serverTimestamp() as Timestamp,
+                    ...(textContent && { content: textContent }),
+                    ...(uploadedMedia.length > 0 && { media: uploadedMedia }),
+                };
+        
+                const sentMessageRef = await addDoc(collection(db, "chats", currentChat.id, "messages"), messagePayload);
+                const sentMessageSnap = await getDoc(sentMessageRef);
+                const sentMessage = sentMessageSnap.data();
+        
+                let lastMessageContent = textContent;
+                if (!textContent && uploadedMedia.length > 0) {
+                    if (uploadedMedia.length > 1) { lastMessageContent = '📷 Media'; }
+                    else { lastMessageContent = uploadedMedia[0].type === 'video' ? '📹 Video' : '📷 Photo'; }
+                }
+                if (!lastMessageContent) lastMessageContent = "Sent a message";
+        
+                await updateDoc(doc(db, "chats", currentChat.id), {
+                    lastMessage: { content: lastMessageContent, senderId: currentUser.id, createdAt: sentMessage?.createdAt || serverTimestamp() },
+                    lastActivity: sentMessage?.createdAt || serverTimestamp(),
+                    [`lastRead.${currentUser.id}`]: sentMessage?.createdAt || serverTimestamp()
+                });
+            }
     
         } catch (error) {
             console.error("Error sending message:", error);
             setMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
+            showToast("Error", "Failed to send some media.");
         }
     };
     
@@ -2600,6 +2687,7 @@ const NotificationPanel: React.FC<{
 const App: React.FC = () => {
     const firebaseServices = useFirebase();
     const { auth, db } = firebaseServices;
+    const { showToast } = useToast();
     
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
@@ -2832,25 +2920,30 @@ const App: React.FC = () => {
         requestPermissionAndToken();
 
         const unsubscribeOnMessage = onMessage(messaging, (payload) => {
-             console.log('Message received in foreground. ', payload);
-             const notificationData = payload.notification || {};
-             const dataPayload = payload.data || {};
-
-             const messageBody = dataPayload.body || notificationData.body || 'You have a new notification.';
-             const messageIcon = dataPayload.icon || notificationData.icon || 'notifications';
-
-             const newNotification: Notification = {
-                id: payload.messageId || new Date().toISOString(),
-                icon: messageIcon,
-                message: messageBody,
-                timestamp: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
-             };
-             setNotifications(prev => [newNotification, ...prev]);
+             const data = payload.data;
+             if (data?.chatId && data.chatId === currentChat?.id) {
+                // If user is already in the chat, don't show a toast.
+                return;
+             }
+             
+             showToast(
+                data?.title || 'New Message',
+                data?.body || 'You have a new message.',
+                () => {
+                    if (data?.chatId) {
+                        const targetChat = chats.find(c => c.id === data.chatId);
+                        if (targetChat) {
+                            setCurrentChat(targetChat);
+                            setActivePage('conversation');
+                        }
+                    }
+                }
+             );
              setHasUnreadNotifications(true);
         });
 
         return () => unsubscribeOnMessage();
-    }, [firebaseServices.messaging, currentUser, db]);
+    }, [firebaseServices.messaging, currentUser, db, showToast, chats, currentChat?.id]);
 
 
     const handleCreateChat = async (selectedUsers: User[]): Promise<string | null> => {
@@ -2885,6 +2978,7 @@ const App: React.FC = () => {
     };
 
     const handleBackFromConversation = useCallback(() => {
+        setCurrentChat(null);
         setActivePage('chat');
     }, []);
 
@@ -3041,7 +3135,9 @@ root.render(
     <React.StrictMode>
         <ErrorBoundary>
             <FirebaseContext.Provider value={initializeFirebaseServices()}>
-                <App />
+                <ToastProvider>
+                   <App />
+                </ToastProvider>
             </FirebaseContext.Provider>
         </ErrorBoundary>
     </React.StrictMode>

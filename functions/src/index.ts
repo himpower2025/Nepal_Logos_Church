@@ -238,10 +238,10 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
 
     let messageContent = message.content;
     if (!messageContent) {
-        if(message.media && message.media.length > 0) {
-             messageContent = message.media[0].type === "image" ? "Sent a photo" : "Sent a video";
+        if (message.media && message.media.length > 0) {
+            messageContent = message.media[0].type === "image" ? "Sent a photo" : "Sent a video";
         } else {
-             messageContent = "Sent a message";
+            messageContent = "Sent a message";
         }
     }
 
@@ -266,10 +266,17 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
         const truncatedBody = messageContent.length > 100 ? messageContent.substring(0, 97) + "..." : messageContent;
 
         const isGroupChat = chatData.participantIds.length > 2;
-        const chatName = chatData.name;
 
-        const notificationTitle = isGroupChat && chatName ? `💬 ${chatName}` : `💬 New Message from ${senderName}`;
-        const notificationBody = isGroupChat ? `${senderName}: ${truncatedBody}` : truncatedBody;
+        let notificationTitle: string;
+        let notificationBody: string;
+
+        if (isGroupChat) {
+            notificationTitle = `💬 ${chatData.name || "Group Chat"}`;
+            notificationBody = `${senderName}: ${truncatedBody}`;
+        } else {
+            notificationTitle = `💬 ${senderName}`;
+            notificationBody = truncatedBody;
+        }
 
         const payload: MulticastMessage = {
             notification: {
