@@ -355,7 +355,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ८, प्रेरित २:१-２１, भजनसंग्रह ५６, हिब्रू १०",
     "गन्ती ९, प्रेरित २:२２-４७, भजनसंग्रह ५７, हिब्रू ११",
     "गन्ती १०, प्रेरित ३, भजनसंग्रह ५८, हिब्रू १२",
-    "गन्ती ११, प्रेरित ४:१-２２, भजनसंग्रह ५९, हिब्रू १३",
+    "गन्ती ११, प्रेरित ४:१-２२, भजनसंग्रह ५९, हिब्रू १३",
     "गन्ती १२, प्रेरित ४:२३-３７, भजनसंग्रह ६０, याकूब १",
     "गन्ती १३, प्रेरित ५:१-१८, भजनसंग्रह ६１, याकूब २",
     "गन्ती १४, प्रेरित ५:१९-４２, भजनसंग्रह ६２, याकूब ३",
@@ -572,13 +572,13 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५１",
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
-    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५७",
-    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५८, भजनसंग्रh ५９",
+    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५７",
+    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५９",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
     "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६７",
-    "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६८, भजनसंग्रh ६９",
+    "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६９",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७३",
     "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७४, भजनसंग्रh ७５",
@@ -586,19 +586,19 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७８",
     "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७९",
     "१ इतिहास २०, लूका ३, हितोपदेश १२, भजनसंग्रh ८０",
-    "१ इतिहास २１, लूका ४, हितोपदेश १३, भजनसंग्रh ८１",
+    "१ इतिहास २１, लूका ४, हितोपदेश १३, भजनसंग्रh ८१",
     "१ इतिहास २２, लूका ५, हितोपदेश १४, भजनसंग्रh ८２",
     "१ इतिहास ২৩, लूका ६, हितोपदेश १५, भजनसंग्रh ८３",
     "१ इतिहास २४, लूका ७, हितोपदेश १६, भजनसंग्रh ८４",
     "१ इतिहास २५, लूका ८, हितोपदेश १७, भजनसंग्रh ८５",
     "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रh ८６",
     "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८７",
-    "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८８",
+    "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८८",
     "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८९",
     "२ इतिहास १, लूका १३, हितोपदेश २२, भजनसंग्रh ९０",
     "२ इतिहास २, लूका १४, हितोपदेश ২৩, भजनसंग्रh ९１",
     "२ इतिहास ३, लूका १५, हितोपदेश २४, भजनसंग्रh ९２",
-    "२ इतिहास ४, लूका १६, हितोपदेश २५, भजनसंग्रh ९३",
+    "२ इतिहास ४, लूका १६, हितोपदेश २५, भजनसंग्रh ९３",
     "२ इतिहास ५, लूका १७, हितोपदेश २６, भजनसंग्रh ९４",
     "२ इतिहास ६, लूका १८, हितोपदेश २७, भजनसंग्रh ९５",
     "२ इतिहास ७, लूका १९, हितोपदेश २८, भजनसंग्रh ९６",
@@ -2273,6 +2273,7 @@ const ConversationPage: React.FC<{
     const { db, storage } = useFirebase();
     const { showToast } = useToast();
     const [messages, setMessages] = useState<Message[]>([]);
+    const [optimisticMessages, setOptimisticMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState('');
     const [mediaPreviews, setMediaPreviews] = useState<MediaPreview[]>([]);
     const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
@@ -2284,6 +2285,12 @@ const ConversationPage: React.FC<{
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const allMessages = useMemo(() => 
+        [...messages, ...optimisticMessages]
+            .sort((a, b) => (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0)),
+        [messages, optimisticMessages]
+    );
 
     useEffect(() => {
         if (!db || !chat?.id) return;
@@ -2302,35 +2309,12 @@ const ConversationPage: React.FC<{
                 ...doc.data()
             } as Message));
 
-            setMessages(prevLocalMessages => {
-                const newMessages = [...prevLocalMessages];
-                let changed = false;
+            setMessages(serverMessages);
 
-                // Update or replace local messages with server-confirmed ones
-                serverMessages.forEach(serverMsg => {
-                    const localIndex = serverMsg.tempId ? newMessages.findIndex(m => m.tempId === serverMsg.tempId) : -1;
-                    if (localIndex !== -1) {
-                        // Found a match: Replace the temporary message with the real one
-                        if (newMessages[localIndex].id !== serverMsg.id) {
-                           newMessages[localIndex] = serverMsg;
-                           changed = true;
-                        }
-                    } else {
-                        // Not a temporary message, check if it's a new message from someone else
-                        if (!newMessages.some(m => m.id === serverMsg.id)) {
-                            newMessages.push(serverMsg);
-                            changed = true;
-                        }
-                    }
-                });
-                
-                if (changed) {
-                    newMessages.sort((a, b) => (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0));
-                    return newMessages;
-                }
-                
-                return prevLocalMessages;
-            });
+            // Reconcile optimistic messages
+            const receivedTempIds = new Set(serverMessages.map(m => m.tempId).filter(Boolean));
+            setOptimisticMessages(prev => prev.filter(om => !receivedTempIds.has(om.tempId)));
+
             setLoading(false);
         });
 
@@ -2342,13 +2326,15 @@ const ConversationPage: React.FC<{
 
     useEffect(() => {
         if (!loading) { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }
-    }, [messages, loading]);
+    }, [allMessages, loading]);
 
     const handleSendMessage = async () => {
         const textContent = newMessage.trim();
         const mediaFiles = [...mediaPreviews];
         if (!db || !storage || !currentChat || !currentUser || (!textContent && mediaFiles.length === 0)) return;
     
+        const originalNewMessage = newMessage;
+        const originalMediaPreviews = mediaPreviews;
         setNewMessage('');
         setMediaPreviews([]);
         setUploadProgress({});
@@ -2361,7 +2347,7 @@ const ConversationPage: React.FC<{
                 media: mediaFiles.map(p => ({ url: p.url, type: p.type })),
             }),
         };
-        setMessages(prev => [...prev, optimisticMessage]);
+        setOptimisticMessages(prev => [...prev, optimisticMessage]);
     
         try {
             const uploadAndGetMediaItems = async (): Promise<MediaItem[]> => {
@@ -2404,23 +2390,19 @@ const ConversationPage: React.FC<{
             const uploadedMedia = await uploadAndGetMediaItems();
 
             if (mediaFiles.length > 0 && uploadedMedia.length === 0 && !textContent) {
-                // If all media uploads failed and there's no text, mark the optimistic message as failed.
-                setMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
-                return;
+                // All media uploads failed and there's no text.
+                throw new Error("All media uploads failed.");
             }
             
             const messagePayload = {
                 senderId: currentUser.id, 
                 createdAt: serverTimestamp(),
-                tempId: tempId, // Pass the tempId for reconciliation
+                tempId, // Pass the tempId for reconciliation
                 ...(textContent && { content: textContent }),
                 ...(uploadedMedia.length > 0 && { media: uploadedMedia }),
             };
 
-            // Add the final message to Firestore. The onSnapshot listener will handle the UI update.
             const sentMessageRef = await addDoc(collection(db, "chats", currentChat.id, "messages"), messagePayload);
-            
-            // Update last message on the chat document for the chat list preview
             const sentMessageSnap = await getDoc(sentMessageRef);
             if (sentMessageSnap.exists()) {
                 const sentMessage = sentMessageSnap.data();
@@ -2438,8 +2420,10 @@ const ConversationPage: React.FC<{
 
         } catch (error) {
             console.error("Error sending message:", error);
-            // If any part of the process fails, mark the optimistic message as failed.
-            setMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
+            setOptimisticMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
+            // Restore input fields for user to retry
+            setNewMessage(originalNewMessage);
+            setMediaPreviews(originalMediaPreviews);
         }
     };
     
@@ -2462,7 +2446,7 @@ const ConversationPage: React.FC<{
         setDeletingMessage(null);
 
         if (messageToDelete.tempId) {
-            setMessages(prev => prev.filter(m => m.id !== messageToDelete.id));
+            setOptimisticMessages(prev => prev.filter(m => m.id !== messageToDelete.id));
             return;
         }
 
@@ -2528,7 +2512,7 @@ const ConversationPage: React.FC<{
             <div className="message-list">
                 {loading ? <Loading message="Loading messages..." /> : (
                     <>
-                        {messages.map(msg => (
+                        {allMessages.map(msg => (
                             <MessageBubble 
                                 key={msg.tempId || msg.id} 
                                 message={msg} 
@@ -3147,41 +3131,6 @@ const App: React.FC = () => {
         return <LoginPage />;
     }
     
-    const renderPage = () => {
-        switch(activePage) {
-            case 'news': return <NewsPage currentUser={currentUser} news={news} setNews={setNews} />;
-            case 'worship': return <WorshipPage currentUser={currentUser} liveService={worshipService} pastServices={pastServices} />;
-            case 'podcast': return <PodcastsPage currentUser={currentUser} podcasts={podcasts} setPodcasts={setPodcasts} />;
-            case 'bible': return <BiblePage />;
-            case 'chat': return (
-                <ChatListPage
-                    currentUser={currentUser}
-                    usersMap={usersMap}
-                    chats={chats}
-                    onChatSelect={(chat) => {
-                        setCurrentChat(chat);
-                        setActivePage('conversation');
-                    }}
-                    onCreateChat={handleCreateChat}
-                />
-            );
-            case 'prayer': return <PrayerPage currentUser={currentUser} requests={prayerRequests} setRequests={setPrayerRequests} />;
-            case 'conversation': 
-                if(!currentChat) {
-                    setActivePage('chat'); // safety net
-                    return null;
-                }
-                return (
-                    <ConversationPage 
-                        chat={currentChat} 
-                        currentUser={currentUser} 
-                        onBack={handleBackFromConversation} 
-                    />
-                );
-            default: return <div>Page not found</div>;
-        }
-    };
-
     const isAdmin = currentUser.roles.includes('admin');
 
     return (
@@ -3220,7 +3169,30 @@ const App: React.FC = () => {
             )}
 
             <main className={`main-content ${activePage === 'conversation' ? 'full-height' : ''}`}>
-                {renderPage()}
+                 {activePage === 'news' && <NewsPage currentUser={currentUser} news={news} setNews={setNews} />}
+                 {activePage === 'worship' && <WorshipPage currentUser={currentUser} liveService={worshipService} pastServices={pastServices} />}
+                 {activePage === 'podcast' && <PodcastsPage currentUser={currentUser} podcasts={podcasts} setPodcasts={setPodcasts} />}
+                 {activePage === 'bible' && <BiblePage />}
+                 {activePage === 'chat' && (
+                    <ChatListPage
+                        currentUser={currentUser}
+                        usersMap={usersMap}
+                        chats={chats}
+                        onChatSelect={(chat) => {
+                            setCurrentChat(chat);
+                            setActivePage('conversation');
+                        }}
+                        onCreateChat={handleCreateChat}
+                    />
+                 )}
+                 {activePage === 'prayer' && <PrayerPage currentUser={currentUser} requests={prayerRequests} setRequests={setPrayerRequests} />}
+                 {activePage === 'conversation' && currentChat && (
+                    <ConversationPage 
+                        chat={currentChat} 
+                        currentUser={currentUser} 
+                        onBack={handleBackFromConversation} 
+                    />
+                 )}
             </main>
 
             {activePage !== 'conversation' && (

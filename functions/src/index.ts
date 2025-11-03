@@ -137,18 +137,17 @@ export const onNewsCreated = onDocumentCreated("news/{newsId}", async (event) =>
                 title: "⛪️ New Announcement",
                 body: newsItem.title,
             },
-            data: {
+            data: { // Data for foreground notifications
                 url: link,
             },
             webpush: {
-                headers: {Urgency: "high"},
                 notification: {
                     icon: "/logos-church-new-logo.jpg",
                     tag: `news-${event.params.newsId}`,
+                    data: { // CRITICAL: Data for service worker on notification click
+                        url: link,
+                    },
                 },
-            },
-            android: {
-                priority: "high",
             },
             tokens: allTokens,
         };
@@ -189,14 +188,13 @@ export const onPrayerRequestCreated = onDocumentCreated("prayerRequests/{request
                 url: link,
             },
             webpush: {
-                headers: {Urgency: "high"},
                 notification: {
                     icon: "/logos-church-new-logo.jpg",
                     tag: `prayer-${event.params.requestId}`,
+                    data: {
+                        url: link,
+                    },
                 },
-            },
-            android: {
-                priority: "high",
             },
             tokens: allTokens,
         };
@@ -304,14 +302,13 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
             chatId: chatId, // Pass for in-app handling
         },
         webpush: {
-            headers: {Urgency: "high"},
             notification: {
                 icon: "/logos-church-new-logo.jpg",
                 tag: `chat-${chatId}`,
+                data: {
+                    url: link,
+                },
             },
-        },
-        android: {
-            priority: "high",
         },
         tokens: uniqueTokens,
     };
