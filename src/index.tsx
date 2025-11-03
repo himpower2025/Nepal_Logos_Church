@@ -360,12 +360,12 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १३, प्रेरित ५:१-१८, भजनसंग्रह ६１, याकूब २",
     "गन्ती १४, प्रेरित ५:१९-４２, भजनसंग्रह ६２, याकूब ३",
     "गन्ती १५, प्रेरित ६, भजनसंग्रह ६３, याकूब ४",
-    "गन्ती १६, प्रेरित ७:१-２१, भजनसंग्रह ६４, याकूब ५",
+    "गन्ती १६, प्रेरित ७:१-२१, भजनसंग्रह ६４, याकוב ५",
     "गन्ती १७, प्रेरित ७:२２-४३, भजनसंग्रह ६５, १ पत्रुस १",
     "गन्ती १८, प्रेरित ७:४４-६०, भजनसंग्रह ६６, १ पत्रुस २",
     "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६７, १ पत्रुस ३",
     "गन्ती २०, प्रेरित ८:２６-４०, भजनसंग्रह ६８, १ पत्रुस ४",
-    "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६९, १ पत्रुस ५",
+    "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६９, १ पत्रुस ५",
     "गन्ती २２, प्रेरित ९:२२-４३, भजनसंग्रह ७０, २ पत्रुस १",
     "गन्ती ২৩, प्रेरित १०:१-२३, भजनसंग्रह ७１, २ पत्रुस २",
     "गन्ती २४, प्रेरित १०:२４-４８, भजनसंग्रह ७２, २ पत्रुस ३",
@@ -569,16 +569,16 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास १, मर्कूस १, भजनसंग्रh ४４, भजनसंग्रh ४５",
     "१ इतिहास २, मर्कूस २, भजनसंग्रh ৪६, भजनसंग्रh ४७",
     "१ इतिहास ३, मर्कूस ३, भजनसंग्रh ४८, भजनसंग्रh ४९",
-    "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५１",
+    "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५१",
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५५",
     "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५७",
-    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५९",
+    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५८, भजनसंग्रh ५९",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
-    "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६７",
-    "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६９",
+    "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६७",
+    "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६८, भजनसंग्रh ६９",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७१",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७३",
     "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
@@ -602,7 +602,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ५, लूका १७, हितोपदेश २６, भजनसंग्रh ९４",
     "२ इतिहास ६, लूका १८, हितोपदेश २७, भजनसंग्रh ९５",
     "२ इतिहास ७, लूका १९, हितोपदेश २८, भजनसंग्रh ९６",
-    "२ इतिहास ८, लूका ۲۰, हितोपदेश २९, भजनसंग्रh ९７",
+    "२ इतिहास ८, लूका २०, हितोपदेश २९, भजनसंग्रh ९７",
     "२ इतिहास ९, लूका २१, हितोपदेश ३０, भजनसंग्रh ९８",
     "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रh ९９",
     "२ इतिहास ११, लूका ২৩, भजनसंग्रh १०४, भजनसंग्रh १००",
@@ -615,7 +615,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १८, यूहन्ना ६, भजनसंग्रh १１４, भजनसंग्रh ११५",
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１６, भजनसंग्रh ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
-    "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６४, भजनसंग्रh ११९:６५-९६",
+    "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６४, भजनसंग्रh ११९:६५-९६",
     "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१२८, भजनसंग्रh ११९:१२९-१५２",
     "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७६, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
@@ -2285,6 +2285,7 @@ const ConversationPage: React.FC<{
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const messageInputRef = useRef<HTMLInputElement>(null);
 
     const allMessages = useMemo(() => 
         [...messages, ...optimisticMessages]
@@ -2337,6 +2338,8 @@ const ConversationPage: React.FC<{
         setNewMessage('');
         setMediaPreviews([]);
         setUploadProgress({});
+        // Refocus the input to keep the keyboard up after sending
+        messageInputRef.current?.focus();
     
         // 2. Create a unique temporary ID for this message.
         const tempId = `temp_${Date.now()}`;
@@ -2535,6 +2538,7 @@ const ConversationPage: React.FC<{
                         <span className="material-symbols-outlined">add_photo_alternate</span>
                     </button>
                     <input
+                        ref={messageInputRef}
                         type="text" placeholder="Type a message..." value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
@@ -3202,6 +3206,50 @@ const App: React.FC = () => {
     
     const isAdmin = currentUser.roles.includes('admin');
 
+    const renderPage = () => {
+        switch (activePage) {
+            case 'news':
+                return <NewsPage currentUser={currentUser} news={news} setNews={setNews} />;
+            case 'worship':
+                return <WorshipPage currentUser={currentUser} liveService={worshipService} pastServices={pastServices} />;
+            case 'podcast':
+                return <PodcastsPage currentUser={currentUser} podcasts={podcasts} setPodcasts={setPodcasts} />;
+            case 'bible':
+                return <BiblePage />;
+            case 'chat':
+                return (
+                    <ChatListPage
+                        currentUser={currentUser}
+                        usersMap={usersMap}
+                        chats={chats}
+                        onChatSelect={(chat) => {
+                            setCurrentChat(chat);
+                            setActivePage('conversation');
+                        }}
+                        onCreateChat={handleCreateChat}
+                    />
+                );
+            case 'prayer':
+                return <PrayerPage currentUser={currentUser} requests={prayerRequests} setRequests={setPrayerRequests} />;
+            case 'conversation':
+                 if (currentChat) {
+                    return (
+                        <ConversationPage 
+                            key={currentChat.id} // Add key to ensure it remounts on chat change, but not on parent re-render
+                            chat={currentChat} 
+                            currentUser={currentUser} 
+                            onBack={handleBackFromConversation} 
+                        />
+                    );
+                 }
+                 // Fallback if currentChat is null
+                 handleBackFromConversation();
+                 return null;
+            default:
+                return <NewsPage currentUser={currentUser} news={news} setNews={setNews} />;
+        }
+    };
+
     return (
         <div className="app-container">
             {notificationPermissionStatus === 'denied' && activePage !== 'conversation' && (
@@ -3238,30 +3286,7 @@ const App: React.FC = () => {
             )}
 
             <main className={`main-content ${activePage === 'conversation' ? 'full-height' : ''}`}>
-                {activePage === 'news' && <NewsPage currentUser={currentUser} news={news} setNews={setNews} />}
-                {activePage === 'worship' && <WorshipPage currentUser={currentUser} liveService={worshipService} pastServices={pastServices} />}
-                {activePage === 'podcast' && <PodcastsPage currentUser={currentUser} podcasts={podcasts} setPodcasts={setPodcasts} />}
-                {activePage === 'bible' && <BiblePage />}
-                {activePage === 'chat' && (
-                    <ChatListPage
-                        currentUser={currentUser}
-                        usersMap={usersMap}
-                        chats={chats}
-                        onChatSelect={(chat) => {
-                            setCurrentChat(chat);
-                            setActivePage('conversation');
-                        }}
-                        onCreateChat={handleCreateChat}
-                    />
-                )}
-                {activePage === 'prayer' && <PrayerPage currentUser={currentUser} requests={prayerRequests} setRequests={setPrayerRequests} />}
-                {activePage === 'conversation' && currentChat && (
-                    <ConversationPage 
-                        chat={currentChat} 
-                        currentUser={currentUser} 
-                        onBack={handleBackFromConversation} 
-                    />
-                )}
+                {renderPage()}
             </main>
 
             {activePage !== 'conversation' && (
