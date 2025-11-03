@@ -46,33 +46,33 @@ self.addEventListener('fetch', event => {
   );
 });
 
-// --- PUSH NOTIFICATION HANDLING ---
+// --- PUSH NOTIFICATION HANDLING (DATA-ONLY PAYLOAD) ---
 
 self.addEventListener('push', event => {
   console.log('[Service Worker] Push Received.');
   
+  if (!event.data) {
+    console.warn('Push event received but no data was present.');
+    return;
+  }
+
   let payload;
   try {
     payload = event.data.json();
   } catch (e) {
     console.error('Could not parse push notification payload as JSON.', e);
-    // If the payload isn't JSON, we can't process it.
-    // The browser might have already shown a basic notification if it was sent with a 'notification' block.
     return;
   }
   
-  // The backend now sends a structured payload with both notification and data
-  const { notification, data } = payload;
-  
-  const title = notification?.title || 'Logos Church';
+  const title = payload.title || 'Logos Church';
   const options = {
-    body: notification?.body || 'You have a new message.',
-    icon: notification?.icon || '/logos-church-new-logo.jpg',
+    body: payload.body || 'You have a new message.',
+    icon: payload.icon || '/logos-church-new-logo.jpg',
     badge: '/logos-church-new-logo.jpg', // For Android
-    tag: notification?.tag || 'logos-church-notification',
+    tag: payload.tag || 'logos-church-notification',
     data: {
-      // Pass the URL from the 'data' payload to the notification's data for the click event
-      url: data?.url || '/',
+      // Pass the URL from the payload to the notification's data for the click event
+      url: payload.url || '/',
     },
   };
 

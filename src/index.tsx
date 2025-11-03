@@ -326,7 +326,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी ६, यूहन्ना ४:३१-５４, भजनसंग्रह २७, १ थिस्सलोनिकी ३",
     "लेवी ७, यूहन्ना ५:१-२३, भजनसंग्रह २८, १ थिस्सलोनिकी ४",
     "लेवी ८, यूहन्ना ५:２４-４७, भजनसंग्रह २९, १ थिस्सलोनिकी ५",
-    "लेवी ९, यूहन्ना ६:१-२１, भजनसंग्रह ३०, २ थिस्सलोनिकी १",
+    "लेवी ९, यूहन्ना ६:१-२１, भजनसंग्रह ३０, २ थिस्सलोनिकी १",
     "लेवी १०, यूहन्ना ६:२２-４०, भजनसंग्रह ३１, २ थिस्सलोनिकी २",
     "लेवी ११, यूहन्ना ६:४१-७１, भजनसंग्रह ३２, २ थिस्सलोनिकी ३",
     "लेवी १२, यूहन्ना ७:१-३１, भजनसंग्रह ३३, १ तिमोथी १",
@@ -352,8 +352,8 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ५, यूहन्ना २०, भजनसंग्रह ५३, हिब्रू ७",
     "गन्ती ६, यूहन्ना २１, भजनसंग्रह ५４, हिब्रू ८",
     "गन्ती ७, प्रेरित १, भजनसंग्रह ५５, हिब्रू ९",
-    "गन्ती ८, प्रेरित २:१-２１, भजनसंग्रह ५६, हिब्रू १०",
-    "गन्ती ९, प्रेरित २:२２-４७, भजनसंग्रह ५७, हिब्रू ११",
+    "गन्ती ८, प्रेरित २:१-２１, भजनसंग्रह ५６, हिब्रू १०",
+    "गन्ती ९, प्रेरित २:२２-４७, भजनसंग्रह ५７, हिब्रू ११",
     "गन्ती १०, प्रेरित ३, भजनसंग्रह ५८, हिब्रू १२",
     "गन्ती ११, प्रेरित ४:१-２２, भजनसंग्रह ५९, हिब्रू १३",
     "गन्ती १२, प्रेरित ४:२३-３７, भजनसंग्रह ६０, याकूब १",
@@ -496,7 +496,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ शमूएल ३０, हिब्रू १२, यर्मिया ५１, इजकिएल २४",
     "१ शमूएल ३１, हिब्रू १३, यर्मिया ५２, इजकिएल २५",
     "२ शमूएल १, याकूब १, दानिएल १, इजकिएल २６",
-    "२ शमूएल २, याकूब २, दानिएल २, इजकिएल २７",
+    "२ शमूएल २, याकוב २, दानिएल २, इजकिएल २７",
     "२ शमूएल ३, याकूब ३, दानिएल ३, इजकिएल २८",
     "२ शमूएल ४, याकूब ४, दानिएल ४, इजकिएल २९",
     "२ शमूएल ५, याकूब ५, दानिएल ५, इजकिएल ३０",
@@ -593,7 +593,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २५, लूका ८, हितोपदेश १७, भजनसंग्रh ८５",
     "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रh ८６",
     "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८７",
-    "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८８",
+    "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८८",
     "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८９",
     "२ इतिहास १, लूका १३, हितोपदेश २२, भजनसंग्रh ९０",
     "२ इतिहास २, लूका १४, हितोपदेश ২৩, भजनसंग्रh ९１",
@@ -607,7 +607,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रh ९９",
     "२ इतिहास ११, लूका ২৩, भजनसंग्रh १०४, भजनसंग्रh १००",
     "२ इतिहास १२, लूका २४, भजनसंग्रh १०५, भजनसंग्रh १०१",
-    "२ इतिहास १३, यूहन्ना १, भजनसंग्रh १०６, भजनसंग्रh १०२",
+    "२ इतिहास १३, यूहन्ना १, भजनसंग्रh १०６, भजनसंग्रh १०２",
     "२ इतिहास १४, यूहन्ना २, भजनसंग्रh १०７, भजनसंग्रh १०३",
     "२ इतिहास १५, यूहन्ना ३, भजनसंग्रh १०८, भजनसंग्रh १०९",
     "२ इतिहास १६, यूहन्ना ४, भजनसंग्रh १１０, भजनसंग्रh ११１",
@@ -616,13 +616,13 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１６, भजनसंग्रh ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
     "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６४, भजनसंग्रh ११९:६५-९६",
-    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१２８, भजनसंग्रh ११९:१２९-१५２",
+    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१２८, भजनसंग्रh ११९:१２९-१५２",
     "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७６, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रh १२３, भजनसंग्रh १२４",
     "२ इतिहास २６, यूहन्ना १४, भजनसंग्रh १२５, भजनसंग्रh १२６",
     "२ इतिहास २७, यूहन्ना १५, भजनसंग्रh १२７, भजनसंग्रh १२８",
-    "२ इतिहास २८, यूहन्ना १६, भजनसंग्रh १२９, भजनसंग्रh १३０",
+    "२ इतिहास २८, यूहन्ना १६, भजनसंग्रh १२९, भजनसंग्रh १३０",
     "२ इतिहास २९, यूहन्ना १७, भजनसंग्रh १३１, भजनसंग्रh १३２",
     "२ इतिहास ३０, यूहन्ना १८, भजनसंग्रh १३３, भजनसंग्रh १३４",
     "२ इतिहास ३１, यूहन्ना १९, भजनसंग्रh १३５, भजनसंग्रh १३６",
@@ -2297,48 +2297,28 @@ const ConversationPage: React.FC<{
 
         const messagesQuery = query(collection(db, "chats", chat.id, "messages"), orderBy("createdAt", "asc"));
         const unsubscribeMessages = onSnapshot(messagesQuery, (snapshot) => {
+            const serverMessages = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            } as Message));
+
             setMessages(prevMessages => {
-                const updatedMessages = [...prevMessages];
-                let hasChanges = false;
-        
-                snapshot.docChanges().forEach(change => {
-                    hasChanges = true;
-                    const docData = change.doc.data() as Message & { tempId?: string }; // Expect tempId
-                    const message: Message = { 
-                        id: change.doc.id,
-                        senderId: docData.senderId,
-                        createdAt: docData.createdAt,
-                        content: docData.content,
-                        media: docData.media,
-                        tempId: docData.tempId,
-                    };
-
-                    if (change.type === 'added') {
-                        const optimisticIndex = docData.tempId ? updatedMessages.findIndex(m => m.id === docData.tempId) : -1;
-
-                        if (optimisticIndex !== -1) {
-                            updatedMessages[optimisticIndex] = message; // Replace
-                        } else if (!updatedMessages.some(m => m.id === message.id)) {
-                            updatedMessages.push(message); // Add
-                        }
-                    }
-                    if (change.type === 'modified') {
-                        const index = updatedMessages.findIndex(m => m.id === message.id);
-                        if (index !== -1) updatedMessages[index] = message;
-                    }
-                    if (change.type === 'removed') {
-                        const index = updatedMessages.findIndex(m => m.id === message.id);
-                        if (index !== -1) updatedMessages.splice(index, 1);
-                    }
-                });
+                // Find optimistic messages in the previous state that are not yet confirmed on the server
+                const optimisticMessages = prevMessages.filter(
+                    localMsg => localMsg.status === 'uploading' && !serverMessages.some(serverMsg => serverMsg.tempId === localMsg.tempId)
+                );
                 
-                if (hasChanges) {
-                     return updatedMessages.sort((a, b) => (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0));
-                }
-                return prevMessages;
+                // The new state is the source of truth from the server plus any pending optimistic messages
+                const finalMessages = [...serverMessages, ...optimisticMessages];
+                
+                // Sort to ensure chronological order, as optimistic messages have client-side timestamps
+                finalMessages.sort((a, b) => (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0));
+                
+                return finalMessages;
             });
             setLoading(false);
         });
+
 
         updateDoc(chatRef, { [`lastRead.${currentUser.id}`]: Timestamp.now() }).catch(err => console.error("Error updating lastRead:", err));
         
@@ -2409,6 +2389,7 @@ const ConversationPage: React.FC<{
             const uploadedMedia = await uploadAndGetMediaItems();
 
             if (mediaFiles.length > 0 && uploadedMedia.length === 0 && !textContent) {
+                // If all media uploads failed and there's no text, mark the optimistic message as failed.
                 setMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
                 return;
             }
@@ -2421,9 +2402,10 @@ const ConversationPage: React.FC<{
                 ...(uploadedMedia.length > 0 && { media: uploadedMedia }),
             };
 
+            // Add the final message to Firestore. The onSnapshot listener will handle the UI update.
             const sentMessageRef = await addDoc(collection(db, "chats", currentChat.id, "messages"), messagePayload);
             
-            // onSnapshot will handle UI updates. Update last message on chat doc.
+            // Update last message on the chat document for the chat list preview
             const sentMessageSnap = await getDoc(sentMessageRef);
             if (sentMessageSnap.exists()) {
                 const sentMessage = sentMessageSnap.data();
@@ -2441,6 +2423,7 @@ const ConversationPage: React.FC<{
 
         } catch (error) {
             console.error("Error sending message:", error);
+            // If any part of the process fails, mark the optimistic message as failed.
             setMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
         }
     };
@@ -3073,8 +3056,8 @@ const App: React.FC = () => {
              }
              
              showToast(
-                payload.notification?.title || 'New Message',
-                payload.notification?.body || 'You have a new message.',
+                data?.title || 'New Message',
+                data?.body || 'You have a new message.',
                 () => {
                     if (data?.url) {
                         const url = new URL(data.url, window.location.origin);
