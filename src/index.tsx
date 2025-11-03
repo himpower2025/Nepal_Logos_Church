@@ -35,7 +35,7 @@ import {
     limit,
     increment
 } from "firebase/firestore";
-import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
+import { ref, getDownloadURL, uploadBytesResumable, deleteObject, type UploadTask } from "firebase/storage";
 import { getToken, onMessage } from "firebase/messaging";
 
 
@@ -189,6 +189,13 @@ type PastWorshipService = {
     createdAt: Timestamp;
 };
 
+// --- Upload-specific type ---
+type MediaPreview = {
+    url: string;
+    file: File;
+    type: 'image' | 'video';
+    id: string; // Unique ID for tracking progress
+};
 
 // --- Static Config & Data ---
 const CHURCH: Church = {
@@ -330,7 +337,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी १५, यूहन्ना ८:३१-५९, भजनसंग्रह ३６, १ तिमोथी ४",
     "लेवी १६, यूहन्ना ९, भजनसंग्रह ३７, १ तिमोथी ५",
     "लेवी १७, यूहन्ना १०:१-२１, भजनसंग्रह ३８, १ तिमोथी ६",
-    "लेवी १८, यूहन्ना १०:२२-４२, भजनसंग्रह ३９, २ तिमोथी १",
+    "लेवी १८, यूहन्ना १०:२२-４２, भजनसंग्रह ३９, २ तिमोथी १",
     "लेवी १९, यूहन्ना ११:१-२７, भजनसंग्रह ४०, २ तिमोथी २",
     "लेवी २०, यूहन्ना ११:२８-５७, भजनसंग्रह ४१, २ तिमोथी ३",
     "लेवी २१, यूहन्ना १२:१-१९, भजनसंग्रह ४２, २ तिमोथी ४",
@@ -379,7 +386,7 @@ const MCCHEYNE_READING_PLAN = [
     "व्यवस्था १, प्रेरित २०:१-१６, हितोपदेश ८, प्रकाश ५",
     "व्यवस्था २, प्रेरित २०:१７-३८, हितोपदेश ९, प्रकाश ६",
     "व्यवस्था ३, प्रेरित २१:१-१८, उपदेशक १, प्रकाश ७",
-    "व्यवस्था ४, प्रेरित २१:१९-４३, उपदेशक २, प्रकाश ८",
+    "व्यवस्था ४, प्रेरित २१:१९-４３, उपदेशक २, प्रकाश ८",
     "व्यवस्था ५, प्रेरित २２, उपदेशक ३, प्रकाश ९",
     "व्यवस्था ६, प्रेरित ২৩, उपदेशक ४, प्रकाश १०",
     "व्यवस्था ७, प्रेरित २४, उपदेशक ५, प्रकाश ११",
@@ -559,26 +566,26 @@ const MCCHEYNE_READING_PLAN = [
     "२ राजा २१, मत्ती २४, भजनसंग्रh ३４, भजनसंग्रh ३５",
     "२ राजा २２, मत्ती २५, भजनसंग्रh ३６, भजनसंग्रh ३７",
     "२ राजा ২৩, मत्ती २６, भजनसंग्रh ३८, भजनसंग्रh ३９",
-    "२ राजा २४, मत्ती २７, भजनसंग्रh ४०, भजनसंग्रh ४１",
-    "२ राजा २५, मत्ती २８, भजनसंग्रh ४２, भजनसंग्रh ४３",
+    "२ राजा २४, मत्ती २७, भजनसंग्रh ४०, भजनसंग्रh ४１",
+    "२ राजा २५, मत्ती २８, भजनसंग्रh ४२, भजनसंग्रh ४३",
     "१ इतिहास १, मर्कूस १, भजनसंग्रh ४４, भजनसंग्रh ४５",
     "१ इतिहास २, मर्कूस २, भजनसंग्रh ४６, भजनसंग्रh ४７",
     "१ इतिहास ३, मर्कूस ३, भजनसंग्रh ४８, भजनसंग्रh ४９",
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५１",
-    "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५３",
+    "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
     "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५７",
     "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५９",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
-    "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
+    "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६४, भजनसंग्रh ६５",
     "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६７",
-    "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६９",
-    "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७१",
+    "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६९",
+    "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७３",
-    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
+    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७५",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
-    "१ इतिहास १८, लूका १:३९-８０, हितोपदेश १०, भजनसंग्रh ७８",
+    "१ इतिहास १८, लूका १:३９-８０, हितोपदेश १०, भजनसंग्रh ७８",
     "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७９",
     "१ इतिहास २०, लूका ३, हितोपदेश १२, भजनसंग्रh ८０",
     "१ इतिहास २１, लूका ४, हितोपदेश १३, भजनसंग्रh ८１",
@@ -589,34 +596,34 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रh ८６",
     "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८７",
     "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८８",
-    "१ इतिहास २९, लूका १२, हितोपदेश २１, भजनसंग्रh ८９",
+    "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८９",
     "२ इतिहास १, लूका १३, हितोपदेश २２, भजनसंग्रh ९０",
     "२ इतिहास २, लूका १४, हितोपदेश ২৩, भजनसंग्रh ९１",
     "२ इतिहास ३, लूका १५, हितोपदेश २४, भजनसंग्रh ९２",
     "२ इतिहास ४, लूका १६, हितोपदेश २५, भजनसंग्रh ९３",
     "२ इतिहास ५, लूका १७, हितोपदेश २６, भजनसंग्रh ९４",
-    "२ इतिहास ६, लूका १८, हितोपदेश २７, भजनसंग्रh ९５",
+    "२ इतिहास ६, लूका १८, हितोपदेश २७, भजनसंग्रh ९５",
     "२ इतिहास ७, लूका १९, हितोपदेश २８, भजनसंग्रh ९６",
-    "२ इतिहास ८, लूका २०, हितोपदेश २९, भजनसंग्रh ९７",
+    "२ इतिहास ८, लूका २०, हितोपदेश २९, भजनसंग्रh ९७",
     "२ इतिहास ९, लूका २１, हितोपदेश ३０, भजनसंग्रh ९８",
     "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रh ९９",
     "२ इतिहास ११, लूका ২৩, भजनसंग्रh १०४, भजनसंग्रh १००",
-    "२ इतिहास १२, लूका २४, भजनसंग्रh १०５, भजनसंग्रh १०१",
-    "२ इतिहास १३, यूहन्ना १, भजनसंग्रh १०６, भजनसंग्रh १०२",
+    "२ इतिहास १२, लूका २४, भजनसंग्रh १०५, भजनसंग्रh १०१",
+    "२ इतिहास १३, यूहन्ना १, भजनसंग्रh १०６, भजनसंग्रh १०２",
     "२ इतिहास १४, यूहन्ना २, भजनसंग्रh १०７, भजनसंग्रh १०३",
     "२ इतिहास १५, यूहन्ना ३, भजनसंग्रh १०८, भजनसंग्रh १०९",
     "२ इतिहास १६, यूहन्ना ४, भजनसंग्रh १１０, भजनसंग्रh ११１",
     "२ इतिहास १७, यूहन्ना ५, भजनसंग्रh १１２, भजनसंग्रh ११३",
     "२ इतिहास १८, यूहन्ना ६, भजनसंग्रh १１４, भजनसंग्रh ११５",
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１６, भजनसंग्रh ११७",
-    "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३２",
-    "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６４, भजनसंग्रh ११९:६५-९６",
+    "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
+    "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６४, भजनसंग्रh ११९:६५-९６",
     "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१２８, भजनसंग्रh ११९:१２९-१５２",
-    "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१５３-१７６, भजनसंग्रh १२०",
+    "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१５३-१７६, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रh १२３, भजनसंग्रh १२４",
     "२ इतिहास २６, यूहन्ना १४, भजनसंग्रh १२５, भजनसंग्रh १२６",
-    "२ इतिहास २७, यूहन्ना १५, भजनसंग्रh १२７, भजनसंग्रh १२８",
+    "२ इतिहास २７, यूहन्ना १५, भजनसंग्रh १२７, भजनसंग्रh १२８",
     "२ इतिहास २८, यूहन्ना १६, भजनसंग्रh १२９, भजनसंग्रh १३０",
     "२ इतिहास २९, यूहन्ना १७, भजनसंग्रh १३１, भजनसंग्रh १३２",
     "२ इतिहास ३０, यूहन्ना १८, भजनसंग्रh १३３, भजनसंग्रh १३４",
@@ -686,6 +693,66 @@ const getEmbedUrl = (url: string, muted: boolean = false): string | null => {
         console.error("Error parsing stream URL:", url, error);
         return null;
     }
+};
+
+/**
+ * Compresses an image file before uploading.
+ * @param {File} file The image file to compress.
+ * @returns {Promise<File>} A promise that resolves with the compressed image file.
+ */
+const compressImage = (file: File): Promise<File> => {
+    return new Promise((resolve, reject) => {
+        const MAX_WIDTH = 1280;
+        const MAX_HEIGHT = 1280;
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target?.result as string;
+            img.onload = () => {
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                } else {
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+                }
+
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                if (!ctx) {
+                    return reject(new Error("Could not get canvas context"));
+                }
+                ctx.drawImage(img, 0, 0, width, height);
+                canvas.toBlob(
+                    (blob) => {
+                        if (blob) {
+                            const newFile = new File([blob], file.name, {
+                                type: 'image/jpeg',
+                                lastModified: Date.now(),
+                            });
+                            resolve(newFile);
+                        } else {
+                            reject(new Error("Canvas to Blob conversion failed"));
+                        }
+                    },
+                    'image/jpeg',
+                    0.85 // Quality setting
+                );
+            };
+            img.onerror = (error) => reject(error);
+        };
+        reader.onerror = (error) => reject(error);
+    });
 };
 
 
@@ -1180,8 +1247,9 @@ const NewsPage: React.FC<{
                             await deleteObject(ref(storage, editingNews.image));
                         } catch (error) { console.warn("Could not delete old news image:", error); }
                     }
-                    const imageRef = ref(storage, `news/${Date.now()}_${imageFile.name}`);
-                    await uploadBytes(imageRef, imageFile);
+                    const compressedFile = await compressImage(imageFile);
+                    const imageRef = ref(storage, `news/${Date.now()}_${compressedFile.name}`);
+                    await uploadBytesResumable(imageRef, compressedFile);
                     finalImageUrl = await getDownloadURL(imageRef);
                 }
     
@@ -1358,7 +1426,7 @@ const PodcastsPage: React.FC<{
         const performSave = async () => {
             try {
                 const audioRef = ref(storage, `podcasts/${Date.now()}_${audioFile.name}`);
-                await uploadBytes(audioRef, audioFile);
+                await uploadBytesResumable(audioRef, audioFile);
                 const audioUrl = await getDownloadURL(audioRef);
     
                 await addDoc(collection(db, "podcasts"), {
@@ -1653,8 +1721,9 @@ const PrayerPage: React.FC<{
                     if (editingRequest?.image) {
                         try { await deleteObject(ref(storage, editingRequest.image)); } catch (e) { console.warn("Old image delete failed", e); }
                     }
-                    const imageRef = ref(storage, `prayers/${Date.now()}_${imageFile.name}`);
-                    await uploadBytes(imageRef, imageFile);
+                    const compressedFile = await compressImage(imageFile);
+                    const imageRef = ref(storage, `prayers/${Date.now()}_${compressedFile.name}`);
+                    await uploadBytesResumable(imageRef, compressedFile);
                     finalImageUrl = await getDownloadURL(imageRef);
                 }
     
@@ -2207,7 +2276,8 @@ const ConversationPage: React.FC<{
     const { showToast } = useToast();
     const [messages, setMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState('');
-    const [mediaPreviews, setMediaPreviews] = useState<{ url: string; file: File; type: 'image' | 'video' }[]>([]);
+    const [mediaPreviews, setMediaPreviews] = useState<MediaPreview[]>([]);
+    const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
     const [currentChat, setCurrentChat] = useState<Chat | null>(chat);
     const [loading, setLoading] = useState(true);
     const [deletingMessage, setDeletingMessage] = useState<Message | null>(null);
@@ -2231,11 +2301,9 @@ const ConversationPage: React.FC<{
         const unsubscribeMessages = onSnapshot(messagesQuery, (snapshot) => {
             const fetchedMessages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Message));
             setMessages(prevMessages => {
-                // This logic preserves the status of failed messages during updates
                 const messageMap = new Map(prevMessages.map(m => [m.id, m]));
                 fetchedMessages.forEach(fm => {
                     const existing = messageMap.get(fm.id);
-                    // Only update if it's not a failed message or the new one is not failed
                     if (!existing || existing.status !== 'failed' || fm.status !== 'failed') {
                          messageMap.set(fm.id, fm);
                     }
@@ -2261,6 +2329,7 @@ const ConversationPage: React.FC<{
     
         setNewMessage('');
         setMediaPreviews([]);
+        setUploadProgress({});
     
         const tempId = `temp_${Date.now()}`;
         const optimisticMessage: Message = {
@@ -2272,50 +2341,62 @@ const ConversationPage: React.FC<{
         };
         setMessages(prev => [...prev, optimisticMessage]);
     
-        let uploadedMedia: MediaItem[] = [];
-        let failedUploadCount = 0;
-    
-        if (mediaFiles.length > 0) {
+        const uploadAndGetMediaItems = async (): Promise<MediaItem[]> => {
             const uploadPromises = mediaFiles.map(async (preview) => {
-                const originalFile = preview.file;
-                const fileNameParts = originalFile.name.split('.');
-                const fileExtension = fileNameParts.length > 1 ? fileNameParts.pop()!.toLowerCase() : '';
-                const safeFileName = `${Date.now()}-${Math.random().toString(36).slice(2, 11)}.${fileExtension}`;
-                const filePath = `chat_media/${currentChat.id}/${safeFileName}`;
-    
-                const mediaRef = ref(storage, filePath);
-                await uploadBytes(mediaRef, originalFile);
-                const url = await getDownloadURL(mediaRef);
-                return { url, type: preview.type, path: filePath };
-            });
-    
-            const results = await Promise.allSettled(uploadPromises);
-    
-            results.forEach(result => {
-                if (result.status === 'fulfilled') {
-                    uploadedMedia.push(result.value);
-                } else {
-                    failedUploadCount++;
-                    console.error("A media file failed to upload:", result.reason);
+                try {
+                    const fileToUpload = preview.type === 'image'
+                        ? await compressImage(preview.file)
+                        : preview.file;
+                    
+                    const filePath = `chat_media/${currentChat.id}/${Date.now()}_${fileToUpload.name}`;
+                    const mediaRef = ref(storage, filePath);
+                    const uploadTask: UploadTask = uploadBytesResumable(mediaRef, fileToUpload);
+
+                    return new Promise<MediaItem>((resolve, reject) => {
+                        uploadTask.on('state_changed',
+                            (snapshot) => {
+                                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                                setUploadProgress(prev => ({ ...prev, [preview.id]: progress }));
+                            },
+                            (error) => {
+                                console.error(`Upload failed for ${preview.id}:`, error);
+                                reject(error);
+                            },
+                            async () => {
+                                const url = await getDownloadURL(uploadTask.snapshot.ref);
+                                resolve({ url, type: preview.type, path: filePath });
+                            }
+                        );
+                    });
+                } catch (error) {
+                    console.error(`Error processing file ${preview.id}:`, error);
+                    return Promise.reject(error);
                 }
             });
-        }
-    
-        if (failedUploadCount > 0) {
-            showToast("Upload Error", `미디어 파일 ${failedUploadCount}개 전송에 실패했습니다.`);
-        }
-    
-        // If there's nothing to send (no text and all uploads failed), mark the optimistic message as 'failed' and stop.
-        if (!textContent && uploadedMedia.length === 0 && mediaFiles.length > 0) {
+            
+            const results = await Promise.allSettled(uploadPromises);
+            const successfulUploads = results
+                .filter(res => res.status === 'fulfilled')
+                .map(res => (res as PromiseFulfilledResult<MediaItem>).value);
+            
+            const failedCount = results.length - successfulUploads.length;
+            if (failedCount > 0) {
+                 showToast("Upload Error", `Failed to send ${failedCount} media file(s).`);
+            }
+            return successfulUploads;
+        };
+        
+        const uploadedMedia = await uploadAndGetMediaItems();
+
+        if (!textContent && uploadedMedia.length === 0) {
             setMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
             return;
         }
-    
+
         try {
             if (textContent || uploadedMedia.length > 0) {
                 const messagePayload: Omit<Message, 'id' | 'tempId' | 'status'> = {
-                    senderId: currentUser.id,
-                    createdAt: serverTimestamp() as Timestamp,
+                    senderId: currentUser.id, createdAt: serverTimestamp() as Timestamp,
                     ...(textContent && { content: textContent }),
                     ...(uploadedMedia.length > 0 && { media: uploadedMedia }),
                 };
@@ -2326,8 +2407,7 @@ const ConversationPage: React.FC<{
     
                 let lastMessageContent = textContent;
                 if (!textContent && uploadedMedia.length > 0) {
-                    if (uploadedMedia.length > 1) { lastMessageContent = '📷 Media'; }
-                    else { lastMessageContent = uploadedMedia[0].type === 'video' ? '📹 Video' : '📷 Photo'; }
+                    lastMessageContent = uploadedMedia.length > 1 ? '📷 Media' : (uploadedMedia[0].type === 'video' ? '📹 Video' : '📷 Photo');
                 }
                 if (!lastMessageContent) lastMessageContent = "Sent a message";
     
@@ -2347,12 +2427,13 @@ const ConversationPage: React.FC<{
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             const files = Array.from(e.target.files);
-            const previews = files.map(file => ({
+            const newPreviews: MediaPreview[] = files.map(file => ({
+                id: `preview_${Date.now()}_${Math.random()}`,
                 url: URL.createObjectURL(file),
                 file,
-                type: file.type.startsWith('image/') ? 'image' : 'video' as 'image' | 'video'
+                type: file.type.startsWith('image/') ? 'image' : 'video'
             }));
-            setMediaPreviews(prev => [...prev, ...previews]);
+            setMediaPreviews(prev => [...prev, ...newPreviews]);
             if (fileInputRef.current) fileInputRef.current.value = "";
         }
     };
@@ -2444,12 +2525,17 @@ const ConversationPage: React.FC<{
             <div className="message-input-container">
                 {mediaPreviews.length > 0 && (
                     <div className="media-preview-container">
-                        {mediaPreviews.map((p, i) => (
-                            <div key={i} className="media-preview-item">
+                        {mediaPreviews.map((p) => (
+                            <div key={p.id} className="media-preview-item">
                                 {p.type === 'image' ? <img src={p.url} alt="preview" /> : <video src={p.url} />}
-                                <button onClick={() => setMediaPreviews(prev => prev.filter((_, idx) => idx !== i))}>
+                                <button onClick={() => setMediaPreviews(prev => prev.filter(item => item.id !== p.id))}>
                                     <span className="material-symbols-outlined">close</span>
                                 </button>
+                                {uploadProgress[p.id] !== undefined && uploadProgress[p.id] < 100 && (
+                                    <div className="upload-progress-overlay">
+                                        <UploadProgressCircle progress={uploadProgress[p.id]} />
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>
@@ -2497,6 +2583,24 @@ const ConversationPage: React.FC<{
                 />
             )}
         </div>
+    );
+};
+
+const UploadProgressCircle: React.FC<{ progress: number }> = ({ progress }) => {
+    const radius = 18;
+    const circumference = 2 * Math.PI * radius;
+    const offset = circumference - (progress / 100) * circumference;
+
+    return (
+        <svg className="upload-progress-circle">
+            <circle className="progress-background" cx="20" cy="20" r={radius} />
+            <circle
+                className="progress-bar"
+                cx="20" cy="20" r={radius}
+                strokeDasharray={circumference}
+                strokeDashoffset={offset}
+            />
+        </svg>
     );
 };
 
@@ -3168,9 +3272,21 @@ root.render(
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').then(registration => {
-      console.log('SW registered: ', registration);
+      console.log('SW registration successful with scope: ', registration.scope);
+      registration.addEventListener('updatefound', () => {
+        // A new service worker is installing.
+        console.log('A new service worker is being installed.');
+      });
     }).catch(registrationError => {
-      console.log('SW registration failed: ', registrationError);
+      console.error('SW registration failed: ', registrationError);
+    });
+    
+    let refreshing: boolean;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (refreshing) return;
+        console.log('New service worker has taken control. Reloading page.');
+        window.location.reload();
+        refreshing = true;
     });
   });
 }

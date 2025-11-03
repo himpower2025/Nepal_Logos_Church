@@ -2,7 +2,7 @@
 // which is more robust and works from a cold start without needing complex initialization.
 // The main responsibilities are now caching and handling notification clicks.
 
-const CACHE_NAME = 'nepal-logos-church-v49'; // Increment version to force update
+const CACHE_NAME = 'nepal-logos-church-v50'; // Increment version to force update
 
 // These are cached on install for basic offline fallback.
 const APP_SHELL_URLS = [
@@ -29,7 +29,7 @@ self.addEventListener('activate', event => {
           .filter(name => name !== CACHE_NAME)
           .map(name => caches.delete(name))
       );
-    }).then(() => self.clients.claim())
+    }).then(() => self.clients.claim()) // Take control of all open clients immediately
   );
 });
 

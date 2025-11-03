@@ -1451,7 +1451,7 @@ html, body, #root {
 }
 
 
-/* --- Media Previews --- */
+/* --- Media Previews & Upload Progress --- */
 .media-preview-container {
     display: flex;
     gap: var(--space-sm);
@@ -1483,10 +1483,42 @@ html, body, #root {
     justify-content: center;
     cursor: pointer;
     padding: 0;
+    z-index: 2;
 }
 .media-preview-item button .material-symbols-outlined {
     font-size: 16px;
 }
+.upload-progress-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+.upload-progress-circle {
+    width: 40px;
+    height: 40px;
+    transform: rotate(-90deg);
+}
+.upload-progress-circle circle {
+    fill: none;
+    stroke-width: 4;
+}
+.progress-background {
+    stroke: rgba(255, 255, 255, 0.3);
+}
+.progress-bar {
+    stroke: white;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.1s linear;
+}
+
 
 /* --- Media Grid --- */
 .media-grid {
