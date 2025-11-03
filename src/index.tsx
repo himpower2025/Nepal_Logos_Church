@@ -314,7 +314,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३２, लूका २१, भजनसंग्रह १०, एफिसी ३",
     "प्रस्थान ३३, लूका २２:१-३０, भजनसंग्रह ११-१२, एफिसी ४",
     "प्रस्थान ३４, लूका २２:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
-    "प्रस्थान ३५, लूका २２:５४-७१, भजनसंग्रह १५-१６, एफिसी ६",
+    "प्रस्थान ३५, लूका २２:５４-७१, भजनसंग्रह १५-१６, एफिसी ६",
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
     "प्रस्थान ३७, लूका २३:२६-５６, भजनसंग्रह १८, फिलिप्पी २",
     "प्रस्थान ३८, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
@@ -354,10 +354,10 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ५, यूहन्ना २०, भजनसंग्रह ५३, हिब्रू ७",
     "गन्ती ६, यूहन्ना २１, भजनसंग्रह ५４, हिब्रू ८",
     "गन्ती ७, प्रेरित १, भजनसंग्रह ५５, हिब्रू ९",
-    "गन्ती ८, प्रेरित २:१-२１, भजनसंग्रह ५६, हिब्रू १०",
+    "गन्ती ८, प्रेरित २:१-２１, भजनसंग्रह ५६, हिब्रू १०",
     "गन्ती ९, प्रेरित २:२２-４७, भजनसंग्रह ५७, हिब्रू ११",
     "गन्ती १०, प्रेरित ३, भजनसंग्रह ५८, हिब्रू १२",
-    "गन्ती ११, प्रेरित ४:१-२２, भजनसंग्रह ५९, हिब्रू १३",
+    "गन्ती ११, प्रेरित ४:१-２２, भजनसंग्रह ५९, हिब्रू १३",
     "गन्ती १२, प्रेरित ४:२३-３７, भजनसंग्रह ६０, याकूब १",
     "गन्ती १३, प्रेरित ५:१-१८, भजनसंग्रह ६１, याकूब २",
     "गन्ती १४, प्रेरित ५:१९-４２, भजनसंग्रह ६２, याकूब ३",
@@ -384,7 +384,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ३５, प्रेरित १८, हितोपदेश ६, प्रकाश ३",
     "गन्ती ३６, प्रेरित १९, हितोपदेश ७, प्रकाश ४",
     "व्यवस्था १, प्रेरित २०:१-१６, हितोपदेश ८, प्रकाश ५",
-    "व्यवस्था २, प्रेरित २०:१７-३８, हितोपदेश ९, प्रकाश ६",
+    "व्यवस्था २, प्रेरित २०:१７-３８, हितोपदेश ९, प्रकाश ६",
     "व्यवस्था ३, प्रेरित २१:१-१८, उपदेशक १, प्रकाश ७",
     "व्यवस्था ४, प्रेरित २१:१९-４３, उपदेशक २, प्रकाश ८",
     "व्यवस्था ५, प्रेरित २２, उपदेशक ३, प्रकाश ९",
@@ -569,21 +569,21 @@ const MCCHEYNE_READING_PLAN = [
     "२ राजा २४, मत्ती २७, भजनसंग्रh ४०, भजनसंग्रh ४１",
     "२ राजा २५, मत्ती २８, भजनसंग्रh ४２, भजनसंग्रh ४३",
     "१ इतिहास १, मर्कूस १, भजनसंग्रh ४４, भजनसंग्रh ४５",
-    "१ इतिहास २, मर्कूस २, भजनसंग्रh ४６, भजनसंग्रh ४７",
-    "१ इतिहास ३, मर्कूस ३, भजनसंग्रh ४８, भजनसंग्रh ४९",
+    "१ इतिहास २, मर्कूस २, भजनसंग्रh ৪६, भजनसंग्रh ४７",
+    "१ इतिहास ३, मर्कूस ३, भजनसंग्रh ४८, भजनसंग्रh ४९",
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५１",
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
     "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५７",
-    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५９",
+    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५९",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
     "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६７",
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६９",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
-    "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७３",
-    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७५",
+    "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७३",
+    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
     "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७８",
     "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७९",
@@ -618,12 +618,12 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１６, भजनसंग्रh ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
     "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６४, भजनसंग्रh ११९:६५-९६",
-    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१２８, भजनसंग्रh ११९:१２९-१５２",
+    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१२８, भजनसंग्रh ११९:१２९-१５２",
     "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१５३-१７６, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रh १२３, भजनसंग्रh १२４",
     "२ इतिहास २６, यूहन्ना १४, भजनसंग्रh १२５, भजनसंग्रh १२６",
-    "२ इतिहास २７, यूहन्ना १५, भजनसंग्रh १२７, भजनसंग्रh १२８",
+    "२ इतिहास २७, यूहन्ना १५, भजनसंग्रh १२７, भजनसंग्रh १२８",
     "२ इतिहास २८, यूहन्ना १६, भजनसंग्रh १२９, भजनसंग्रh १३０",
     "२ इतिहास २९, यूहन्ना १७, भजनसंग्रh १३１, भजनसंग्रh १३２",
     "२ इतिहास ३０, यूहन्ना १८, भजनसंग्रh १३３, भजनसंग्रh १३４",
@@ -2302,18 +2302,13 @@ const ConversationPage: React.FC<{
             const serverMessages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Message));
             
             setMessages(prevLocalMessages => {
-                // Create a map of server messages for quick lookup
                 const serverMessagesMap = new Map(serverMessages.map(m => [m.id, m]));
-                
-                // Get optimistic/failed messages from the current local state that are not yet on the server
                 const optimisticMessages = prevLocalMessages.filter(
                     localMsg => (localMsg.status === 'uploading' || localMsg.status === 'failed') && !serverMessagesMap.has(localMsg.id)
                 );
                 
-                // Combine server messages with the filtered optimistic messages
                 const combined = [...serverMessages, ...optimisticMessages];
                 
-                // Sort the final array to ensure chronological order
                 return combined.sort((a, b) => (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0));
             });
             setLoading(false);
@@ -2387,9 +2382,10 @@ const ConversationPage: React.FC<{
             
             const uploadedMedia = await uploadAndGetMediaItems();
 
-            if (!textContent && uploadedMedia.length === 0) {
-                // All uploads failed and there's no text
-                throw new Error("No content to send.");
+            // If all media uploads failed and there's no text content, mark as failed and exit.
+            if (mediaFiles.length > 0 && uploadedMedia.length === 0 && !textContent) {
+                setMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
+                return; // Stop the function here.
             }
             
             const messagePayload: Omit<Message, 'id' | 'tempId' | 'status'> = {
@@ -2400,8 +2396,8 @@ const ConversationPage: React.FC<{
 
             const sentMessageRef = await addDoc(collection(db, "chats", currentChat.id, "messages"), messagePayload);
             
-            // The onSnapshot listener will handle displaying the final message, so we just remove the optimistic one.
-            setMessages(prev => prev.filter(m => m.tempId !== tempId));
+            // The onSnapshot listener will handle displaying the final message.
+            // We no longer manually remove the optimistic message here.
 
             // Update last message on the chat document
             const sentMessageSnap = await getDoc(sentMessageRef);
@@ -2422,7 +2418,7 @@ const ConversationPage: React.FC<{
         } catch (error) {
             console.error("Error sending message:", error);
             setMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
-            showToast("Error", "Failed to send message.");
+            // A more generic error toast can be shown here if needed, but the UI will show the failed state.
         }
     };
     
@@ -2513,7 +2509,7 @@ const ConversationPage: React.FC<{
                     <>
                         {messages.map(msg => (
                             <MessageBubble 
-                                key={msg.id} 
+                                key={msg.tempId || msg.id} 
                                 message={msg} 
                                 isSent={msg.senderId === currentUser.id} 
                                 onMediaClick={(index) => msg.media && setViewingMedia({ media: msg.media, startIndex: index })}

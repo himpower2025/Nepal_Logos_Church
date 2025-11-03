@@ -2,7 +2,7 @@
 // which is more robust and works from a cold start without needing complex initialization.
 // The main responsibilities are now caching and handling notification clicks.
 
-const CACHE_NAME = 'nepal-logos-church-v51'; // Increment version to force update
+const CACHE_NAME = 'nepal-logos-church-v52'; // Increment version to force update
 
 // These are cached on install for basic offline fallback.
 const APP_SHELL_URLS = [
@@ -67,8 +67,8 @@ self.addEventListener('push', event => {
   const title = data.title || 'New Message';
   const options = {
     body: data.body || 'You have a new message.',
-    icon: '/logos-church-new-logo.jpg',
-    badge: '/logos-church-new-logo.jpg',
+    icon: data.icon || '/logos-church-new-logo.jpg',
+    badge: data.icon || '/logos-church-new-logo.jpg',
     tag: data.tag || 'general-notification',
     data: {
       url: data.url // URL to open on click
@@ -91,16 +91,21 @@ self.addEventListener('notificationclick', event => {
       includeUncontrolled: true,
     }).then(windowClients => {
       // Check if a window is already open and focused.
-      for(let i=0; i<windowClients.length; i++) {
-        const client = windowClients[i];
-        if (client.url === urlToOpen && 'focus' in client) {
-          return client.focus();
+      let clientIsVisible = false;
+      for(const client of windowClients) {
+        // Attempt to focus the client that is already at the target URL
+        if (new URL(client.url).pathname === new URL(urlToOpen).pathname && 'focus' in client) {
+          client.navigate(urlToOpen); // Navigate to the specific chat if URL changed
+          client.focus();
+          clientIsVisible = true;
+          break;
         }
       }
       // If not, open a new window.
-      if (clients.openWindow) {
+      if (!clientIsVisible && clients.openWindow) {
         return clients.openWindow(urlToOpen);
       }
+      return;
     })
   );
 });

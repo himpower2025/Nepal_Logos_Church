@@ -127,30 +127,24 @@ export const onNewsCreated = onDocumentCreated("news/{newsId}", async (event) =>
         return logger.log("News item data is missing title.");
     }
 
-    const title = "⛪️ New Announcement";
-    const body = newsItem.title;
-    const link = "/?page=news";
-
     const allTokens = await getAllTokens(newsItem.authorId);
 
     if (allTokens.length > 0) {
-         const payload: MulticastMessage = {
-            notification: {
-                title: title,
-                body: body,
-            },
+        const link = "/?page=news";
+        const payload: MulticastMessage = {
             webpush: {
-                notification: {
-                    icon: "/logos-church-new-logo.jpg",
-                    tag: `news-${event.params.newsId}`,
-                },
-                fcmOptions: { link: link },
                 headers: {Urgency: "high"},
             },
             android: {
                 priority: "high",
             },
-            data: { url: link, icon: "feed" },
+            data: {
+                title: "⛪️ New Announcement",
+                body: newsItem.title,
+                url: link,
+                tag: `news-${event.params.newsId}`,
+                icon: "/logos-church-new-logo.jpg",
+            },
             tokens: allTokens,
         };
 
@@ -177,27 +171,24 @@ export const onPrayerRequestCreated = onDocumentCreated("prayerRequests/{request
     if (!prayerRequest || !prayerRequest.authorName) {
         return logger.log("Prayer request data is missing authorName.");
     }
-    const link = "/?page=prayer";
     const allTokens = await getAllTokens(prayerRequest.authorId);
 
     if (allTokens.length > 0) {
+        const link = "/?page=prayer";
         const payload: MulticastMessage = {
-            notification: {
-                title: "🙏 New Prayer Request",
-                body: `${prayerRequest.authorName} has shared a new request.`,
-            },
             webpush: {
-                notification: {
-                    icon: "/logos-church-new-logo.jpg",
-                    tag: `prayer-${event.params.requestId}`,
-                },
-                fcmOptions: { link: link },
                 headers: {Urgency: "high"},
             },
             android: {
                 priority: "high",
             },
-            data: { url: link, icon: "volunteer_activism" },
+            data: {
+                title: "🙏 New Prayer Request",
+                body: `${prayerRequest.authorName} has shared a new request.`,
+                url: link,
+                tag: `prayer-${event.params.requestId}`,
+                icon: "/logos-church-new-logo.jpg",
+            },
             tokens: allTokens,
         };
         logger.log(`Sending 'prayer' notification to ${allTokens.length} tokens.`);
@@ -225,8 +216,7 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
         return logger.log("Message data is invalid.");
     }
 
-    const chatRef = db.collection("chats").doc(chatId);
-    const chatDoc = await chatRef.get();
+    const chatDoc = await db.collection("chats").doc(chatId).get();
     const chatData = chatDoc.data() as ChatData | undefined;
 
     if (!chatDoc.exists || !chatData || !chatData.participantIds) {
@@ -236,93 +226,88 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
     const senderSnapshot = await db.collection("users").doc(message.senderId).get();
     const senderName = (senderSnapshot.data() as UserData | undefined)?.name || "Someone";
 
+    const recipientIds = chatData.participantIds.filter((id) => id !== message.senderId);
+    if (recipientIds.length === 0) {
+        return logger.log("No recipients for this message.");
+    }
+
+    const recipients: { name: string; tokens: string[] }[] = [];
+    if (recipientIds.length > 0) {
+        const userDocs = await db.collection("users").where(admin.firestore.FieldPath.documentId(), "in", recipientIds).get();
+        userDocs.forEach((doc) => {
+            const user = doc.data() as UserData;
+            recipients.push({
+                name: user.name || "User",
+                tokens: user.fcmTokens || [],
+            });
+        });
+    }
+
+    const allTokens = recipients.flatMap((r) => r.tokens);
+    const uniqueTokens = [...new Set(allTokens)];
+
+    if (uniqueTokens.length === 0) {
+        return logger.log(`No tokens found for recipients in chat ${chatId}.`);
+    }
+
     let messageContent = message.content;
     if (!messageContent) {
         if (message.media && message.media.length > 0) {
-            messageContent = message.media[0].type === "image" ? "Sent a photo" : "Sent a video";
+            messageContent = message.media.length > 1 ? "Sent media" : (message.media[0].type === "image" ? "Sent a photo" : "Sent a video");
         } else {
             messageContent = "Sent a message";
         }
     }
 
-    const recipientIds = chatData.participantIds.filter((id: string) => id !== message.senderId);
-    if (recipientIds.length === 0) {
-        return logger.log("No recipients for this message.");
+    const link = `/?page=chat&chatId=${chatId}`;
+    const truncatedBody = messageContent.length > 100 ? messageContent.substring(0, 97) + "..." : messageContent;
+    const isGroupChat = chatData.participantIds.length > 2;
+
+    let notificationTitle: string;
+
+    if (isGroupChat) {
+        let groupTitle = chatData.name;
+        if (!groupTitle) {
+            const participantNames = (await Promise.all(
+                chatData.participantIds
+                .filter((id) => id !== message.senderId)
+                .slice(0, 3) // get up to 3 other participants
+                .map((id) => db.collection("users").doc(id).get())
+            )).map((doc) => (doc.data() as UserData)?.name?.split(" ")[0] || "");
+            
+            groupTitle = participantNames.slice(0, 2).join(", ");
+            if (participantNames.length > 2) {
+                groupTitle += "...";
+            }
+        }
+        notificationTitle = `💬 ${groupTitle || "Group Chat"}`;
+    } else {
+        notificationTitle = `💬 ${senderName}`;
     }
 
-    const tokens: string[] = [];
-    const userDocs = await db.collection("users").where(admin.firestore.FieldPath.documentId(), "in", recipientIds).get();
+    const payload: MulticastMessage = {
+        webpush: {
+            headers: {Urgency: "high"},
+        },
+        android: {
+            priority: "high",
+        },
+        data: {
+            title: notificationTitle,
+            body: isGroupChat ? `${senderName}: ${truncatedBody}`: truncatedBody,
+            url: link,
+            tag: `chat-${chatId}`,
+            icon: "/logos-church-new-logo.jpg",
+            chatId: chatId, // Pass for in-app handling
+        },
+        tokens: uniqueTokens,
+    };
 
-    userDocs.forEach((doc) => {
-        const user = doc.data() as UserData;
-        if (user.fcmTokens && Array.isArray(user.fcmTokens)) {
-            tokens.push(...user.fcmTokens);
-        }
-    });
-
-    if (tokens.length > 0) {
-        const uniqueTokens = [...new Set(tokens)];
-        const link = `/?page=chat&chatId=${chatId}`;
-        const truncatedBody = messageContent.length > 100 ? messageContent.substring(0, 97) + "..." : messageContent;
-
-        const isGroupChat = chatData.participantIds.length > 2;
-
-        let notificationTitle: string;
-        let notificationBody: string;
-
-        if (isGroupChat) {
-            let groupTitle = chatData.name;
-            if (!groupTitle) {
-                // Construct a title from participant names if the group is unnamed
-                const recipientDocs = await db.collection("users")
-                    .where(admin.firestore.FieldPath.documentId(), "in", recipientIds.slice(0, 10)) // Limit to 10 for performance and query limits
-                    .get();
-
-                const recipientNames = recipientDocs.docs
-                    .map((doc) => (doc.data() as UserData)?.name?.split(" ")[0] || "")
-                    .filter((name) => name);
-
-                if (recipientNames.length > 0) {
-                    groupTitle = recipientNames.slice(0, 2).join(", ");
-                    if (recipientIds.length > 2) {
-                        groupTitle += "...";
-                    }
-                }
-            }
-            notificationTitle = `💬 ${groupTitle || "Group Chat"}`; // Fallback to "Group Chat"
-            notificationBody = `${senderName}: ${truncatedBody}`;
-        } else {
-            notificationTitle = `💬 ${senderName}`;
-            notificationBody = truncatedBody;
-        }
-
-        const payload: MulticastMessage = {
-            notification: {
-                title: notificationTitle,
-                body: notificationBody,
-            },
-            webpush: {
-                notification: {
-                    icon: "/logos-church-new-logo.jpg",
-                    tag: `chat-${chatId}`, // Group all notifications for the same chat
-                },
-                fcmOptions: { link: link },
-                headers: {Urgency: "high"},
-            },
-            android: {
-                priority: "high",
-            },
-            data: { url: link, icon: "chat", chatId: chatId, senderName: senderName, body: truncatedBody, title: notificationTitle },
-            tokens: uniqueTokens,
-        };
-        logger.log(`Sending chat notification to ${uniqueTokens.length} tokens for chat ${chatId}.`);
-         try {
-            const response = await fcm.sendEachForMulticast(payload);
-            handleSendResponse(response, uniqueTokens);
-        } catch(error) {
-             logger.error("Error sending chat notification:", error);
-        }
-    } else {
-        logger.log(`No tokens found for recipients in chat ${chatId}.`);
+    logger.log(`Sending chat notification to ${uniqueTokens.length} tokens for chat ${chatId}.`);
+    try {
+        const response = await fcm.sendEachForMulticast(payload);
+        handleSendResponse(response, uniqueTokens);
+    } catch (error) {
+        logger.error("Error sending chat notification:", error);
     }
 });
