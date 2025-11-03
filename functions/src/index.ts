@@ -9,6 +9,8 @@ admin.initializeApp();
 const db = admin.firestore();
 const fcm = admin.messaging();
 
+const APP_URL = "https://logos-church-nepal.web.app";
+
 // --- TYPE DEFINITIONS for Firestore documents ---
 interface UserData {
     fcmTokens?: string[];
@@ -142,7 +144,7 @@ export const onNewsCreated = onDocumentCreated("news/{newsId}", async (event) =>
             },
             webpush: {
                 notification: {
-                    icon: "/logos-church-new-logo.jpg",
+                    icon: `${APP_URL}/logos-church-new-logo.jpg`,
                     tag: `news-${event.params.newsId}`,
                     data: {
                         url: link,
@@ -189,7 +191,7 @@ export const onPrayerRequestCreated = onDocumentCreated("prayerRequests/{request
             },
             webpush: {
                 notification: {
-                    icon: "/logos-church-new-logo.jpg",
+                    icon: `${APP_URL}/logos-church-new-logo.jpg`,
                     tag: `prayer-${event.params.requestId}`,
                     data: {
                         url: link,
@@ -303,7 +305,7 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
         },
         webpush: {
             notification: {
-                icon: "/logos-church-new-logo.jpg",
+                icon: `${APP_URL}/logos-church-new-logo.jpg`,
                 tag: `chat-${chatId}`,
                 data: {
                     url: link,
