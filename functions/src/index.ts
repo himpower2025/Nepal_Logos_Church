@@ -1,3 +1,4 @@
+
 import {onDocumentCreated} from "firebase-functions/v2/firestore";
 import * as admin from "firebase-admin";
 import * as logger from "firebase-functions/logger";
@@ -132,15 +133,19 @@ export const onNewsCreated = onDocumentCreated("news/{newsId}", async (event) =>
     if (allTokens.length > 0) {
         const link = "/?page=news";
         const payload: MulticastMessage = {
-            data: {
+            notification: {
                 title: "⛪️ New Announcement",
                 body: newsItem.title,
+            },
+            data: {
                 url: link,
-                icon: "/logos-church-new-logo.jpg",
-                tag: `news-${event.params.newsId}`,
             },
             webpush: {
                 headers: {Urgency: "high"},
+                notification: {
+                    icon: "/logos-church-new-logo.jpg",
+                    tag: `news-${event.params.newsId}`,
+                },
             },
             android: {
                 priority: "high",
@@ -176,15 +181,19 @@ export const onPrayerRequestCreated = onDocumentCreated("prayerRequests/{request
     if (allTokens.length > 0) {
         const link = "/?page=prayer";
         const payload: MulticastMessage = {
-            data: {
+            notification: {
                 title: "🙏 New Prayer Request",
                 body: `${prayerRequest.authorName} has shared a new request.`,
+            },
+            data: {
                 url: link,
-                icon: "/logos-church-new-logo.jpg",
-                tag: `prayer-${event.params.requestId}`,
             },
             webpush: {
                 headers: {Urgency: "high"},
+                notification: {
+                    icon: "/logos-church-new-logo.jpg",
+                    tag: `prayer-${event.params.requestId}`,
+                },
             },
             android: {
                 priority: "high",
@@ -286,16 +295,20 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
     }
 
     const payload: MulticastMessage = {
-        data: {
+        notification: {
             title: notificationTitle,
             body: isGroupChat ? `${senderName}: ${truncatedBody}` : truncatedBody,
+        },
+        data: {
             url: link,
-            icon: "/logos-church-new-logo.jpg",
-            tag: `chat-${chatId}`,
             chatId: chatId, // Pass for in-app handling
         },
         webpush: {
             headers: {Urgency: "high"},
+            notification: {
+                icon: "/logos-church-new-logo.jpg",
+                tag: `chat-${chatId}`,
+            },
         },
         android: {
             priority: "high",

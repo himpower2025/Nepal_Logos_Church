@@ -311,7 +311,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३１, लूका २०:२०-４७, भजनसंग्रह ९, एफिसी २",
     "प्रस्थान ३２, लूका २१, भजनसंग्रह १०, एफिसी ३",
     "प्रस्थान ३३, लूका २２:१-३０, भजनसंग्रह ११-१२, एफिसी ४",
-    "प्रस्थान ३４, लूका २２:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
+    "प्रस्थान ३４, लूका २２:३१-５३, भजनसंग्रह १३-१४, एफिसी ५",
     "प्रस्थान ३५, लूका २２:５４-७१, भजनसंग्रह १५-१６, एफिसी ६",
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
     "प्रस्थान ३७, लूका २३:२६-５６, भजनसंग्रह १८, फिलिप्पी २",
@@ -360,7 +360,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १३, प्रेरित ५:१-१८, भजनसंग्रह ६１, याकूब २",
     "गन्ती १४, प्रेरित ५:१९-４２, भजनसंग्रह ६２, याकूब ३",
     "गन्ती १५, प्रेरित ६, भजनसंग्रह ६３, याकूब ४",
-    "गन्ती १६, प्रेरित ७:१-२１, भजनसंग्रह ६４, याकूब ५",
+    "गन्ती १६, प्रेरित ७:१-２１, भजनसंग्रह ६４, याकूब ५",
     "गन्ती १७, प्रेरित ७:२２-४३, भजनसंग्रह ६５, १ पत्रुस १",
     "गन्ती १८, प्रेरित ७:४４-६०, भजनसंग्रह ६６, १ पत्रुस २",
     "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६７, १ पत्रुस ३",
@@ -573,15 +573,15 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
     "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५७",
-    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५９",
+    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५८, भजनसंग्रh ५９",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
     "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६７",
-    "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६９",
+    "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६८, भजनसंग्रh ६９",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७३",
-    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
+    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७४, भजनसंग्रh ७５",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
     "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७８",
     "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७९",
@@ -593,8 +593,8 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २५, लूका ८, हितोपदेश १७, भजनसंग्रh ८５",
     "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रh ८６",
     "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८７",
-    "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८८",
-    "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८９",
+    "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८８",
+    "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८९",
     "२ इतिहास १, लूका १३, हितोपदेश २२, भजनसंग्रh ९０",
     "२ इतिहास २, लूका १४, हितोपदेश ২৩, भजनसंग्रh ९１",
     "२ इतिहास ३, लूका १५, हितोपदेश २४, भजनसंग्रh ९２",
@@ -608,7 +608,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ११, लूका ২৩, भजनसंग्रh १०४, भजनसंग्रh १००",
     "२ इतिहास १२, लूका २४, भजनसंग्रh १०५, भजनसंग्रh १०१",
     "२ इतिहास १३, यूहन्ना १, भजनसंग्रh १०６, भजनसंग्रh १०２",
-    "२ इतिहास १४, यूहन्ना २, भजनसंग्रh १०７, भजनसंग्रh १०३",
+    "२ इतिहास १४, यूहन्ना २, भजनसंग्रh १०७, भजनसंग्रh १०३",
     "२ इतिहास १५, यूहन्ना ३, भजनसंग्रh १०८, भजनसंग्रh १०९",
     "२ इतिहास १६, यूहन्ना ४, भजनसंग्रh १１０, भजनसंग्रh ११１",
     "२ इतिहास १७, यूहन्ना ५, भजनसंग्रh १１２, भजनसंग्रh ११३",
@@ -616,8 +616,8 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１６, भजनसंग्रh ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
     "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６४, भजनसंग्रh ११९:६५-९६",
-    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१２८, भजनसंग्रh ११९:१２९-१५２",
-    "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७６, भजनसंग्रh १२०",
+    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१２८, भजनसंग्रh ११९:१२९-१५２",
+    "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७६, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रh १२３, भजनसंग्रh १२４",
     "२ इतिहास २６, यूहन्ना १४, भजनसंग्रh १२５, भजनसंग्रh १२６",
@@ -632,7 +632,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ३５, प्रेरित २, भजनसंग्रh १४３, भजनसंग्रh १४４",
     "२ इतिहास ३６, प्रेरित ३, भजनसंग्रh १४５, भजनसंग्रh १४６",
     "एज्रा १, प्रेरित ४, भजनसंग्रh १४７, भजनसंग्रh १४８",
-    "एज्रा २, प्रेरित ५, भजनसंग्रh ۱۴９, भजनसंग्रh १५０",
+    "एज्रा २, प्रेरित ५, भजनसंग्रh १४９, भजनसंग्रh १५０",
 ];
 
 
@@ -2302,28 +2302,43 @@ const ConversationPage: React.FC<{
                 ...doc.data()
             } as Message));
 
-            setMessages(prevMessages => {
-                // Find optimistic messages in the previous state that are not yet confirmed on the server
-                const optimisticMessages = prevMessages.filter(
-                    localMsg => localMsg.status === 'uploading' && !serverMessages.some(serverMsg => serverMsg.tempId === localMsg.tempId)
-                );
+            setMessages(prevLocalMessages => {
+                const newMessages = [...prevLocalMessages];
+                let changed = false;
+
+                // Update or replace local messages with server-confirmed ones
+                serverMessages.forEach(serverMsg => {
+                    const localIndex = serverMsg.tempId ? newMessages.findIndex(m => m.tempId === serverMsg.tempId) : -1;
+                    if (localIndex !== -1) {
+                        // Found a match: Replace the temporary message with the real one
+                        if (newMessages[localIndex].id !== serverMsg.id) {
+                           newMessages[localIndex] = serverMsg;
+                           changed = true;
+                        }
+                    } else {
+                        // Not a temporary message, check if it's a new message from someone else
+                        if (!newMessages.some(m => m.id === serverMsg.id)) {
+                            newMessages.push(serverMsg);
+                            changed = true;
+                        }
+                    }
+                });
                 
-                // The new state is the source of truth from the server plus any pending optimistic messages
-                const finalMessages = [...serverMessages, ...optimisticMessages];
+                if (changed) {
+                    newMessages.sort((a, b) => (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0));
+                    return newMessages;
+                }
                 
-                // Sort to ensure chronological order, as optimistic messages have client-side timestamps
-                finalMessages.sort((a, b) => (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0));
-                
-                return finalMessages;
+                return prevLocalMessages;
             });
             setLoading(false);
         });
-
 
         updateDoc(chatRef, { [`lastRead.${currentUser.id}`]: Timestamp.now() }).catch(err => console.error("Error updating lastRead:", err));
         
         return () => { unsubscribeChat(); unsubscribeMessages(); }
     }, [db, chat?.id, onBack, currentUser.id]);
+
 
     useEffect(() => {
         if (!loading) { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }
@@ -3049,8 +3064,10 @@ const App: React.FC = () => {
         requestPermissionAndToken();
 
         const unsubscribeOnMessage = onMessage(messaging, (payload) => {
-             const data = payload.data;
-             if (data?.chatId && data.chatId === currentChat?.id) {
+             const data = payload.notification;
+             const customData = payload.data;
+
+             if (customData?.chatId && customData.chatId === currentChat?.id) {
                 // If user is already in the chat, don't show a toast.
                 return;
              }
@@ -3059,8 +3076,8 @@ const App: React.FC = () => {
                 data?.title || 'New Message',
                 data?.body || 'You have a new message.',
                 () => {
-                    if (data?.url) {
-                        const url = new URL(data.url, window.location.origin);
+                    if (customData?.url) {
+                        const url = new URL(customData.url, window.location.origin);
                         const page = url.searchParams.get('page');
                         const chatId = url.searchParams.get('chatId');
 
