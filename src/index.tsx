@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback, createContext, useContext, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useCallback, createContext, useContext, useMemo, memo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createPortal } from 'react-dom';
 import './index.css';
@@ -311,11 +311,11 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३１, लूका २०:२०-４७, भजनसंग्रह ९, एफिसी २",
     "प्रस्थान ३２, लूका २१, भजनसंग्रह १०, एफिसी ३",
     "प्रस्थान ३३, लूका २２:१-३０, भजनसंग्रह ११-१२, एफिसी ४",
-    "प्रस्थान ३４, लूका २２:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
+    "प्रस्थान ३４, लूका २２:३१-５३, भजनसंग्रह १३-१४, एफिसी ५",
     "प्रस्थान ३५, लूका २２:５４-७१, भजनसंग्रह १५-१６, एफिसी ६",
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
     "प्रस्थान ३७, लूका २३:२६-５６, भजनसंग्रह १८, फिलिप्पी २",
-    "प्रस्थान ३८, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
+    "प्रस्थान ३８, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
     "प्रस्थान ३９, लूका २४:१३-５३, भजनसंग्रह २०, फिलिप्पी ४",
     "प्रस्थान ४०, यूहन्ना १:१-२८, भजनसंग्रह २१, कलस्सी १",
     "लेवी १, यूहन्ना १:२९-５１, भजनसंग्रह २२, कलस्सी २",
@@ -355,22 +355,22 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ८, प्रेरित २:१-２１, भजनसंग्रह ५６, हिब्रू १०",
     "गन्ती ९, प्रेरित २:२２-４७, भजनसंग्रह ५७, हिब्रू ११",
     "गन्ती १०, प्रेरित ३, भजनसंग्रह ५८, हिब्रू १२",
-    "गन्ती ११, प्रेरित ४:१-２２, भजनसंग्रह ५९, हिब्रू १३",
+    "गन्ती ११, प्रेरित ४:१-२２, भजनसंग्रह ५९, हिब्रू १३",
     "गन्ती १२, प्रेरित ४:२३-３７, भजनसंग्रह ६０, याकूब १",
     "गन्ती १३, प्रेरित ५:१-१८, भजनसंग्रह ६１, याकूब २",
     "गन्ती १४, प्रेरित ५:१९-４２, भजनसंग्रह ६２, याकूब ३",
     "गन्ती १५, प्रेरित ६, भजनसंग्रह ६３, याकूब ४",
-    "गन्ती १६, प्रेरित ७:१-２１, भजनसंग्रह ६４, याकूब ५",
+    "गन्ती १६, प्रेरित ७:१-２१, भजनसंग्रह ६４, याकूब ५",
     "गन्ती १७, प्रेरित ७:२２-४३, भजनसंग्रह ६５, १ पत्रुस १",
     "गन्ती १८, प्रेरित ७:४４-६०, भजनसंग्रह ६６, १ पत्रुस २",
     "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६７, १ पत्रुस ३",
     "गन्ती २०, प्रेरित ८:２６-４०, भजनसंग्रह ६８, १ पत्रुस ४",
-    "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६９, १ पत्रुस ५",
+    "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६९, १ पत्रुस ५",
     "गन्ती २２, प्रेरित ९:२२-４३, भजनसंग्रह ७０, २ पत्रुस १",
     "गन्ती ২৩, प्रेरित १०:१-२३, भजनसंग्रह ७１, २ पत्रुस २",
     "गन्ती २४, प्रेरित १०:२４-４８, भजनसंग्रह ७２, २ पत्रुस ३",
     "गन्ती २५, प्रेरित ११, भजनसंग्रह ७３, १ यूहन्ना १",
-    "गन्ती २६, प्रेरित १२, भजनसंग्रह ७４, १ यूहन्ना २",
+    "गन्ती २６, प्रेरित १२, भजनसंग्रह ७４, १ यूहन्ना २",
     "गन्ती २७, प्रेरित १३:१-२５, भजनसंग्रह ७５, १ यूहन्ना ३",
     "गन्ती २८, प्रेरित १३:２６-５２, भजनसंग्रह ७６, १ यूहन्ना ४",
     "गन्ती २९, प्रेरित १४, भजनसंग्रह ७７, १ यूहन्ना ५",
@@ -572,14 +572,14 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५１",
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५५",
-    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५７",
+    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५७",
     "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५९",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
     "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६７",
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६９",
-    "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
+    "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७१",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७३",
     "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
@@ -588,12 +588,12 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २०, लूका ३, हितोपदेश १२, भजनसंग्रh ८０",
     "१ इतिहास २１, लूका ४, हितोपदेश १३, भजनसंग्रh ८१",
     "१ इतिहास २２, लूका ५, हितोपदेश १४, भजनसंग्रh ८２",
-    "१ इतिहास ২৩, लूका ६, हितोपदेश १५, भजनसंग्रh ८３",
+    "१ इतिहास ২৩, लूका ६, हितोपदेश १५, भजनसंग्रh ८३",
     "१ इतिहास २४, लूका ७, हितोपदेश १६, भजनसंग्रh ८４",
     "१ इतिहास २५, लूका ८, हितोपदेश १७, भजनसंग्रh ८５",
     "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रh ८６",
     "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८７",
-    "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८८",
+    "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८８",
     "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८९",
     "२ इतिहास १, लूका १३, हितोपदेश २२, भजनसंग्रh ९０",
     "२ इतिहास २, लूका १४, हितोपदेश ২৩, भजनसंग्रh ९１",
@@ -602,7 +602,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ५, लूका १७, हितोपदेश २６, भजनसंग्रh ९４",
     "२ इतिहास ६, लूका १८, हितोपदेश २७, भजनसंग्रh ९５",
     "२ इतिहास ७, लूका १९, हितोपदेश २८, भजनसंग्रh ९６",
-    "२ इतिहास ८, लूका २०, हितोपदेश २९, भजनसंग्रh ९７",
+    "२ इतिहास ८, लूका ۲۰, हितोपदेश २९, भजनसंग्रh ९７",
     "२ इतिहास ९, लूका २१, हितोपदेश ३０, भजनसंग्रh ९８",
     "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रh ९９",
     "२ इतिहास ११, लूका ২৩, भजनसंग्रh १०४, भजनसंग्रh १००",
@@ -612,11 +612,11 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १५, यूहन्ना ३, भजनसंग्रh १०८, भजनसंग्रh १०९",
     "२ इतिहास १६, यूहन्ना ४, भजनसंग्रh १１０, भजनसंग्रh ११１",
     "२ इतिहास १७, यूहन्ना ५, भजनसंग्रh १１２, भजनसंग्रh ११३",
-    "२ इतिहास १८, यूहन्ना ६, भजनसंग्रh १１４, भजनसंग्रh ११５",
+    "२ इतिहास १८, यूहन्ना ६, भजनसंग्रh १１４, भजनसंग्रh ११५",
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１６, भजनसंग्रh ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
-    "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６४, भजनसंग्रh ११९:６५-९６",
-    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१２८, भजनसंग्रh ११९:१२९-१५２",
+    "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６४, भजनसंग्रh ११९:６५-९६",
+    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१२८, भजनसंग्रh ११९:१२९-१५２",
     "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७६, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रh १२３, भजनसंग्रh १२４",
@@ -627,7 +627,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ३０, यूहन्ना १८, भजनसंग्रh १३３, भजनसंग्रh १३４",
     "२ इतिहास ३１, यूहन्ना १९, भजनसंग्रh १३５, भजनसंग्रh १३６",
     "२ इतिहास ३２, यूहन्ना २०, भजनसंग्रh १३７, भजनसंग्रh १३８",
-    "२ इतिहास ३３, यूहन्ना २１, भजनसंग्रh १३９, भजनसंग्रh १४０",
+    "२ इतिहास ३३, यूहन्ना २１, भजनसंग्रh १३９, भजनसंग्रh १४０",
     "२ इतिहास ३４, प्रेरित १, भजनसंग्रh १४１, भजनसंग्रh १४２",
     "२ इतिहास ३５, प्रेरित २, भजनसंग्रh १४３, भजनसंग्रh १४４",
     "२ इतिहास ३６, प्रेरित ३, भजनसंग्रh १४５, भजनसंग्रh १४６",
@@ -2269,7 +2269,7 @@ const ConversationPage: React.FC<{
     chat: Chat;
     currentUser: User;
     onBack: () => void;
-}> = ({ chat, currentUser, onBack }) => {
+}> = memo(({ chat, currentUser, onBack }) => {
     const { db, storage } = useFirebase();
     const { showToast } = useToast();
     const [messages, setMessages] = useState<Message[]>([]);
@@ -2532,7 +2532,7 @@ const ConversationPage: React.FC<{
                 <div className="message-input-row">
                     <input type="file" ref={fileInputRef} onChange={handleFileSelect} style={{display: 'none'}} multiple accept="image/*,video/*" disabled={loading} />
                     <button className="input-action-button" onClick={() => fileInputRef.current?.click()} aria-label="Attach file" disabled={loading}>
-                        <span className="material-symbols-outlined">attach_file</span>
+                        <span className="material-symbols-outlined">add_photo_alternate</span>
                     </button>
                     <input
                         type="text" placeholder="Type a message..." value={newMessage}
@@ -2573,7 +2573,7 @@ const ConversationPage: React.FC<{
             )}
         </div>
     );
-};
+});
 
 const UploadProgressCircle: React.FC<{ progress: number }> = ({ progress }) => {
     const radius = 18;
@@ -2796,6 +2796,84 @@ const NotificationPanel: React.FC<{
     );
 };
 
+// --- Installation Guide Page ---
+const InstallationGuidePage: React.FC = () => {
+    const [os, setOs] = useState<'ios' | 'android' | 'other' | null>(null);
+
+    useEffect(() => {
+        const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+        if (/iPad|iPhone|iPod/.test(userAgent) && !(window as any).MSStream) {
+            setOs('ios');
+        } else if (/android/i.test(userAgent)) {
+            setOs('android');
+        } else {
+            setOs('other');
+        }
+    }, []);
+
+    const IosInstructions = () => (
+        <div className="instruction-steps">
+            <h3>iPhone/iPad에 앱 설치하기</h3>
+            <div className="step">
+                <p>1. 화면 하단의 '공유' 아이콘을 누르세요.</p>
+                <span className="material-symbols-outlined instruction-icon">ios_share</span>
+            </div>
+            <div className="step">
+                <p>2. '홈 화면에 추가'를 찾아 누르세요.</p>
+                <span className="material-symbols-outlined instruction-icon">add_box</span>
+            </div>
+            <div className="step">
+                <p>3. 오른쪽 상단의 '추가'를 누르면 설치가 완료됩니다.</p>
+                 <span className="material-symbols-outlined instruction-icon">add</span>
+            </div>
+        </div>
+    );
+
+    const AndroidInstructions = () => (
+         <div className="instruction-steps">
+            <h3>Android에 앱 설치하기</h3>
+            <div className="step">
+                <p>1. 오른쪽 상단의 점 3개 메뉴를 누르세요.</p>
+                <span className="material-symbols-outlined instruction-icon">more_vert</span>
+            </div>
+            <div className="step">
+                <p>2. '앱 설치' 또는 '홈 화면에 추가'를 누르세요.</p>
+                <span className="material-symbols-outlined instruction-icon">install_mobile</span>
+            </div>
+            <div className="step">
+                <p>3. '설치'를 누르면 바로 설치가 완료됩니다.</p>
+                <span className="material-symbols-outlined instruction-icon">download</span>
+            </div>
+        </div>
+    );
+    
+    const OtherInstructions = () => (
+         <div className="instruction-steps">
+            <h3>앱 설치하기</h3>
+            <p><strong>Chrome/Edge 브라우저:</strong> 주소창 오른쪽의 컴퓨터 모양 아이콘을 클릭하여 설치하세요.</p>
+            <p><strong>모바일 기기:</strong> 브라우저 메뉴에서 '홈 화면에 추가' 또는 '앱 설치' 옵션을 찾아보세요.</p>
+        </div>
+    );
+
+    return (
+        <div className="page-content install-guide-container">
+            <img src={CHURCH.logo} alt="Church Logo" className="install-guide-logo" />
+            <h2>{CHURCH.name} 앱</h2>
+            <p className="install-guide-subtitle">앱을 휴대폰에 설치하여 더 쉽게 접속하세요.</p>
+            <div className="card">
+                {os === 'ios' && <IosInstructions />}
+                {os === 'android' && <AndroidInstructions />}
+                {os === 'other' && <OtherInstructions />}
+                {!os && <Loading message="기기 정보를 확인 중입니다..." />}
+            </div>
+            <a href="/" className="action-button install-guide-button">
+                앱으로 바로가기
+                <span className="material-symbols-outlined">arrow_forward</span>
+            </a>
+        </div>
+    );
+};
+
 
 // --- Main App Component ---
 const App: React.FC = () => {
@@ -2823,6 +2901,11 @@ const App: React.FC = () => {
     const [notificationPermissionStatus, setNotificationPermissionStatus] = useState('default');
 
     const deepLinkProcessed = useRef(false);
+
+    // Simple routing for the installation page
+    if (window.location.pathname === '/install') {
+        return <InstallationGuidePage />;
+    }
 
     useEffect(() => {
         // Check and update permission status whenever the current user changes.

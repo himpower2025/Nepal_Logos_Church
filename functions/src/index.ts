@@ -134,16 +134,21 @@ export const onNewsCreated = onDocumentCreated("news/{newsId}", async (event) =>
 
     if (allTokens.length > 0) {
         const link = "/?page=news";
+        const notificationTitle = "⛪️ New Announcement";
+        const notificationBody = newsItem.title;
+
         const payload: MulticastMessage = {
             notification: {
-                title: "⛪️ New Announcement",
-                body: newsItem.title,
+                title: notificationTitle,
+                body: notificationBody,
             },
             data: {
                 url: link,
             },
             webpush: {
                 notification: {
+                    title: notificationTitle,
+                    body: notificationBody,
                     icon: `${APP_URL}/logos-church-new-logo.jpg`,
                     tag: `news-${event.params.newsId}`,
                     data: {
@@ -181,16 +186,21 @@ export const onPrayerRequestCreated = onDocumentCreated("prayerRequests/{request
 
     if (allTokens.length > 0) {
         const link = "/?page=prayer";
+        const notificationTitle = "🙏 New Prayer Request";
+        const notificationBody = `${prayerRequest.authorName} has shared a new request.`;
+
         const payload: MulticastMessage = {
             notification: {
-                title: "🙏 New Prayer Request",
-                body: `${prayerRequest.authorName} has shared a new request.`,
+                title: notificationTitle,
+                body: notificationBody,
             },
             data: {
                 url: link,
             },
             webpush: {
                 notification: {
+                    title: notificationTitle,
+                    body: notificationBody,
                     icon: `${APP_URL}/logos-church-new-logo.jpg`,
                     tag: `prayer-${event.params.requestId}`,
                     data: {
@@ -294,10 +304,12 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
         notificationTitle = `💬 ${senderName}`;
     }
 
+    const notificationBody = isGroupChat ? `${senderName}: ${truncatedBody}` : truncatedBody;
+
     const payload: MulticastMessage = {
         notification: {
             title: notificationTitle,
-            body: isGroupChat ? `${senderName}: ${truncatedBody}` : truncatedBody,
+            body: notificationBody,
         },
         data: {
             url: link,
@@ -305,6 +317,8 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
         },
         webpush: {
             notification: {
+                title: notificationTitle,
+                body: notificationBody,
                 icon: `${APP_URL}/logos-church-new-logo.jpg`,
                 tag: `chat-${chatId}`,
                 data: {
