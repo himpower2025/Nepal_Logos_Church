@@ -352,8 +352,8 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ५, यूहन्ना २०, भजनसंग्रह ५३, हिब्रू ७",
     "गन्ती ६, यूहन्ना २１, भजनसंग्रह ५４, हिब्रू ८",
     "गन्ती ७, प्रेरित १, भजनसंग्रह ५５, हिब्रू ९",
-    "गन्ती ८, प्रेरित २:१-２１, भजनसंग्रह ५６, हिब्रू १०",
-    "गन्ती ९, प्रेरित २:२２-４७, भजनसंग्रह ५७, हिब्रू ११",
+    "गन्ती ८, प्रेरित २:१-२१, भजनसंग्रह ५６, हिब्रू १०",
+    "गन्ती ९, प्रेरित २:२２-４７, भजनसंग्रह ५७, हिब्रू ११",
     "गन्ती १०, प्रेरित ३, भजनसंग्रह ५८, हिब्रू १२",
     "गन्ती ११, प्रेरित ४:१-२２, भजनसंग्रह ५९, हिब्रू १३",
     "गन्ती १२, प्रेरित ४:२३-３７, भजनसंग्रह ६０, याकूब १",
@@ -578,7 +578,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
     "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६७",
-    "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६८, भजनसंग्रh ६９",
+    "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६９",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७१",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७३",
     "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
@@ -603,11 +603,11 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ६, लूका १८, हितोपदेश २७, भजनसंग्रh ९５",
     "२ इतिहास ७, लूका १९, हितोपदेश २८, भजनसंग्रh ९６",
     "२ इतिहास ८, लूका २०, हितोपदेश २९, भजनसंग्रh ९７",
-    "२ इतिहास ९, लूका २१, हितोपदेश ३０, भजनसंग्रh ९８",
+    "२ इतिहास ९, लूका २１, हितोपदेश ३０, भजनसंग्रh ९８",
     "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रh ९９",
     "२ इतिहास ११, लूका ২৩, भजनसंग्रh १०४, भजनसंग्रh १००",
     "२ इतिहास १२, लूका २४, भजनसंग्रh १०५, भजनसंग्रh १०१",
-    "२ इतिहास १३, यूहन्ना १, भजनसंग्रh १०６, भजनसंग्रh १०２",
+    "२ इतिहास १३, यूहन्ना १, भजनसंग्रh १०６, भजनसंग्रh १०२",
     "२ इतिहास १४, यूहन्ना २, भजनसंग्रh १०७, भजनसंग्रh १०३",
     "२ इतिहास १५, यूहन्ना ३, भजनसंग्रh १०८, भजनसंग्रh १०९",
     "२ इतिहास १६, यूहन्ना ४, भजनसंग्रh १１０, भजनसंग्रh ११１",
@@ -627,7 +627,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ३０, यूहन्ना १८, भजनसंग्रh १३３, भजनसंग्रh १३４",
     "२ इतिहास ३１, यूहन्ना १९, भजनसंग्रh १३５, भजनसंग्रh १३６",
     "२ इतिहास ३２, यूहन्ना २०, भजनसंग्रh १३７, भजनसंग्रh १३８",
-    "२ इतिहास ३३, यूहन्ना २１, भजनसंग्रh १३９, भजनसंग्रh १४０",
+    "२ इतिहास ३３, यूहन्ना २１, भजनसंग्रh १३９, भजनसंग्रh १४０",
     "२ इतिहास ३４, प्रेरित १, भजनसंग्रh १४１, भजनसंग्रh १४２",
     "२ इतिहास ३５, प्रेरित २, भजनसंग्रh १४３, भजनसंग्रh १४４",
     "२ इतिहास ३６, प्रेरित ३, भजनसंग्रh १४５, भजनसंग्रh १४６",
@@ -3193,6 +3193,18 @@ const App: React.FC = () => {
         setActivePage('chat');
     }, []);
 
+    const MemoizedConversationPage = useMemo(() => {
+        if (!currentChat) return null;
+        return (
+            <ConversationPage 
+                key={currentChat.id}
+                chat={currentChat} 
+                currentUser={currentUser!} 
+                onBack={handleBackFromConversation} 
+            />
+        );
+    }, [currentChat, currentUser, handleBackFromConversation]);
+
 
     if (firebaseServices.firebaseError) {
         return <ErrorFallback error={new Error(firebaseServices.firebaseError)} />;
@@ -3233,16 +3245,8 @@ const App: React.FC = () => {
                 return <PrayerPage currentUser={currentUser} requests={prayerRequests} setRequests={setPrayerRequests} />;
             case 'conversation':
                  if (currentChat) {
-                    return (
-                        <ConversationPage 
-                            key={currentChat.id} // Add key to ensure it remounts on chat change, but not on parent re-render
-                            chat={currentChat} 
-                            currentUser={currentUser} 
-                            onBack={handleBackFromConversation} 
-                        />
-                    );
+                    return MemoizedConversationPage;
                  }
-                 // Fallback if currentChat is null
                  handleBackFromConversation();
                  return null;
             default:

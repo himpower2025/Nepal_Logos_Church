@@ -147,8 +147,8 @@ export const onNewsCreated = onDocumentCreated("news/{newsId}", async (event) =>
             },
             webpush: {
                 notification: {
-                    title: notificationTitle,
-                    body: notificationBody,
+                    title: notificationTitle, // REQUIRED: This was missing
+                    body: notificationBody, // REQUIRED: This was missing
                     icon: `${APP_URL}/logos-church-new-logo.jpg`,
                     tag: `news-${event.params.newsId}`,
                     data: {
@@ -199,8 +199,8 @@ export const onPrayerRequestCreated = onDocumentCreated("prayerRequests/{request
             },
             webpush: {
                 notification: {
-                    title: notificationTitle,
-                    body: notificationBody,
+                    title: notificationTitle, // REQUIRED: This was missing
+                    body: notificationBody, // REQUIRED: This was missing
                     icon: `${APP_URL}/logos-church-new-logo.jpg`,
                     tag: `prayer-${event.params.requestId}`,
                     data: {
@@ -317,8 +317,8 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
         },
         webpush: {
             notification: {
-                title: notificationTitle,
-                body: notificationBody,
+                title: notificationTitle, // REQUIRED: This was missing
+                body: notificationBody, // REQUIRED: This was missing
                 icon: `${APP_URL}/logos-church-new-logo.jpg`,
                 tag: `chat-${chatId}`,
                 data: {
