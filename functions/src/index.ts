@@ -132,18 +132,25 @@ export const onNewsCreated = onDocumentCreated("news/{newsId}", async (event) =>
     if (allTokens.length > 0) {
         const link = "/?page=news";
         const payload: MulticastMessage = {
+            notification: {
+                title: "⛪️ New Announcement",
+                body: newsItem.title,
+            },
             webpush: {
+                notification: {
+                    icon: "/logos-church-new-logo.jpg",
+                    tag: `news-${event.params.newsId}`,
+                },
+                fcmOptions: {
+                    link: link,
+                },
                 headers: {Urgency: "high"},
             },
             android: {
                 priority: "high",
             },
             data: {
-                title: "⛪️ New Announcement",
-                body: newsItem.title,
                 url: link,
-                tag: `news-${event.params.newsId}`,
-                icon: "/logos-church-new-logo.jpg",
             },
             tokens: allTokens,
         };
@@ -176,18 +183,25 @@ export const onPrayerRequestCreated = onDocumentCreated("prayerRequests/{request
     if (allTokens.length > 0) {
         const link = "/?page=prayer";
         const payload: MulticastMessage = {
+            notification: {
+                title: "🙏 New Prayer Request",
+                body: `${prayerRequest.authorName} has shared a new request.`,
+            },
             webpush: {
+                notification: {
+                    icon: "/logos-church-new-logo.jpg",
+                    tag: `prayer-${event.params.requestId}`,
+                },
+                fcmOptions: {
+                    link: link,
+                },
                 headers: {Urgency: "high"},
             },
             android: {
                 priority: "high",
             },
             data: {
-                title: "🙏 New Prayer Request",
-                body: `${prayerRequest.authorName} has shared a new request.`,
                 url: link,
-                tag: `prayer-${event.params.requestId}`,
-                icon: "/logos-church-new-logo.jpg",
             },
             tokens: allTokens,
         };
@@ -286,18 +300,25 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
     }
 
     const payload: MulticastMessage = {
+        notification: {
+            title: notificationTitle,
+            body: isGroupChat ? `${senderName}: ${truncatedBody}` : truncatedBody,
+        },
         webpush: {
+            notification: {
+                icon: "/logos-church-new-logo.jpg",
+                tag: `chat-${chatId}`,
+            },
+            fcmOptions: {
+                link: link,
+            },
             headers: {Urgency: "high"},
         },
         android: {
             priority: "high",
         },
         data: {
-            title: notificationTitle,
-            body: isGroupChat ? `${senderName}: ${truncatedBody}`: truncatedBody,
             url: link,
-            tag: `chat-${chatId}`,
-            icon: "/logos-church-new-logo.jpg",
             chatId: chatId, // Pass for in-app handling
         },
         tokens: uniqueTokens,

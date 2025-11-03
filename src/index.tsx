@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect, useRef, useCallback, createContext, useContext, useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createPortal } from 'react-dom';
@@ -363,7 +361,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १४, प्रेरित ५:१९-４２, भजनसंग्रह ६２, याकूब ३",
     "गन्ती १५, प्रेरित ६, भजनसंग्रह ६３, याकूब ४",
     "गन्ती १६, प्रेरित ७:१-२１, भजनसंग्रह ६４, याकूब ५",
-    "गन्ती १७, प्रेरित ७:२２-４३, भजनसंग्रह ६５, १ पत्रुस १",
+    "गन्ती १७, प्रेरित ७:२２-४३, भजनसंग्रह ६５, १ पत्रुस १",
     "गन्ती १८, प्रेरित ७:४４-६०, भजनसंग्रह ६６, १ पत्रुस २",
     "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६７, १ पत्रुस ३",
     "गन्ती २०, प्रेरित ८:２６-４०, भजनसंग्रह ६８, १ पत्रुस ४",
@@ -384,7 +382,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ३５, प्रेरित १८, हितोपदेश ६, प्रकाश ३",
     "गन्ती ३６, प्रेरित १९, हितोपदेश ७, प्रकाश ४",
     "व्यवस्था १, प्रेरित २०:१-१６, हितोपदेश ८, प्रकाश ५",
-    "व्यवस्था २, प्रेरित २०:१７-３８, हितोपदेश ९, प्रकाश ६",
+    "व्यवस्था २, प्रेरित २०:१７-३８, हितोपदेश ९, प्रकाश ६",
     "व्यवस्था ३, प्रेरित २१:१-१८, उपदेशक १, प्रकाश ७",
     "व्यवस्था ४, प्रेरित २१:१९-４３, उपदेशक २, प्रकाश ८",
     "व्यवस्था ५, प्रेरित २２, उपदेशक ३, प्रकाश ९",
@@ -574,8 +572,8 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५１",
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
-    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५７",
-    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५९",
+    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५७",
+    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५９",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
@@ -600,16 +598,16 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १, लूका १३, हितोपदेश २२, भजनसंग्रh ९０",
     "२ इतिहास २, लूका १४, हितोपदेश ২৩, भजनसंग्रh ९１",
     "२ इतिहास ३, लूका १५, हितोपदेश २४, भजनसंग्रh ९２",
-    "२ इतिहास ४, लूका १६, हितोपदेश २५, भजनसंग्रh ९３",
+    "२ इतिहास ४, लूका १६, हितोपदेश २५, भजनसंग्रh ९३",
     "२ इतिहास ५, लूका १७, हितोपदेश २６, भजनसंग्रh ९４",
     "२ इतिहास ६, लूका १८, हितोपदेश २७, भजनसंग्रh ९５",
     "२ इतिहास ७, लूका १९, हितोपदेश २८, भजनसंग्रh ९６",
-    "२ इतिहास ८, लूका २०, हितोपदेश २९, भजनसंग्रh ९७",
-    "२ इतिहास ९, लूका २１, हितोपदेश ३０, भजनसंग्रh ९８",
+    "२ इतिहास ८, लूका २०, हितोपदेश २९, भजनसंग्रh ९７",
+    "२ इतिहास ९, लूका २१, हितोपदेश ३０, भजनसंग्रh ९８",
     "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रh ९９",
     "२ इतिहास ११, लूका ২৩, भजनसंग्रh १०४, भजनसंग्रh १००",
     "२ इतिहास १२, लूका २४, भजनसंग्रh १०५, भजनसंग्रh १०१",
-    "२ इतिहास १३, यूहन्ना १, भजनसंग्रh १०６, भजनसंग्रh १०２",
+    "२ इतिहास १३, यूहन्ना १, भजनसंग्रh १०６, भजनसंग्रh १०२",
     "२ इतिहास १४, यूहन्ना २, भजनसंग्रh १०７, भजनसंग्रh १०३",
     "२ इतिहास १५, यूहन्ना ३, भजनसंग्रh १०८, भजनसंग्रh १०९",
     "२ इतिहास १६, यूहन्ना ४, भजनसंग्रh १１０, भजनसंग्रh ११１",
@@ -618,8 +616,8 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１６, भजनसंग्रh ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
     "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６४, भजनसंग्रh ११९:६५-९६",
-    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१२８, भजनसंग्रh ११९:१２९-१５２",
-    "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१５३-१７６, भजनसंग्रh १२०",
+    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१２８, भजनसंग्रh ११९:१２९-१५２",
+    "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७６, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रh १२３, भजनसंग्रh १२４",
     "२ इतिहास २６, यूहन्ना १४, भजनसंग्रh १२５, भजनसंग्रh १२６",
@@ -2299,17 +2297,45 @@ const ConversationPage: React.FC<{
 
         const messagesQuery = query(collection(db, "chats", chat.id, "messages"), orderBy("createdAt", "asc"));
         const unsubscribeMessages = onSnapshot(messagesQuery, (snapshot) => {
-            const serverMessages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Message));
-            
-            setMessages(prevLocalMessages => {
-                const serverMessagesMap = new Map(serverMessages.map(m => [m.id, m]));
-                const optimisticMessages = prevLocalMessages.filter(
-                    localMsg => (localMsg.status === 'uploading' || localMsg.status === 'failed') && !serverMessagesMap.has(localMsg.id)
-                );
+            setMessages(prevMessages => {
+                const updatedMessages = [...prevMessages];
+                let hasChanges = false;
+        
+                snapshot.docChanges().forEach(change => {
+                    hasChanges = true;
+                    const docData = change.doc.data() as Message & { tempId?: string }; // Expect tempId
+                    const message: Message = { 
+                        id: change.doc.id,
+                        senderId: docData.senderId,
+                        createdAt: docData.createdAt,
+                        content: docData.content,
+                        media: docData.media,
+                        tempId: docData.tempId,
+                    };
+
+                    if (change.type === 'added') {
+                        const optimisticIndex = docData.tempId ? updatedMessages.findIndex(m => m.id === docData.tempId) : -1;
+
+                        if (optimisticIndex !== -1) {
+                            updatedMessages[optimisticIndex] = message; // Replace
+                        } else if (!updatedMessages.some(m => m.id === message.id)) {
+                            updatedMessages.push(message); // Add
+                        }
+                    }
+                    if (change.type === 'modified') {
+                        const index = updatedMessages.findIndex(m => m.id === message.id);
+                        if (index !== -1) updatedMessages[index] = message;
+                    }
+                    if (change.type === 'removed') {
+                        const index = updatedMessages.findIndex(m => m.id === message.id);
+                        if (index !== -1) updatedMessages.splice(index, 1);
+                    }
+                });
                 
-                const combined = [...serverMessages, ...optimisticMessages];
-                
-                return combined.sort((a, b) => (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0));
+                if (hasChanges) {
+                     return updatedMessages.sort((a, b) => (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0));
+                }
+                return prevMessages;
             });
             setLoading(false);
         });
@@ -2382,24 +2408,22 @@ const ConversationPage: React.FC<{
             
             const uploadedMedia = await uploadAndGetMediaItems();
 
-            // If all media uploads failed and there's no text content, mark as failed and exit.
             if (mediaFiles.length > 0 && uploadedMedia.length === 0 && !textContent) {
                 setMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
-                return; // Stop the function here.
+                return;
             }
             
-            const messagePayload: Omit<Message, 'id' | 'tempId' | 'status'> = {
-                senderId: currentUser.id, createdAt: serverTimestamp() as Timestamp,
+            const messagePayload = {
+                senderId: currentUser.id, 
+                createdAt: serverTimestamp(),
+                tempId: tempId, // Pass the tempId for reconciliation
                 ...(textContent && { content: textContent }),
                 ...(uploadedMedia.length > 0 && { media: uploadedMedia }),
             };
 
             const sentMessageRef = await addDoc(collection(db, "chats", currentChat.id, "messages"), messagePayload);
             
-            // The onSnapshot listener will handle displaying the final message.
-            // We no longer manually remove the optimistic message here.
-
-            // Update last message on the chat document
+            // onSnapshot will handle UI updates. Update last message on chat doc.
             const sentMessageSnap = await getDoc(sentMessageRef);
             if (sentMessageSnap.exists()) {
                 const sentMessage = sentMessageSnap.data();
@@ -2418,7 +2442,6 @@ const ConversationPage: React.FC<{
         } catch (error) {
             console.error("Error sending message:", error);
             setMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
-            // A more generic error toast can be shown here if needed, but the UI will show the failed state.
         }
     };
     
@@ -3050,14 +3073,22 @@ const App: React.FC = () => {
              }
              
              showToast(
-                data?.title || 'New Message',
-                data?.body || 'You have a new message.',
+                payload.notification?.title || 'New Message',
+                payload.notification?.body || 'You have a new message.',
                 () => {
-                    if (data?.chatId) {
-                        const targetChat = chats.find(c => c.id === data.chatId);
-                        if (targetChat) {
-                            setCurrentChat(targetChat);
-                            setActivePage('conversation');
+                    if (data?.url) {
+                        const url = new URL(data.url, window.location.origin);
+                        const page = url.searchParams.get('page');
+                        const chatId = url.searchParams.get('chatId');
+
+                        if (page === 'chat' && chatId) {
+                            const targetChat = chats.find(c => c.id === chatId);
+                            if(targetChat) {
+                                setCurrentChat(targetChat);
+                                setActivePage('conversation');
+                            }
+                        } else if (page && navOrder.includes(page as any)) {
+                            setActivePage(page as any);
                         }
                     }
                 }

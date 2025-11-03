@@ -1,111 +1,107 @@
-// This service worker now relies on the browser's native handling of 'notification' payloads for display,
-// which is more robust and works from a cold start without needing complex initialization.
-// The main responsibilities are now caching and handling notification clicks.
-
-const CACHE_NAME = 'nepal-logos-church-v52'; // Increment version to force update
-
-// These are cached on install for basic offline fallback.
-const APP_SHELL_URLS = [
+const CACHE_NAME = 'logos-church-cache-v53';
+const urlsToCache = [
   '/',
   '/index.html',
-  '/manifest.json',
-  '/logos-church-new-logo.jpg', // Main church logo (local path)
-  '/logos-qr-code.png'          // Offering QR code (local path)
+  '/logos-church-new-logo.jpg',
+  '/manifest.json'
 ];
 
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(APP_SHELL_URLS))
-      .then(() => self.skipWaiting()) // Force the new service worker to activate immediately
+      .then(cache => {
+        console.log('Opened cache');
+        // It's safer to not cache files that are part of the build output like tsx/css
+        // as their names might be hashed. Caching the main entry points is enough.
+        return cache.addAll(urlsToCache);
+      })
   );
+  self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
+  const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
-        cacheNames
-          .filter(name => name !== CACHE_NAME)
-          .map(name => caches.delete(name))
+        cacheNames.map(cacheName => {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            console.log('Deleting old cache:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
       );
-    }).then(() => self.clients.claim()) // Take control of all open clients immediately
+    })
   );
+  self.clients.claim();
 });
 
 self.addEventListener('fetch', event => {
-  if (event.request.method === 'GET') {
-    event.respondWith(
-      caches.open(CACHE_NAME).then(cache => {
-        return fetch(event.request).then(networkResponse => {
-          if (networkResponse.status === 200) {
-            cache.put(event.request, networkResponse.clone());
-          }
-          return networkResponse;
-        }).catch(() => {
-          return cache.match(event.request).then(cachedResponse => {
-            if (!cachedResponse && event.request.mode === 'navigate') {
-              return caches.match('/index.html');
-            }
-            return cachedResponse || new Response(null, { status: 404 });
-          });
-        });
-      })
-    );
-  }
+  // We will use a network-first strategy to ensure content is always fresh.
+  // This is better for a dynamic app than cache-first.
+  event.respondWith(
+    fetch(event.request).catch(() => {
+      return caches.match(event.request);
+    })
+  );
 });
+
+// --- PUSH NOTIFICATION HANDLING ---
 
 self.addEventListener('push', event => {
   console.log('[Service Worker] Push Received.');
-  if (!event.data) {
-    console.log('[Service Worker] Push event but no data');
+  
+  let payload;
+  try {
+    payload = event.data.json();
+  } catch (e) {
+    console.error('Could not parse push notification payload as JSON.', e);
+    // If the payload isn't JSON, we can't process it.
+    // The browser might have already shown a basic notification if it was sent with a 'notification' block.
     return;
   }
   
-  // The data from the cloud function is expected to be a JSON string
-  const data = event.data.json();
-  const title = data.title || 'New Message';
-  const options = {
-    body: data.body || 'You have a new message.',
-    icon: data.icon || '/logos-church-new-logo.jpg',
-    badge: data.icon || '/logos-church-new-logo.jpg',
-    tag: data.tag || 'general-notification',
-    data: {
-      url: data.url // URL to open on click
-    }
-  };
+  // The backend now sends a structured payload with both notification and data
+  const { notification, data } = payload;
   
+  const title = notification?.title || 'Logos Church';
+  const options = {
+    body: notification?.body || 'You have a new message.',
+    icon: notification?.icon || '/logos-church-new-logo.jpg',
+    badge: '/logos-church-new-logo.jpg', // For Android
+    tag: notification?.tag || 'logos-church-notification',
+    data: {
+      // Pass the URL from the 'data' payload to the notification's data for the click event
+      url: data?.url || '/',
+    },
+  };
+
   event.waitUntil(self.registration.showNotification(title, options));
 });
 
-
 self.addEventListener('notificationclick', event => {
   console.log('[Service Worker] Notification click Received.');
+
   event.notification.close();
-  // The 'data' payload from the push event is automatically attached to the notification.
-  const urlToOpen = new URL(event.notification.data.url, self.location.origin).href;
+
+  // Get the URL to open from the notification's data
+  const urlToOpen = event.notification.data.url;
 
   event.waitUntil(
-    clients.matchAll({
-      type: 'window',
-      includeUncontrolled: true,
-    }).then(windowClients => {
-      // Check if a window is already open and focused.
-      let clientIsVisible = false;
-      for(const client of windowClients) {
-        // Attempt to focus the client that is already at the target URL
-        if (new URL(client.url).pathname === new URL(urlToOpen).pathname && 'focus' in client) {
-          client.navigate(urlToOpen); // Navigate to the specific chat if URL changed
-          client.focus();
-          clientIsVisible = true;
-          break;
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
+      // Check if a window/tab with the same URL is already open.
+      for (const client of windowClients) {
+        // Use a more lenient check for URLs with query params
+        const clientUrl = new URL(client.url);
+        const targetUrl = new URL(urlToOpen, self.location.origin);
+        if (clientUrl.href === targetUrl.href && 'focus' in client) {
+          return client.focus();
         }
       }
-      // If not, open a new window.
-      if (!clientIsVisible && clients.openWindow) {
+      // If no window is found, open a new one.
+      if (clients.openWindow) {
         return clients.openWindow(urlToOpen);
       }
-      return;
     })
   );
 });
