@@ -2,7 +2,7 @@
 // which is more robust and works from a cold start without needing complex initialization.
 // The main responsibilities are now caching and handling notification clicks.
 
-const CACHE_NAME = 'nepal-logos-church-v50'; // Increment version to force update
+const CACHE_NAME = 'nepal-logos-church-v51'; // Increment version to force update
 
 // These are cached on install for basic offline fallback.
 const APP_SHELL_URLS = [
@@ -55,11 +55,34 @@ self.addEventListener('fetch', event => {
   }
 });
 
+self.addEventListener('push', event => {
+  console.log('[Service Worker] Push Received.');
+  if (!event.data) {
+    console.log('[Service Worker] Push event but no data');
+    return;
+  }
+  
+  // The data from the cloud function is expected to be a JSON string
+  const data = event.data.json();
+  const title = data.title || 'New Message';
+  const options = {
+    body: data.body || 'You have a new message.',
+    icon: '/logos-church-new-logo.jpg',
+    badge: '/logos-church-new-logo.jpg',
+    tag: data.tag || 'general-notification',
+    data: {
+      url: data.url // URL to open on click
+    }
+  };
+  
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
 
 self.addEventListener('notificationclick', event => {
   console.log('[Service Worker] Notification click Received.');
   event.notification.close();
-  // The 'data' payload from the cloud function is automatically attached to the notification.
+  // The 'data' payload from the push event is automatically attached to the notification.
   const urlToOpen = new URL(event.notification.data.url, self.location.origin).href;
 
   event.waitUntil(
