@@ -137,14 +137,14 @@ export const onNewsCreated = onDocumentCreated("news/{newsId}", async (event) =>
                 title: "⛪️ New Announcement",
                 body: newsItem.title,
             },
-            data: { // Data for foreground notifications
+            data: {
                 url: link,
             },
             webpush: {
                 notification: {
                     icon: "/logos-church-new-logo.jpg",
                     tag: `news-${event.params.newsId}`,
-                    data: { // CRITICAL: Data for service worker on notification click
+                    data: {
                         url: link,
                     },
                 },

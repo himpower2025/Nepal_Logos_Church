@@ -298,7 +298,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान १८, लूका १२:३५-५९, अय्यूब ३５, २ कोरिन्थी ८",
     "प्रस्थान १९, लूका १३, अय्यूब ३６, २ कोरिन्थी ९",
     "प्रस्थान २०, लूका १४:१-२４, अय्यूब ३７, २ कोरिन्थी १०",
-    "प्रस्थान २१, लूका १४:२५-३५, अय्यूब ३८, २ कोरिन्थी ११",
+    "प्रस्थान २१, लूका १४:२५-३५, अय्यूब ३８, २ कोरिन्थी ११",
     "प्रस्थान २２, लूका १५, अय्यूब ३９, २ कोरिन्थी १२",
     "प्रस्थान ২৩, लूका १६, अय्यूब ४०, २ कोरिन्थी १३",
     "प्रस्थान २४, लूका १७:१-१९, अय्यूब ४१, गलाती १",
@@ -337,7 +337,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी १७, यूहन्ना १०:१-२１, भजनसंग्रह ३８, १ तिमोथी ६",
     "लेवी १८, यूहन्ना १०:२२-４２, भजनसंग्रह ३９, २ तिमोथी १",
     "लेवी १९, यूहन्ना ११:१-२７, भजनसंग्रह ४०, २ तिमोथी २",
-    "लेवी २०, यूहन्ना ११:२８-５७, भजनसंग्रह ४१, २ तिमोथी ३",
+    "लेवी २०, यूहन्ना ११:२８-５７, भजनसंग्रह ४१, २ तिमोथी ३",
     "लेवी २१, यूहन्ना १२:१-१९, भजनसंग्रह ४２, २ तिमोथी ४",
     "लेवी २２, यूहन्ना १२:२०-５０, भजनसंग्रह ४३, तीतस १",
     "लेवी ২৩, यूहन्ना १३, भजनसंग्रह ۴４, तीतस २",
@@ -353,7 +353,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ६, यूहन्ना २１, भजनसंग्रह ५４, हिब्रू ८",
     "गन्ती ७, प्रेरित १, भजनसंग्रह ५５, हिब्रू ९",
     "गन्ती ८, प्रेरित २:१-２１, भजनसंग्रह ५６, हिब्रू १०",
-    "गन्ती ९, प्रेरित २:२２-４७, भजनसंग्रह ५７, हिब्रू ११",
+    "गन्ती ९, प्रेरित २:२２-４७, भजनसंग्रह ५७, हिब्रू ११",
     "गन्ती १०, प्रेरित ३, भजनसंग्रह ५८, हिब्रू १२",
     "गन्ती ११, प्रेरित ४:१-２२, भजनसंग्रह ५९, हिब्रू १३",
     "गन्ती १२, प्रेरित ४:२३-３７, भजनसंग्रह ६０, याकूब १",
@@ -384,7 +384,7 @@ const MCCHEYNE_READING_PLAN = [
     "व्यवस्था १, प्रेरित २०:१-१６, हितोपदेश ८, प्रकाश ५",
     "व्यवस्था २, प्रेरित २०:१７-३８, हितोपदेश ९, प्रकाश ६",
     "व्यवस्था ३, प्रेरित २१:१-१८, उपदेशक १, प्रकाश ७",
-    "व्यवस्था ४, प्रेरित २१:१९-４３, उपदेशक २, प्रकाश ८",
+    "व्यवस्था ४, प्रेरित २१:१९-４३, उपदेशक २, प्रकाश ८",
     "व्यवस्था ५, प्रेरित २２, उपदेशक ३, प्रकाश ९",
     "व्यवस्था ६, प्रेरित ২৩, उपदेशक ४, प्रकाश १०",
     "व्यवस्था ७, प्रेरित २४, उपदेशक ५, प्रकाश ११",
@@ -567,7 +567,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ राजा २४, मत्ती २७, भजनसंग्रh ४०, भजनसंग्रh ४１",
     "२ राजा २५, मत्ती २８, भजनसंग्रh ४２, भजनसंग्रh ४३",
     "१ इतिहास १, मर्कूस १, भजनसंग्रh ४４, भजनसंग्रh ४５",
-    "१ इतिहास २, मर्कूस २, भजनसंग्रh ৪६, भजनसंग्रh ४７",
+    "१ इतिहास २, मर्कूस २, भजनसंग्रh ৪६, भजनसंग्रh ४७",
     "१ इतिहास ३, मर्कूस ३, भजनसंग्रh ४८, भजनसंग्रh ४९",
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५１",
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
@@ -579,9 +579,9 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
     "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६７",
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६９",
-    "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
+    "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७१",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७३",
-    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७४, भजनसंग्रh ७５",
+    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
     "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७８",
     "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७९",
@@ -615,7 +615,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १८, यूहन्ना ६, भजनसंग्रh १１４, भजनसंग्रh ११５",
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１６, भजनसंग्रh ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
-    "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６४, भजनसंग्रh ११९:६५-९६",
+    "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６४, भजनसंग्रh ११९:६५-९６",
     "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१２८, भजनसंग्रh ११९:१२९-१५２",
     "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७६, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
@@ -2328,18 +2328,20 @@ const ConversationPage: React.FC<{
         if (!loading) { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }
     }, [allMessages, loading]);
 
-    const handleSendMessage = async () => {
+    const handleSendMessage = useCallback(async () => {
         const textContent = newMessage.trim();
         const mediaFiles = [...mediaPreviews];
         if (!db || !storage || !currentChat || !currentUser || (!textContent && mediaFiles.length === 0)) return;
     
-        const originalNewMessage = newMessage;
-        const originalMediaPreviews = mediaPreviews;
+        // 1. Clear input fields immediately for a responsive feel.
         setNewMessage('');
         setMediaPreviews([]);
         setUploadProgress({});
     
+        // 2. Create a unique temporary ID for this message.
         const tempId = `temp_${Date.now()}`;
+    
+        // 3. Create an "optimistic" message object to display in the UI right away.
         const optimisticMessage: Message = {
             id: tempId, tempId, senderId: currentUser.id, createdAt: Timestamp.now(), status: 'uploading',
             ...(textContent && { content: textContent }),
@@ -2349,83 +2351,67 @@ const ConversationPage: React.FC<{
         };
         setOptimisticMessages(prev => [...prev, optimisticMessage]);
     
+        // 4. Perform the actual upload and database write in the background.
         try {
             const uploadAndGetMediaItems = async (): Promise<MediaItem[]> => {
-                const uploadPromises = mediaFiles.map(async (preview) => {
-                    const fileToUpload = preview.type === 'image'
-                        ? await compressImage(preview.file)
-                        : preview.file;
-                    
-                    const filePath = `chat_media/${currentChat.id}/${Date.now()}_${fileToUpload.name}`;
-                    const mediaRef = ref(storage, filePath);
-                    const uploadTask: UploadTask = uploadBytesResumable(mediaRef, fileToUpload);
+                const uploadPromises = mediaFiles.map(preview => {
+                    return new Promise<MediaItem>(async (resolve, reject) => {
+                        try {
+                            const fileToUpload = preview.type === 'image' ? await compressImage(preview.file) : preview.file;
+                            const filePath = `chat_media/${currentChat.id}/${Date.now()}_${fileToUpload.name}`;
+                            const mediaRef = ref(storage, filePath);
+                            const uploadTask = uploadBytesResumable(mediaRef, fileToUpload);
 
-                    return new Promise<MediaItem>((resolve, reject) => {
-                        uploadTask.on('state_changed',
-                            (snapshot) => {
-                                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                                setUploadProgress(prev => ({ ...prev, [preview.id]: progress }));
-                            },
-                            (error) => reject(error),
-                            async () => {
-                                const url = await getDownloadURL(uploadTask.snapshot.ref);
-                                resolve({ url, type: preview.type, path: filePath });
-                            }
-                        );
+                            uploadTask.on('state_changed',
+                                (snapshot) => {
+                                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                                    setUploadProgress(prev => ({ ...prev, [preview.id]: progress }));
+                                },
+                                (error) => reject(error),
+                                async () => {
+                                    const url = await getDownloadURL(uploadTask.snapshot.ref);
+                                    resolve({ url, type: preview.type, path: filePath });
+                                }
+                            );
+                        } catch (error) {
+                            reject(error);
+                        }
                     });
                 });
-            
-                const results = await Promise.allSettled(uploadPromises);
-                const successfulUploads = results
-                    .filter(res => res.status === 'fulfilled')
-                    .map(res => (res as PromiseFulfilledResult<MediaItem>).value);
-                
-                const failedCount = results.length - successfulUploads.length;
-                if (failedCount > 0) {
-                     showToast("Upload Error", `Failed to send ${failedCount} media file(s).`);
-                }
-                return successfulUploads;
+                return Promise.all(uploadPromises);
             };
             
-            const uploadedMedia = await uploadAndGetMediaItems();
-
-            if (mediaFiles.length > 0 && uploadedMedia.length === 0 && !textContent) {
-                // All media uploads failed and there's no text.
-                throw new Error("All media uploads failed.");
-            }
+            const uploadedMedia = mediaFiles.length > 0 ? await uploadAndGetMediaItems() : [];
             
             const messagePayload = {
                 senderId: currentUser.id, 
                 createdAt: serverTimestamp(),
-                tempId, // Pass the tempId for reconciliation
+                tempId,
                 ...(textContent && { content: textContent }),
                 ...(uploadedMedia.length > 0 && { media: uploadedMedia }),
             };
 
-            const sentMessageRef = await addDoc(collection(db, "chats", currentChat.id, "messages"), messagePayload);
-            const sentMessageSnap = await getDoc(sentMessageRef);
-            if (sentMessageSnap.exists()) {
-                const sentMessage = sentMessageSnap.data();
-                let lastMessageContent = textContent;
-                if (!textContent && uploadedMedia.length > 0) {
-                    lastMessageContent = uploadedMedia.length > 1 ? '📷 Media' : (uploadedMedia[0].type === 'video' ? '📹 Video' : '📷 Photo');
-                }
-                
-                await updateDoc(doc(db, "chats", currentChat.id), {
-                    lastMessage: { content: lastMessageContent, senderId: currentUser.id, createdAt: sentMessage.createdAt },
-                    lastActivity: sentMessage.createdAt,
-                    [`lastRead.${currentUser.id}`]: sentMessage.createdAt
-                });
-            }
+            const messageRef = await addDoc(collection(db, "chats", currentChat.id, "messages"), messagePayload);
+            
+            // 5. Update the chat's last message preview.
+             let lastMessageContent = textContent;
+             if (!textContent && uploadedMedia.length > 0) {
+                 lastMessageContent = uploadedMedia.length > 1 ? '📷 Media' : (uploadedMedia[0].type === 'video' ? '📹 Video' : '📷 Photo');
+             }
+             
+             await updateDoc(doc(db, "chats", currentChat.id), {
+                 lastMessage: { content: lastMessageContent, senderId: currentUser.id, createdAt: serverTimestamp() },
+                 lastActivity: serverTimestamp(),
+                 [`lastRead.${currentUser.id}`]: serverTimestamp()
+             });
 
         } catch (error) {
             console.error("Error sending message:", error);
+            showToast("Error", "Failed to send message.");
+            // 6. If an error occurs, update the optimistic message's status to 'failed'.
             setOptimisticMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
-            // Restore input fields for user to retry
-            setNewMessage(originalNewMessage);
-            setMediaPreviews(originalMediaPreviews);
         }
-    };
+    }, [newMessage, mediaPreviews, db, storage, currentChat, currentUser, showToast]);
     
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
@@ -3133,6 +3119,45 @@ const App: React.FC = () => {
     
     const isAdmin = currentUser.roles.includes('admin');
 
+    const renderActivePage = () => {
+        switch (activePage) {
+            case 'news':
+                return <NewsPage currentUser={currentUser} news={news} setNews={setNews} />;
+            case 'worship':
+                return <WorshipPage currentUser={currentUser} liveService={worshipService} pastServices={pastServices} />;
+            case 'podcast':
+                return <PodcastsPage currentUser={currentUser} podcasts={podcasts} setPodcasts={setPodcasts} />;
+            case 'bible':
+                return <BiblePage />;
+            case 'chat':
+                return <ChatListPage
+                    currentUser={currentUser}
+                    usersMap={usersMap}
+                    chats={chats}
+                    onChatSelect={(chat) => {
+                        setCurrentChat(chat);
+                        setActivePage('conversation');
+                    }}
+                    onCreateChat={handleCreateChat}
+                />;
+            case 'prayer':
+                return <PrayerPage currentUser={currentUser} requests={prayerRequests} setRequests={setPrayerRequests} />;
+            case 'conversation':
+                if (currentChat) {
+                    return <ConversationPage 
+                        chat={currentChat} 
+                        currentUser={currentUser} 
+                        onBack={handleBackFromConversation} 
+                    />;
+                }
+                // Fallback if currentChat is null
+                setActivePage('chat'); 
+                return null;
+            default:
+                return <NewsPage currentUser={currentUser} news={news} setNews={setNews} />;
+        }
+    };
+
     return (
         <div className="app-container">
             {notificationPermissionStatus === 'denied' && activePage !== 'conversation' && (
@@ -3169,30 +3194,7 @@ const App: React.FC = () => {
             )}
 
             <main className={`main-content ${activePage === 'conversation' ? 'full-height' : ''}`}>
-                 {activePage === 'news' && <NewsPage currentUser={currentUser} news={news} setNews={setNews} />}
-                 {activePage === 'worship' && <WorshipPage currentUser={currentUser} liveService={worshipService} pastServices={pastServices} />}
-                 {activePage === 'podcast' && <PodcastsPage currentUser={currentUser} podcasts={podcasts} setPodcasts={setPodcasts} />}
-                 {activePage === 'bible' && <BiblePage />}
-                 {activePage === 'chat' && (
-                    <ChatListPage
-                        currentUser={currentUser}
-                        usersMap={usersMap}
-                        chats={chats}
-                        onChatSelect={(chat) => {
-                            setCurrentChat(chat);
-                            setActivePage('conversation');
-                        }}
-                        onCreateChat={handleCreateChat}
-                    />
-                 )}
-                 {activePage === 'prayer' && <PrayerPage currentUser={currentUser} requests={prayerRequests} setRequests={setPrayerRequests} />}
-                 {activePage === 'conversation' && currentChat && (
-                    <ConversationPage 
-                        chat={currentChat} 
-                        currentUser={currentUser} 
-                        onBack={handleBackFromConversation} 
-                    />
-                 )}
+                {renderActivePage()}
             </main>
 
             {activePage !== 'conversation' && (
