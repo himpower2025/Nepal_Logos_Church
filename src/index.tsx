@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect, useRef, useCallback, createContext, useContext, useMemo, memo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createPortal } from 'react-dom';
@@ -385,7 +386,7 @@ const MCCHEYNE_READING_PLAN = [
     "व्यवस्था १, प्रेरित २०:१-१６, हितोपदेश ८, प्रकाश ५",
     "व्यवस्था २, प्रेरित २०:१７-３８, हितोपदेश ९, प्रकाश ६",
     "व्यवस्था ३, प्रेरित २१:१-१८, उपदेशक १, प्रकाश ७",
-    "व्यवस्था ४, प्रेरित २१:१९-４३, उपदेशक २, प्रकाश ८",
+    "व्यवस्था ४, प्रेरित २१:१९-４３, उपदेशक २, प्रकाश ८",
     "व्यवस्था ५, प्रेरित २２, उपदेशक ३, प्रकाश ९",
     "व्यवस्था ६, प्रेरित ২৩, उपदेशक ४, प्रकाश १०",
     "व्यवस्था ७, प्रेरित २४, उपदेशक ५, प्रकाश ११",
@@ -577,8 +578,8 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५८, भजनसंग्रh ५९",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
-    "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
-    "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६६, भजनसंग्रh ६７",
+    "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६५",
+    "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६७",
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६９",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७३",
@@ -589,7 +590,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २०, लूका ३, हितोपदेश १२, भजनसंग्रh ८０",
     "१ इतिहास २１, लूका ४, हितोपदेश १३, भजनसंग्रh ८१",
     "१ इतिहास २２, लूका ५, हितोपदेश १४, भजनसंग्रh ८２",
-    "१ इतिहास ২৩, लूका ६, हितोपदेश १५, भजनसंग्रh ८३",
+    "१ इतिहास ২৩, लूका ६, हितोपदेश १५, भजनसंग्रh ८３",
     "१ इतिहास २४, लूका ७, हितोपदेश १६, भजनसंग्रh ८４",
     "१ इतिहास २५, लूका ८, हितोपदेश १७, भजनसंग्रh ८５",
     "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रh ८６",
@@ -3194,6 +3195,21 @@ const App: React.FC = () => {
         setActivePage('chat');
     }, []);
 
+    const conversationPageElement = useMemo(() => {
+        if (!currentChat || !currentUser) {
+            return null;
+        }
+        return (
+            <ConversationPage
+                key={currentChat.id}
+                chat={currentChat}
+                currentUser={currentUser}
+                onBack={handleBackFromConversation}
+            />
+        );
+    }, [currentChat, currentUser, handleBackFromConversation]);
+
+
     if (firebaseServices.firebaseError) {
         return <ErrorFallback error={new Error(firebaseServices.firebaseError)} />;
     }
@@ -3232,15 +3248,8 @@ const App: React.FC = () => {
             case 'prayer':
                 return <PrayerPage currentUser={currentUser} requests={prayerRequests} setRequests={setPrayerRequests} />;
             case 'conversation':
-                 if (currentChat) {
-                    return (
-                        <ConversationPage 
-                            key={currentChat.id}
-                            chat={currentChat} 
-                            currentUser={currentUser} 
-                            onBack={handleBackFromConversation} 
-                        />
-                    );
+                 if (conversationPageElement) {
+                    return conversationPageElement;
                  }
                  handleBackFromConversation();
                  return null;
