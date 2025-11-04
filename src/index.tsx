@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect, useRef, useCallback, createContext, useContext, useMemo, memo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createPortal } from 'react-dom';
@@ -366,7 +364,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १७, प्रेरित ७:२２-४३, भजनसंग्रह ६５, १ पत्रुस १",
     "गन्ती १८, प्रेरित ७:४４-६०, भजनसंग्रह ६６, १ पत्रुस २",
     "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६７, १ पत्रुस ३",
-    "गन्ती २०, प्रेरित ८:２６-４०, भजनसंग्रह ६８, १ पत्रुस ४",
+    "गन्ती २०, प्रेरित ८:２６-４０, भजनसंग्रह ६８, १ पत्रुस ४",
     "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६９, १ पत्रुस ५",
     "गन्ती २２, प्रेरित ९:२२-４३, भजनसंग्रह ७０, २ पत्रुस १",
     "गन्ती ২৩, प्रेरित १०:१-२३, भजनसंग्रह ७１, २ पत्रुस २",
@@ -439,7 +437,7 @@ const MCCHEYNE_READING_PLAN = [
     "यहोशू २०, २ कोरिन्थी ८, यशैया ३２, यशैया ३６",
     "यहोशू २१, २ कोरिन्थी ९, यशैया ३３, यशैया ३７",
     "यहोशू २２, २ कोरिन्थी १०, यशैया ३４, यशैया ३８",
-    "यहोशू ২৩, २ कोरिन्थी ११, यशैया ३５, यशैया ३９",
+    "यहोशू ২৩, २ कोरिन्थी ११, यशैया ३５, यशैया ३९",
     "यहोशू २४, २ कोरिन्थी १२, यशैया ३６, यशैया ४０",
     "न्यायकर्ता १, २ कोरिन्थी १३, यशैया ३７, यशैया ४１",
     "न्यायकर्ता २, गलाती १, यशैया ३８, यशैया ४２",
@@ -457,7 +455,7 @@ const MCCHEYNE_READING_PLAN = [
     "न्यायकर्ता १४, फिलिप्पी १, यर्मिया १०, यशैया ५４",
     "न्यायकर्ता १५, फिलिप्पी २, यर्मिया ११, यशैया ५５",
     "न्यायकर्ता १६, फिलिप्पी ३, यर्मिया १२, यशैया ५６",
-    "न्यायकर्ता १७, फिलिप्पी ४, यर्मिया १३, यशैया ५७",
+    "न्यायकर्ता १७, फिलिप्पी ४, यर्मिया १३, यशैया ५７",
     "न्यायकर्ता १८, कलस्सी १, यर्मिया १४, यशैया ५８",
     "न्यायकर्ता १९, कलस्सी २, यर्मिया १५, यशैया ५९",
     "न्यायकर्ता २०, कलस्सी ३, यर्मिया १६, यशैया ६０",
@@ -574,11 +572,11 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५१",
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
-    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५７",
+    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५६, भजनसंग्रh ५７",
     "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५८, भजनसंग्रh ५९",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
-    "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६५",
+    "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
     "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६७",
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६９",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
@@ -594,7 +592,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २४, लूका ७, हितोपदेश १६, भजनसंग्रh ८４",
     "१ इतिहास २५, लूका ८, हितोपदेश १७, भजनसंग्रh ८５",
     "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रh ८６",
-    "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८７",
+    "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८७",
     "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८８",
     "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८９",
     "२ इतिहास १, लूका १३, हितोपदेश २२, भजनसंग्रh ९０",
@@ -2268,10 +2266,10 @@ const RenameChatModal: React.FC<{
 };
 
 const ConversationPage: React.FC<{
-    chat: Chat;
+    chatId: string;
     currentUser: User;
     onBack: () => void;
-}> = memo(({ chat, currentUser, onBack }) => {
+}> = memo(({ chatId, currentUser, onBack }) => {
     const { db, storage } = useFirebase();
     const { showToast } = useToast();
     const [messages, setMessages] = useState<Message[]>([]);
@@ -2279,7 +2277,7 @@ const ConversationPage: React.FC<{
     const [newMessage, setNewMessage] = useState('');
     const [mediaPreviews, setMediaPreviews] = useState<MediaPreview[]>([]);
     const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
-    const [currentChat, setCurrentChat] = useState<Chat | null>(chat);
+    const [currentChat, setCurrentChat] = useState<Chat | null>(null);
     const [loading, setLoading] = useState(true);
     const [deletingMessage, setDeletingMessage] = useState<Message | null>(null);
     const [viewingMedia, setViewingMedia] = useState<{ media: MediaItem[]; startIndex: number } | null>(null);
@@ -2296,16 +2294,16 @@ const ConversationPage: React.FC<{
     );
 
     useEffect(() => {
-        if (!db || !chat?.id) return;
+        if (!db || !chatId) return;
         setLoading(true);
-        const chatRef = doc(db, 'chats', chat.id);
+        const chatRef = doc(db, 'chats', chatId);
         const unsubscribeChat = onSnapshot(chatRef, (doc) => {
             if (doc.exists()) {
                 setCurrentChat({ id: doc.id, ...doc.data() } as Chat);
             } else { onBack(); }
         });
 
-        const messagesQuery = query(collection(db, "chats", chat.id, "messages"), orderBy("createdAt", "asc"));
+        const messagesQuery = query(collection(db, "chats", chatId, "messages"), orderBy("createdAt", "asc"));
         const unsubscribeMessages = onSnapshot(messagesQuery, (snapshot) => {
             const serverMessages = snapshot.docs.map(doc => ({
                 id: doc.id,
@@ -2324,7 +2322,7 @@ const ConversationPage: React.FC<{
         updateDoc(chatRef, { [`lastRead.${currentUser.id}`]: Timestamp.now() }).catch(err => console.error("Error updating lastRead:", err));
         
         return () => { unsubscribeChat(); unsubscribeMessages(); }
-    }, [db, chat?.id, onBack, currentUser.id]);
+    }, [db, chatId, onBack, currentUser.id]);
 
 
     useEffect(() => {
@@ -2433,7 +2431,7 @@ const ConversationPage: React.FC<{
     };
     
     const handleDeleteMessage = async (messageToDelete: Message) => {
-        if (!db || !storage || !messageToDelete) return;
+        if (!db || !storage || !messageToDelete || !currentChat) return;
         setDeletingMessage(null);
 
         if (messageToDelete.tempId) {
@@ -2451,7 +2449,7 @@ const ConversationPage: React.FC<{
                     return Promise.resolve();
                 }));
             }
-            await deleteDoc(doc(db, "chats", chat.id, "messages", messageToDelete.id));
+            await deleteDoc(doc(db, "chats", currentChat.id, "messages", messageToDelete.id));
         } catch (error) {
             console.error("Error deleting message:", error);
             alert("Failed to delete message.");
@@ -2472,17 +2470,16 @@ const ConversationPage: React.FC<{
     };
 
     const getChatTitle = () => {
-        const chatData = currentChat || chat;
-        if (chatData?.name) return chatData.name;
-        if (!chatData?.participants) return "Conversation";
-        if (chatData.participantIds.length > 2) {
-             return chatData.participantIds
+        if (currentChat?.name) return currentChat.name;
+        if (!currentChat?.participants) return "Conversation";
+        if (currentChat.participantIds.length > 2) {
+             return currentChat.participantIds
                 .filter(id => id !== currentUser.id)
-                .map(id => chatData.participants[id]?.name.split(' ')[0] || '')
+                .map(id => currentChat.participants[id]?.name.split(' ')[0] || '')
                 .join(', ');
         }
-        const otherId = chatData.participantIds.find(id => id !== currentUser.id);
-        return otherId ? chatData.participants[otherId]?.name : "Chat";
+        const otherId = currentChat.participantIds.find(id => id !== currentUser.id);
+        return otherId ? currentChat.participants[otherId]?.name : "Chat";
     };
     
     return (
@@ -2492,7 +2489,7 @@ const ConversationPage: React.FC<{
                     <span className="material-symbols-outlined">arrow_back</span>
                 </button>
                 <h3>{getChatTitle()}</h3>
-                {(currentChat || chat).participantIds.length > 2 ? (
+                {(currentChat?.participantIds.length ?? 0) > 2 ? (
                     <button onClick={() => setIsRenameModalOpen(true)} className="header-action-button" aria-label="Rename chat">
                         <span className="material-symbols-outlined">edit</span>
                     </button>
@@ -2901,7 +2898,7 @@ const App: React.FC = () => {
     const [prayerRequests, setPrayerRequests] = useState<PrayerRequest[]>([]);
     const [users, setUsers] = useState<User[]>([]);
     const [chats, setChats] = useState<Chat[]>([]);
-    const [currentChat, setCurrentChat] = useState<Chat | null>(null);
+    const [currentChatId, setCurrentChatId] = useState<string | null>(null);
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
     const [notificationPermissionStatus, setNotificationPermissionStatus] = useState('default');
@@ -3075,7 +3072,7 @@ const App: React.FC = () => {
         if (page === 'chat' && chatId) {
             const targetChat = chats.find(c => c.id === chatId);
             if (targetChat) {
-                setCurrentChat(targetChat);
+                setCurrentChatId(chatId);
                 setActivePage('conversation');
                 deepLinkProcessed.current = true; // Mark as processed
                 // Clean the URL to prevent re-triggering
@@ -3126,7 +3123,7 @@ const App: React.FC = () => {
              const data = payload.notification;
              const customData = payload.data;
 
-             if (customData?.chatId && customData.chatId === currentChat?.id) {
+             if (customData?.chatId && customData.chatId === currentChatId) {
                 // If user is already in the chat, don't show a toast.
                 return;
              }
@@ -3143,7 +3140,7 @@ const App: React.FC = () => {
                         if (page === 'chat' && chatId) {
                             const targetChat = chats.find(c => c.id === chatId);
                             if(targetChat) {
-                                setCurrentChat(targetChat);
+                                setCurrentChatId(chatId);
                                 setActivePage('conversation');
                             }
                         } else if (page && navOrder.includes(page as any)) {
@@ -3156,7 +3153,7 @@ const App: React.FC = () => {
         });
 
         return () => unsubscribeOnMessage();
-    }, [firebaseServices.messaging, currentUser, db, showToast, chats, currentChat?.id]);
+    }, [firebaseServices.messaging, currentUser, db, showToast, chats, currentChatId]);
 
 
     const handleCreateChat = async (selectedUsers: User[]): Promise<string | null> => {
@@ -3191,24 +3188,9 @@ const App: React.FC = () => {
     };
 
     const handleBackFromConversation = useCallback(() => {
-        setCurrentChat(null);
+        setCurrentChatId(null);
         setActivePage('chat');
     }, []);
-
-    const conversationPageElement = useMemo(() => {
-        if (!currentChat || !currentUser) {
-            return null;
-        }
-        return (
-            <ConversationPage
-                key={currentChat.id}
-                chat={currentChat}
-                currentUser={currentUser}
-                onBack={handleBackFromConversation}
-            />
-        );
-    }, [currentChat, currentUser, handleBackFromConversation]);
-
 
     if (firebaseServices.firebaseError) {
         return <ErrorFallback error={new Error(firebaseServices.firebaseError)} />;
@@ -3239,7 +3221,7 @@ const App: React.FC = () => {
                         usersMap={usersMap}
                         chats={chats}
                         onChatSelect={(chat) => {
-                            setCurrentChat(chat);
+                            setCurrentChatId(chat.id);
                             setActivePage('conversation');
                         }}
                         onCreateChat={handleCreateChat}
@@ -3248,11 +3230,14 @@ const App: React.FC = () => {
             case 'prayer':
                 return <PrayerPage currentUser={currentUser} requests={prayerRequests} setRequests={setPrayerRequests} />;
             case 'conversation':
-                 if (conversationPageElement) {
-                    return conversationPageElement;
-                 }
-                 handleBackFromConversation();
-                 return null;
+                 return currentUser && currentChatId ? (
+                    <ConversationPage
+                        key={currentChatId}
+                        chatId={currentChatId}
+                        currentUser={currentUser}
+                        onBack={handleBackFromConversation}
+                    />
+                 ) : null;
             default:
                 return <NewsPage currentUser={currentUser} news={news} setNews={setNews} />;
         }
