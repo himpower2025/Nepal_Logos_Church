@@ -1,3 +1,4 @@
+
 import {onDocumentCreated} from "firebase-functions/v2/firestore";
 import * as admin from "firebase-admin";
 import * as logger from "firebase-functions/logger";
@@ -316,8 +317,8 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
         },
         webpush: {
             notification: {
-                title: notificationTitle, // This was missing
-                body: notificationBody,   // This was missing
+                title: notificationTitle,
+                body: notificationBody,
                 icon: `${APP_URL}/logos-church-new-logo.jpg`,
                 tag: `chat-${chatId}`,
             },

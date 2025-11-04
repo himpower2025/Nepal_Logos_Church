@@ -384,7 +384,7 @@ const MCCHEYNE_READING_PLAN = [
     "व्यवस्था १, प्रेरित २०:१-१６, हितोपदेश ८, प्रकाश ५",
     "व्यवस्था २, प्रेरित २०:१７-３８, हितोपदेश ९, प्रकाश ६",
     "व्यवस्था ३, प्रेरित २१:१-१८, उपदेशक १, प्रकाश ७",
-    "व्यवस्था ४, प्रेरित २१:१९-４３, उपदेशक २, प्रकाश ८",
+    "व्यवस्था ४, प्रेरित २१:१९-４३, उपदेशक २, प्रकाश ८",
     "व्यवस्था ५, प्रेरित २２, उपदेशक ३, प्रकाश ९",
     "व्यवस्था ६, प्रेरित ২৩, उपदेशक ४, प्रकाश १०",
     "व्यवस्था ७, प्रेरित २४, उपदेशक ५, प्रकाश ११",
@@ -441,7 +441,7 @@ const MCCHEYNE_READING_PLAN = [
     "यहोशू २४, २ कोरिन्थी १२, यशैया ३６, यशैया ४０",
     "न्यायकर्ता १, २ कोरिन्थी १३, यशैया ३７, यशैया ४１",
     "न्यायकर्ता २, गलाती १, यशैया ३８, यशैया ४２",
-    "न्यायकर्ता ३, गलाती २, यशैया ३９, यशैया ४３",
+    "न्यायकर्ता ३, गलाती २, यशैया ३९, यशैया ४３",
     "न्यायकर्ता ४, गलाती ३, यशैया ४０, यशैया ४４",
     "न्यायकर्ता ५, गलाती ४, यर्मिया १, यशैया ४５",
     "न्यायकर्ता ६, गलाती ५, यर्मिया २, यशैया ४６",
@@ -581,12 +581,12 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६９",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७３",
-    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७४, भजनसंग्रh ७５",
+    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
     "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७８",
     "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७९",
     "१ इतिहास २०, लूका ३, हितोपदेश १२, भजनसंग्रh ८０",
-    "१ इतिहास २１, लूका ४, हितोपदेश १३, भजनसंग्रh ८१",
+    "१ इतिहास २１, लूका ४, हितोपदेश १३, भजनसंग्रh ८１",
     "१ इतिहास २２, लूका ५, हितोपदेश १४, भजनसंग्रh ८２",
     "१ इतिहास ২৩, लूका ६, हितोपदेश १५, भजनसंग्रh ८３",
     "१ इतिहास २४, लूका ७, हितोपदेश १६, भजनसंग्रh ८４",
@@ -617,7 +617,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
     "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６४, भजनसंग्रh ११९:६५-९६",
     "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१２８, भजनसंग्रh ११९:१२९-१५２",
-    "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७６, भजनसंग्रh १२०",
+    "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७६, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रh १२３, भजनसंग्रh १२４",
     "२ इतिहास २６, यूहन्ना १४, भजनसंग्रh १२５, भजनसंग्रh १२６",
@@ -3210,20 +3210,17 @@ const App: React.FC = () => {
     const isAdmin = currentUser.roles.includes('admin');
 
     const renderPage = () => {
-        // This logic ensures ConversationPage is overlaid on top of ChatListPage
-        // but other pages are mutually exclusive.
-        if (activePage === 'chat') {
+        if (isConversationOpen) {
             return (
-                <ChatListPage
+                <ConversationPage
+                    key={currentChatId}
+                    chatId={currentChatId!}
                     currentUser={currentUser}
-                    usersMap={usersMap}
-                    chats={chats}
-                    onChatSelect={handleChatSelect}
-                    onCreateChat={handleCreateChat}
+                    onBack={handleBackFromConversation}
                 />
             );
         }
-
+    
         switch (activePage) {
             case 'news':
                 return <NewsPage currentUser={currentUser} news={news} setNews={setNews} />;
@@ -3233,6 +3230,16 @@ const App: React.FC = () => {
                 return <PodcastsPage currentUser={currentUser} podcasts={podcasts} setPodcasts={setPodcasts} />;
             case 'bible':
                 return <BiblePage />;
+            case 'chat':
+                return (
+                    <ChatListPage
+                        currentUser={currentUser}
+                        usersMap={usersMap}
+                        chats={chats}
+                        onChatSelect={handleChatSelect}
+                        onCreateChat={handleCreateChat}
+                    />
+                );
             case 'prayer':
                 return <PrayerPage currentUser={currentUser} requests={prayerRequests} setRequests={setPrayerRequests} />;
             default:
@@ -3277,14 +3284,6 @@ const App: React.FC = () => {
 
             <main className={`main-content ${isConversationOpen ? 'full-height' : ''}`}>
                  {renderPage()}
-                 {isConversationOpen && (
-                     <ConversationPage
-                        key={currentChatId}
-                        chatId={currentChatId!}
-                        currentUser={currentUser}
-                        onBack={handleBackFromConversation}
-                    />
-                 )}
             </main>
 
             {!isConversationOpen && (
