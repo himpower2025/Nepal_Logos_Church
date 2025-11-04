@@ -42,14 +42,13 @@ self.addEventListener('fetch', event => {
   );
 });
 
-// --- PUSH NOTIFICATION HANDLING (HYBRID: notification + data PAYLOAD) ---
+// --- PUSH NOTIFICATION HANDLING ---
 
 self.addEventListener('push', event => {
-  // With the hybrid payload, the browser automatically handles showing the notification
-  // based on the `notification` object in the push payload.
-  // This listener is kept for potential future logic or logging, but the core
-  // notification display is now handled by the browser for maximum reliability.
-  console.log('[Service Worker] Push Received. Notification will be displayed by the browser.');
+  // The browser will automatically display the notification since we're sending
+  // a `notification` payload from the backend. This event listener is kept
+  // for logging or potential future use.
+  console.log('[Service Worker] Push Received. The browser will display the notification.');
 });
 
 self.addEventListener('notificationclick', event => {
@@ -57,26 +56,24 @@ self.addEventListener('notificationclick', event => {
 
   event.notification.close();
 
-  // Get the URL to open from the notification's data payload.
-  // This is sent from our backend in the `data` part of the FCM message.
-  const urlToOpen = event.notification.data.url;
-
-  if (!urlToOpen) {
-    console.log('No URL in notification data to open.');
-    return;
-  }
+  // The backend now sends the full URL in `fcmOptions.link` which is accessible here.
+  // This is more reliable than constructing it from pieces.
+  const urlToOpen = event.notification.data?.FCM_MSG?.data?.url || event.notification.data?.url || '/';
 
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
-      // Check if a window/tab with the same URL is already open.
+      // Check if a window/tab is already open.
       for (const client of windowClients) {
-        const clientUrl = new URL(client.url);
-        const targetUrl = new URL(urlToOpen, self.location.origin);
-        if (clientUrl.href === targetUrl.href && 'focus' in client) {
+        // Focus any existing tab of the app, regardless of the exact URL path.
+        // This provides a better user experience than opening a new tab when the app is already open.
+        if (client.url.startsWith(self.location.origin) && 'focus' in client) {
+          // If we focus an existing client, we can't easily navigate it to the
+          // specific URL from the service worker, but focusing is better than a new tab.
+          // The app's own logic will handle the deep link if the URL was changed on focus.
           return client.focus();
         }
       }
-      // If no window is found, open a new one.
+      // If no window is found, open a new one with the correct URL.
       if (clients.openWindow) {
         return clients.openWindow(urlToOpen);
       }

@@ -311,7 +311,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३１, लूका २०:२०-４७, भजनसंग्रह ९, एफिसी २",
     "प्रस्थान ३２, लूका २१, भजनसंग्रह १०, एफिसी ३",
     "प्रस्थान ३३, लूका २２:१-३０, भजनसंग्रह ११-१२, एफिसी ४",
-    "प्रस्थान ३４, लूका २２:३१-５३, भजनसंग्रह १३-१४, एफिसी ५",
+    "प्रस्थान ३４, लूका २２:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
     "प्रस्थान ३५, लूका २２:５４-७१, भजनसंग्रह १५-१６, एफिसी ६",
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
     "प्रस्थान ३७, लूका २३:२६-５６, भजनसंग्रह १८, फिलिप्पी २",
@@ -353,7 +353,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ६, यूहन्ना २１, भजनसंग्रह ५４, हिब्रू ८",
     "गन्ती ७, प्रेरित १, भजनसंग्रह ५５, हिब्रू ९",
     "गन्ती ८, प्रेरित २:१-२१, भजनसंग्रह ५６, हिब्रू १०",
-    "गन्ती ९, प्रेरित २:२２-４７, भजनसंग्रह ५७, हिब्रू ११",
+    "गन्ती ९, प्रेरित २:२２-４７, भजनसंग्रह ५７, हिब्रू ११",
     "गन्ती १०, प्रेरित ३, भजनसंग्रह ५८, हिब्रू १२",
     "गन्ती ११, प्रेरित ४:१-२２, भजनसंग्रह ५९, हिब्रू १३",
     "गन्ती १२, प्रेरित ४:२३-３７, भजनसंग्रह ६０, याकूब १",
@@ -365,7 +365,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १८, प्रेरित ७:४４-६०, भजनसंग्रह ६６, १ पत्रुस २",
     "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६７, १ पत्रुस ३",
     "गन्ती २०, प्रेरित ८:２６-４０, भजनसंग्रह ६８, १ पत्रुस ४",
-    "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६９, १ पत्रुस ५",
+    "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६९, १ पत्रुस ५",
     "गन्ती २２, प्रेरित ९:२२-４३, भजनसंग्रह ७０, २ पत्रुस १",
     "गन्ती ২৩, प्रेरित १०:१-२३, भजनसंग्रह ७１, २ पत्रुस २",
     "गन्ती २४, प्रेरित १०:२４-４８, भजनसंग्रह ७２, २ पत्रुस ३",
@@ -375,7 +375,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती २८, प्रेरित १३:２６-５２, भजनसंग्रह ७６, १ यूहन्ना ४",
     "गन्ती २९, प्रेरित १४, भजनसंग्रह ७７, १ यूहन्ना ५",
     "गन्ती ३０, प्रेरित १५:१-२१, हितोपदेश १, २ यूहन्ना १",
-    "गन्ती ३１, प्रेरित १५:२２-４１, हितोपदेश २, ३ यूहन्ना १",
+    "गन्ती ३１, प्रेरित १५:२२-４１, हितोपदेश २, ३ यूहन्ना १",
     "गन्ती ३２, प्रेरित १६, हितोपदेश ३, यहूदा १",
     "गन्ती ३३, प्रेरित १७:१-१５, हितोपदेश ४, प्रकाश १",
     "गन्ती ३４, प्रेरित १७:१६-３４, हितोपदेश ५, प्रकाश २",
@@ -437,7 +437,7 @@ const MCCHEYNE_READING_PLAN = [
     "यहोशू २०, २ कोरिन्थी ८, यशैया ३２, यशैया ३６",
     "यहोशू २१, २ कोरिन्थी ९, यशैया ३３, यशैया ३７",
     "यहोशू २２, २ कोरिन्थी १०, यशैया ३４, यशैया ३８",
-    "यहोशू ২৩, २ कोरिन्थी ११, यशैया ३５, यशैया ३९",
+    "यहोशू ২৩, २ कोरिन्थी ११, यशैया ३５, यशैया ३９",
     "यहोशू २४, २ कोरिन्थी १२, यशैया ३６, यशैया ४０",
     "न्यायकर्ता १, २ कोरिन्थी १३, यशैया ३７, यशैया ४１",
     "न्यायकर्ता २, गलाती १, यशैया ३８, यशैया ४２",
@@ -572,8 +572,8 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५१",
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
-    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५६, भजनसंग्रh ५７",
-    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५८, भजनसंग्रh ५९",
+    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५६, भजनसंग्रh ५७",
+    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५९",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
@@ -592,7 +592,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २४, लूका ७, हितोपदेश १६, भजनसंग्रh ८４",
     "१ इतिहास २५, लूका ८, हितोपदेश १७, भजनसंग्रh ८５",
     "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रh ८６",
-    "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८७",
+    "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८７",
     "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८８",
     "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८９",
     "२ इतिहास १, लूका १३, हितोपदेश २२, भजनसंग्रh ९０",
@@ -604,7 +604,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ७, लूका १९, हितोपदेश २८, भजनसंग्रh ९６",
     "२ इतिहास ८, लूका २०, हितोपदेश २९, भजनसंग्रh ९７",
     "२ इतिहास ९, लूका २１, हितोपदेश ३０, भजनसंग्रh ९８",
-    "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रh ९９",
+    "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रh ९९",
     "२ इतिहास ११, लूका ২৩, भजनसंग्रh १०४, भजनसंग्रh १००",
     "२ इतिहास १२, लूका २४, भजनसंग्रh १०५, भजनसंग्रh १०१",
     "२ इतिहास १३, यूहन्ना १, भजनसंग्रh १०６, भजनसंग्रh १०२",
@@ -616,7 +616,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１６, भजनसंग्रh ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
     "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６४, भजनसंग्रh ११९:६५-९६",
-    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१२८, भजनसंग्रh ११९:१२९-१५２",
+    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१२８, भजनसंग्रh ११९:१२९-१५２",
     "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७６, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रh १२３, भजनसंग्रh १२４",
@@ -1996,7 +1996,7 @@ const ChatListPage: React.FC<{
     currentUser: User;
     usersMap: Map<string, User>;
     chats: Chat[];
-    onChatSelect: (chat: Chat) => void;
+    onChatSelect: (chatId: string) => void;
     onCreateChat: (participants: User[]) => Promise<string | null>;
 }> = ({ currentUser, usersMap, chats, onChatSelect, onCreateChat }) => {
     const { db, storage } = useFirebase();
@@ -2038,10 +2038,7 @@ const ChatListPage: React.FC<{
     const handleCreateChat = async (selectedUsers: User[]) => {
         const newChatId = await onCreateChat(selectedUsers);
         if (newChatId) {
-            const chatDoc = await getDoc(doc(db!, "chats", newChatId));
-            if(chatDoc.exists()) {
-                onChatSelect({ id: chatDoc.id, ...chatDoc.data() } as Chat);
-            }
+            onChatSelect(newChatId);
         }
         setIsCreateModalOpen(false);
     };
@@ -2103,7 +2100,7 @@ const ChatListPage: React.FC<{
                         const isUnread = chat.lastRead && chat.lastMessage && chat.lastMessage.senderId !== currentUser.id && (!chat.lastRead[currentUser.id] || chat.lastRead[currentUser.id] < chat.lastMessage.createdAt);
                         return (
                             <div key={chat.id} className="list-item chat-item">
-                                <div className="chat-content-wrapper" onClick={() => onChatSelect(chat)}>
+                                <div className="chat-content-wrapper" onClick={() => onChatSelect(chat.id)}>
                                     <div className="chat-avatar">{getAvatarInitial(displayInfo.name)}</div>
                                     <div className="chat-info">
                                         <span className="chat-name">{displayInfo.name}</span>
@@ -2269,7 +2266,7 @@ const ConversationPage: React.FC<{
     chatId: string;
     currentUser: User;
     onBack: () => void;
-}> = memo(({ chatId, currentUser, onBack }) => {
+}> = ({ chatId, currentUser, onBack }) => {
     const { db, storage } = useFirebase();
     const { showToast } = useToast();
     const [messages, setMessages] = useState<Message[]>([]);
@@ -2576,7 +2573,7 @@ const ConversationPage: React.FC<{
             )}
         </div>
     );
-});
+};
 
 const UploadProgressCircle: React.FC<{ progress: number }> = ({ progress }) => {
     const radius = 18;
@@ -2886,7 +2883,8 @@ const App: React.FC = () => {
     
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
-    const [activePage, setActivePage] = useState<'worship' | 'bible' | 'news' | 'podcast' | 'prayer' | 'chat' | 'conversation'>('news');
+    const [activePage, setActivePage] = useState<'worship' | 'bible' | 'news' | 'podcast' | 'prayer' | 'chat'>('news');
+    const [currentChatId, setCurrentChatId] = useState<string | null>(null);
     const [isManageUsersOpen, setIsManageUsersOpen] = useState(false);
     const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
     
@@ -2898,7 +2896,6 @@ const App: React.FC = () => {
     const [prayerRequests, setPrayerRequests] = useState<PrayerRequest[]>([]);
     const [users, setUsers] = useState<User[]>([]);
     const [chats, setChats] = useState<Chat[]>([]);
-    const [currentChatId, setCurrentChatId] = useState<string | null>(null);
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
     const [notificationPermissionStatus, setNotificationPermissionStatus] = useState('default');
@@ -2909,6 +2906,8 @@ const App: React.FC = () => {
     if (window.location.pathname === '/install') {
         return <InstallationGuidePage />;
     }
+
+    const isConversationOpen = !!currentChatId;
 
     useEffect(() => {
         // Check and update permission status whenever the current user changes.
@@ -3073,7 +3072,7 @@ const App: React.FC = () => {
             const targetChat = chats.find(c => c.id === chatId);
             if (targetChat) {
                 setCurrentChatId(chatId);
-                setActivePage('conversation');
+                setActivePage('chat'); // Go to chat list first, then conversation will open
                 deepLinkProcessed.current = true; // Mark as processed
                 // Clean the URL to prevent re-triggering
                 window.history.replaceState({}, document.title, window.location.pathname);
@@ -3122,8 +3121,9 @@ const App: React.FC = () => {
         const unsubscribeOnMessage = onMessage(messaging, (payload) => {
              const data = payload.notification;
              const customData = payload.data;
+             const fromChatId = customData?.chatId;
 
-             if (customData?.chatId && customData.chatId === currentChatId) {
+             if (fromChatId && fromChatId === currentChatId) {
                 // If user is already in the chat, don't show a toast.
                 return;
              }
@@ -3132,17 +3132,15 @@ const App: React.FC = () => {
                 data?.title || 'New Message',
                 data?.body || 'You have a new message.',
                 () => {
-                    if (customData?.url) {
-                        const url = new URL(customData.url, window.location.origin);
+                    const urlString = customData?.url;
+                    if (urlString) {
+                        const url = new URL(urlString);
                         const page = url.searchParams.get('page');
                         const chatId = url.searchParams.get('chatId');
 
                         if (page === 'chat' && chatId) {
-                            const targetChat = chats.find(c => c.id === chatId);
-                            if(targetChat) {
-                                setCurrentChatId(chatId);
-                                setActivePage('conversation');
-                            }
+                             setActivePage('chat'); // Go to chat list page
+                             setCurrentChatId(chatId); // This will open the conversation
                         } else if (page && navOrder.includes(page as any)) {
                             setActivePage(page as any);
                         }
@@ -3153,7 +3151,7 @@ const App: React.FC = () => {
         });
 
         return () => unsubscribeOnMessage();
-    }, [firebaseServices.messaging, currentUser, db, showToast, chats, currentChatId]);
+    }, [firebaseServices.messaging, currentUser, db, showToast, currentChatId]);
 
 
     const handleCreateChat = async (selectedUsers: User[]): Promise<string | null> => {
@@ -3186,10 +3184,14 @@ const App: React.FC = () => {
             return null;
         }
     };
+    
+    const handleChatSelect = (chatId: string) => {
+        setActivePage('chat'); // Ensure the underlying page is 'chat'
+        setCurrentChatId(chatId);
+    };
 
     const handleBackFromConversation = useCallback(() => {
         setCurrentChatId(null);
-        setActivePage('chat');
     }, []);
 
     if (firebaseServices.firebaseError) {
@@ -3205,6 +3207,20 @@ const App: React.FC = () => {
     const isAdmin = currentUser.roles.includes('admin');
 
     const renderPage = () => {
+        // This logic ensures ConversationPage is overlaid on top of ChatListPage
+        // but other pages are mutually exclusive.
+        if (activePage === 'chat') {
+            return (
+                <ChatListPage
+                    currentUser={currentUser}
+                    usersMap={usersMap}
+                    chats={chats}
+                    onChatSelect={handleChatSelect}
+                    onCreateChat={handleCreateChat}
+                />
+            );
+        }
+
         switch (activePage) {
             case 'news':
                 return <NewsPage currentUser={currentUser} news={news} setNews={setNews} />;
@@ -3214,30 +3230,8 @@ const App: React.FC = () => {
                 return <PodcastsPage currentUser={currentUser} podcasts={podcasts} setPodcasts={setPodcasts} />;
             case 'bible':
                 return <BiblePage />;
-            case 'chat':
-                return (
-                    <ChatListPage
-                        currentUser={currentUser}
-                        usersMap={usersMap}
-                        chats={chats}
-                        onChatSelect={(chat) => {
-                            setCurrentChatId(chat.id);
-                            setActivePage('conversation');
-                        }}
-                        onCreateChat={handleCreateChat}
-                    />
-                );
             case 'prayer':
                 return <PrayerPage currentUser={currentUser} requests={prayerRequests} setRequests={setPrayerRequests} />;
-            case 'conversation':
-                 return currentUser && currentChatId ? (
-                    <ConversationPage
-                        key={currentChatId}
-                        chatId={currentChatId}
-                        currentUser={currentUser}
-                        onBack={handleBackFromConversation}
-                    />
-                 ) : null;
             default:
                 return <NewsPage currentUser={currentUser} news={news} setNews={setNews} />;
         }
@@ -3245,14 +3239,14 @@ const App: React.FC = () => {
 
     return (
         <div className="app-container">
-            {notificationPermissionStatus === 'denied' && activePage !== 'conversation' && (
+            {notificationPermissionStatus === 'denied' && !isConversationOpen && (
                 <div className="notification-permission-banner">
                     <span className="material-symbols-outlined">notifications_off</span>
                     <p>알림이 차단되었습니다. 메시지 및 업데이트를 받으려면 브라우저 설정에서 이 사이트의 알림을 허용해 주세요.</p>
                 </div>
             )}
 
-            {activePage !== 'conversation' && (
+            {!isConversationOpen && (
                 <header className="app-header">
                     <div className="header-content">
                         <img src={CHURCH.logo} alt="Church Logo" className="header-logo" />
@@ -3278,11 +3272,19 @@ const App: React.FC = () => {
                 </header>
             )}
 
-            <main className={`main-content ${activePage === 'conversation' ? 'full-height' : ''}`}>
-                {renderPage()}
+            <main className={`main-content ${isConversationOpen ? 'full-height' : ''}`}>
+                 {renderPage()}
+                 {isConversationOpen && (
+                     <ConversationPage
+                        key={currentChatId}
+                        chatId={currentChatId!}
+                        currentUser={currentUser}
+                        onBack={handleBackFromConversation}
+                    />
+                 )}
             </main>
 
-            {activePage !== 'conversation' && (
+            {!isConversationOpen && (
                 <nav className="bottom-nav">
                     {navOrder.map(page => (
                         <button key={page} className={`nav-item ${activePage === page ? 'active' : ''}`} onClick={() => setActivePage(page)}>

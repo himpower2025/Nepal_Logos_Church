@@ -150,9 +150,9 @@ export const onNewsCreated = onDocumentCreated("news/{newsId}", async (event) =>
                     body: notificationBody,
                     icon: `${APP_URL}/logos-church-new-logo.jpg`,
                     tag: `news-${event.params.newsId}`,
-                    data: {
-                        url: link,
-                    },
+                },
+                fcmOptions: {
+                    link: `${APP_URL}${link}`,
                 },
             },
             tokens: allTokens,
@@ -202,9 +202,9 @@ export const onPrayerRequestCreated = onDocumentCreated("prayerRequests/{request
                     body: notificationBody,
                     icon: `${APP_URL}/logos-church-new-logo.jpg`,
                     tag: `prayer-${event.params.requestId}`,
-                    data: {
-                        url: link,
-                    },
+                },
+                fcmOptions: {
+                    link: `${APP_URL}${link}`,
                 },
             },
             tokens: allTokens,
@@ -320,9 +320,9 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
                 body: notificationBody,
                 icon: `${APP_URL}/logos-church-new-logo.jpg`,
                 tag: `chat-${chatId}`,
-                data: {
-                    url: link,
-                },
+            },
+            fcmOptions: {
+                link: `${APP_URL}${link}`,
             },
         },
         tokens: uniqueTokens,
