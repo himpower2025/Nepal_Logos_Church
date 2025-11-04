@@ -575,6 +575,8 @@ html, body, #root {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     animation: slideUp 0.3s;
+    padding: var(--space-md);
+    padding-bottom: env(safe-area-inset-bottom, var(--space-md));
 }
 @keyframes slideUp {
     from { transform: translateY(100%); }
@@ -1611,6 +1613,37 @@ html, body, #root {
 .media-viewer-close { top: 10px; right: 10px; }
 .media-viewer-nav.prev { left: 10px; top: 50%; transform: translateY(-50%); }
 .media-viewer-nav.next { right: 10px; top: 50%; transform: translateY(-50%); }
+
+/* --- Media Menu (Action Sheet) --- */
+.media-menu {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+.media-menu-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    border-radius: 12px;
+    background-color: var(--card-background);
+    color: var(--text-color-dark);
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    text-align: left;
+    border: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.media-menu-item:hover {
+    background-color: #f0f0f0;
+}
+.media-menu-item.cancel {
+    background-color: var(--card-background);
+    justify-content: center;
+    color: var(--danger-color);
+    font-weight: bold;
+}
 
 
 /* --- Profile Page --- */

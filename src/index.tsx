@@ -363,8 +363,8 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १६, प्रेरित ७:१-२१, भजनसंग्रह ६４, याकוב ५",
     "गन्ती १७, प्रेरित ७:२２-४३, भजनसंग्रह ६５, १ पत्रुस १",
     "गन्ती १८, प्रेरित ७:४４-६०, भजनसंग्रह ६６, १ पत्रुस २",
-    "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६７, १ पत्रुस ३",
-    "गन्ती २०, प्रेरित ८:２６-４０, भजनसंग्रह ६８, १ पत्रुस ४",
+    "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६७, १ पत्रुस ३",
+    "गन्ती २०, प्रेरित ८:２６-４０, भजनसंग्रह ६८, १ पत्रुस ४",
     "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६९, १ पत्रुस ५",
     "गन्ती २２, प्रेरित ९:२२-４३, भजनसंग्रह ७０, २ पत्रुस १",
     "गन्ती ২৩, प्रेरित १०:१-२३, भजनसंग्रह ७１, २ पत्रुस २",
@@ -569,10 +569,10 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास १, मर्कूस १, भजनसंग्रh ४４, भजनसंग्रh ४५",
     "१ इतिहास २, मर्कूस २, भजनसंग्रh ৪६, भजनसंग्रh ४७",
     "१ इतिहास ३, मर्कूस ३, भजनसंग्रh ४८, भजनसंग्रh ४९",
-    "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५१",
+    "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५１",
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
-    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५६, भजनसंग्रh ५७",
+    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५７",
     "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५८, भजनसंग्रh ५९",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
@@ -581,10 +581,10 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६９",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७３",
-    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
+    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७४, भजनसंग्रh ७５",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
-    "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७８",
-    "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७९",
+    "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७८",
+    "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७９",
     "१ इतिहास २०, लूका ३, हितोपदेश १२, भजनसंग्रh ८０",
     "१ इतिहास २１, लूका ४, हितोपदेश १३, भजनसंग्रh ८１",
     "१ इतिहास २２, लूका ५, हितोपदेश १४, भजनसंग्रh ८２",
@@ -616,7 +616,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１６, भजनसंग्रh ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
     "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６४, भजनसंग्रh ११९:६५-९६",
-    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१２８, भजनसंग्रh ११९:१२९-१५２",
+    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१２८, भजनसंग्रh ११९:१२९-१५２",
     "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७६, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रh १२３, भजनसंग्रh १२４",
@@ -1995,14 +1995,29 @@ const PrayerDetailsModal: React.FC<{
 const ChatListPage: React.FC<{
     currentUser: User;
     usersMap: Map<string, User>;
-    chats: Chat[];
     onChatSelect: (chatId: string) => void;
     onCreateChat: (participants: User[]) => Promise<string | null>;
-}> = ({ currentUser, usersMap, chats, onChatSelect, onCreateChat }) => {
+}> = ({ currentUser, usersMap, onChatSelect, onCreateChat }) => {
     const { db, storage } = useFirebase();
+    const [chats, setChats] = useState<Chat[]>([]);
+    const [loading, setLoading] = useState(true);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [chatToDelete, setChatToDelete] = useState<Chat | null>(null);
     const users = Array.from(usersMap.values());
+    
+    useEffect(() => {
+        if (!db || !currentUser?.id) return;
+        setLoading(true);
+        const q = query(collection(db, "chats"), where("participantIds", "array-contains", currentUser.id));
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            const fetchedChats = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Chat));
+            fetchedChats.sort((a, b) => (b.lastActivity?.toMillis() || 0) - (a.lastActivity?.toMillis() || 0));
+            setChats(fetchedChats);
+            setLoading(false);
+        });
+        return () => unsubscribe();
+    }, [db, currentUser?.id]);
+
 
     const getChatDisplayInfo = (chat: Chat, currentUserId: string) => {
         const isGroupChat = chat.participantIds.length > 2;
@@ -2094,7 +2109,7 @@ const ChatListPage: React.FC<{
         <div className="page-content">
             <h2>संगतिहरु</h2>
             <div className="list-container">
-                 {chats.length > 0 ? (
+                 {loading ? <Loading message="Loading chats..." /> : chats.length > 0 ? (
                     chats.map(chat => {
                         const displayInfo = getChatDisplayInfo(chat, currentUser.id);
                         const isUnread = chat.lastRead && chat.lastMessage && chat.lastMessage.senderId !== currentUser.id && (!chat.lastRead[currentUser.id] || chat.lastRead[currentUser.id] < chat.lastMessage.createdAt);
@@ -2279,6 +2294,8 @@ const ConversationPage: React.FC<{
     const [deletingMessage, setDeletingMessage] = useState<Message | null>(null);
     const [viewingMedia, setViewingMedia] = useState<{ media: MediaItem[]; startIndex: number } | null>(null);
     const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
+    const [isMediaMenuOpen, setIsMediaMenuOpen] = useState(false);
+
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -2530,7 +2547,15 @@ const ConversationPage: React.FC<{
                 )}
                 <div className="message-input-row">
                     <input type="file" ref={fileInputRef} onChange={handleFileSelect} style={{display: 'none'}} multiple accept="image/*,video/*" disabled={loading} />
-                    <button className="input-action-button" onClick={() => fileInputRef.current?.click()} aria-label="Attach file" disabled={loading}>
+                    <button 
+                        className="input-action-button" 
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setIsMediaMenuOpen(true);
+                        }} 
+                        aria-label="Attach file" 
+                        disabled={loading}
+                    >
                         <span className="material-symbols-outlined">add_photo_alternate</span>
                     </button>
                     <input
@@ -2571,6 +2596,26 @@ const ConversationPage: React.FC<{
                     currentName={getChatTitle()}
                 />
             )}
+            <Modal isOpen={isMediaMenuOpen} onClose={() => setIsMediaMenuOpen(false)} position="bottom">
+                <div className="media-menu">
+                    <button 
+                        className="media-menu-item"
+                        onClick={() => {
+                            fileInputRef.current?.click();
+                            setIsMediaMenuOpen(false);
+                        }}
+                    >
+                        <span className="material-symbols-outlined">photo_library</span>
+                        <span>Photo or Video</span>
+                    </button>
+                    <button 
+                        className="media-menu-item cancel" 
+                        onClick={() => setIsMediaMenuOpen(false)}
+                    >
+                        <span>Cancel</span>
+                    </button>
+                </div>
+            </Modal>
         </div>
     );
 };
@@ -2895,7 +2940,6 @@ const App: React.FC = () => {
     const [podcasts, setPodcasts] = useState<Podcast[]>([]);
     const [prayerRequests, setPrayerRequests] = useState<PrayerRequest[]>([]);
     const [users, setUsers] = useState<User[]>([]);
-    const [chats, setChats] = useState<Chat[]>([]);
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
     const [notificationPermissionStatus, setNotificationPermissionStatus] = useState('default');
@@ -3037,15 +3081,6 @@ const App: React.FC = () => {
             setUsers(users);
         });
 
-        const unsubChats = onSnapshot(
-            query(collection(db, "chats"), where("participantIds", "array-contains", currentUser.id)),
-            (snapshot) => {
-                const fetchedChats = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Chat));
-                fetchedChats.sort((a, b) => (b.lastActivity?.toMillis() || 0) - (a.lastActivity?.toMillis() || 0));
-                setChats(fetchedChats);
-            }
-        );
-
         return () => {
             unsubWorship();
             unsubPastWorship();
@@ -3053,14 +3088,13 @@ const App: React.FC = () => {
             unsubPodcasts();
             unsubPrayer();
             unsubUsers();
-            unsubChats();
         };
 
     }, [db, currentUser]);
     
     // --- Deep linking from notifications ---
     useEffect(() => {
-        if (deepLinkProcessed.current || chats.length === 0) return;
+        if (deepLinkProcessed.current) return;
 
         const params = new URLSearchParams(window.location.search);
         const page = params.get('page');
@@ -3068,13 +3102,13 @@ const App: React.FC = () => {
 
         const handleDeepLink = () => {
             if (page === 'chat' && chatIdParam) {
-                const targetChatExists = chats.some(c => c.id === chatIdParam);
-                if (targetChatExists) {
-                    setActivePage('chat');
-                    setCurrentChatId(chatIdParam);
-                    deepLinkProcessed.current = true;
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                }
+                // We don't check for chat existence here anymore,
+                // as the chats list might not be loaded yet.
+                // We just set the state and let the components handle it.
+                setActivePage('chat');
+                setCurrentChatId(chatIdParam);
+                deepLinkProcessed.current = true;
+                window.history.replaceState({}, document.title, window.location.pathname);
             } else if (page && navOrder.includes(page as any)) {
                 setActivePage(page as any);
                 deepLinkProcessed.current = true;
@@ -3086,7 +3120,7 @@ const App: React.FC = () => {
         // before attempting to navigate.
         setTimeout(handleDeepLink, 100);
 
-    }, [chats]); // Dependency on `chats` is key to solving the race condition.
+    }, []); // Run only once on initial load
 
     // --- FCM/Push Notifications ---
     useEffect(() => {
@@ -3235,7 +3269,6 @@ const App: React.FC = () => {
                     <ChatListPage
                         currentUser={currentUser}
                         usersMap={usersMap}
-                        chats={chats}
                         onChatSelect={handleChatSelect}
                         onCreateChat={handleCreateChat}
                     />
