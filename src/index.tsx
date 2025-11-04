@@ -353,7 +353,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ६, यूहन्ना २１, भजनसंग्रह ५４, हिब्रू ८",
     "गन्ती ७, प्रेरित १, भजनसंग्रह ५５, हिब्रू ९",
     "गन्ती ८, प्रेरित २:१-२१, भजनसंग्रह ५６, हिब्रू १०",
-    "गन्ती ९, प्रेरित २:२２-４７, भजनसंग्रह ५７, हिब्रू ११",
+    "गन्ती ९, प्रेरित २:२２-４７, भजनसंग्रह ५७, हिब्रू ११",
     "गन्ती १०, प्रेरित ३, भजनसंग्रह ५८, हिब्रू १२",
     "गन्ती ११, प्रेरित ४:१-२２, भजनसंग्रह ५९, हिब्रू १३",
     "गन्ती १२, प्रेरित ४:२३-３７, भजनसंग्रह ६０, याकूब १",
@@ -441,7 +441,7 @@ const MCCHEYNE_READING_PLAN = [
     "यहोशू २४, २ कोरिन्थी १२, यशैया ३６, यशैया ४０",
     "न्यायकर्ता १, २ कोरिन्थी १३, यशैया ३７, यशैया ४１",
     "न्यायकर्ता २, गलाती १, यशैया ३８, यशैया ४２",
-    "न्यायकर्ता ३, गलाती २, यशैया ३९, यशैया ४３",
+    "न्यायकर्ता ३, गलाती २, यशैया ३９, यशैया ४３",
     "न्यायकर्ता ४, गलाती ३, यशैया ४０, यशैया ४４",
     "न्यायकर्ता ५, गलाती ४, यर्मिया १, यशैया ४５",
     "न्यायकर्ता ६, गलाती ५, यर्मिया २, यशैया ४６",
@@ -573,17 +573,17 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
     "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५६, भजनसंग्रh ५७",
-    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५९",
+    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५८, भजनसंग्रh ५९",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
-    "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६७",
+    "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६７",
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६９",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
-    "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७३",
-    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
+    "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७３",
+    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७४, भजनसंग्रh ७５",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
-    "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७८",
+    "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७８",
     "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७९",
     "१ इतिहास २०, लूका ३, हितोपदेश १२, भजनसंग्रh ८０",
     "१ इतिहास २１, लूका ४, हितोपदेश १३, भजनसंग्रh ८१",
@@ -594,7 +594,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रh ८６",
     "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८７",
     "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८８",
-    "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८９",
+    "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८९",
     "२ इतिहास १, लूका १३, हितोपदेश २२, भजनसंग्रh ९０",
     "२ इतिहास २, लूका १४, हितोपदेश ২৩, भजनसंग्रh ९１",
     "२ इतिहास ३, लूका १५, हितोपदेश २४, भजनसंग्रh ९２",
@@ -616,7 +616,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１６, भजनसंग्रh ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
     "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６४, भजनसंग्रh ११९:६५-९६",
-    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१२８, भजनसंग्रh ११९:१२९-१५２",
+    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१２８, भजनसंग्रh ११९:१२९-१५２",
     "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७６, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रh १२３, भजनसंग्रh १२４",
@@ -630,7 +630,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ३３, यूहन्ना २１, भजनसंग्रh १३９, भजनसंग्रh १४０",
     "२ इतिहास ३４, प्रेरित १, भजनसंग्रh १४１, भजनसंग्रh १४２",
     "२ इतिहास ३５, प्रेरित २, भजनसंग्रh १४３, भजनसंग्रh १४４",
-    "२ इतिहास ३６, प्रेरित ३, भजनसंग्रh १४５, भजनसंग्रh १४６",
+    "२ इतिहास ३６, प्रेरित ३, भजनसंग्रh १४५, भजनसंग्रh १४６",
     "एज्रा १, प्रेरित ४, भजनसंग्रh १४７, भजनसंग्रh १४８",
     "एज्रा २, प्रेरित ५, भजनसंग्रh १४９, भजनसंग्रh १५０",
 ];
@@ -3060,29 +3060,32 @@ const App: React.FC = () => {
     
     // --- Deep linking from notifications ---
     useEffect(() => {
-        // This effect runs whenever 'chats' updates. This handles the race condition
-        // where the app opens via notification before the chat list is loaded.
         if (deepLinkProcessed.current || chats.length === 0) return;
 
         const params = new URLSearchParams(window.location.search);
         const page = params.get('page');
-        const chatId = params.get('chatId');
+        const chatIdParam = params.get('chatId');
 
-        if (page === 'chat' && chatId) {
-            const targetChat = chats.find(c => c.id === chatId);
-            if (targetChat) {
-                setCurrentChatId(chatId);
-                setActivePage('chat'); // Go to chat list first, then conversation will open
-                deepLinkProcessed.current = true; // Mark as processed
-                // Clean the URL to prevent re-triggering
+        const handleDeepLink = () => {
+            if (page === 'chat' && chatIdParam) {
+                const targetChatExists = chats.some(c => c.id === chatIdParam);
+                if (targetChatExists) {
+                    setActivePage('chat');
+                    setCurrentChatId(chatIdParam);
+                    deepLinkProcessed.current = true;
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+            } else if (page && navOrder.includes(page as any)) {
+                setActivePage(page as any);
+                deepLinkProcessed.current = true;
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
-        } else if (page && navOrder.includes(page as any)) {
-             // Handle deep links to other pages that don't depend on loaded data
-            setActivePage(page as any);
-            deepLinkProcessed.current = true;
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }
+        };
+        
+        // Use a small timeout to ensure the UI has had a chance to render based on initial state
+        // before attempting to navigate.
+        setTimeout(handleDeepLink, 100);
+
     }, [chats]); // Dependency on `chats` is key to solving the race condition.
 
     // --- FCM/Push Notifications ---

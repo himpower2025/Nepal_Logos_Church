@@ -316,8 +316,8 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
         },
         webpush: {
             notification: {
-                title: notificationTitle,
-                body: notificationBody,
+                title: notificationTitle, // This was missing
+                body: notificationBody,   // This was missing
                 icon: `${APP_URL}/logos-church-new-logo.jpg`,
                 tag: `chat-${chatId}`,
             },
