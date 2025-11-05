@@ -309,11 +309,11 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान २८, लूका १९:१-२७, भजनसंग्रह ५-६, गलाती ५",
     "प्रस्थान २९, लूका १९:२८-４８, भजनसंग्रह ७, गलाती ६",
     "प्रस्थान ३०, लूका २०:१-१९, भजनसंग्रह ८, एफिसी १",
-    "प्रस्थान ३１, लूका २०:२०-４７, भजनसंग्रह ९, एफिसी २",
+    "प्रस्थान ३１, लूका २०:२०-４७, भजनसंग्रह ९, एफिसी २",
     "प्रस्थान ३２, लूका २१, भजनसंग्रह १०, एफिसी ३",
     "प्रस्थान ३३, लूका २２:१-३０, भजनसंग्रह ११-१२, एफिसी ४",
     "प्रस्थान ३４, लूका २２:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
-    "प्रस्थान ३५, लूका २２:５４-७१, भजनसंग्रह १५-१６, एफिसी ६",
+    "प्रस्थान ३५, लूका २２:５४-७१, भजनसंग्रह १५-१６, एफिसी ६",
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
     "प्रस्थान ३७, लूका २३:२६-５６, भजनसंग्रह १८, फिलिप्पी २",
     "प्रस्थान ३８, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
@@ -573,7 +573,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५１",
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
-    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५７",
+    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५७",
     "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५९",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
@@ -582,14 +582,14 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६९",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७०, भजनसंग्रh ७１",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७３",
-    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७४, भजनसंग्रh ७５",
+    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
     "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७८",
     "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७९",
     "१ इतिहास २०, लूका ३, हितोपदेश १२, भजनसंग्रh ८０",
     "१ इतिहास २１, लूका ४, हितोपदेश १३, भजनसंग्रh ८１",
     "१ इतिहास २２, लूका ५, हितोपदेश १४, भजनसंग्रh ८２",
-    "१ इतिहास ২৩, लूका ६, हितोपदेश १५, भजनसंग्रh ८३",
+    "१ इतिहास ২৩, लूका ६, हितोपदेश १५, भजनसंग्रh ८３",
     "१ इतिहास २४, लूका ७, हितोपदेश १६, भजनसंग्रh ८４",
     "१ इतिहास २५, लूका ८, हितोपदेश १७, भजनसंग्रh ८５",
     "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रh ८６",
@@ -605,7 +605,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ७, लूका १९, हितोपदेश २८, भजनसंग्रh ९６",
     "२ इतिहास ८, लूका २०, हितोपदेश २९, भजनसंग्रh ९７",
     "२ इतिहास ९, लूका २１, हितोपदेश ३０, भजनसंग्रh ९８",
-    "२ इतिहास १०, लूका २२, हितोपदेश ३１, भजनसंग्रh ९９",
+    "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रh ९९",
     "२ इतिहास ११, लूका ২৩, भजनसंग्रh १०४, भजनसंग्रh १००",
     "२ इतिहास १२, लूका २४, भजनसंग्रh १०५, भजनसंग्रh १०१",
     "२ इतिहास १३, यूहन्ना १, भजनसंग्रh १०６, भजनसंग्रh १०２",
@@ -1217,7 +1217,7 @@ const NewsPage: React.FC<{
     const handleSaveNews = (title: string, content: string, imageFile: File | null) => {
         if (!db || !storage || !currentUser) return;
     
-        const tempId = `temp_news_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+        const tempId = crypto.randomUUID();
         const optimisticNews: NewsItem = {
             id: tempId,
             tempId,
@@ -1407,7 +1407,7 @@ const PodcastsPage: React.FC<{
     const handleSavePodcast = (title: string, audioFile: File) => {
         if (!db || !storage || !currentUser) return;
     
-        const tempId = `temp_podcast_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+        const tempId = crypto.randomUUID();
         const optimisticPodcast: Podcast = {
             id: tempId,
             tempId,
@@ -1691,7 +1691,7 @@ const PrayerPage: React.FC<{
     const handleSavePrayerRequest = (title: string, content: string, imageFile: File | null) => {
         if (!db || !storage || !currentUser) return;
     
-        const tempId = `temp_prayer_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+        const tempId = crypto.randomUUID();
         const optimisticRequest: PrayerRequest = {
             id: tempId,
             tempId,
@@ -2356,7 +2356,7 @@ const ConversationPage: React.FC<{
         setMediaPreviews([]);
         messageInputRef.current?.focus();
     
-        const tempId = `temp_msg_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+        const tempId = crypto.randomUUID();
     
         const optimisticMessage: Message = {
             id: tempId, tempId, senderId: currentUser.id, createdAt: Timestamp.now(), status: 'uploading',
@@ -2415,7 +2415,7 @@ const ConversationPage: React.FC<{
         if (e.target.files) {
             const files = Array.from(e.target.files);
             const newPreviews: MediaPreview[] = files.map(file => ({
-                id: `preview_${Date.now()}_${Math.random()}`,
+                id: crypto.randomUUID(),
                 url: URL.createObjectURL(file),
                 file,
                 type: file.type.startsWith('image/') ? 'image' : 'video'
@@ -3251,7 +3251,7 @@ const App: React.FC = () => {
     return (
         <div className="app-container">
             {notificationPermissionStatus === 'denied' && !isConversationOpen && (
-                <div className="notification-permission-banner">
+                <div className="notification-permission-banner denied">
                     <span className="material-symbols-outlined">notifications_off</span>
                     <p>알림이 차단되었습니다. 메시지 및 업데이트를 받으려면 브라우저 설정에서 이 사이트의 알림을 허용해 주세요.</p>
                 </div>

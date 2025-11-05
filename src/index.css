@@ -417,9 +417,9 @@ html, body, #root {
     align-items: center;
     gap: var(--space-sm);
     padding: var(--space-sm) var(--space-md);
-    background-color: #fffbeb; /* Light yellow for 'denied' */
-    color: #92400e; /* Dark yellow/brown text */
-    border-bottom: 1px solid #fde68a; /* Yellow border */
+    background-color: var(--primary-color-light);
+    color: var(--primary-color-dark);
+    border-bottom: 1px solid var(--primary-color);
     font-size: var(--font-size-sm);
 }
 .notification-permission-banner .material-symbols-outlined {
@@ -430,11 +430,6 @@ html, body, #root {
     flex-grow: 1;
     text-align: left;
     line-height: 1.4;
-}
-.notification-permission-banner.request {
-    background-color: var(--primary-color-light);
-    color: var(--primary-color-dark);
-    border-bottom-color: var(--primary-color);
 }
 .notification-permission-banner.request button {
     background-color: var(--primary-color);
@@ -450,6 +445,11 @@ html, body, #root {
 }
 .notification-permission-banner.request button:hover {
     background-color: var(--primary-color-dark);
+}
+.notification-permission-banner.denied {
+    background-color: #fffbeb; /* Light yellow for 'denied' */
+    color: #92400e; /* Dark yellow/brown text */
+    border-bottom-color: #fde68a; /* Yellow border */
 }
 
 
