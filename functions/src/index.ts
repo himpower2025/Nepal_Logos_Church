@@ -1,4 +1,3 @@
-
 import {onDocumentCreated} from "firebase-functions/v2/firestore";
 import * as admin from "firebase-admin";
 import * as logger from "firebase-functions/logger";
@@ -120,16 +119,18 @@ const handleSendResponse = (response: admin.messaging.BatchResponse, tokens: str
 
 // 1. Function to send notification when a new news item is created
 export const onNewsCreated = onDocumentCreated("news/{newsId}", async (event) => {
+    logger.log("onNewsCreated triggered. Event ID:", event.id);
     const snapshot = event.data;
     if (!snapshot) {
-        logger.log("onNewsCreated triggered for a deletion, exiting.");
+        logger.log("Function triggered for a deletion or invalid data, exiting.");
         return;
     }
     const newsItem = snapshot.data() as NewsData;
     if (!newsItem || !newsItem.title) {
-        return logger.log("News item data is missing title.");
+        return logger.log("News item data is missing title or other essential fields.");
     }
 
+    logger.log(`New news item created: "${newsItem.title}", by author: ${newsItem.authorId}`);
     const allTokens = await getAllTokens(newsItem.authorId);
 
     if (allTokens.length > 0) {
@@ -161,27 +162,30 @@ export const onNewsCreated = onDocumentCreated("news/{newsId}", async (event) =>
 
         logger.log(`Sending 'news' notification to ${allTokens.length} tokens.`);
         try {
-            const response = await (fcm as any).sendMulticast(payload);
+            const response = await fcm.sendEachForMulticast(payload);
             handleSendResponse(response, allTokens);
         } catch(error) {
-            logger.error("Error sending news notification:", error);
+            logger.error("Error sending news notification multicast:", error);
         }
     } else {
-         logger.log("No FCM tokens found to send notification.");
+         logger.log("No FCM tokens found to send notification for new news item.");
     }
 });
 
 // 2. Function to send notification for a new prayer request
 export const onPrayerRequestCreated = onDocumentCreated("prayerRequests/{requestId}", async (event) => {
+    logger.log("onPrayerRequestCreated triggered. Event ID:", event.id);
     const snapshot = event.data;
     if (!snapshot) {
-        logger.log("onPrayerRequestCreated triggered for a deletion, exiting.");
+        logger.log("Function triggered for a deletion or invalid data, exiting.");
         return;
     }
     const prayerRequest = snapshot.data() as PrayerRequestData;
     if (!prayerRequest || !prayerRequest.authorName) {
         return logger.log("Prayer request data is missing authorName.");
     }
+
+    logger.log(`New prayer request: "${prayerRequest.title}", by author: ${prayerRequest.authorName}`);
     const allTokens = await getAllTokens(prayerRequest.authorId);
 
     if (allTokens.length > 0) {
@@ -212,27 +216,30 @@ export const onPrayerRequestCreated = onDocumentCreated("prayerRequests/{request
         };
         logger.log(`Sending 'prayer' notification to ${allTokens.length} tokens.`);
         try {
-            const response = await (fcm as any).sendMulticast(payload);
+            const response = await fcm.sendEachForMulticast(payload);
             handleSendResponse(response, allTokens);
         } catch(error) {
-            logger.error("Error sending prayer notification:", error);
+            logger.error("Error sending prayer notification multicast:", error);
         }
+    } else {
+        logger.log("No FCM tokens found to send prayer request notification.");
     }
 });
 
 // 3. Function to send notification for a new chat message
 export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{messageId}", async (event) => {
     const { chatId } = event.params;
+    logger.log(`onChatMessageCreated triggered for chat: ${chatId}. Event ID: ${event.id}`);
     const snapshot = event.data;
 
     if (!snapshot) {
-        logger.log("onChatMessageCreated triggered for a deletion, exiting.");
+        logger.log("Message snapshot is missing, likely a deletion. Exiting.");
         return;
     }
     const message = snapshot.data() as MessageData;
 
     if (!message || !message.senderId) {
-        return logger.log("Message data is invalid.");
+        return logger.log("Message data is invalid or missing senderId.");
     }
 
     const chatDoc = await db.collection("chats").doc(chatId).get();
@@ -247,27 +254,20 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
 
     const recipientIds = chatData.participantIds.filter((id) => id !== message.senderId);
     if (recipientIds.length === 0) {
-        return logger.log("No recipients for this message.");
+        return logger.log(`No recipients for this message in chat ${chatId}.`);
     }
+    logger.log(`Found ${recipientIds.length} recipients: ${recipientIds.join(", ")}`);
 
-    const recipients: { name: string; tokens: string[] }[] = [];
-    if (recipientIds.length > 0) {
-        const userDocs = await db.collection("users").where(admin.firestore.FieldPath.documentId(), "in", recipientIds).get();
-        userDocs.forEach((doc) => {
-            const user = doc.data() as UserData;
-            recipients.push({
-                name: user.name || "User",
-                tokens: user.fcmTokens || [],
-            });
-        });
-    }
 
-    const allTokens = recipients.flatMap((r) => r.tokens);
+    const userDocs = await db.collection("users").where(admin.firestore.FieldPath.documentId(), "in", recipientIds).get();
+    const allTokens = userDocs.docs.flatMap(doc => (doc.data() as UserData).fcmTokens || []);
     const uniqueTokens = [...new Set(allTokens)];
 
+
     if (uniqueTokens.length === 0) {
-        return logger.log(`No tokens found for recipients in chat ${chatId}.`);
+        return logger.log(`No FCM tokens found for any recipients in chat ${chatId}.`);
     }
+    logger.log(`Found ${uniqueTokens.length} unique FCM tokens to send to.`);
 
     let messageContent = message.content;
     if (!messageContent) {
@@ -290,7 +290,7 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
             const participantNames = (await Promise.all(
                 chatData.participantIds
                 .filter((id) => id !== message.senderId)
-                .slice(0, 3) // get up to 3 other participants
+                .slice(0, 3)
                 .map((id) => db.collection("users").doc(id).get())
             )).map((doc) => (doc.data() as UserData)?.name?.split(" ")[0] || "");
             
@@ -329,11 +329,11 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
         tokens: uniqueTokens,
     };
 
-    logger.log(`Sending chat notification to ${uniqueTokens.length} tokens for chat ${chatId}.`);
+    logger.log(`Sending chat notification payload to ${uniqueTokens.length} tokens for chat ${chatId}.`);
     try {
-        const response = await (fcm as any).sendMulticast(payload);
+        const response = await fcm.sendEachForMulticast(payload);
         handleSendResponse(response, uniqueTokens);
     } catch (error) {
-        logger.error("Error sending chat notification:", error);
+        logger.error("Error sending chat notification multicast:", error);
     }
 });

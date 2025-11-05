@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useCallback, createContext, useContext, useMemo, memo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createPortal } from 'react-dom';
@@ -34,7 +33,7 @@ import {
     limit,
     increment
 } from "firebase/firestore";
-import { ref, getDownloadURL, uploadBytesResumable, deleteObject, type UploadTask } from "firebase/storage";
+import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
 import { getToken, onMessage } from "firebase/messaging";
 
 
@@ -312,7 +311,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३１, लूका २०:२०-４７, भजनसंग्रह ९, एफिसी २",
     "प्रस्थान ३２, लूका २१, भजनसंग्रह १०, एफिसी ३",
     "प्रस्थान ३३, लूका २２:१-३０, भजनसंग्रह ११-१२, एफिसी ४",
-    "प्रस्थान ३４, लूका २２:३१-５३, भजनसंग्रह १३-१४, एफिसी ५",
+    "प्रस्थान ३４, लूका २２:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
     "प्रस्थान ३५, लूका २２:５４-७१, भजनसंग्रह १५-१６, एफिसी ६",
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
     "प्रस्थान ३७, लूका २३:२६-５６, भजनसंग्रह १८, फिलिप्पी २",
@@ -376,7 +375,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती २८, प्रेरित १३:２６-５２, भजनसंग्रह ७６, १ यूहन्ना ४",
     "गन्ती २९, प्रेरित १४, भजनसंग्रह ७７, १ यूहन्ना ५",
     "गन्ती ३０, प्रेरित १५:१-२१, हितोपदेश १, २ यूहन्ना १",
-    "गन्ती ३１, प्रेरित १५:२२-４１, हितोपदेश २, ३ यूहन्ना १",
+    "गन्ती ३１, प्रेरित १५:२२-４१, हितोपदेश २, ३ यूहन्ना १",
     "गन्ती ३２, प्रेरित १६, हितोपदेश ३, यहूदा १",
     "गन्ती ३३, प्रेरित १७:१-१５, हितोपदेश ४, प्रकाश १",
     "गन्ती ३４, प्रेरित १७:१६-３４, हितोपदेश ५, प्रकाश २",
@@ -454,7 +453,7 @@ const MCCHEYNE_READING_PLAN = [
     "न्यायकर्ता १२, एफिसी ५, यर्मिया ८, यशैया ५２",
     "न्यायकर्ता १३, एफिसी ६, यर्मिया ९, यशैया ५３",
     "न्यायकर्ता १४, फिलिप्पी १, यर्मिया १०, यशैया ५４",
-    "न्यायकर्ता १५, फिलिप्पी २, यर्मिया ११, यशैया ५５",
+    "न्यायकर्ता १५, फिलिप्पी २, यर्मिया ११, यशैया ५५",
     "न्यायकर्ता १६, फिलिप्पी ३, यर्मिया १२, यशैया ५６",
     "न्यायकर्ता १७, फिलिप्पी ४, यर्मिया १३, यशैया ५７",
     "न्यायकर्ता १८, कलस्सी १, यर्मिया १४, यशैया ५８",
@@ -574,18 +573,18 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
     "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५７",
-    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५८, भजनसंग्रh ५९",
+    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५९",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
     "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६７",
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६９",
-    "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७१",
+    "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७３",
-    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
+    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७५",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
     "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७८",
-    "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७९",
+    "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७９",
     "१ इतिहास २०, लूका ३, हितोपदेश १२, भजनसंग्रh ८０",
     "१ इतिहास २１, लूका ४, हितोपदेश १३, भजनसंग्रh ८１",
     "१ इतिहास २２, लूका ५, हितोपदेश १४, भजनसंग्रh ८２",
@@ -608,7 +607,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रh ९９",
     "२ इतिहास ११, लूका ২৩, भजनसंग्रh १०४, भजनसंग्रh १००",
     "२ इतिहास १२, लूका २४, भजनसंग्रh १०५, भजनसंग्रh १०१",
-    "२ इतिहास १३, यूहन्ना १, भजनसंग्रh १०６, भजनसंग्रh १०२",
+    "२ इतिहास १३, यूहन्ना १, भजनसंग्रh १०６, भजनसंग्रh १०２",
     "२ इतिहास १४, यूहन्ना २, भजनसंग्रh १०७, भजनसंग्रh १०३",
     "२ इतिहास १५, यूहन्ना ३, भजनसंग्रh १०८, भजनसंग्रh १०९",
     "२ इतिहास १६, यूहन्ना ४, भजनसंग्रh १１０, भजनसंग्रh ११１",
@@ -623,7 +622,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रh १२３, भजनसंग्रh १२４",
     "२ इतिहास २６, यूहन्ना १४, भजनसंग्रh १२５, भजनसंग्रh १२６",
     "२ इतिहास २७, यूहन्ना १५, भजनसंग्रh १२７, भजनसंग्रh १२８",
-    "२ इतिहास २८, यूहन्ना १६, भजनसंग्रh १२९, भजनसंग्रh १३０",
+    "२ इतिहास २８, यूहन्ना १६, भजनसंग्रh १२९, भजनसंग्रh १३０",
     "२ इतिहास २९, यूहन्ना १७, भजनसंग्रh १३１, भजनसंग्रh १३２",
     "२ इतिहास ३０, यूहन्ना १८, भजनसंग्रh १३３, भजनसंग्रh १३４",
     "२ इतिहास ३１, यूहन्ना १९, भजनसंग्रh १३５, भजनसंग्रh १३６",
@@ -1248,7 +1247,7 @@ const NewsPage: React.FC<{
                     }
                     const compressedFile = await compressImage(imageFile);
                     const imageRef = ref(storage, `news/${Date.now()}_${compressedFile.name}`);
-                    await uploadBytesResumable(imageRef, compressedFile);
+                    await uploadBytes(imageRef, compressedFile);
                     finalImageUrl = await getDownloadURL(imageRef);
                 }
     
@@ -1425,7 +1424,7 @@ const PodcastsPage: React.FC<{
         const performSave = async () => {
             try {
                 const audioRef = ref(storage, `podcasts/${Date.now()}_${audioFile.name}`);
-                await uploadBytesResumable(audioRef, audioFile);
+                await uploadBytes(audioRef, audioFile);
                 const audioUrl = await getDownloadURL(audioRef);
     
                 await addDoc(collection(db, "podcasts"), {
@@ -1722,7 +1721,7 @@ const PrayerPage: React.FC<{
                     }
                     const compressedFile = await compressImage(imageFile);
                     const imageRef = ref(storage, `prayers/${Date.now()}_${compressedFile.name}`);
-                    await uploadBytesResumable(imageRef, compressedFile);
+                    await uploadBytes(imageRef, compressedFile);
                     finalImageUrl = await getDownloadURL(imageRef);
                 }
     
@@ -2011,11 +2010,12 @@ const ChatListPage: React.FC<{
         setLoading(true);
         const q = query(
             collection(db, "chats"), 
-            where("participantIds", "array-contains", currentUser.id),
-            orderBy("lastActivity", "desc")
+            where("participantIds", "array-contains", currentUser.id)
         );
         const unsubscribe = onSnapshot(q, (snapshot) => {
             const fetchedChats = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Chat));
+            // Sort chats on the client-side for robustness against missing fields
+            fetchedChats.sort((a, b) => (b.lastActivity?.toMillis() || 0) - (a.lastActivity?.toMillis() || 0));
             setChats(fetchedChats);
             setLoading(false);
         }, (error) => {
@@ -2372,8 +2372,8 @@ const ConversationPage: React.FC<{
                 const filePath = `chat_media/${currentChat.id}/${Date.now()}_${fileToUpload.name}`;
                 const mediaRef = ref(storage, filePath);
                 
-                const uploadTask = uploadBytesResumable(mediaRef, fileToUpload);
-                await uploadTask; // Wait for upload to complete
+                // Use the simpler uploadBytes for more stability
+                await uploadBytes(mediaRef, fileToUpload);
                 
                 const url = await getDownloadURL(mediaRef);
                 return { url, type: preview.type, path: filePath };
