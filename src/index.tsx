@@ -308,13 +308,13 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान २८, लूका १९:१-२७, भजनसंग्रह ५-६, गलाती ५",
     "प्रस्थान २९, लूका १९:२८-４８, भजनसंग्रह ७, गलाती ६",
     "प्रस्थान ३०, लूका २०:१-१९, भजनसंग्रह ८, एफिसी १",
-    "प्रस्थान ३１, लूका २०:२०-４७, भजनसंग्रह ९, एफिसी २",
+    "प्रस्थान ३１, लूका २०:२०-４７, भजनसंग्रह ९, एफिसी २",
     "प्रस्थान ३２, लूका २१, भजनसंग्रह १०, एफिसी ३",
     "प्रस्थान ३३, लूका २２:१-३０, भजनसंग्रह ११-१२, एफिसी ४",
     "प्रस्थान ३４, लूका २２:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
     "प्रस्थान ३५, लूका २２:５４-७१, भजनसंग्रह १५-१６, एफिसी ६",
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
-    "प्रस्थान ३७, लूका २३:२६-５６, भजनसंग्रह १८, फिलिप्पी २",
+    "प्रस्थान ३७, लूका २३:२६-５६, भजनसंग्रह १८, फिलिप्पी २",
     "प्रस्थान ३८, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
     "प्रस्थान ३９, लूका २४:१३-５३, भजनसंग्रह २०, फिलिप्पी ४",
     "प्रस्थान ४०, यूहन्ना १:१-२८, भजनसंग्रह २१, कलस्सी १",
@@ -327,7 +327,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी ७, यूहन्ना ५:१-२३, भजनसंग्रह २८, १ थिस्सलोनिकी ४",
     "लेवी ८, यूहन्ना ५:２４-４７, भजनसंग्रह २९, १ थिस्सलोनिकी ५",
     "लेवी ९, यूहन्ना ६:१-२１, भजनसंग्रह ३０, २ थिस्सलोनिकी १",
-    "लेवी १०, यूहन्ना ६:२２-４०, भजनसंग्रह ३１, २ थिस्सलोनिकी २",
+    "लेवी १०, यूहन्ना ६:२２-４０, भजनसंग्रह ३１, २ थिस्सलोनिकी २",
     "लेवी ११, यूहन्ना ६:४१-७１, भजनसंग्रह ३２, २ थिस्सलोनिकी ३",
     "लेवी १२, यूहन्ना ७:१-३１, भजनसंग्रह ३३, १ तिमोथी १",
     "लेवी १३, यूहन्ना ७:३２-５३, भजनसंग्रह ३４, १ तिमोथी २",
@@ -353,7 +353,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ६, यूहन्ना २１, भजनसंग्रह ५４, हिब्रू ८",
     "गन्ती ७, प्रेरित १, भजनसंग्रह ५５, हिब्रू ९",
     "गन्ती ८, प्रेरित २:१-२१, भजनसंग्रह ५６, हिब्रू १०",
-    "गन्ती ९, प्रेरित २:२２-４７, भजनसंग्रह ५७, हिब्रू ११",
+    "गन्ती ९, प्रेरित २:२２-４७, भजनसंग्रह ५७, हिब्रू ११",
     "गन्ती १०, प्रेरित ३, भजनसंग्रह ५८, हिब्रू १२",
     "गन्ती ११, प्रेरित ४:१-२２, भजनसंग्रह ५९, हिब्रू १३",
     "गन्ती १२, प्रेरित ४:२३-３７, भजनसंग्रह ६０, याकूब १",
@@ -564,7 +564,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ राजा २१, मत्ती २४, भजनसंग्रh ३４, भजनसंग्रh ३５",
     "२ राजा २２, मत्ती २५, भजनसंग्रh ३６, भजनसंग्रh ३７",
     "२ राजा ২৩, मत्ती २６, भजनसंग्रh ३८, भजनसंग्रh ३９",
-    "२ राजा २४, मत्ती २७, भजनसंग्रh ४०, भजनसंग्रh ४１",
+    "२ राजा २४, मत्ती २７, भजनसंग्रh ४०, भजनसंग्रh ४１",
     "२ राजा २५, मत्ती २８, भजनसंग्रh ४２, भजनसंग्रh ४३",
     "१ इतिहास १, मर्कूस १, भजनसंग्रh ४４, भजनसंग्रh ४५",
     "१ इतिहास २, मर्कूस २, भजनसंग्रh ৪६, भजनसंग्रh ४७",
@@ -579,20 +579,20 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
     "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६７",
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६９",
-    "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
+    "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७१",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७３",
     "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७४, भजनसंग्रh ७５",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
     "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७८",
-    "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७９",
+    "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७९",
     "१ इतिहास २०, लूका ३, हितोपदेश १२, भजनसंग्रh ८０",
     "१ इतिहास २１, लूका ४, हितोपदेश १३, भजनसंग्रh ८１",
     "१ इतिहास २２, लूका ५, हितोपदेश १४, भजनसंग्रh ८２",
-    "१ इतिहास ২৩, लूका ६, हितोपदेश १५, भजनसंग्रh ८３",
+    "१ इतिहास ২৩, लूका ६, हितोपदेश १५, भजनसंग्रh ८३",
     "१ इतिहास २४, लूका ७, हितोपदेश १६, भजनसंग्रh ८４",
     "१ इतिहास २५, लूका ८, हितोपदेश १७, भजनसंग्रh ८５",
     "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रh ८６",
-    "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८７",
+    "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८७",
     "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८８",
     "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८९",
     "२ इतिहास १, लूका १३, हितोपदेश २२, भजनसंग्रh ९０",
@@ -630,7 +630,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ३３, यूहन्ना २１, भजनसंग्रh १३９, भजनसंग्रh १४０",
     "२ इतिहास ३４, प्रेरित १, भजनसंग्रh १४１, भजनसंग्रh १४２",
     "२ इतिहास ३５, प्रेरित २, भजनसंग्रh १४３, भजनसंग्रh १४４",
-    "२ इतिहास ३６, प्रेरित ३, भजनसंग्रh १४५, भजनसंग्रh १४６",
+    "२ इतिहास ३６, प्रेरित ३, भजनसंग्रh १४５, भजनसंग्रh १४６",
     "एज्रा १, प्रेरित ४, भजनसंग्रh १४７, भजनसंग्रh १४８",
     "एज्रा २, प्रेरित ५, भजनसंग्रh १४９, भजनसंग्रh १५０",
 ];
@@ -2284,7 +2284,7 @@ const ConversationPage: React.FC<{
 }> = ({ chatId, currentUser, onBack }) => {
     const { db, storage } = useFirebase();
     const { showToast } = useToast();
-    const [messages, setMessages] = useState<Message[]>([]);
+    const [serverMessages, setServerMessages] = useState<Message[]>([]);
     const [optimisticMessages, setOptimisticMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState('');
     const [mediaPreviews, setMediaPreviews] = useState<MediaPreview[]>([]);
@@ -2294,17 +2294,15 @@ const ConversationPage: React.FC<{
     const [deletingMessage, setDeletingMessage] = useState<Message | null>(null);
     const [viewingMedia, setViewingMedia] = useState<{ media: MediaItem[]; startIndex: number } | null>(null);
     const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
-    const [isMediaMenuOpen, setIsMediaMenuOpen] = useState(false);
-
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const messageInputRef = useRef<HTMLInputElement>(null);
-
-    const allMessages = useMemo(() => 
-        [...messages, ...optimisticMessages]
+    
+    const sortedMessages = useMemo(() => 
+        [...serverMessages, ...optimisticMessages]
             .sort((a, b) => (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0)),
-        [messages, optimisticMessages]
+        [serverMessages, optimisticMessages]
     );
 
     useEffect(() => {
@@ -2319,15 +2317,14 @@ const ConversationPage: React.FC<{
 
         const messagesQuery = query(collection(db, "chats", chatId, "messages"), orderBy("createdAt", "asc"));
         const unsubscribeMessages = onSnapshot(messagesQuery, (snapshot) => {
-            const serverMessages = snapshot.docs.map(doc => ({
+            const newServerMessages = snapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data()
             } as Message));
+            
+            setServerMessages(newServerMessages);
 
-            setMessages(serverMessages);
-
-            // Reconcile optimistic messages
-            const receivedTempIds = new Set(serverMessages.map(m => m.tempId).filter(Boolean));
+            const receivedTempIds = new Set(newServerMessages.map(m => m.tempId).filter(Boolean));
             setOptimisticMessages(prev => prev.filter(om => !receivedTempIds.has(om.tempId)));
 
             setLoading(false);
@@ -2341,24 +2338,20 @@ const ConversationPage: React.FC<{
 
     useEffect(() => {
         if (!loading) { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }
-    }, [allMessages, loading]);
+    }, [sortedMessages, loading]);
 
     const handleSendMessage = useCallback(async () => {
         const textContent = newMessage.trim();
         const mediaFiles = [...mediaPreviews];
         if (!db || !storage || !currentChat || !currentUser || (!textContent && mediaFiles.length === 0)) return;
     
-        // 1. Clear input fields immediately for a responsive feel.
         setNewMessage('');
         setMediaPreviews([]);
         setUploadProgress({});
-        // Refocus the input to keep the keyboard up after sending
         messageInputRef.current?.focus();
     
-        // 2. Create a unique temporary ID for this message.
         const tempId = `temp_${Date.now()}`;
     
-        // 3. Create an "optimistic" message object to display in the UI right away.
         const optimisticMessage: Message = {
             id: tempId, tempId, senderId: currentUser.id, createdAt: Timestamp.now(), status: 'uploading',
             ...(textContent && { content: textContent }),
@@ -2368,11 +2361,10 @@ const ConversationPage: React.FC<{
         };
         setOptimisticMessages(prev => [...prev, optimisticMessage]);
     
-        // 4. Perform the actual upload and database write in the background.
         try {
             const uploadAndGetMediaItems = async (): Promise<MediaItem[]> => {
-                const uploadPromises = mediaFiles.map(preview => {
-                    return new Promise<MediaItem>(async (resolve, reject) => {
+                const uploadPromises = mediaFiles.map(preview => 
+                    new Promise<MediaItem>(async (resolve, reject) => {
                         try {
                             const fileToUpload = preview.type === 'image' ? await compressImage(preview.file) : preview.file;
                             const filePath = `chat_media/${currentChat.id}/${Date.now()}_${fileToUpload.name}`;
@@ -2393,8 +2385,8 @@ const ConversationPage: React.FC<{
                         } catch (error) {
                             reject(error);
                         }
-                    });
-                });
+                    })
+                );
                 return Promise.all(uploadPromises);
             };
             
@@ -2408,9 +2400,8 @@ const ConversationPage: React.FC<{
                 ...(uploadedMedia.length > 0 && { media: uploadedMedia }),
             };
 
-            const messageRef = await addDoc(collection(db, "chats", currentChat.id, "messages"), messagePayload);
+            await addDoc(collection(db, "chats", currentChat.id, "messages"), messagePayload);
             
-            // 5. Update the chat's last message preview.
              let lastMessageContent = textContent;
              if (!textContent && uploadedMedia.length > 0) {
                  lastMessageContent = uploadedMedia.length > 1 ? '📷 Media' : (uploadedMedia[0].type === 'video' ? '📹 Video' : '📷 Photo');
@@ -2425,7 +2416,6 @@ const ConversationPage: React.FC<{
         } catch (error) {
             console.error("Error sending message:", error);
             showToast("Error", "Failed to send message.");
-            // 6. If an error occurs, update the optimistic message's status to 'failed'.
             setOptimisticMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
         }
     }, [newMessage, mediaPreviews, db, storage, currentChat, currentUser, showToast]);
@@ -2448,8 +2438,16 @@ const ConversationPage: React.FC<{
         if (!db || !storage || !messageToDelete || !currentChat) return;
         setDeletingMessage(null);
 
-        if (messageToDelete.tempId) {
-            setOptimisticMessages(prev => prev.filter(m => m.id !== messageToDelete.id));
+        // Optimistically remove from UI
+        if (messageToDelete.status) { // It's an optimistic message
+             setOptimisticMessages(prev => prev.filter(m => m.tempId !== messageToDelete.tempId));
+        } else {
+             setServerMessages(prev => prev.filter(m => m.id !== messageToDelete.id));
+        }
+
+
+        if (messageToDelete.tempId && messageToDelete.status !== 'failed') {
+            // It was an uploading message that hasn't been sent, just remove it locally.
             return;
         }
 
@@ -2463,10 +2461,14 @@ const ConversationPage: React.FC<{
                     return Promise.resolve();
                 }));
             }
-            await deleteDoc(doc(db, "chats", currentChat.id, "messages", messageToDelete.id));
+            if (!messageToDelete.tempId) { // Only delete from DB if it's not a temp message
+                await deleteDoc(doc(db, "chats", currentChat.id, "messages", messageToDelete.id));
+            }
         } catch (error) {
             console.error("Error deleting message:", error);
             alert("Failed to delete message.");
+            // Re-add message to UI if delete fails. This is complex, so for now we leave it removed.
+            // A more robust solution would involve a state rollback.
         }
     };
     
@@ -2514,7 +2516,7 @@ const ConversationPage: React.FC<{
             <div className="message-list">
                 {loading ? <Loading message="Loading messages..." /> : (
                     <>
-                        {allMessages.map(msg => (
+                        {sortedMessages.map(msg => (
                             <MessageBubble 
                                 key={msg.tempId || msg.id} 
                                 message={msg} 
@@ -2549,10 +2551,8 @@ const ConversationPage: React.FC<{
                     <input type="file" ref={fileInputRef} onChange={handleFileSelect} style={{display: 'none'}} multiple accept="image/*,video/*" disabled={loading} />
                     <button 
                         className="input-action-button" 
-                        onClick={(e) => {
-                            e.preventDefault();
-                            setIsMediaMenuOpen(true);
-                        }} 
+                        onMouseDown={(e) => e.preventDefault()}
+                        onClick={() => fileInputRef.current?.click()}
                         aria-label="Attach file" 
                         disabled={loading}
                     >
@@ -2596,26 +2596,6 @@ const ConversationPage: React.FC<{
                     currentName={getChatTitle()}
                 />
             )}
-            <Modal isOpen={isMediaMenuOpen} onClose={() => setIsMediaMenuOpen(false)} position="bottom">
-                <div className="media-menu">
-                    <button 
-                        className="media-menu-item"
-                        onClick={() => {
-                            fileInputRef.current?.click();
-                            setIsMediaMenuOpen(false);
-                        }}
-                    >
-                        <span className="material-symbols-outlined">photo_library</span>
-                        <span>Photo or Video</span>
-                    </button>
-                    <button 
-                        className="media-menu-item cancel" 
-                        onClick={() => setIsMediaMenuOpen(false)}
-                    >
-                        <span>Cancel</span>
-                    </button>
-                </div>
-            </Modal>
         </div>
     );
 };

@@ -161,7 +161,7 @@ export const onNewsCreated = onDocumentCreated("news/{newsId}", async (event) =>
 
         logger.log(`Sending 'news' notification to ${allTokens.length} tokens.`);
         try {
-            const response = await fcm.sendEachForMulticast(payload);
+            const response = await (fcm as any).sendMulticast(payload);
             handleSendResponse(response, allTokens);
         } catch(error) {
             logger.error("Error sending news notification:", error);
@@ -212,7 +212,7 @@ export const onPrayerRequestCreated = onDocumentCreated("prayerRequests/{request
         };
         logger.log(`Sending 'prayer' notification to ${allTokens.length} tokens.`);
         try {
-            const response = await fcm.sendEachForMulticast(payload);
+            const response = await (fcm as any).sendMulticast(payload);
             handleSendResponse(response, allTokens);
         } catch(error) {
             logger.error("Error sending prayer notification:", error);
@@ -331,7 +331,7 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
 
     logger.log(`Sending chat notification to ${uniqueTokens.length} tokens for chat ${chatId}.`);
     try {
-        const response = await fcm.sendEachForMulticast(payload);
+        const response = await (fcm as any).sendMulticast(payload);
         handleSendResponse(response, uniqueTokens);
     } catch (error) {
         logger.error("Error sending chat notification:", error);
