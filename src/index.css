@@ -1,3 +1,4 @@
+
 :root {
     --primary-color: #004d40;
     --primary-color-dark: #00251a;
@@ -416,7 +417,7 @@ html, body, #root {
     align-items: center;
     gap: var(--space-sm);
     padding: var(--space-sm) var(--space-md);
-    background-color: #fffbeb; /* Light yellow */
+    background-color: #fffbeb; /* Light yellow for 'denied' */
     color: #92400e; /* Dark yellow/brown text */
     border-bottom: 1px solid #fde68a; /* Yellow border */
     font-size: var(--font-size-sm);
@@ -430,6 +431,27 @@ html, body, #root {
     text-align: left;
     line-height: 1.4;
 }
+.notification-permission-banner.request {
+    background-color: var(--primary-color-light);
+    color: var(--primary-color-dark);
+    border-bottom-color: var(--primary-color);
+}
+.notification-permission-banner.request button {
+    background-color: var(--primary-color);
+    color: var(--text-color-light);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    flex-shrink: 0;
+    margin-left: auto;
+    transition: background-color 0.2s;
+}
+.notification-permission-banner.request button:hover {
+    background-color: var(--primary-color-dark);
+}
+
 
 /* --- Reusable Components --- */
 .card {

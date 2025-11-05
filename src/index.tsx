@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useCallback, createContext, useContext, useMemo, memo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createPortal } from 'react-dom';
@@ -362,7 +363,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १५, प्रेरित ६, भजनसंग्रह ६３, याकूब ४",
     "गन्ती १६, प्रेरित ७:१-२१, भजनसंग्रह ६４, याकוב ५",
     "गन्ती १७, प्रेरित ७:२２-४३, भजनसंग्रह ६５, १ पत्रुस १",
-    "गन्ती १८, प्रेरित ७:४４-६०, भजनसंग्रह ६６, १ पत्रुस २",
+    "गन्ती १८, प्रेरित ७:४４-６०, भजनसंग्रह ६６, १ पत्रुस २",
     "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६७, १ पत्रुस ३",
     "गन्ती २०, प्रेरित ८:２６-４０, भजनसंग्रह ६८, १ पत्रुस ४",
     "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६९, १ पत्रुस ५",
@@ -382,7 +383,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ३５, प्रेरित १८, हितोपदेश ६, प्रकाश ३",
     "गन्ती ३６, प्रेरित १९, हितोपदेश ७, प्रकाश ४",
     "व्यवस्था १, प्रेरित २०:१-१６, हितोपदेश ८, प्रकाश ५",
-    "व्यवस्था २, प्रेरित २०:१７-३８, हितोपदेश ९, प्रकाश ६",
+    "व्यवस्था २, प्रेरित २०:१７-३८, हितोपदेश ९, प्रकाश ६",
     "व्यवस्था ३, प्रेरित २१:१-१८, उपदेशक १, प्रकाश ७",
     "व्यवस्था ४, प्रेरित २१:१९-４３, उपदेशक २, प्रकाश ८",
     "व्यवस्था ५, प्रेरित २２, उपदेशक ३, प्रकाश ९",
@@ -578,13 +579,13 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
     "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६７",
-    "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६９",
-    "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
+    "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६९",
+    "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७०, भजनसंग्रh ७１",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७３",
-    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७५",
+    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७४, भजनसंग्रh ७５",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
     "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७८",
-    "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७９",
+    "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७९",
     "१ इतिहास २०, लूका ३, हितोपदेश १२, भजनसंग्रh ८０",
     "१ इतिहास २１, लूका ४, हितोपदेश १३, भजनसंग्रh ८１",
     "१ इतिहास २２, लूका ५, हितोपदेश १४, भजनसंग्रh ८２",
@@ -604,7 +605,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ७, लूका १९, हितोपदेश २८, भजनसंग्रh ९６",
     "२ इतिहास ८, लूका २०, हितोपदेश २९, भजनसंग्रh ९７",
     "२ इतिहास ९, लूका २１, हितोपदेश ३０, भजनसंग्रh ९８",
-    "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रh ९９",
+    "२ इतिहास १०, लूका २२, हितोपदेश ३１, भजनसंग्रh ९９",
     "२ इतिहास ११, लूका ২৩, भजनसंग्रh १०४, भजनसंग्रh १००",
     "२ इतिहास १२, लूका २४, भजनसंग्रh १०५, भजनसंग्रh १०१",
     "२ इतिहास १३, यूहन्ना १, भजनसंग्रh १०６, भजनसंग्रh १०２",
@@ -616,7 +617,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１６, भजनसंग्रh ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
     "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６४, भजनसंग्रh ११९:६५-९६",
-    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१２८, भजनसंग्रh ११९:१२९-१५２",
+    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१२८, भजनसंग्रh ११९:१२९-१५２",
     "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७६, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रh १२３, भजनसंग्रh १२４",
@@ -630,9 +631,9 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ३３, यूहन्ना २１, भजनसंग्रh १३９, भजनसंग्रh १४０",
     "२ इतिहास ३４, प्रेरित १, भजनसंग्रh १४１, भजनसंग्रh १४２",
     "२ इतिहास ३５, प्रेरित २, भजनसंग्रh १४３, भजनसंग्रh १४４",
-    "२ इतिहास ३６, प्रेरित ३, भजनसंग्रh १४５, भजनसंग्रh १४６",
+    "२ इतिहास ३６, प्रेरित ३, भजनसंग्रh १४५, भजनसंग्रh १४６",
     "एज्रा १, प्रेरित ४, भजनसंग्रh १४７, भजनसंग्रh १४８",
-    "एज्रा २, प्रेरित ५, भजनसंग्रh १४９, भजनसंग्रh १५０",
+    "एज्रा २, प्रेरित ५, भजनसंग्रh १४९, भजनसंग्रh १५０",
 ];
 
 
@@ -1216,7 +1217,7 @@ const NewsPage: React.FC<{
     const handleSaveNews = (title: string, content: string, imageFile: File | null) => {
         if (!db || !storage || !currentUser) return;
     
-        const tempId = `temp_${Date.now()}`;
+        const tempId = `temp_news_${Date.now()}_${Math.random().toString(36).slice(2)}`;
         const optimisticNews: NewsItem = {
             id: tempId,
             tempId,
@@ -1406,7 +1407,7 @@ const PodcastsPage: React.FC<{
     const handleSavePodcast = (title: string, audioFile: File) => {
         if (!db || !storage || !currentUser) return;
     
-        const tempId = `temp_${Date.now()}`;
+        const tempId = `temp_podcast_${Date.now()}_${Math.random().toString(36).slice(2)}`;
         const optimisticPodcast: Podcast = {
             id: tempId,
             tempId,
@@ -1690,7 +1691,7 @@ const PrayerPage: React.FC<{
     const handleSavePrayerRequest = (title: string, content: string, imageFile: File | null) => {
         if (!db || !storage || !currentUser) return;
     
-        const tempId = `temp_${Date.now()}`;
+        const tempId = `temp_prayer_${Date.now()}_${Math.random().toString(36).slice(2)}`;
         const optimisticRequest: PrayerRequest = {
             id: tempId,
             tempId,
@@ -2355,7 +2356,7 @@ const ConversationPage: React.FC<{
         setMediaPreviews([]);
         messageInputRef.current?.focus();
     
-        const tempId = `temp_${Date.now()}`;
+        const tempId = `temp_msg_${Date.now()}_${Math.random().toString(36).slice(2)}`;
     
         const optimisticMessage: Message = {
             id: tempId, tempId, senderId: currentUser.id, createdAt: Timestamp.now(), status: 'uploading',
@@ -3110,6 +3111,7 @@ const App: React.FC = () => {
     useEffect(() => {
         if (currentUser) {
             setNotificationPermissionStatus(Notification.permission);
+            // Re-request token if permission is already granted, to ensure it's up to date
             if (Notification.permission === 'granted') {
                 requestPermissionAndToken();
             }
@@ -3255,6 +3257,14 @@ const App: React.FC = () => {
                 </div>
             )}
 
+            {notificationPermissionStatus === 'default' && !isConversationOpen && (
+                <div className="notification-permission-banner request">
+                    <span className="material-symbols-outlined">notifications</span>
+                    <p>알림을 활성화하여 새로운 메시지와 업데이트를 받으세요.</p>
+                    <button onClick={requestPermissionAndToken}>활성화</button>
+                </div>
+            )}
+
             {!isConversationOpen && (
                 <header className="app-header">
                     <div className="header-content">
@@ -3262,11 +3272,6 @@ const App: React.FC = () => {
                         <h1>{CHURCH.name}</h1>
                     </div>
                     <div className="header-actions">
-                        {notificationPermissionStatus === 'default' && (
-                            <button className="header-button" onClick={requestPermissionAndToken} aria-label="Enable Notifications">
-                               <span className="material-symbols-outlined">notifications_off</span>
-                           </button>
-                        )}
                         <button className="header-button" onClick={() => {
                             setIsNotificationPanelOpen(true);
                             setHasUnreadNotifications(false);
