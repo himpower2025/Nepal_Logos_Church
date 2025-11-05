@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useCallback, createContext, useContext, useMemo, memo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createPortal } from 'react-dom';
@@ -286,7 +287,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ६, लूका ७:१-२३, अय्यूब ২৩, १ कोरिन्थी १२",
     "प्रस्थान ७, लूका ७:२४-५०, अय्यूब २४, १ कोरिन्थी १३",
     "प्रस्थान ८, लूका ८:१-२५, अय्यूब २५, १ कोरिन्थी १४",
-    "प्रस्थान ९, लूका ८:२६-５６, अय्यूब २६, १ कोरिन्थी १५",
+    "प्रस्थान ९, लूका ८:२６-５６, अय्यूब २६, १ कोरिन्थी १५",
     "प्रस्थान १०, लूका ९:१-१८, अय्यूब २७, १ कोरिन्थी १६",
     "प्रस्थान ११, लूका ९:१९-३６, अय्यूब २८, २ कोरिन्थी १",
     "प्रस्थान १२, लूका ९:३७-６２, अय्यूब २९, २ कोरिन्थी २",
@@ -311,11 +312,11 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३１, लूका २०:२०-４７, भजनसंग्रह ९, एफिसी २",
     "प्रस्थान ३２, लूका २१, भजनसंग्रह १०, एफिसी ३",
     "प्रस्थान ३३, लूका २２:१-३０, भजनसंग्रह ११-१२, एफिसी ४",
-    "प्रस्थान ३４, लूका २２:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
+    "प्रस्थान ३４, लूका २２:३१-５३, भजनसंग्रह १३-१४, एफिसी ५",
     "प्रस्थान ३५, लूका २２:５４-७१, भजनसंग्रह १५-१６, एफिसी ६",
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
-    "प्रस्थान ३७, लूका २३:२६-５६, भजनसंग्रह १८, फिलिप्पी २",
-    "प्रस्थान ३८, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
+    "प्रस्थान ३७, लूका २३:२६-５６, भजनसंग्रह १८, फिलिप्पी २",
+    "प्रस्थान ३８, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
     "प्रस्थान ३９, लूका २४:१३-５३, भजनसंग्रह २०, फिलिप्पी ४",
     "प्रस्थान ४०, यूहन्ना १:१-२८, भजनसंग्रह २१, कलस्सी १",
     "लेवी १, यूहन्ना १:२९-５１, भजनसंग्रह २२, कलस्सी २",
@@ -353,7 +354,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ६, यूहन्ना २１, भजनसंग्रह ५４, हिब्रू ८",
     "गन्ती ७, प्रेरित १, भजनसंग्रह ५５, हिब्रू ९",
     "गन्ती ८, प्रेरित २:१-२१, भजनसंग्रह ५６, हिब्रू १०",
-    "गन्ती ९, प्रेरित २:२２-４७, भजनसंग्रह ५७, हिब्रू ११",
+    "गन्ती ९, प्रेरित २:२２-４７, भजनसंग्रह ५७, हिब्रू ११",
     "गन्ती १०, प्रेरित ३, भजनसंग्रह ५८, हिब्रू १२",
     "गन्ती ११, प्रेरित ४:१-२２, भजनसंग्रह ५९, हिब्रू १३",
     "गन्ती १२, प्रेरित ४:२३-３７, भजनसंग्रह ६０, याकूब १",
@@ -382,9 +383,9 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ३５, प्रेरित १८, हितोपदेश ६, प्रकाश ३",
     "गन्ती ३６, प्रेरित १९, हितोपदेश ७, प्रकाश ४",
     "व्यवस्था १, प्रेरित २०:१-१６, हितोपदेश ८, प्रकाश ५",
-    "व्यवस्था २, प्रेरित २०:१７-３８, हितोपदेश ९, प्रकाश ६",
+    "व्यवस्था २, प्रेरित २०:१７-३８, हितोपदेश ९, प्रकाश ६",
     "व्यवस्था ३, प्रेरित २१:१-१८, उपदेशक १, प्रकाश ७",
-    "व्यवस्था ४, प्रेरित २१:१९-４३, उपदेशक २, प्रकाश ८",
+    "व्यवस्था ४, प्रेरित २१:१९-４３, उपदेशक २, प्रकाश ८",
     "व्यवस्था ५, प्रेरित २２, उपदेशक ३, प्रकाश ९",
     "व्यवस्था ६, प्रेरित ২৩, उपदेशक ४, प्रकाश १०",
     "व्यवस्था ७, प्रेरित २४, उपदेशक ५, प्रकाश ११",
@@ -581,7 +582,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६９",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७१",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७３",
-    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७४, भजनसंग्रh ७５",
+    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
     "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७८",
     "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७९",
@@ -592,7 +593,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २४, लूका ७, हितोपदेश १६, भजनसंग्रh ८４",
     "१ इतिहास २५, लूका ८, हितोपदेश १७, भजनसंग्रh ८５",
     "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रh ८６",
-    "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८७",
+    "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८７",
     "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८８",
     "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८९",
     "२ इतिहास १, लूका १३, हितोपदेश २२, भजनसंग्रh ९０",
@@ -604,7 +605,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ७, लूका १९, हितोपदेश २८, भजनसंग्रh ९６",
     "२ इतिहास ८, लूका २०, हितोपदेश २९, भजनसंग्रh ९７",
     "२ इतिहास ९, लूका २１, हितोपदेश ३０, भजनसंग्रh ९８",
-    "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रh ९९",
+    "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रh ९９",
     "२ इतिहास ११, लूका ২৩, भजनसंग्रh १०४, भजनसंग्रh १००",
     "२ इतिहास १२, लूका २४, भजनसंग्रh १०५, भजनसंग्रh १०१",
     "२ इतिहास १३, यूहन्ना १, भजनसंग्रh १०６, भजनसंग्रh १०२",
@@ -2008,11 +2009,17 @@ const ChatListPage: React.FC<{
     useEffect(() => {
         if (!db || !currentUser?.id) return;
         setLoading(true);
-        const q = query(collection(db, "chats"), where("participantIds", "array-contains", currentUser.id));
+        const q = query(
+            collection(db, "chats"), 
+            where("participantIds", "array-contains", currentUser.id),
+            orderBy("lastActivity", "desc")
+        );
         const unsubscribe = onSnapshot(q, (snapshot) => {
             const fetchedChats = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Chat));
-            fetchedChats.sort((a, b) => (b.lastActivity?.toMillis() || 0) - (a.lastActivity?.toMillis() || 0));
             setChats(fetchedChats);
+            setLoading(false);
+        }, (error) => {
+            console.error("Error fetching chats: ", error);
             setLoading(false);
         });
         return () => unsubscribe();
@@ -2288,7 +2295,6 @@ const ConversationPage: React.FC<{
     const [optimisticMessages, setOptimisticMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState('');
     const [mediaPreviews, setMediaPreviews] = useState<MediaPreview[]>([]);
-    const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
     const [currentChat, setCurrentChat] = useState<Chat | null>(null);
     const [loading, setLoading] = useState(true);
     const [deletingMessage, setDeletingMessage] = useState<Message | null>(null);
@@ -2347,7 +2353,6 @@ const ConversationPage: React.FC<{
     
         setNewMessage('');
         setMediaPreviews([]);
-        setUploadProgress({});
         messageInputRef.current?.focus();
     
         const tempId = `temp_${Date.now()}`;
@@ -2362,35 +2367,20 @@ const ConversationPage: React.FC<{
         setOptimisticMessages(prev => [...prev, optimisticMessage]);
     
         try {
-            const uploadAndGetMediaItems = async (): Promise<MediaItem[]> => {
-                const uploadPromises = mediaFiles.map(preview => 
-                    new Promise<MediaItem>(async (resolve, reject) => {
-                        try {
-                            const fileToUpload = preview.type === 'image' ? await compressImage(preview.file) : preview.file;
-                            const filePath = `chat_media/${currentChat.id}/${Date.now()}_${fileToUpload.name}`;
-                            const mediaRef = ref(storage, filePath);
-                            const uploadTask = uploadBytesResumable(mediaRef, fileToUpload);
-
-                            uploadTask.on('state_changed',
-                                (snapshot) => {
-                                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                                    setUploadProgress(prev => ({ ...prev, [preview.id]: progress }));
-                                },
-                                (error) => reject(error),
-                                async () => {
-                                    const url = await getDownloadURL(uploadTask.snapshot.ref);
-                                    resolve({ url, type: preview.type, path: filePath });
-                                }
-                            );
-                        } catch (error) {
-                            reject(error);
-                        }
-                    })
-                );
-                return Promise.all(uploadPromises);
+            const uploadMedia = async (preview: MediaPreview): Promise<MediaItem> => {
+                const fileToUpload = preview.type === 'image' ? await compressImage(preview.file) : preview.file;
+                const filePath = `chat_media/${currentChat.id}/${Date.now()}_${fileToUpload.name}`;
+                const mediaRef = ref(storage, filePath);
+                
+                const uploadTask = uploadBytesResumable(mediaRef, fileToUpload);
+                await uploadTask; // Wait for upload to complete
+                
+                const url = await getDownloadURL(mediaRef);
+                return { url, type: preview.type, path: filePath };
             };
-            
-            const uploadedMedia = mediaFiles.length > 0 ? await uploadAndGetMediaItems() : [];
+    
+            const uploadPromises = mediaFiles.map(uploadMedia);
+            const uploadedMedia = await Promise.all(uploadPromises);
             
             const messagePayload = {
                 senderId: currentUser.id, 
@@ -2402,16 +2392,16 @@ const ConversationPage: React.FC<{
 
             await addDoc(collection(db, "chats", currentChat.id, "messages"), messagePayload);
             
-             let lastMessageContent = textContent;
-             if (!textContent && uploadedMedia.length > 0) {
+            let lastMessageContent = textContent;
+            if (!textContent && uploadedMedia.length > 0) {
                  lastMessageContent = uploadedMedia.length > 1 ? '📷 Media' : (uploadedMedia[0].type === 'video' ? '📹 Video' : '📷 Photo');
-             }
+            }
              
-             await updateDoc(doc(db, "chats", currentChat.id), {
+            await updateDoc(doc(db, "chats", currentChat.id), {
                  lastMessage: { content: lastMessageContent, senderId: currentUser.id, createdAt: serverTimestamp() },
                  lastActivity: serverTimestamp(),
                  [`lastRead.${currentUser.id}`]: serverTimestamp()
-             });
+            });
 
         } catch (error) {
             console.error("Error sending message:", error);
@@ -2538,11 +2528,6 @@ const ConversationPage: React.FC<{
                                 <button onClick={() => setMediaPreviews(prev => prev.filter(item => item.id !== p.id))}>
                                     <span className="material-symbols-outlined">close</span>
                                 </button>
-                                {uploadProgress[p.id] !== undefined && uploadProgress[p.id] < 100 && (
-                                    <div className="upload-progress-overlay">
-                                        <UploadProgressCircle progress={uploadProgress[p.id]} />
-                                    </div>
-                                )}
                             </div>
                         ))}
                     </div>
@@ -2922,7 +2907,7 @@ const App: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
-    const [notificationPermissionStatus, setNotificationPermissionStatus] = useState('default');
+    const [notificationPermissionStatus, setNotificationPermissionStatus] = useState<NotificationPermission>('default');
 
     const deepLinkProcessed = useRef(false);
 
@@ -2932,15 +2917,6 @@ const App: React.FC = () => {
     }
 
     const isConversationOpen = !!currentChatId;
-
-    useEffect(() => {
-        // Check and update permission status whenever the current user changes.
-        // This ensures it's checked after login.
-        if (currentUser) {
-            setNotificationPermissionStatus(Notification.permission);
-        }
-    }, [currentUser]);
-
 
     const usersMap = useMemo(() => {
         const map = new Map<string, User>();
@@ -3031,27 +3007,23 @@ const App: React.FC = () => {
             setWorshipService(snapshot.empty ? null : { id: snapshot.docs[0].id, ...snapshot.docs[0].data() } as WorshipService);
         });
 
-        const unsubPastWorship = onSnapshot(query(collection(db, "pastWorshipServices")), (snapshot) => {
+        const unsubPastWorship = onSnapshot(query(collection(db, "pastWorshipServices"), orderBy("createdAt", "desc")), (snapshot) => {
             const services = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PastWorshipService));
-            services.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
             setPastServices(services);
         });
 
-        const unsubNews = onSnapshot(query(collection(db, "news")), (snapshot) => {
+        const unsubNews = onSnapshot(query(collection(db, "news"), orderBy("createdAt", "desc")), (snapshot) => {
             const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as NewsItem));
-            items.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
             setNews(items);
         });
 
-        const unsubPodcasts = onSnapshot(query(collection(db, "podcasts")), (snapshot) => {
+        const unsubPodcasts = onSnapshot(query(collection(db, "podcasts"), orderBy("createdAt", "desc")), (snapshot) => {
             const podcasts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Podcast));
-            podcasts.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
             setPodcasts(podcasts);
         });
 
-        const unsubPrayer = onSnapshot(query(collection(db, "prayerRequests")), (snapshot) => {
+        const unsubPrayer = onSnapshot(query(collection(db, "prayerRequests"), orderBy("createdAt", "desc")), (snapshot) => {
             const requests = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PrayerRequest));
-            requests.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
             setPrayerRequests(requests);
         });
 
@@ -3082,9 +3054,6 @@ const App: React.FC = () => {
 
         const handleDeepLink = () => {
             if (page === 'chat' && chatIdParam) {
-                // We don't check for chat existence here anymore,
-                // as the chats list might not be loaded yet.
-                // We just set the state and let the components handle it.
                 setActivePage('chat');
                 setCurrentChatId(chatIdParam);
                 deepLinkProcessed.current = true;
@@ -3096,50 +3065,67 @@ const App: React.FC = () => {
             }
         };
         
-        // Use a small timeout to ensure the UI has had a chance to render based on initial state
-        // before attempting to navigate.
         setTimeout(handleDeepLink, 100);
 
-    }, []); // Run only once on initial load
+    }, []);
 
     // --- FCM/Push Notifications ---
-    useEffect(() => {
+    const requestPermissionAndToken = useCallback(async () => {
         if (!firebaseServices.messaging || !currentUser || !db) return;
         const { messaging } = firebaseServices;
-
-        const requestPermissionAndToken = async () => {
-            try {
-                // We request permission only if it's 'default'. If 'denied', we rely on the banner.
-                if (Notification.permission === 'default') {
-                    const permission = await Notification.requestPermission();
-                     setNotificationPermissionStatus(permission); // Update UI based on user's choice
-                }
-               
-                if (Notification.permission === 'granted') {
-                    const currentToken = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY });
-                    if (currentToken) {
-                        const userTokens = currentUser.fcmTokens || [];
-                        if (!userTokens.includes(currentToken)) {
-                            await updateDoc(doc(db, "users", currentUser.id), {
-                                fcmTokens: arrayUnion(currentToken)
-                            });
-                        }
-                    } else {
-                        console.log('No registration token available. Request permission to generate one.');
-                    }
-                }
-            } catch (err) {
-                console.error('An error occurred while retrieving token. ', err);
+    
+        try {
+            let permission = Notification.permission;
+            if (permission === 'default') {
+                permission = await Notification.requestPermission();
+                setNotificationPermissionStatus(permission); // Update UI based on user's choice
             }
-        };
-        
-        requestPermissionAndToken();
+    
+            if (permission === 'granted') {
+                const currentToken = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY });
+                if (currentToken) {
+                    const userRef = doc(db, "users", currentUser.id);
+                    const userDoc = await getDoc(userRef);
+                    const userTokens = userDoc.data()?.fcmTokens || [];
+                    if (!userTokens.includes(currentToken)) {
+                        await updateDoc(userRef, {
+                            fcmTokens: arrayUnion(currentToken)
+                        });
+                    }
+                } else {
+                    console.log('No registration token available. Request permission to generate one.');
+                }
+            } else {
+                 console.log('Notification permission not granted.');
+                 if (permission === 'denied') {
+                     showToast("Notifications Blocked", "You can enable notifications in your browser settings later.");
+                 }
+            }
+        } catch (err) {
+            console.error('An error occurred while retrieving token. ', err);
+        }
+    }, [firebaseServices, currentUser, db, showToast]);
 
+    // Effect to check permission status and get token on load
+    useEffect(() => {
+        if (currentUser) {
+            setNotificationPermissionStatus(Notification.permission);
+            if (Notification.permission === 'granted') {
+                requestPermissionAndToken();
+            }
+        }
+    }, [currentUser, requestPermissionAndToken]);
+    
+    // Effect for handling incoming messages
+    useEffect(() => {
+        if (!firebaseServices.messaging || !currentUser) return;
+        const { messaging } = firebaseServices;
+    
         const unsubscribeOnMessage = onMessage(messaging, (payload) => {
              const data = payload.notification;
              const customData = payload.data;
              const fromChatId = customData?.chatId;
-
+    
              if (fromChatId && fromChatId === currentChatId) {
                 // If user is already in the chat, don't show a toast.
                 return;
@@ -3154,10 +3140,10 @@ const App: React.FC = () => {
                         const url = new URL(urlString);
                         const page = url.searchParams.get('page');
                         const chatId = url.searchParams.get('chatId');
-
+    
                         if (page === 'chat' && chatId) {
-                             setActivePage('chat'); // Go to chat list page
-                             setCurrentChatId(chatId); // This will open the conversation
+                             setActivePage('chat');
+                             setCurrentChatId(chatId);
                         } else if (page && navOrder.includes(page as any)) {
                             setActivePage(page as any);
                         }
@@ -3166,7 +3152,7 @@ const App: React.FC = () => {
              );
              setHasUnreadNotifications(true);
         });
-
+    
         return () => unsubscribeOnMessage();
     }, [firebaseServices.messaging, currentUser, db, showToast, currentChatId]);
 
@@ -3276,6 +3262,11 @@ const App: React.FC = () => {
                         <h1>{CHURCH.name}</h1>
                     </div>
                     <div className="header-actions">
+                        {notificationPermissionStatus === 'default' && (
+                            <button className="header-button" onClick={requestPermissionAndToken} aria-label="Enable Notifications">
+                               <span className="material-symbols-outlined">notifications_off</span>
+                           </button>
+                        )}
                         <button className="header-button" onClick={() => {
                             setIsNotificationPanelOpen(true);
                             setHasUnreadNotifications(false);
