@@ -318,7 +318,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३५, लूका २２:５４-७१, भजनसंग्रह १५-१６, एफिसी ६",
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
     "प्रस्थान ३७, लूका २३:२६-５６, भजनसंग्रह १८, फिलिप्पी २",
-    "प्रस्थान ३８, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
+    "प्रस्थान ३८, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
     "प्रस्थान ३９, लूका २४:१३-５३, भजनसंग्रह २०, फिलिप्पी ४",
     "प्रस्थान ४०, यूहन्ना १:१-२८, भजनसंग्रह २१, कलस्सी १",
     "लेवी १, यूहन्ना १:२९-５１, भजनसंग्रह २२, कलस्सी २",
@@ -566,17 +566,17 @@ const MCCHEYNE_READING_PLAN = [
     "२ राजा २०, मत्ती ২৩, भजनसंग्रh ३２, भजनसंग्रh ३३",
     "२ राजा २१, मत्ती २४, भजनसंग्रh ३４, भजनसंग्रh ३５",
     "२ राजा २２, मत्ती २५, भजनसंग्रh ३６, भजनसंग्रh ३７",
-    "२ राजा ২৩, मत्ती २６, भजनसंग्रh ३८, भजनसंग्रh ३９",
+    "२ राजा ২৩, मत्ती २６, भजनसंग्रh ३８, भजनसंग्रh ३９",
     "२ राजा २४, मत्ती २７, भजनसंग्रh ४०, भजनसंग्रh ४१",
     "२ राजा २५, मत्ती २８, भजनसंग्रh ४２, भजनसंग्रh ४३",
     "१ इतिहास १, मर्कूस १, भजनसंग्रh ४４, भजनसंग्रh ४５",
     "१ इतिहास २, मर्कूस २, भजनसंग्रh ৪६, भजनसंग्रh ४७",
     "१ इतिहास ३, मर्कूस ३, भजनसंग्रh ४८, भजनसंग्रh ४९",
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५１",
-    "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५３",
+    "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
     "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५７",
-    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५९",
+    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५८, भजनसंग्रh ५９",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
@@ -601,7 +601,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १, लूका १३, हितोपदेश २२, भजनसंग्रh ९０",
     "२ इतिहास २, लूका १४, हितोपदेश ২৩, भजनसंग्रh ९１",
     "२ इतिहास ३, लूका १५, हितोपदेश २४, भजनसंग्रh ९２",
-    "२ इतिहास ४, लूका १६, हितोपदेश २५, भजनसंग्रh ९３",
+    "२ इतिहास ४, लूका १६, हितोपदेश २५, भजनसंग्रh ९३",
     "२ इतिहास ५, लूका १७, हितोपदेश २６, भजनसंग्रh ९４",
     "२ इतिहास ६, लूका १८, हितोपदेश २७, भजनसंग्रh ९５",
     "२ इतिहास ७, लूका १९, हितोपदेश २८, भजनसंग्रh ९６",
@@ -810,11 +810,11 @@ const Modal: React.FC<{
 const ImageUpload: React.FC<{
     selectedFile: File | null;
     setSelectedFile: (file: File | null) => void;
-    currentImageUrl: string | null;
+    currentImageUrl: string | null | undefined;
     label?: string;
     onImageRemove?: () => void;
 }> = ({ selectedFile, setSelectedFile, currentImageUrl, label = 'Add a photo', onImageRemove }) => {
-    const [preview, setPreview] = useState<string | null>(currentImageUrl);
+    const [preview, setPreview] = useState<string | null | undefined>(currentImageUrl);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -846,7 +846,7 @@ const ImageUpload: React.FC<{
         <div className="image-upload-container">
             {preview ? (
                 <div className="image-preview">
-                    <img src={preview} alt="Preview" />
+                    <img src={preview || ''} alt="Preview" />
                     <button type="button" onClick={handleRemoveImage} aria-label="Remove image">
                          <span className="material-symbols-outlined">close</span>
                     </button>
@@ -1233,7 +1233,7 @@ const NewsPage: React.FC<{
             status: 'uploading',
             image: editingNews?.image,
             thumbnailUrl: editingNews?.thumbnailUrl,
-            localImagePreview: imageFile ? URL.createObjectURL(imageFile) : (imageRemoved ? undefined : editingNews?.image),
+            localImagePreview: imageFile ? URL.createObjectURL(imageFile) : (imageRemoved ? undefined : (editingNews?.thumbnailUrl || editingNews?.image)),
         };
     
         if (editingNews) {
@@ -1407,7 +1407,7 @@ const NewsFormModal: React.FC<{
                 <ImageUpload 
                     selectedFile={imageFile} 
                     setSelectedFile={setImageFile} 
-                    currentImageUrl={newsItem?.image ?? null}
+                    currentImageUrl={newsItem?.thumbnailUrl ?? newsItem?.image ?? undefined}
                     label="फोटो थप्नुहोस्।(यदि तपाईं चाहनुहुन्छ भने)"
                     onImageRemove={() => setImageRemoved(true)}
                 />
@@ -1731,7 +1731,7 @@ const PrayerPage: React.FC<{
             status: 'uploading',
             image: editingRequest?.image,
             thumbnailUrl: editingRequest?.thumbnailUrl,
-            localImagePreview: imageFile ? URL.createObjectURL(imageFile) : (imageRemoved ? undefined : editingRequest?.image),
+            localImagePreview: imageFile ? URL.createObjectURL(imageFile) : (imageRemoved ? undefined : (editingRequest?.thumbnailUrl || editingRequest?.image)),
         };
 
         if (editingRequest) {
@@ -1932,7 +1932,7 @@ const PrayerFormModal: React.FC<{
                 <ImageUpload 
                     selectedFile={imageFile} 
                     setSelectedFile={setImageFile} 
-                    currentImageUrl={request?.image ?? null}
+                    currentImageUrl={request?.thumbnailUrl ?? request?.image ?? undefined}
                     label="फोटो थप्नुहोस्।(यदि तपाईं चाहनुहुन्छ भने)"
                     onImageRemove={() => setImageRemoved(true)}
                 />
@@ -2430,8 +2430,8 @@ const ConversationPage: React.FC<{
 
                 if (preview.type === 'image') {
                     const [fullFile, thumbFile] = await Promise.all([
-                        resizeImage(preview.file, 1280, 0.85),
-                        resizeImage(preview.file, 400, 0.70)
+                        resizeImage(preview.file, 1024, 0.8),
+                        resizeImage(preview.file, 400, 0.75)
                     ]);
                     
                     const fullPath = `chat_media/${currentChat.id}/${timestamp}_${cleanName}`;
@@ -2485,7 +2485,7 @@ const ConversationPage: React.FC<{
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             const files = Array.from(e.target.files);
-            const newPreviews: MediaPreview[] = files.map(file => ({
+            const newPreviews: MediaPreview[] = files.map((file: File) => ({
                 id: crypto.randomUUID(),
                 url: URL.createObjectURL(file),
                 file,
@@ -3414,7 +3414,9 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     if (this.state.hasError && this.state.error) {
       return <ErrorFallback error={this.state.error} />;
     }
-    return this.props.children;
+
+    const { children } = this.props;
+    return children;
   }
 }
 
