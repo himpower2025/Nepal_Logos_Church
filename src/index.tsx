@@ -573,15 +573,15 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २, मर्कूस २, भजनसंग्रh ৪६, भजनसंग्रh ४७",
     "१ इतिहास ३, मर्कूस ३, भजनसंग्रh ४८, भजनसंग्रh ४९",
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५１",
-    "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
+    "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५３",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
-    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५७",
+    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५７",
     "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५९",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
     "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६７",
-    "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६९",
+    "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६८, भजनसंग्रh ६९",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७०, भजनसंग्रh ७１",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७३",
     "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
@@ -810,11 +810,11 @@ const Modal: React.FC<{
 const ImageUpload: React.FC<{
     selectedFile: File | null;
     setSelectedFile: (file: File | null) => void;
-    currentImageUrl?: string | null;
+    currentImageUrl: string | null;
     label?: string;
     onImageRemove?: () => void;
 }> = ({ selectedFile, setSelectedFile, currentImageUrl, label = 'Add a photo', onImageRemove }) => {
-    const [preview, setPreview] = useState<string | null>(currentImageUrl ?? null);
+    const [preview, setPreview] = useState<string | null>(currentImageUrl);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -823,7 +823,7 @@ const ImageUpload: React.FC<{
             setPreview(objectUrl);
             return () => URL.revokeObjectURL(objectUrl);
         } else {
-            setPreview(currentImageUrl ?? null);
+            setPreview(currentImageUrl);
         }
     }, [selectedFile, currentImageUrl]);
 
@@ -1407,7 +1407,7 @@ const NewsFormModal: React.FC<{
                 <ImageUpload 
                     selectedFile={imageFile} 
                     setSelectedFile={setImageFile} 
-                    currentImageUrl={newsItem?.image}
+                    currentImageUrl={newsItem?.image ?? null}
                     label="फोटो थप्नुहोस्।(यदि तपाईं चाहनुहुन्छ भने)"
                     onImageRemove={() => setImageRemoved(true)}
                 />
@@ -1932,7 +1932,7 @@ const PrayerFormModal: React.FC<{
                 <ImageUpload 
                     selectedFile={imageFile} 
                     setSelectedFile={setImageFile} 
-                    currentImageUrl={request?.image}
+                    currentImageUrl={request?.image ?? null}
                     label="फोटो थप्नुहोस्।(यदि तपाईं चाहनुहुन्छ भने)"
                     onImageRemove={() => setImageRemoved(true)}
                 />
