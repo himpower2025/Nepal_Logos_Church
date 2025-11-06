@@ -315,7 +315,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३２, लूका २१, भजनसंग्रह १०, एफिसी ३",
     "प्रस्थान ३३, लूका २２:१-३０, भजनसंग्रह ११-१२, एफिसी ४",
     "प्रस्थान ३４, लूका २２:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
-    "प्रस्थान ३५, लूका २２:５４-७१, भजनसंग्रह १५-१６, एफिसी ६",
+    "प्रस्थान ३५, लूका २２:５४-७१, भजनसंग्रह १५-१６, एफिसी ६",
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
     "प्रस्थान ३७, लूका २३:२६-５６, भजनसंग्रह १८, फिलिप्पी २",
     "प्रस्थान ३८, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
@@ -569,22 +569,22 @@ const MCCHEYNE_READING_PLAN = [
     "२ राजा ২৩, मत्ती २６, भजनसंग्रh ३８, भजनसंग्रh ३９",
     "२ राजा २४, मत्ती २７, भजनसंग्रh ४०, भजनसंग्रh ४१",
     "२ राजा २५, मत्ती २８, भजनसंग्रh ४２, भजनसंग्रh ४३",
-    "१ इतिहास १, मर्कूस १, भजनसंग्रh ४４, भजनसंग्रh ४５",
+    "१ इतिहास १, मर्कूस १, भजनसंग्रh ४４, भजनसंग्रh ४५",
     "१ इतिहास २, मर्कूस २, भजनसंग्रh ৪६, भजनसंग्रh ४७",
     "१ इतिहास ३, मर्कूस ३, भजनसंग्रh ४८, भजनसंग्रh ४९",
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५１",
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
-    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५７",
+    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५७",
     "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५９",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
-    "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६५",
+    "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
     "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६７",
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६९",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७３",
-    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
+    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७४, भजनसंग्रh ७５",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
     "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७８",
     "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७９",
@@ -619,7 +619,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１６, भजनसंग्रh ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
     "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６４, भजनसंग्रh ११९:६५-९६",
-    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१２८, भजनसंग्रh ११९:१२९-१５２",
+    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१２८, भजनसंग्रh ११९:१२९-१५２",
     "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७६, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रh १२３, भजनसंग्रh १२４",
@@ -754,6 +754,117 @@ const resizeImage = (file: File, maxSize: number, quality: number): Promise<File
         };
         reader.onerror = (error) => reject(error);
     });
+};
+
+
+// --- IndexedDB Image Cache for Chat ---
+class ImageCacheManager {
+    private db: IDBDatabase | null = null;
+    private dbName = 'ImageCacheDB';
+    private storeName = 'imageStore';
+
+    constructor() {
+        this.init();
+    }
+
+    private init(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            if (this.db) {
+                resolve();
+                return;
+            }
+            const request = indexedDB.open(this.dbName, 1);
+            request.onerror = () => reject("IndexedDB error: " + request.error);
+            request.onsuccess = () => {
+                this.db = request.result;
+                resolve();
+            };
+            request.onupgradeneeded = () => {
+                const db = request.result;
+                if (!db.objectStoreNames.contains(this.storeName)) {
+                    db.createObjectStore(this.storeName);
+                }
+            };
+        });
+    }
+
+    private async getDb(): Promise<IDBDatabase> {
+        if (!this.db) await this.init();
+        return this.db!;
+    }
+
+    async storeImage(id: string, blob: Blob): Promise<void> {
+        const db = await this.getDb();
+        return new Promise((resolve, reject) => {
+            const transaction = db.transaction(this.storeName, 'readwrite');
+            const store = transaction.objectStore(this.storeName);
+            const request = store.put(blob, id);
+            request.onsuccess = () => resolve();
+            request.onerror = () => reject("Failed to store image: " + request.error);
+        });
+    }
+
+    async getImage(id: string): Promise<Blob | null> {
+        const db = await this.getDb();
+        return new Promise((resolve, reject) => {
+            const transaction = db.transaction(this.storeName, 'readonly');
+            const store = transaction.objectStore(this.storeName);
+            const request = store.get(id);
+            request.onsuccess = () => resolve(request.result || null);
+            request.onerror = () => reject("Failed to get image: " + request.error);
+        });
+    }
+
+    async renameKey(oldKey: string, newKey: string): Promise<void> {
+        const blob = await this.getImage(oldKey);
+        if (blob) {
+            await this.storeImage(newKey, blob);
+            const db = await this.getDb();
+            const transaction = db.transaction(this.storeName, 'readwrite');
+            transaction.objectStore(this.storeName).delete(oldKey);
+        }
+    }
+}
+const ImageCache = new ImageCacheManager();
+
+// Hook to use cached images
+const useCachedImage = (remoteUrl: string | undefined, messageId: string) => {
+    const [imageUrl, setImageUrl] = useState(remoteUrl);
+
+    useEffect(() => {
+        let isMounted = true;
+        let objectUrl: string | null = null;
+
+        const loadCache = async () => {
+            try {
+                const blob = await ImageCache.getImage(messageId);
+                if (isMounted && blob) {
+                    objectUrl = URL.createObjectURL(blob);
+                    setImageUrl(objectUrl);
+                } else if (isMounted) {
+                    setImageUrl(remoteUrl);
+                }
+            } catch (error) {
+                console.warn("Cache lookup failed for", messageId, error);
+                if (isMounted) setImageUrl(remoteUrl);
+            }
+        };
+
+        if (messageId) {
+            loadCache();
+        } else {
+            setImageUrl(remoteUrl);
+        }
+
+        return () => {
+            isMounted = false;
+            if (objectUrl) {
+                URL.revokeObjectURL(objectUrl);
+            }
+        };
+    }, [remoteUrl, messageId]);
+
+    return imageUrl;
 };
 
 
@@ -1233,7 +1344,7 @@ const NewsPage: React.FC<{
             status: 'uploading',
             image: editingNews?.image,
             thumbnailUrl: editingNews?.thumbnailUrl,
-            localImagePreview: imageFile ? URL.createObjectURL(imageFile) : (imageRemoved ? undefined : (editingNews?.thumbnailUrl || editingNews?.image)),
+            localImagePreview: imageFile ? URL.createObjectURL(imageFile) : (imageRemoved ? null : (editingNews?.thumbnailUrl || editingNews?.image)),
         };
     
         if (editingNews) {
@@ -1731,7 +1842,7 @@ const PrayerPage: React.FC<{
             status: 'uploading',
             image: editingRequest?.image,
             thumbnailUrl: editingRequest?.thumbnailUrl,
-            localImagePreview: imageFile ? URL.createObjectURL(imageFile) : (imageRemoved ? undefined : (editingRequest?.thumbnailUrl || editingRequest?.image)),
+            localImagePreview: imageFile ? URL.createObjectURL(imageFile) : (imageRemoved ? null : (editingRequest?.thumbnailUrl || editingRequest?.image)),
         };
 
         if (editingRequest) {
@@ -2388,6 +2499,12 @@ const ConversationPage: React.FC<{
             setServerMessages(newServerMessages);
 
             const receivedTempIds = new Set(newServerMessages.map(m => m.tempId).filter(Boolean));
+            newServerMessages.forEach(msg => {
+                if (msg.tempId) {
+                    ImageCache.renameKey(msg.tempId, msg.id).catch(err => console.warn("Failed to rename cache key:", err));
+                }
+            });
+
             setOptimisticMessages(prev => prev.filter(om => !receivedTempIds.has(om.tempId)));
 
             setLoading(false);
@@ -2423,8 +2540,20 @@ const ConversationPage: React.FC<{
         };
         setOptimisticMessages(prev => [...prev, optimisticMessage]);
 
+        // Optimistic last message update
+        let lastMessageContent = textContent;
+        if (!textContent && mediaFiles.length > 0) {
+            lastMessageContent = mediaFiles.length > 1 ? '📷 Media' : (mediaFiles[0].type === 'video' ? '📹 Video' : '📷 Photo');
+        }
+        updateDoc(doc(db, "chats", currentChat.id), {
+            lastMessage: { content: lastMessageContent, senderId: currentUser.id, createdAt: serverTimestamp() },
+            lastActivity: serverTimestamp(),
+            [`lastRead.${currentUser.id}`]: serverTimestamp()
+        }).catch(err => console.error("Optimistic last message update failed:", err));
+
+
         try {
-            const uploadMedia = async (preview: MediaPreview): Promise<MediaItem> => {
+            const uploadMedia = async (preview: MediaPreview): Promise<{mediaItem: MediaItem, thumbBlob?: Blob}> => {
                 const timestamp = Date.now();
                 const cleanName = preview.file.name.replace(/[^a-zA-Z0-9.]/g, '_');
 
@@ -2442,17 +2571,27 @@ const ConversationPage: React.FC<{
                     await Promise.all([uploadBytes(fullRef, fullFile), uploadBytes(thumbRef, thumbFile)]);
                     const [url, thumbnailUrl] = await Promise.all([getDownloadURL(fullRef), getDownloadURL(thumbRef)]);
 
-                    return { url, thumbnailUrl, type: 'image', path: fullPath, thumbnailPath: thumbPath };
+                    return { mediaItem: { url, thumbnailUrl, type: 'image', path: fullPath, thumbnailPath: thumbPath }, thumbBlob: thumbFile };
                 } else { // Video
                     const filePath = `chat_media/${currentChat.id}/${timestamp}_${cleanName}`;
                     const mediaRef = ref(storage, filePath);
                     await uploadBytes(mediaRef, preview.file);
                     const url = await getDownloadURL(mediaRef);
-                    return { url, type: 'video', path: filePath };
+                    return { mediaItem: { url, type: 'video', path: filePath } };
                 }
             };
+            
+            const uploadResults = await Promise.all(mediaFiles.map(uploadMedia));
+            
+            // Cache thumbnails
+            uploadResults.forEach((result, index) => {
+                if (result.thumbBlob) {
+                    const tempMediaId = tempId; // Use message tempId for initial caching
+                    ImageCache.storeImage(tempMediaId, result.thumbBlob).catch(err => console.error("Failed to cache image", err));
+                }
+            });
 
-            const uploadedMedia = await Promise.all(mediaFiles.map(uploadMedia));
+            const uploadedMedia = uploadResults.map(r => r.mediaItem);
             
             const messagePayload = {
                 senderId: currentUser.id, 
@@ -2464,17 +2603,6 @@ const ConversationPage: React.FC<{
 
             await addDoc(collection(db, "chats", currentChat.id, "messages"), messagePayload);
             
-            let lastMessageContent = textContent;
-            if (!textContent && uploadedMedia.length > 0) {
-                 lastMessageContent = uploadedMedia.length > 1 ? '📷 Media' : (uploadedMedia[0].type === 'video' ? '📹 Video' : '📷 Photo');
-            }
-             
-            await updateDoc(doc(db, "chats", currentChat.id), {
-                 lastMessage: { content: lastMessageContent, senderId: currentUser.id, createdAt: serverTimestamp() },
-                 lastActivity: serverTimestamp(),
-                 [`lastRead.${currentUser.id}`]: serverTimestamp()
-            });
-
         } catch (error: any) {
             console.error("❌ Failed to send message. Error Code:", error.code, "Message:", error.message);
             showToast("Error", "Failed to send message.");
@@ -2710,7 +2838,7 @@ const MessageBubble: React.FC<{
                 onContextMenu={handleContextMenu}
             >
                 {message.media && message.media.length > 0 && (
-                    <MediaGrid media={message.media} onMediaClick={onMediaClick} />
+                    <MediaGrid media={message.media} messageId={message.id} onMediaClick={onMediaClick} />
                 )}
                 {message.content && <p className="message-content">{message.content}</p>}
                 <div className="message-footer">
@@ -2723,28 +2851,47 @@ const MessageBubble: React.FC<{
     );
 };
 
-const MediaGrid: React.FC<{ media: MediaItem[], onMediaClick: (index: number) => void }> = ({ media, onMediaClick }) => {
+const MediaGridItem: React.FC<{ item: MediaItem, messageId: string, onClick: () => void }> = ({ item, messageId, onClick }) => {
+    // Use messageId for caching, which is stable for server messages.
+    // For optimistic messages, the parent `MessageBubble` has a tempId as key, which is sufficient.
+    const cachedImageUrl = useCachedImage(item.thumbnailUrl || item.url, messageId);
+
+    return (
+        <div className="media-grid-item" onClick={(e) => {
+            e.stopPropagation();
+            onClick();
+        }}>
+            {item.type === 'image' ? <img src={cachedImageUrl} alt="media content" /> : <video src={item.url} />}
+            {item.type === 'video' && (
+                <div className="video-play-icon">
+                    <span className="material-symbols-outlined">play_circle</span>
+                </div>
+            )}
+        </div>
+    );
+};
+
+
+const MediaGrid: React.FC<{ media: MediaItem[], messageId: string, onMediaClick: (index: number) => void }> = ({ media, messageId, onMediaClick }) => {
     const count = media.length;
     const displayMedia = count > 4 ? media.slice(0, 4) : media;
 
     return (
         <div className={`media-grid count-${Math.min(count, 4)}`}>
             {displayMedia.map((item, index) => (
-                <div key={index} className="media-grid-item" onClick={(e) => {
-                    e.stopPropagation(); // Prevents the parent bubble's long press logic from interfering
-                    onMediaClick(index);
-                }}>
-                    {item.type === 'image' ? <img src={item.thumbnailUrl || item.url} alt="media content" /> : <video src={item.url} />}
-                    {item.type === 'video' && (
-                        <div className="video-play-icon">
-                            <span className="material-symbols-outlined">play_circle</span>
-                        </div>
-                    )}
-                    {count > 4 && index === 3 && (
-                        <div className="more-overlay">+{count - 4}</div>
-                    )}
-                </div>
+                <MediaGridItem 
+                    key={index} 
+                    item={item}
+                    messageId={messageId}
+                    onClick={() => onMediaClick(index)} 
+                />
             ))}
+            {count > 4 && (
+                <div className="media-grid-item" onClick={(e) => { e.stopPropagation(); onMediaClick(3); }}>
+                    <MediaGridItem item={displayMedia[3]} messageId={messageId} onClick={() => onMediaClick(3)} />
+                    <div className="more-overlay">+{count - 4}</div>
+                </div>
+            )}
         </div>
     );
 };
