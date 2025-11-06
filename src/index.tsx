@@ -364,10 +364,10 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १४, प्रेरित ५:१९-４２, भजनसंग्रह ६２, याकूब ३",
     "गन्ती १५, प्रेरित ६, भजनसंग्रह ६３, याकूब ४",
     "गन्ती १६, प्रेरित ७:१-२१, भजनसंग्रह ६４, याकוב ५",
-    "गन्ती १७, प्रेरित ७:२２-४३, भजनसंग्रह ६５, १ पत्रुस १",
+    "गन्ती १७, प्रेरित ७:२２-４३, भजनसंग्रह ६５, १ पत्रुस १",
     "गन्ती १८, प्रेरित ७:४４-６०, भजनसंग्रह ६６, १ पत्रुस २",
     "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६७, १ पत्रुस ३",
-    "गन्ती २०, प्रेरित ८:２６-４０, भजनसंग्रह ६८, १ पत्रुस ४",
+    "गन्ती २०, प्रेरित ८:２６-４०, भजनसंग्रह ६८, १ पत्रुस ४",
     "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६९, १ पत्रुस ५",
     "गन्ती २２, प्रेरित ९:२२-４३, भजनसंग्रह ७０, २ पत्रुस १",
     "गन्ती ২৩, प्रेरित १०:१-२३, भजनसंग्रह ७１, २ पत्रुस २",
@@ -573,7 +573,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २, मर्कूस २, भजनसंग्रh ৪६, भजनसंग्रh ४७",
     "१ इतिहास ३, मर्कूस ३, भजनसंग्रh ४८, भजनसंग्रh ४९",
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५１",
-    "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
+    "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५３",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
     "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५७",
     "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५９",
@@ -584,8 +584,8 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६९",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७３",
-    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७४, भजनसंग्रh ७５",
-    "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
+    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
+    "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७७",
     "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७８",
     "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७９",
     "१ इतिहास २०, लूका ३, हितोपदेश १२, भजनसंग्रh ८０",
@@ -632,7 +632,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ३２, यूहन्ना २०, भजनसंग्रh १३７, भजनसंग्रh १३８",
     "२ इतिहास ३३, यूहन्ना २１, भजनसंग्रh १३９, भजनसंग्रh १४０",
     "२ इतिहास ३４, प्रेरित १, भजनसंग्रh १४１, भजनसंग्रh १४２",
-    "२ इतिहास ३५, प्रेरित २, भजनसंग्रh १४３, भजनसंग्रh १४４",
+    "२ इतिहास ३５, प्रेरित २, भजनसंग्रh १४３, भजनसंग्रh १४４",
     "२ इतिहास ३６, प्रेरित ३, भजनसंग्रh १४５, भजनसंग्रh १४６",
     "एज्रा १, प्रेरित ४, भजनसंग्रh १४７, भजनसंग्रh १४８",
     "एज्रा २, प्रेरित ५, भजनसंग्रh १४९, भजनसंग्रh १५０",
@@ -2500,8 +2500,12 @@ const ConversationPage: React.FC<{
 
             const receivedTempIds = new Set(newServerMessages.map(m => m.tempId).filter(Boolean));
             newServerMessages.forEach(msg => {
-                if (msg.tempId) {
-                    ImageCache.renameKey(msg.tempId, msg.id).catch(err => console.warn("Failed to rename cache key:", err));
+                if (msg.tempId && msg.media) {
+                    msg.media.forEach((_, index) => {
+                        const oldKey = `${msg.tempId}-${index}`;
+                        const newKey = `${msg.id}-${index}`;
+                        ImageCache.renameKey(oldKey, newKey).catch(err => console.warn(`Failed to rename cache key from ${oldKey} to ${newKey}:`, err));
+                    });
                 }
             });
 
@@ -2586,7 +2590,7 @@ const ConversationPage: React.FC<{
             // Cache thumbnails
             uploadResults.forEach((result, index) => {
                 if (result.thumbBlob) {
-                    const tempMediaId = tempId; // Use message tempId for initial caching
+                    const tempMediaId = `${tempId}-${index}`; // Use message tempId + index for unique caching
                     ImageCache.storeImage(tempMediaId, result.thumbBlob).catch(err => console.error("Failed to cache image", err));
                 }
             });
@@ -2882,13 +2886,13 @@ const MediaGrid: React.FC<{ media: MediaItem[], messageId: string, onMediaClick:
                 <MediaGridItem 
                     key={index} 
                     item={item}
-                    messageId={messageId}
+                    messageId={`${messageId}-${index}`}
                     onClick={() => onMediaClick(index)} 
                 />
             ))}
             {count > 4 && (
                 <div className="media-grid-item" onClick={(e) => { e.stopPropagation(); onMediaClick(3); }}>
-                    <MediaGridItem item={displayMedia[3]} messageId={messageId} onClick={() => onMediaClick(3)} />
+                    <MediaGridItem item={displayMedia[3]} messageId={`${messageId}-3`} onClick={() => onMediaClick(3)} />
                     <div className="more-overlay">+{count - 4}</div>
                 </div>
             )}
