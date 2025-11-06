@@ -565,7 +565,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ राजा २१, मत्ती २४, भजनसंग्रh ३４, भजनसंग्रh ३５",
     "२ राजा २２, मत्ती २५, भजनसंग्रh ३６, भजनसंग्रh ३７",
     "२ राजा ২৩, मत्ती २６, भजनसंग्रh ३८, भजनसंग्रh ३９",
-    "२ राजा २४, मत्ती २７, भजनसंग्रh ४०, भजनसंग्रh ४１",
+    "२ राजा २४, मत्ती २７, भजनसंग्रh ४०, भजनसंग्रh ४१",
     "२ राजा २५, मत्ती २８, भजनसंग्रh ४２, भजनसंग्रh ४३",
     "१ इतिहास १, मर्कूस १, भजनसंग्रh ४４, भजनसंग्रh ४५",
     "१ इतिहास २, मर्कूस २, भजनसंग्रh ৪६, भजनसंग्रh ४७",
@@ -574,14 +574,14 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
     "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५७",
-    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५९",
+    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५८, भजनसंग्रh ५९",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
     "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६７",
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६९",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७०, भजनसंग्रh ७１",
-    "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७３",
+    "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७३",
     "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
     "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७८",
@@ -1259,8 +1259,10 @@ const NewsPage: React.FC<{
                 } else {
                     await addDoc(collection(db, "news"), { ...payload, createdAt: serverTimestamp() });
                 }
-            } catch (error) {
-                console.error("Failed to save news:", error);
+            } catch (error: any) {
+                console.error("❌ Failed to save news. Error Code:", error.code);
+                console.error("❌ Failed to save news. Error Message:", error.message);
+                console.error("❌ Full Error:", error);
                 setNews(prev => prev.map(n => n.tempId === tempId ? { ...n, status: 'failed' } : n));
             }
         };
@@ -1435,8 +1437,10 @@ const PodcastsPage: React.FC<{
                     authorName: currentUser.name,
                     createdAt: serverTimestamp(),
                 });
-            } catch (error) {
-                console.error("Failed to save podcast:", error);
+            } catch (error: any) {
+                console.error("❌ Failed to save podcast. Error Code:", error.code);
+                console.error("❌ Failed to save podcast. Error Message:", error.message);
+                console.error("❌ Full Error:", error);
                 setPodcasts(prev => prev.map(p => p.tempId === tempId ? { ...p, status: 'failed' } : p));
             }
         };
@@ -1733,8 +1737,10 @@ const PrayerPage: React.FC<{
                 } else {
                     await addDoc(collection(db, "prayerRequests"), { ...payload, prayedBy: [], createdAt: serverTimestamp() });
                 }
-            } catch (error) {
-                console.error("Failed to save prayer request:", error);
+            } catch (error: any) {
+                console.error("❌ Failed to save prayer request. Error Code:", error.code);
+                console.error("❌ Failed to save prayer request. Error Message:", error.message);
+                console.error("❌ Full Error:", error);
                 setRequests(prev => prev.map(r => r.tempId === tempId ? { ...r, status: 'failed' } : r));
             }
         };
@@ -2404,8 +2410,10 @@ const ConversationPage: React.FC<{
                  [`lastRead.${currentUser.id}`]: serverTimestamp()
             });
 
-        } catch (error) {
-            console.error("Error sending message:", error);
+        } catch (error: any) {
+            console.error("❌ Failed to send message. Error Code:", error.code);
+            console.error("❌ Failed to send message. Error Message:", error.message);
+            console.error("❌ Full Error:", error);
             showToast("Error", "Failed to send message.");
             setOptimisticMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
         }
@@ -3085,6 +3093,7 @@ const App: React.FC = () => {
             if (permission === 'granted') {
                 const currentToken = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY });
                 if (currentToken) {
+                    console.log('✅ FCM Token generated:', currentToken);
                     const userRef = doc(db, "users", currentUser.id);
                     const userDoc = await getDoc(userRef);
                     const userTokens = userDoc.data()?.fcmTokens || [];
@@ -3102,8 +3111,10 @@ const App: React.FC = () => {
                      showToast("Notifications Blocked", "You can enable notifications in your browser settings later.");
                  }
             }
-        } catch (err) {
-            console.error('An error occurred while retrieving token. ', err);
+        } catch (err: any) {
+            console.error('❌ Failed to get token. Error Code:', err.code);
+            console.error('❌ Failed to get token. Error Message:', err.message);
+            console.error('❌ Full Error:', err);
         }
     }, [firebaseServices, currentUser, db, showToast]);
 
