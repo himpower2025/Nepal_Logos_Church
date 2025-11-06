@@ -94,10 +94,10 @@ const ToastContainer: React.FC<{ toasts: ToastMessage[] }> = ({ toasts }) => {
     const [exitingToasts, setExitingToasts] = useState<number[]>([]);
 
     useEffect(() => {
-        const timers: NodeJS.Timeout[] = [];
+        const timers: number[] = [];
         toasts.forEach(toast => {
             if (!exitingToasts.includes(toast.id)) {
-                const timer = setTimeout(() => {
+                const timer = window.setTimeout(() => {
                     setExitingToasts(prev => [...prev, toast.id]);
                 }, 4500); // Start exiting animation before removal
                 timers.push(timer);
@@ -131,15 +131,17 @@ type UserRole = 'admin' | 'member' | 'news_contributor' | 'podcast_contributor';
 type User = { id: string; name: string; email: string; avatar: string; roles: UserRole[]; fcmTokens?: string[] };
 type Church = { id: string; name: string; logo: string; offeringDetails: any; };
 type Comment = { id: string; authorId: string; authorName: string; authorAvatar: string; content: string; createdAt: Timestamp; };
-type PrayerRequest = { id:string; authorId: string; authorName: string; title: string; content: string; image?: string | null; prayedBy: string[]; comments?: Comment[]; commentCount?: number; createdAt: Timestamp; status?: 'uploading' | 'failed'; tempId?: string; localImagePreview?: string; };
+type PrayerRequest = { id:string; authorId: string; authorName: string; title: string; content: string; image?: string | null; thumbnailUrl?: string | null; imagePath?: string | null; thumbnailPath?: string | null; prayedBy: string[]; comments?: Comment[]; commentCount?: number; createdAt: Timestamp; status?: 'uploading' | 'failed'; tempId?: string; localImagePreview?: string; };
 type Podcast = { id: string; title: string; authorId: string; authorName: string; audioUrl: string; createdAt: Timestamp; status?: 'uploading' | 'failed'; tempId?: string; localAudioUrl?: string; };
-type NewsItem = { id: string; title: string; content: string; image?: string | null; createdAt: Timestamp; authorId: string, authorName: string; status?: 'uploading' | 'failed'; tempId?: string; localImagePreview?: string; };
+type NewsItem = { id: string; title: string; content: string; image?: string | null; thumbnailUrl?: string | null; imagePath?: string | null; thumbnailPath?: string | null; createdAt: Timestamp; authorId: string, authorName: string; status?: 'uploading' | 'failed'; tempId?: string; localImagePreview?: string; };
 type Verse = { verse: string; text: string; };
 
 type MediaItem = {
     url: string;
+    thumbnailUrl?: string;
     type: 'image' | 'video';
-    path?: string; // For deletion from storage
+    path?: string;
+    thumbnailPath?: string;
 };
 type Message = {
     id: string;
@@ -313,7 +315,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३２, लूका २१, भजनसंग्रह १०, एफिसी ३",
     "प्रस्थान ३३, लूका २２:१-३０, भजनसंग्रह ११-१२, एफिसी ४",
     "प्रस्थान ३４, लूका २２:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
-    "प्रस्थान ३५, लूका २２:５४-७१, भजनसंग्रह १५-१６, एफिसी ६",
+    "प्रस्थान ३५, लूका २２:５４-७१, भजनसंग्रह १५-१６, एफिसी ६",
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
     "प्रस्थान ३७, लूका २३:२६-５６, भजनसंग्रह १८, फिलिप्पी २",
     "प्रस्थान ३８, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
@@ -351,7 +353,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ३, यूहन्ना १९:१-२２, भजनसंग्रह ५१, हिब्रू ५",
     "गन्ती ४, यूहन्ना १९:२３-４２, भजनसंग्रह ५２, हिब्रू ६",
     "गन्ती ५, यूहन्ना २०, भजनसंग्रह ५३, हिब्रू ७",
-    "गन्ती ६, यूहन्ना २１, भजनसंग्रह ५４, हिब्रू ८",
+    "गन्ती ६, यूहन्ना २１, भजनसंग्रह ५४, हिब्रू ८",
     "गन्ती ७, प्रेरित १, भजनसंग्रह ५５, हिब्रू ९",
     "गन्ती ८, प्रेरित २:१-२१, भजनसंग्रह ५６, हिब्रू १०",
     "गन्ती ९, प्रेरित २:२２-４７, भजनसंग्रह ५७, हिब्रू ११",
@@ -567,14 +569,14 @@ const MCCHEYNE_READING_PLAN = [
     "२ राजा ২৩, मत्ती २６, भजनसंग्रh ३८, भजनसंग्रh ३９",
     "२ राजा २४, मत्ती २７, भजनसंग्रh ४०, भजनसंग्रh ४१",
     "२ राजा २५, मत्ती २８, भजनसंग्रh ४２, भजनसंग्रh ४३",
-    "१ इतिहास १, मर्कूस १, भजनसंग्रh ४４, भजनसंग्रh ४५",
+    "१ इतिहास १, मर्कूस १, भजनसंग्रh ४４, भजनसंग्रh ४５",
     "१ इतिहास २, मर्कूस २, भजनसंग्रh ৪६, भजनसंग्रh ४७",
     "१ इतिहास ३, मर्कूस ३, भजनसंग्रh ४८, भजनसंग्रh ४९",
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५１",
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
     "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५७",
-    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५८, भजनसंग्रh ५९",
+    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५९",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
@@ -584,7 +586,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७३",
     "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
-    "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७८",
+    "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७８",
     "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७९",
     "१ इतिहास २०, लूका ३, हितोपदेश १२, भजनसंग्रh ८０",
     "१ इतिहास २１, लूका ४, हितोपदेश १३, भजनसंग्रh ८１",
@@ -595,7 +597,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रh ८６",
     "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८７",
     "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८８",
-    "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८९",
+    "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८９",
     "२ इतिहास १, लूका १३, हितोपदेश २२, भजनसंग्रh ९０",
     "२ इतिहास २, लूका १४, हितोपदेश ২৩, भजनसंग्रh ९１",
     "२ इतिहास ३, लूका १५, हितोपदेश २४, भजनसंग्रh ९２",
@@ -617,7 +619,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１６, भजनसंग्रh ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
     "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６४, भजनसंग्रh ११९:६५-९६",
-    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१२८, भजनसंग्रh ११९:१२९-१५２",
+    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१२８, भजनसंग्रh ११९:१२९-१५２",
     "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७६, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रh १२３, भजनसंग्रh १२４",
@@ -631,7 +633,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ३３, यूहन्ना २１, भजनसंग्रh १३９, भजनसंग्रh १४０",
     "२ इतिहास ३４, प्रेरित १, भजनसंग्रh १४１, भजनसंग्रh १४２",
     "२ इतिहास ३５, प्रेरित २, भजनसंग्रh १४３, भजनसंग्रh १४４",
-    "२ इतिहास ३６, प्रेरित ३, भजनसंग्रh १४५, भजनसंग्रh १४６",
+    "२ इतिहास ३６, प्रेरित ३, भजनसंग्रh १४５, भजनसंग्रh १४６",
     "एज्रा १, प्रेरित ४, भजनसंग्रh १४７, भजनसंग्रh १४８",
     "एज्रा २, प्रेरित ५, भजनसंग्रh १४९, भजनसंग्रh १५０",
 ];
@@ -695,14 +697,14 @@ const getEmbedUrl = (url: string, muted: boolean = false): string | null => {
 };
 
 /**
- * Compresses an image file before uploading.
- * @param {File} file The image file to compress.
- * @returns {Promise<File>} A promise that resolves with the compressed image file.
+ * Resizes an image file to a maximum size while maintaining aspect ratio.
+ * @param {File} file The image file to resize.
+ * @param {number} maxSize The maximum width or height of the image.
+ * @param {number} quality The quality of the output image (0 to 1).
+ * @returns {Promise<File>} A promise that resolves with the resized image file.
  */
-const compressImage = (file: File): Promise<File> => {
+const resizeImage = (file: File, maxSize: number, quality: number): Promise<File> => {
     return new Promise((resolve, reject) => {
-        const MAX_WIDTH = 1280;
-        const MAX_HEIGHT = 1280;
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = (event) => {
@@ -713,14 +715,14 @@ const compressImage = (file: File): Promise<File> => {
                 let height = img.height;
 
                 if (width > height) {
-                    if (width > MAX_WIDTH) {
-                        height *= MAX_WIDTH / width;
-                        width = MAX_WIDTH;
+                    if (width > maxSize) {
+                        height *= maxSize / width;
+                        width = maxSize;
                     }
                 } else {
-                    if (height > MAX_HEIGHT) {
-                        width *= MAX_HEIGHT / height;
-                        height = MAX_HEIGHT;
+                    if (height > maxSize) {
+                        width *= maxSize / height;
+                        height = maxSize;
                     }
                 }
 
@@ -745,7 +747,7 @@ const compressImage = (file: File): Promise<File> => {
                         }
                     },
                     'image/jpeg',
-                    0.85 // Quality setting
+                    quality
                 );
             };
             img.onerror = (error) => reject(error);
@@ -810,7 +812,8 @@ const ImageUpload: React.FC<{
     setSelectedFile: (file: File | null) => void;
     currentImageUrl?: string | null;
     label?: string;
-}> = ({ selectedFile, setSelectedFile, currentImageUrl, label = 'Add a photo' }) => {
+    onImageRemove?: () => void;
+}> = ({ selectedFile, setSelectedFile, currentImageUrl, label = 'Add a photo', onImageRemove }) => {
     const [preview, setPreview] = useState<string | null>(currentImageUrl ?? null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -836,6 +839,7 @@ const ImageUpload: React.FC<{
         if (fileInputRef.current) {
             fileInputRef.current.value = "";
         }
+        onImageRemove?.();
     };
     
     return (
@@ -1214,7 +1218,7 @@ const NewsPage: React.FC<{
         setIsModalOpen(false);
     };
 
-    const handleSaveNews = (title: string, content: string, imageFile: File | null) => {
+    const handleSaveNews = (title: string, content: string, imageFile: File | null, imageRemoved: boolean) => {
         if (!db || !storage || !currentUser) return;
     
         const tempId = crypto.randomUUID();
@@ -1227,7 +1231,9 @@ const NewsPage: React.FC<{
             authorName: currentUser.name,
             createdAt: Timestamp.now(),
             status: 'uploading',
-            localImagePreview: imageFile ? URL.createObjectURL(imageFile) : (editingNews?.image || undefined),
+            image: editingNews?.image,
+            thumbnailUrl: editingNews?.thumbnailUrl,
+            localImagePreview: imageFile ? URL.createObjectURL(imageFile) : (imageRemoved ? undefined : editingNews?.image),
         };
     
         if (editingNews) {
@@ -1238,21 +1244,40 @@ const NewsPage: React.FC<{
     
         const performSave = async () => {
             try {
-                let finalImageUrl: string | null = editingNews?.image || null;
-    
-                if (imageFile) {
-                    if (editingNews?.image) {
-                        try {
-                            await deleteObject(ref(storage, editingNews.image));
-                        } catch (error) { console.warn("Could not delete old news image:", error); }
-                    }
-                    const compressedFile = await compressImage(imageFile);
-                    const imageRef = ref(storage, `news/${Date.now()}_${compressedFile.name}`);
-                    await uploadBytes(imageRef, compressedFile);
-                    finalImageUrl = await getDownloadURL(imageRef);
+                const payload: any = { title, content, authorId: currentUser.id, authorName: currentUser.name };
+
+                // Handle image deletion
+                if ((imageRemoved || imageFile) && editingNews?.imagePath) {
+                    await deleteObject(ref(storage, editingNews.imagePath)).catch(e => console.warn("Old image delete failed", e));
+                    if(editingNews.thumbnailPath) await deleteObject(ref(storage, editingNews.thumbnailPath)).catch(e => console.warn("Old thumb delete failed", e));
                 }
-    
-                const payload = { title, content, authorId: currentUser.id, authorName: currentUser.name, image: finalImageUrl };
+
+                if (imageFile) {
+                    const [fullFile, thumbFile] = await Promise.all([
+                        resizeImage(imageFile, 1280, 0.85),
+                        resizeImage(imageFile, 400, 0.70)
+                    ]);
+                    const timestamp = Date.now();
+                    const imageName = imageFile.name.replace(/[^a-zA-Z0-9.]/g, '_');
+                    
+                    payload.imagePath = `news/${timestamp}_${imageName}`;
+                    payload.thumbnailPath = `news/${timestamp}_thumb_${imageName}`;
+
+                    const imageRef = ref(storage, payload.imagePath);
+                    const thumbRef = ref(storage, payload.thumbnailPath);
+
+                    await Promise.all([uploadBytes(imageRef, fullFile), uploadBytes(thumbRef, thumbFile)]);
+                    const [imageUrl, thumbnailUrl] = await Promise.all([getDownloadURL(imageRef), getDownloadURL(thumbRef)]);
+                    
+                    payload.image = imageUrl;
+                    payload.thumbnailUrl = thumbnailUrl;
+
+                } else if (imageRemoved) {
+                    payload.image = null;
+                    payload.thumbnailUrl = null;
+                    payload.imagePath = null;
+                    payload.thumbnailPath = null;
+                }
     
                 if (editingNews) {
                     await updateDoc(doc(db, "news", editingNews.id), payload);
@@ -1260,9 +1285,7 @@ const NewsPage: React.FC<{
                     await addDoc(collection(db, "news"), { ...payload, createdAt: serverTimestamp() });
                 }
             } catch (error: any) {
-                console.error("❌ Failed to save news. Error Code:", error.code);
-                console.error("❌ Failed to save news. Error Message:", error.message);
-                console.error("❌ Full Error:", error);
+                console.error("❌ Failed to save news. Error Code:", error.code, "Message:", error.message);
                 setNews(prev => prev.map(n => n.tempId === tempId ? { ...n, status: 'failed' } : n));
             }
         };
@@ -1275,13 +1298,11 @@ const NewsPage: React.FC<{
         if (!window.confirm(`Are you sure you want to delete "${newsItem.title}"?`)) return;
 
         try {
-            if (newsItem.image) {
-                const imageRef = ref(storage, newsItem.image);
-                await deleteObject(imageRef).catch(error => {
-                    if (error.code !== 'storage/object-not-found') {
-                        console.error("Error deleting image from storage:", error);
-                    }
-                });
+            if (newsItem.imagePath) {
+                await deleteObject(ref(storage, newsItem.imagePath)).catch(e => console.warn("Image delete failed", e));
+            }
+             if (newsItem.thumbnailPath) {
+                await deleteObject(ref(storage, newsItem.thumbnailPath)).catch(e => console.warn("Thumbnail delete failed", e));
             }
             await deleteDoc(doc(db, "news", newsItem.id));
         } catch (error) {
@@ -1303,7 +1324,7 @@ const NewsPage: React.FC<{
                                 {item.status === 'uploading' ? <div className="spinner"></div> : <span>&#x26A0;</span>}
                             </div>
                         )}
-                        {(item.localImagePreview || item.image) && <img src={item.localImagePreview || item.image || ''} alt={item.title} className="news-image" loading="lazy" />}
+                        {(item.localImagePreview || item.thumbnailUrl || item.image) && <img src={item.localImagePreview || item.thumbnailUrl || item.image || ''} alt={item.title} className="news-image" loading="lazy" />}
                         <div className="news-content">
                             <div className="news-header">
                                 <h3>{item.title}</h3>
@@ -1339,24 +1360,26 @@ const NewsPage: React.FC<{
 const NewsFormModal: React.FC<{
     isOpen: boolean;
     onClose: () => void;
-    onSave: (title: string, content: string, imageFile: File | null) => void;
+    onSave: (title: string, content: string, imageFile: File | null, imageRemoved: boolean) => void;
     newsItem: NewsItem | null;
 }> = ({ isOpen, onClose, onSave, newsItem }) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [imageFile, setImageFile] = useState<File | null>(null);
+    const [imageRemoved, setImageRemoved] = useState(false);
     
     useEffect(() => {
         if (isOpen) {
             setTitle(newsItem?.title || '');
             setContent(newsItem?.content || '');
             setImageFile(null); // Reset file input on open
+            setImageRemoved(false);
         }
     }, [isOpen, newsItem]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSave(title, content, imageFile);
+        onSave(title, content, imageFile, imageRemoved);
         onClose();
     };
 
@@ -1386,6 +1409,7 @@ const NewsFormModal: React.FC<{
                     setSelectedFile={setImageFile} 
                     currentImageUrl={newsItem?.image}
                     label="फोटो थप्नुहोस्।(यदि तपाईं चाहनुहुन्छ भने)"
+                    onImageRemove={() => setImageRemoved(true)}
                 />
 
                 <div className="form-actions">
@@ -1438,9 +1462,7 @@ const PodcastsPage: React.FC<{
                     createdAt: serverTimestamp(),
                 });
             } catch (error: any) {
-                console.error("❌ Failed to save podcast. Error Code:", error.code);
-                console.error("❌ Failed to save podcast. Error Message:", error.message);
-                console.error("❌ Full Error:", error);
+                console.error("❌ Failed to save podcast. Error Code:", error.code, "Message:", error.message);
                 setPodcasts(prev => prev.map(p => p.tempId === tempId ? { ...p, status: 'failed' } : p));
             }
         };
@@ -1692,9 +1714,9 @@ const PrayerPage: React.FC<{
         setEditingRequest(null);
     };
     
-    const handleSavePrayerRequest = (title: string, content: string, imageFile: File | null) => {
+    const handleSavePrayerRequest = (title: string, content: string, imageFile: File | null, imageRemoved: boolean) => {
         if (!db || !storage || !currentUser) return;
-    
+
         const tempId = crypto.randomUUID();
         const optimisticRequest: PrayerRequest = {
             id: tempId,
@@ -1707,44 +1729,64 @@ const PrayerPage: React.FC<{
             commentCount: editingRequest?.commentCount || 0,
             createdAt: Timestamp.now(),
             status: 'uploading',
-            localImagePreview: imageFile ? URL.createObjectURL(imageFile) : (editingRequest?.image || undefined),
+            image: editingRequest?.image,
+            thumbnailUrl: editingRequest?.thumbnailUrl,
+            localImagePreview: imageFile ? URL.createObjectURL(imageFile) : (imageRemoved ? undefined : editingRequest?.image),
         };
-    
+
         if (editingRequest) {
             setRequests(prev => prev.map(r => r.id === editingRequest.id ? { ...optimisticRequest, id: editingRequest.id } : r));
         } else {
             setRequests(prev => [optimisticRequest, ...prev]);
         }
-    
+
         const performSave = async () => {
             try {
-                let finalImageUrl: string | null = editingRequest?.image || null;
-    
-                if (imageFile) {
-                    if (editingRequest?.image) {
-                        try { await deleteObject(ref(storage, editingRequest.image)); } catch (e) { console.warn("Old image delete failed", e); }
-                    }
-                    const compressedFile = await compressImage(imageFile);
-                    const imageRef = ref(storage, `prayers/${Date.now()}_${compressedFile.name}`);
-                    await uploadBytes(imageRef, compressedFile);
-                    finalImageUrl = await getDownloadURL(imageRef);
+                const payload: any = { title, content, authorId: currentUser.id, authorName: currentUser.name };
+
+                if ((imageRemoved || imageFile) && editingRequest?.imagePath) {
+                    await deleteObject(ref(storage, editingRequest.imagePath)).catch(e => console.warn("Old image delete failed", e));
+                    if (editingRequest.thumbnailPath) await deleteObject(ref(storage, editingRequest.thumbnailPath)).catch(e => console.warn("Old thumb delete failed", e));
                 }
-    
-                const payload = { title, content, authorId: currentUser.id, authorName: currentUser.name, image: finalImageUrl };
-    
+
+                if (imageFile) {
+                    const [fullFile, thumbFile] = await Promise.all([
+                        resizeImage(imageFile, 1280, 0.85),
+                        resizeImage(imageFile, 400, 0.70)
+                    ]);
+                    const timestamp = Date.now();
+                    const imageName = imageFile.name.replace(/[^a-zA-Z0-9.]/g, '_');
+
+                    payload.imagePath = `prayers/${timestamp}_${imageName}`;
+                    payload.thumbnailPath = `prayers/${timestamp}_thumb_${imageName}`;
+
+                    const imageRef = ref(storage, payload.imagePath);
+                    const thumbRef = ref(storage, payload.thumbnailPath);
+
+                    await Promise.all([uploadBytes(imageRef, fullFile), uploadBytes(thumbRef, thumbFile)]);
+                    const [imageUrl, thumbnailUrl] = await Promise.all([getDownloadURL(imageRef), getDownloadURL(thumbRef)]);
+
+                    payload.image = imageUrl;
+                    payload.thumbnailUrl = thumbnailUrl;
+
+                } else if (imageRemoved) {
+                    payload.image = null;
+                    payload.thumbnailUrl = null;
+                    payload.imagePath = null;
+                    payload.thumbnailPath = null;
+                }
+
                 if (editingRequest) {
                     await updateDoc(doc(db, "prayerRequests", editingRequest.id), payload);
                 } else {
                     await addDoc(collection(db, "prayerRequests"), { ...payload, prayedBy: [], createdAt: serverTimestamp() });
                 }
             } catch (error: any) {
-                console.error("❌ Failed to save prayer request. Error Code:", error.code);
-                console.error("❌ Failed to save prayer request. Error Message:", error.message);
-                console.error("❌ Full Error:", error);
+                console.error("❌ Failed to save prayer request. Error Code:", error.code, "Message:", error.message);
                 setRequests(prev => prev.map(r => r.tempId === tempId ? { ...r, status: 'failed' } : r));
             }
         };
-    
+
         performSave();
     };
 
@@ -1753,9 +1795,11 @@ const PrayerPage: React.FC<{
         if (!window.confirm("Are you sure you want to delete this prayer request?")) return;
 
         try {
-            if (request.image) {
-                const imageRef = ref(storage, request.image);
-                await deleteObject(imageRef).catch(e => console.error("Image delete failed", e));
+            if (request.imagePath) {
+                await deleteObject(ref(storage, request.imagePath)).catch(e => console.warn("Image delete failed", e));
+            }
+            if (request.thumbnailPath) {
+                await deleteObject(ref(storage, request.thumbnailPath)).catch(e => console.warn("Thumbnail delete failed", e));
             }
             await deleteDoc(doc(db, "prayerRequests", request.id));
             setSelectedRequest(null);
@@ -1783,7 +1827,7 @@ const PrayerPage: React.FC<{
                                 {req.status === 'uploading' ? <div className="spinner"></div> : <span>&#x26A0;</span>}
                             </div>
                         )}
-                        {(req.localImagePreview || req.image) && <img src={req.localImagePreview || req.image || ''} alt={req.title} className="prayer-image" loading="lazy" />}
+                        {(req.localImagePreview || req.thumbnailUrl || req.image) && <img src={req.localImagePreview || req.thumbnailUrl || req.image || ''} alt={req.title} className="prayer-image" loading="lazy" />}
                         <h4>{req.title}</h4>
                         <p className="prayer-content">{req.content}</p>
                         <div className="prayer-meta">
@@ -1841,24 +1885,26 @@ const PrayerPage: React.FC<{
 const PrayerFormModal: React.FC<{
     isOpen: boolean;
     onClose: () => void;
-    onSave: (title: string, content: string, imageFile: File | null) => void;
+    onSave: (title: string, content: string, imageFile: File | null, imageRemoved: boolean) => void;
     request: PrayerRequest | null;
 }> = ({ isOpen, onClose, onSave, request }) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [imageFile, setImageFile] = useState<File | null>(null);
+    const [imageRemoved, setImageRemoved] = useState(false);
 
     useEffect(() => {
         if (isOpen) {
             setTitle(request?.title || '');
             setContent(request?.content || '');
-            setImageFile(null); // Reset file input
+            setImageFile(null);
+            setImageRemoved(false);
         }
     }, [isOpen, request]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSave(title, content, imageFile);
+        onSave(title, content, imageFile, imageRemoved);
         onClose();
     };
     
@@ -1887,7 +1933,8 @@ const PrayerFormModal: React.FC<{
                     selectedFile={imageFile} 
                     setSelectedFile={setImageFile} 
                     currentImageUrl={request?.image}
-                    label="फोटो थप्नुहोस्।(यदि तपाईं चाहनुहुन्छ भने)" 
+                    label="फोटो थप्नुहोस्।(यदि तपाईं चाहनुहुन्छ भने)"
+                    onImageRemove={() => setImageRemoved(true)}
                 />
                 <button type="submit" className="action-button">
                     अनुरोध पठाउनुहोस्।
@@ -2087,6 +2134,9 @@ const ChatListPage: React.FC<{
                     message.media.forEach(mediaItem => {
                         if (mediaItem.path) {
                             deletePromises.push(deleteObject(ref(storage, mediaItem.path)).catch(err => console.error("Failed to delete media:", err)));
+                        }
+                        if (mediaItem.thumbnailPath) {
+                            deletePromises.push(deleteObject(ref(storage, mediaItem.thumbnailPath)).catch(err => console.error("Failed to delete thumbnail:", err)));
                         }
                     });
                 }
@@ -2357,13 +2407,13 @@ const ConversationPage: React.FC<{
         const textContent = newMessage.trim();
         const mediaFiles = [...mediaPreviews];
         if (!db || !storage || !currentChat || !currentUser || (!textContent && mediaFiles.length === 0)) return;
-    
+
         setNewMessage('');
         setMediaPreviews([]);
         messageInputRef.current?.focus();
-    
+
         const tempId = crypto.randomUUID();
-    
+
         const optimisticMessage: Message = {
             id: tempId, tempId, senderId: currentUser.id, createdAt: Timestamp.now(), status: 'uploading',
             ...(textContent && { content: textContent }),
@@ -2372,22 +2422,37 @@ const ConversationPage: React.FC<{
             }),
         };
         setOptimisticMessages(prev => [...prev, optimisticMessage]);
-    
+
         try {
             const uploadMedia = async (preview: MediaPreview): Promise<MediaItem> => {
-                const fileToUpload = preview.type === 'image' ? await compressImage(preview.file) : preview.file;
-                const filePath = `chat_media/${currentChat.id}/${Date.now()}_${fileToUpload.name}`;
-                const mediaRef = ref(storage, filePath);
-                
-                // Use the simpler uploadBytes for more stability
-                await uploadBytes(mediaRef, fileToUpload);
-                
-                const url = await getDownloadURL(mediaRef);
-                return { url, type: preview.type, path: filePath };
+                const timestamp = Date.now();
+                const cleanName = preview.file.name.replace(/[^a-zA-Z0-9.]/g, '_');
+
+                if (preview.type === 'image') {
+                    const [fullFile, thumbFile] = await Promise.all([
+                        resizeImage(preview.file, 1280, 0.85),
+                        resizeImage(preview.file, 400, 0.70)
+                    ]);
+                    
+                    const fullPath = `chat_media/${currentChat.id}/${timestamp}_${cleanName}`;
+                    const thumbPath = `chat_media/${currentChat.id}/${timestamp}_thumb_${cleanName}`;
+                    const fullRef = ref(storage, fullPath);
+                    const thumbRef = ref(storage, thumbPath);
+
+                    await Promise.all([uploadBytes(fullRef, fullFile), uploadBytes(thumbRef, thumbFile)]);
+                    const [url, thumbnailUrl] = await Promise.all([getDownloadURL(fullRef), getDownloadURL(thumbRef)]);
+
+                    return { url, thumbnailUrl, type: 'image', path: fullPath, thumbnailPath: thumbPath };
+                } else { // Video
+                    const filePath = `chat_media/${currentChat.id}/${timestamp}_${cleanName}`;
+                    const mediaRef = ref(storage, filePath);
+                    await uploadBytes(mediaRef, preview.file);
+                    const url = await getDownloadURL(mediaRef);
+                    return { url, type: 'video', path: filePath };
+                }
             };
-    
-            const uploadPromises = mediaFiles.map(uploadMedia);
-            const uploadedMedia = await Promise.all(uploadPromises);
+
+            const uploadedMedia = await Promise.all(mediaFiles.map(uploadMedia));
             
             const messagePayload = {
                 senderId: currentUser.id, 
@@ -2411,9 +2476,7 @@ const ConversationPage: React.FC<{
             });
 
         } catch (error: any) {
-            console.error("❌ Failed to send message. Error Code:", error.code);
-            console.error("❌ Failed to send message. Error Message:", error.message);
-            console.error("❌ Full Error:", error);
+            console.error("❌ Failed to send message. Error Code:", error.code, "Message:", error.message);
             showToast("Error", "Failed to send message.");
             setOptimisticMessages(prev => prev.map(m => m.tempId === tempId ? { ...m, status: 'failed' } : m));
         }
@@ -2437,37 +2500,30 @@ const ConversationPage: React.FC<{
         if (!db || !storage || !messageToDelete || !currentChat) return;
         setDeletingMessage(null);
 
-        // Optimistically remove from UI
-        if (messageToDelete.status) { // It's an optimistic message
+        if (messageToDelete.status) {
              setOptimisticMessages(prev => prev.filter(m => m.tempId !== messageToDelete.tempId));
         } else {
              setServerMessages(prev => prev.filter(m => m.id !== messageToDelete.id));
         }
 
-
-        if (messageToDelete.tempId && messageToDelete.status !== 'failed') {
-            // It was an uploading message that hasn't been sent, just remove it locally.
-            return;
-        }
+        if (messageToDelete.tempId && messageToDelete.status !== 'failed') return;
 
         try {
             if (messageToDelete.media && messageToDelete.media.length > 0) {
-                 await Promise.all(messageToDelete.media.map(item => {
-                    if (item.path) {
-                        return deleteObject(ref(storage, item.path))
-                          .catch(err => console.error(`Failed to delete media ${item.path}:`, err));
-                    }
-                    return Promise.resolve();
+                 await Promise.all(messageToDelete.media.flatMap(item => {
+                    const promises = [];
+                    if (item.path) promises.push(deleteObject(ref(storage, item.path)).catch(err => console.error(`Failed to delete media ${item.path}:`, err)));
+                    if (item.thumbnailPath) promises.push(deleteObject(ref(storage, item.thumbnailPath)).catch(err => console.error(`Failed to delete thumb ${item.thumbnailPath}:`, err)));
+                    return promises;
                 }));
             }
-            if (!messageToDelete.tempId) { // Only delete from DB if it's not a temp message
+            if (!messageToDelete.tempId) {
                 await deleteDoc(doc(db, "chats", currentChat.id, "messages", messageToDelete.id));
             }
         } catch (error) {
             console.error("Error deleting message:", error);
             alert("Failed to delete message.");
-            // Re-add message to UI if delete fails. This is complex, so for now we leave it removed.
-            // A more robust solution would involve a state rollback.
+            // Re-add message to UI on failure would be complex; for now, it stays optimistically removed.
         }
     };
     
@@ -2678,7 +2734,7 @@ const MediaGrid: React.FC<{ media: MediaItem[], onMediaClick: (index: number) =>
                     e.stopPropagation(); // Prevents the parent bubble's long press logic from interfering
                     onMediaClick(index);
                 }}>
-                    {item.type === 'image' ? <img src={item.url} alt="media content" /> : <video src={item.url} />}
+                    {item.type === 'image' ? <img src={item.thumbnailUrl || item.url} alt="media content" /> : <video src={item.url} />}
                     {item.type === 'video' && (
                         <div className="video-play-icon">
                             <span className="material-symbols-outlined">play_circle</span>
@@ -3112,9 +3168,7 @@ const App: React.FC = () => {
                  }
             }
         } catch (err: any) {
-            console.error('❌ Failed to get token. Error Code:', err.code);
-            console.error('❌ Failed to get token. Error Message:', err.message);
-            console.error('❌ Full Error:', err);
+            console.error('❌ Failed to get token. Error Code:', err.code, 'Message:', err.message);
         }
     }, [firebaseServices, currentUser, db, showToast]);
 
