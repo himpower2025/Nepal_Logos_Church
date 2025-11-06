@@ -1,13 +1,13 @@
 rules_version = '2';
+
 service firebase.storage {
   match /b/{bucket}/o {
-    // Public read access for all files. This allows anyone to view images,
-    // podcasts, etc., without being logged in.
+    // 모든 사용자가 모든 파일을 읽을(볼) 수 있도록 허용합니다.
     match /{allPaths=**} {
       allow read;
     }
 
-    // Only authenticated users can upload files into these specific folders.
+    // 로그인한 사용자는 아래 지정된 폴더에만 파일을 쓸(업로드할) 수 있도록 허용합니다.
     match /chat_media/{allPaths=**} {
       allow write: if request.auth != null;
     }
@@ -19,6 +19,9 @@ service firebase.storage {
     }
     match /prayers/{allPaths=**} {
       allow write: if request.auth != null;
+    }
+    match /assets/{allPaths=**} {
+        allow write: if request.auth != null;
     }
   }
 }
