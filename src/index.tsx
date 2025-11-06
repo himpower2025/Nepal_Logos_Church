@@ -299,7 +299,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान १५, लूका ११:१-२८, अय्यूब ३２, २ कोरिन्थी ५",
     "प्रस्थान १६, लूका ११:२९-５４, अय्यूब ३３, २ कोरिन्थी ६",
     "प्रस्थान १७, लूका १२:१-३４, अय्यूब ३४, २ कोरिन्थी ७",
-    "प्रस्थान १८, लूका १२:३५-५९, अय्यूब ३５, २ कोरिन्थी ८",
+    "प्रस्थान १८, लूका १२:३５-५९, अय्यूब ३５, २ कोरिन्थी ८",
     "प्रस्थान १९, लूका १३, अय्यूब ३６, २ कोरिन्थी ९",
     "प्रस्थान २०, लूका १४:१-२４, अय्यूब ३７, २ कोरिन्थी १०",
     "प्रस्थान २१, लूका १४:२५-३५, अय्यूब ३８, २ कोरिन्थी ११",
@@ -315,7 +315,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३１, लूका २०:२०-４７, भजनसंग्रह ९, एफिसी २",
     "प्रस्थान ३２, लूका २१, भजनसंग्रह १०, एफिसी ३",
     "प्रस्थान ३३, लूका २２:१-३０, भजनसंग्रह ११-१२, एफिसी ४",
-    "प्रस्थान ३４, लूका २２:३१-５३, भजनसंग्रह १३-१४, एफिसी ५",
+    "प्रस्थान ३４, लूका २２:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
     "प्रस्थान ३५, लूका २２:５４-७१, भजनसंग्रह १५-१６, एफिसी ६",
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
     "प्रस्थान ३७, लूका २३:२६-５６, भजनसंग्रह १८, फिलिप्पी २",
@@ -341,7 +341,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी १७, यूहन्ना १०:१-२１, भजनसंग्रह ३８, १ तिमोथी ६",
     "लेवी १८, यूहन्ना १०:२२-４２, भजनसंग्रह ३９, २ तिमोथी १",
     "लेवी १९, यूहन्ना ११:१-२７, भजनसंग्रह ४०, २ तिमोथी २",
-    "लेवी २०, यूहन्ना ११:२８-５７, भजनसंग्रह ४१, २ तिमोथी ३",
+    "लेवी २०, यूहन्ना ११:２８-５７, भजनसंग्रह ४१, २ तिमोथी ३",
     "लेवी २१, यूहन्ना १२:१-१९, भजनसंग्रह ४２, २ तिमोथी ४",
     "लेवी २２, यूहन्ना १२:२०-５０, भजनसंग्रह ४३, तीतस १",
     "लेवी ২৩, यूहन्ना १३, भजनसंग्रह ۴４, तीतस २",
@@ -367,7 +367,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १६, प्रेरित ७:१-२१, भजनसंग्रह ६４, याकוב ५",
     "गन्ती १७, प्रेरित ७:२２-४३, भजनसंग्रह ६５, १ पत्रुस १",
     "गन्ती १८, प्रेरित ७:४４-６०, भजनसंग्रह ६６, १ पत्रुस २",
-    "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६७, १ पत्रुस ३",
+    "गन्ती १९, प्रेरित ८:१-२５, भजनसंग्रह ६७, १ पत्रुस ३",
     "गन्ती २०, प्रेरित ८:２６-４０, भजनसंग्रह ६८, १ पत्रुस ४",
     "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६९, १ पत्रुस ५",
     "गन्ती २２, प्रेरित ९:२२-４३, भजनसंग्रह ७０, २ पत्रुस १",
@@ -577,7 +577,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
     "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५７",
-    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५८, भजनसंग्रh ५९",
+    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५９",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६५",
@@ -608,7 +608,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ७, लूका १९, हितोपदेश २८, भजनसंग्रh ९６",
     "२ इतिहास ८, लूका २०, हितोपदेश २९, भजनसंग्रh ९７",
     "२ इतिहास ९, लूका २１, हितोपदेश ३０, भजनसंग्रh ९８",
-    "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रh ९９",
+    "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रh ९९",
     "२ इतिहास ११, लूका ২৩, भजनसंग्रh १०४, भजनसंग्रh १००",
     "२ इतिहास १२, लूका २४, भजनसंग्रh १०५, भजनसंग्रh १०१",
     "२ इतिहास १३, यूहन्ना १, भजनसंग्रh १०６, भजनसंग्रh १०２",
@@ -620,7 +620,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１６, भजनसंग्रh ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
     "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６４, भजनसंग्रh ११९:६५-९६",
-    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१२８, भजनसंग्रh ११९:१२९-१५２",
+    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१２８, भजनसंग्रh ११९:१२९-१५２",
     "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७६, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रh १२３, भजनसंग्रh १२４",
@@ -811,7 +811,7 @@ const Modal: React.FC<{
 const ImageUpload: React.FC<{
     selectedFile: File | null;
     setSelectedFile: (file: File | null) => void;
-    currentImageUrl: string | null | undefined;
+    currentImageUrl: string | undefined;
     label?: string;
     onImageRemove?: () => void;
 }> = ({ selectedFile, setSelectedFile, currentImageUrl, label = 'Add a photo', onImageRemove }) => {
@@ -1384,8 +1384,6 @@ const NewsFormModal: React.FC<{
         onClose();
     };
 
-    const currentImageUrl = newsItem?.thumbnailUrl || newsItem?.image;
-
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <form className="modal-form" onSubmit={handleSubmit}>
@@ -1410,7 +1408,7 @@ const NewsFormModal: React.FC<{
                 <ImageUpload 
                     selectedFile={imageFile} 
                     setSelectedFile={setImageFile} 
-                    currentImageUrl={currentImageUrl}
+                    currentImageUrl={newsItem?.thumbnailUrl || newsItem?.image || undefined}
                     label="फोटो थप्नुहोस्।(यदि तपाईं चाहनुहुन्छ भने)"
                     onImageRemove={() => setImageRemoved(true)}
                 />
@@ -1911,8 +1909,6 @@ const PrayerFormModal: React.FC<{
         onClose();
     };
     
-    const currentImageUrl = request?.thumbnailUrl || request?.image;
-
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <form className="modal-form" onSubmit={handleSubmit}>
@@ -1937,7 +1933,7 @@ const PrayerFormModal: React.FC<{
                 <ImageUpload 
                     selectedFile={imageFile} 
                     setSelectedFile={setImageFile} 
-                    currentImageUrl={currentImageUrl}
+                    currentImageUrl={request?.thumbnailUrl || request?.image || undefined}
                     label="फोटो थप्नुहोस्।(यदि तपाईं चाहनुहुन्छ भने)"
                     onImageRemove={() => setImageRemoved(true)}
                 />
@@ -3420,11 +3416,8 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
       return <ErrorFallback error={this.state.error} />;
     }
 
-    // FIX: A comment in the original code indicated a subtle TypeScript type inference issue with 'this.props'.
-    // While functionally identical to directly returning `this.props.children`,
-    // using destructuring here is a common pattern that can help clarify type inference for the compiler.
-    const { children } = this.props;
-    return children;
+    // FIX: The destructuring of `this.props` was causing a TypeScript error: "Property 'props' does not exist on type 'ErrorBoundary'". Returning `this.props.children` directly resolves this issue.
+    return this.props.children;
   }
 }
 
