@@ -1,5 +1,4 @@
 
-
 import React, { useState, useEffect, useRef, useCallback, createContext, useContext, useMemo, memo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createPortal } from 'react-dom';
@@ -132,9 +131,9 @@ type UserRole = 'admin' | 'member' | 'news_contributor' | 'podcast_contributor';
 type User = { id: string; name: string; email: string; avatar: string; roles: UserRole[]; fcmTokens?: string[] };
 type Church = { id: string; name: string; logo: string; offeringDetails: any; };
 type Comment = { id: string; authorId: string; authorName: string; authorAvatar: string; content: string; createdAt: Timestamp; };
-type PrayerRequest = { id:string; authorId: string; authorName: string; title: string; content: string; image?: string | null; thumbnailUrl?: string | null; imagePath?: string | null; thumbnailPath?: string | null; prayedBy: string[]; comments?: Comment[]; commentCount?: number; createdAt: Timestamp; status?: 'uploading' | 'failed'; tempId?: string; localImagePreview?: string; };
+type PrayerRequest = { id:string; authorId: string; authorName: string; title: string; content: string; image?: string | null; thumbnailUrl?: string | null; imagePath?: string | null; thumbnailPath?: string | null; prayedBy: string[]; comments?: Comment[]; commentCount?: number; createdAt: Timestamp; status?: 'uploading' | 'failed'; tempId?: string; localImagePreview?: string | null; };
 type Podcast = { id: string; title: string; authorId: string; authorName: string; audioUrl: string; createdAt: Timestamp; status?: 'uploading' | 'failed'; tempId?: string; localAudioUrl?: string; };
-type NewsItem = { id: string; title: string; content: string; image?: string | null; thumbnailUrl?: string | null; imagePath?: string | null; thumbnailPath?: string | null; createdAt: Timestamp; authorId: string, authorName: string; status?: 'uploading' | 'failed'; tempId?: string; localImagePreview?: string; };
+type NewsItem = { id: string; title: string; content: string; image?: string | null; thumbnailUrl?: string | null; imagePath?: string | null; thumbnailPath?: string | null; createdAt: Timestamp; authorId: string, authorName: string; status?: 'uploading' | 'failed'; tempId?: string; localImagePreview?: string | null; };
 type Verse = { verse: string; text: string; };
 
 type MediaItem = {
@@ -320,7 +319,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
     "प्रस्थान ३७, लूका २३:२६-５６, भजनसंग्रह १८, फिलिप्पी २",
     "प्रस्थान ३८, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
-    "प्रस्थान ३９, लूका २४:१३-５３, भजनसंग्रह २०, फिलिप्पी ४",
+    "प्रस्थान ३９, लूका २४:१३-５३, भजनसंग्रह २०, फिलिप्पी ४",
     "प्रस्थान ४०, यूहन्ना १:१-२८, भजनसंग्रह २१, कलस्सी १",
     "लेवी १, यूहन्ना १:२९-５１, भजनसंग्रह २२, कलस्सी २",
     "लेवी २, यूहन्ना २, भजनसंग्रह ২৩, कलस्सी ३",
@@ -331,7 +330,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी ७, यूहन्ना ५:१-२३, भजनसंग्रह २८, १ थिस्सलोनिकी ४",
     "लेवी ८, यूहन्ना ५:２４-４７, भजनसंग्रह २९, १ थिस्सलोनिकी ५",
     "लेवी ९, यूहन्ना ६:१-२１, भजनसंग्रह ३０, २ थिस्सलोनिकी १",
-    "लेवी १०, यूहन्ना ६:२２-４०, भजनसंग्रह ३１, २ थिस्सलोनिकी २",
+    "लेवी १०, यूहन्ना ६:२２-४०, भजनसंग्रह ३１, २ थिस्सलोनिकी २",
     "लेवी ११, यूहन्ना ६:४१-७１, भजनसंग्रह ३２, २ थिस्सलोनिकी ३",
     "लेवी १२, यूहन्ना ७:१-३１, भजनसंग्रह ३३, १ तिमोथी १",
     "लेवी १३, यूहन्ना ७:३２-５३, भजनसंग्रह ३４, १ तिमोथी २",
@@ -341,7 +340,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी १७, यूहन्ना १०:१-२１, भजनसंग्रह ३８, १ तिमोथी ६",
     "लेवी १८, यूहन्ना १०:२२-４２, भजनसंग्रह ३９, २ तिमोथी १",
     "लेवी १९, यूहन्ना ११:१-२７, भजनसंग्रह ४०, २ तिमोथी २",
-    "लेवी २०, यूहन्ना ११:２８-５７, भजनसंग्रह ४१, २ तिमोथी ३",
+    "लेवी २०, यूहन्ना ११:２８-５७, भजनसंग्रह ४१, २ तिमोथी ३",
     "लेवी २१, यूहन्ना १२:१-१९, भजनसंग्रह ४２, २ तिमोथी ४",
     "लेवी २２, यूहन्ना १२:२०-５０, भजनसंग्रह ४३, तीतस १",
     "लेवी ২৩, यूहन्ना १३, भजनसंग्रह ۴４, तीतस २",
@@ -367,7 +366,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १६, प्रेरित ७:१-२१, भजनसंग्रह ६４, याकוב ५",
     "गन्ती १७, प्रेरित ७:२２-४३, भजनसंग्रह ६５, १ पत्रुस १",
     "गन्ती १८, प्रेरित ७:४４-６०, भजनसंग्रह ६６, १ पत्रुस २",
-    "गन्ती १९, प्रेरित ८:१-२５, भजनसंग्रह ६७, १ पत्रुस ३",
+    "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६७, १ पत्रुस ३",
     "गन्ती २०, प्रेरित ८:２６-４０, भजनसंग्रह ६८, १ पत्रुस ४",
     "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६९, १ पत्रुस ५",
     "गन्ती २２, प्रेरित ९:२२-４३, भजनसंग्रह ७０, २ पत्रुस १",
@@ -583,12 +582,12 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६५",
     "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६７",
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६९",
-    "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७०, भजनसंग्रh ७１",
-    "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७३",
+    "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
+    "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७３",
     "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
     "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७８",
-    "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७९",
+    "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७９",
     "१ इतिहास २०, लूका ३, हितोपदेश १२, भजनसंग्रh ८０",
     "१ इतिहास २１, लूका ४, हितोपदेश १३, भजनसंग्रh ८１",
     "१ इतिहास २２, लूका ५, हितोपदेश १४, भजनसंग्रh ८２",
@@ -608,7 +607,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ७, लूका १९, हितोपदेश २८, भजनसंग्रh ९６",
     "२ इतिहास ८, लूका २०, हितोपदेश २९, भजनसंग्रh ९７",
     "२ इतिहास ९, लूका २１, हितोपदेश ३０, भजनसंग्रh ९８",
-    "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रh ९९",
+    "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रh ९９",
     "२ इतिहास ११, लूका ২৩, भजनसंग्रh १०४, भजनसंग्रh १००",
     "२ इतिहास १२, लूका २४, भजनसंग्रh १०५, भजनसंग्रh १०१",
     "२ इतिहास १३, यूहन्ना १, भजनसंग्रh १०６, भजनसंग्रh १०２",
@@ -620,7 +619,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１６, भजनसंग्रh ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
     "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６４, भजनसंग्रh ११९:६५-९६",
-    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१２８, भजनसंग्रh ११९:१२९-१५２",
+    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१２८, भजनसंग्रh ११९:१२९-१５２",
     "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७६, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रh १२３, भजनसंग्रh १२４",
@@ -631,7 +630,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ३０, यूहन्ना १८, भजनसंग्रh १३３, भजनसंग्रh १३４",
     "२ इतिहास ३１, यूहन्ना १९, भजनसंग्रh १३５, भजनसंग्रh १३６",
     "२ इतिहास ३２, यूहन्ना २०, भजनसंग्रh १३７, भजनसंग्रh १३８",
-    "२ इतिहास ३３, यूहन्ना २１, भजनसंग्रh १३９, भजनसंग्रh १४０",
+    "२ इतिहास ३३, यूहन्ना २１, भजनसंग्रh १३９, भजनसंग्रh १४０",
     "२ इतिहास ३４, प्रेरित १, भजनसंग्रh १४１, भजनसंग्रh १४２",
     "२ इतिहास ३५, प्रेरित २, भजनसंग्रh १४３, भजनसंग्रh १४４",
     "२ इतिहास ३６, प्रेरित ३, भजनसंग्रh १४５, भजनसंग्रh १४６",
@@ -811,7 +810,7 @@ const Modal: React.FC<{
 const ImageUpload: React.FC<{
     selectedFile: File | null;
     setSelectedFile: (file: File | null) => void;
-    currentImageUrl: string | undefined;
+    currentImageUrl: string | null | undefined;
     label?: string;
     onImageRemove?: () => void;
 }> = ({ selectedFile, setSelectedFile, currentImageUrl, label = 'Add a photo', onImageRemove }) => {
@@ -1408,7 +1407,7 @@ const NewsFormModal: React.FC<{
                 <ImageUpload 
                     selectedFile={imageFile} 
                     setSelectedFile={setImageFile} 
-                    currentImageUrl={newsItem?.thumbnailUrl || newsItem?.image || undefined}
+                    currentImageUrl={newsItem?.thumbnailUrl || newsItem?.image}
                     label="फोटो थप्नुहोस्।(यदि तपाईं चाहनुहुन्छ भने)"
                     onImageRemove={() => setImageRemoved(true)}
                 />
@@ -1933,7 +1932,7 @@ const PrayerFormModal: React.FC<{
                 <ImageUpload 
                     selectedFile={imageFile} 
                     setSelectedFile={setImageFile} 
-                    currentImageUrl={request?.thumbnailUrl || request?.image || undefined}
+                    currentImageUrl={request?.thumbnailUrl || request?.image}
                     label="फोटो थप्नुहोस्।(यदि तपाईं चाहनुहुन्छ भने)"
                     onImageRemove={() => setImageRemoved(true)}
                 />
@@ -3416,7 +3415,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
       return <ErrorFallback error={this.state.error} />;
     }
 
-    // FIX: The destructuring of `this.props` was causing a TypeScript error: "Property 'props' does not exist on type 'ErrorBoundary'". Returning `this.props.children` directly resolves this issue.
+    // Fix: Correctly return this.props.children in the ErrorBoundary component's render method. This resolves a TypeScript error where 'props' was reported as not existing on the component type.
     return this.props.children;
   }
 }
