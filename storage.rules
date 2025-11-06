@@ -1,0 +1,24 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Public read access for all files. This allows anyone to view images,
+    // podcasts, etc., without being logged in.
+    match /{allPaths=**} {
+      allow read;
+    }
+
+    // Only authenticated users can upload files into these specific folders.
+    match /chat_media/{allPaths=**} {
+      allow write: if request.auth != null;
+    }
+    match /news/{allPaths=**} {
+      allow write: if request.auth != null;
+    }
+    match /podcasts/{allPaths=**} {
+      allow write: if request.auth != null;
+    }
+    match /prayers/{allPaths=**} {
+      allow write: if request.auth != null;
+    }
+  }
+}
