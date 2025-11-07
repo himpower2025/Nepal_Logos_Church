@@ -13,13 +13,13 @@ try {
 // Get Firebase config from URL query parameters
 const urlParams = new URLSearchParams(self.location.search);
 const firebaseConfig = {
-    apiKey: urlParams.get('apiKey'),
-    authDomain: urlParams.get('authDomain'),
-    projectId: urlParams.get('projectId'),
-    storageBucket: urlParams.get('storageBucket'),
-    messagingSenderId: urlParams.get('messagingSenderId'),
-    appId: urlParams.get('appId'),
-    measurementId: urlParams.get('measurementId')
+    apiKey: urlParams.get('AIzaSyAP9kw58KFVZ_abiiLiJUFqSPOjLSQraC0'),
+    authDomain: urlParams.get('logos-church-nepal.firebaseapp.com'),
+    projectId: urlParams.get('logos-church-nepal'),
+    storageBucket: urlParams.get('logos-church-nepal.firebasestorage.app'),
+    messagingSenderId: urlParams.get('869546960167'),
+    appId: urlParams.get('1:869546960167:web:19a41c46ef253617683502'),
+    measurementId: urlParams.get('G-6DQ7BDJ8GX')
 };
 
 const missingKeys = Object.entries(firebaseConfig)
