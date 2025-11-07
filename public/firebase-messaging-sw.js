@@ -1,6 +1,5 @@
 // IMPORTANT: This service worker file must be in the `public` directory.
 
-// Use the official and stable Firebase CDN for service workers.
 try {
     console.log('[SW] Attempting to import Firebase scripts...');
     importScripts("https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js");
@@ -10,22 +9,22 @@ try {
     console.error('[SW] CRITICAL: Failed to import Firebase scripts. Notifications will not work.', e);
 }
 
-
-// These values are replaced by the Vite build process (see vite.config.ts)
-// This structure is INTENTIONAL and REQUIRED for the build to work correctly.
+// Get Firebase config from URL query parameters
+const urlParams = new URLSearchParams(self.location.search);
 const firebaseConfig = {
-    apiKey: process.env.VITE_FIREBASE_API_KEY,
-    authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN,
-    projectId: process.env.VITE_FIREBASE_PROJECT_ID,
-    storageBucket: process.env.VITE_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: process.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.VITE_FIREBASE_APP_ID,
-    measurementId: process.env.VITE_FIREBASE_MEASUREMENT_ID
+    apiKey: urlParams.get('apiKey'),
+    authDomain: urlParams.get('authDomain'),
+    projectId: urlParams.get('projectId'),
+    storageBucket: urlParams.get('storageBucket'),
+    messagingSenderId: urlParams.get('messagingSenderId'),
+    appId: urlParams.get('appId'),
+    measurementId: urlParams.get('measurementId')
 };
 
+const hasAllConfigKeys = Object.values(firebaseConfig).every(value => value);
 
 // Initialize Firebase
-if (typeof firebase !== 'undefined' && firebase.apps.length === 0) {
+if (hasAllConfigKeys && typeof firebase !== 'undefined' && firebase.apps.length === 0) {
     try {
         firebase.initializeApp(firebaseConfig);
         console.log('[SW] Firebase app initialized successfully.');
@@ -35,7 +34,13 @@ if (typeof firebase !== 'undefined' && firebase.apps.length === 0) {
         console.log('[SW] Firebase Messaging service obtained.');
 
     } catch(e) {
-        console.error('[SW] Firebase initialization failed. Please check your environment variables and vite.config.ts `define` block.', e);
+        console.error('[SW] Firebase initialization failed.', e);
+    }
+} else {
+    if (!hasAllConfigKeys) {
+        console.warn('[SW] Firebase config from URL parameters is incomplete. Firebase will not be initialized.');
+    } else {
+        console.warn('[SW] Firebase is not defined or already initialized. Firebase initialization skipped.');
     }
 }
 
@@ -78,14 +83,17 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
+  // This strategy is a "Network falling back to cache" for navigation requests.
+  // It's good for ensuring users get the latest version if they are online.
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      fetch(event.request)
-        .catch(() => {
-          return caches.match(event.request);
-        })
+      fetch(event.request).catch(() => {
+        return caches.match(event.request);
+      })
     );
   }
+  // For other requests (CSS, JS, images), you might want a "Cache First" strategy
+  // to make the app load faster, but that can be added later if needed.
 });
 
 

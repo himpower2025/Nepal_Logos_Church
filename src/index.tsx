@@ -298,7 +298,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान १५, लूका ११:१-२८, अय्यूब ३２, २ कोरिन्थी ५",
     "प्रस्थान १६, लूका ११:२९-５４, अय्यूब ३３, २ कोरिन्थी ६",
     "प्रस्थान १७, लूका १२:१-३４, अय्यूब ३४, २ कोरिन्थी ७",
-    "प्रस्थान १८, लूका १२:३５-५९, अय्यूब ३５, २ कोरिन्थी ८",
+    "प्रस्थान १८, लूका १२:३５-５९, अय्यूब ३５, २ कोरिन्थी ८",
     "प्रस्थान १९, लूका १३, अय्यूब ३６, २ कोरिन्थी ९",
     "प्रस्थान २०, लूका १४:१-२４, अय्यूब ३７, २ कोरिन्थी १०",
     "प्रस्थान २१, लूका १४:२५-३५, अय्यूब ३８, २ कोरिन्थी ११",
@@ -328,7 +328,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी ५, यूहन्ना ४:१-३０, भजनसंग्रह २६, १ थिस्सलोनिकी २",
     "लेवी ६, यूहन्ना ४:३१-５４, भजनसंग्रह २७, १ थिस्सलोनिकी ३",
     "लेवी ७, यूहन्ना ५:१-२३, भजनसंग्रह २८, १ थिस्सलोनिकी ४",
-    "लेवी ८, यूहन्ना ५:２４-４७, भजनसंग्रह २९, १ थिस्सलोनिकी ५",
+    "लेवी ८, यूहन्ना ५:２４-４７, भजनसंग्रह २९, १ थिस्सलोनिकी ५",
     "लेवी ९, यूहन्ना ६:१-२１, भजनसंग्रह ३０, २ थिस्सलोनिकी १",
     "लेवी १०, यूहन्ना ६:२２-४०, भजनसंग्रह ३１, २ थिस्सलोनिकी २",
     "लेवी ११, यूहन्ना ६:४१-७１, भजनसंग्रह ३２, २ थिस्सलोनिकी ३",
@@ -582,7 +582,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६५",
     "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६７",
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६९",
-    "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७१",
+    "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७३",
     "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
@@ -597,7 +597,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रh ८６",
     "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८７",
     "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८８",
-    "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८९",
+    "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८９",
     "२ इतिहास १, लूका १३, हितोपदेश २२, भजनसंग्रh ९０",
     "२ इतिहास २, लूका १४, हितोपदेश ২৩, भजनसंग्रh ९１",
     "२ इतिहास ३, लूका १५, हितोपदेश २४, भजनसंग्रh ९２",
@@ -619,7 +619,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１６, भजनसंग्रh ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
     "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６４, भजनसंग्रh ११९:६५-९६",
-    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१２８, भजनसंग्रh ११९:१२९-१५２",
+    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१２८, भजनसंग्रh ११९:१२९-१५２",
     "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७६, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रh १२３, भजनसंग्रh १२４",
@@ -3653,7 +3653,28 @@ root.render(
 // --- Service Worker Registration ---
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/firebase-messaging-sw.js').then(registration => {
+    // Construct the Firebase config from environment variables
+    const firebaseConfig = {
+      apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+      authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+      storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+      appId: import.meta.env.VITE_FIREBASE_APP_ID,
+      measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
+    };
+
+    // Encode the config into URL search parameters
+    const searchParams = new URLSearchParams();
+    for (const [key, value] of Object.entries(firebaseConfig)) {
+        if (value) { // Only add if the value exists
+            searchParams.append(key, value);
+        }
+    }
+
+    const swUrl = `/firebase-messaging-sw.js?${searchParams.toString()}`;
+
+    navigator.serviceWorker.register(swUrl).then(registration => {
       console.log('SW registration successful with scope: ', registration.scope);
       registration.addEventListener('updatefound', () => {
         // A new service worker is installing.
