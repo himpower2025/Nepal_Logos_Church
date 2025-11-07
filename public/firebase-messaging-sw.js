@@ -1,8 +1,8 @@
-
 // IMPORTANT: This service worker file must be in the `public` directory.
 
 try {
     console.log('[SW] Attempting to import Firebase scripts...');
+    // Use a specific, stable version of the Firebase SDK
     importScripts("https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js");
     importScripts("https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js");
     console.log('[SW] Firebase scripts imported successfully.');
@@ -10,51 +10,44 @@ try {
     console.error('[SW] CRITICAL: Failed to import Firebase scripts. Notifications will not work.', e);
 }
 
-// Get Firebase config from URL query parameters
-const urlParams = new URLSearchParams(self.location.search);
+// =================================================================================
+// TODO: Replace these placeholder values with your actual Firebase project config.
+// You can find these values in your Firebase project settings under "General".
+// =================================================================================
 const firebaseConfig = {
-    apiKey: urlParams.get('AIzaSyAP9kw58KFVZ_abiiLiJUFqSPOjLSQraC0'),
-    authDomain: urlParams.get('logos-church-nepal.firebaseapp.com'),
-    projectId: urlParams.get('logos-church-nepal'),
-    storageBucket: urlParams.get('logos-church-nepal.firebasestorage.app'),
-    messagingSenderId: urlParams.get('869546960167'),
-    appId: urlParams.get('1:869546960167:web:19a41c46ef253617683502'),
-    measurementId: urlParams.get('G-6DQ7BDJ8GX')
+  apiKey: "AIzaSyAP9kw58KFVZ_abiiLiJUFqSPOjLSQraC0", // <-- REPLACE with your API Key
+  authDomain: "logos-church-nepal.firebaseapp.com", // <-- REPLACE with your Auth Domain
+  projectId: "logos-church-nepal", // <-- REPLACE with your Project ID
+  storageBucket: "logos-church-nepal.firebasestorage.app", // <-- REPLACE with your Storage Bucket
+  messagingSenderId: "869546960167", // <-- REPLACE with your Messaging Sender ID
+  appId: "1:869546960167:web:19a41c46ef253617683502", // <-- REPLACE with your App ID
 };
 
-const missingKeys = Object.entries(firebaseConfig)
-    .filter(([key, value]) => !value && key !== 'measurementId') // measurementId is often optional
-    .map(([key]) => key);
-
 // Initialize Firebase
-if (missingKeys.length === 0 && typeof firebase !== 'undefined' && firebase.apps.length === 0) {
-    try {
-        firebase.initializeApp(firebaseConfig);
-        console.log('[SW] Firebase app initialized successfully.');
-        
-        // Get a reference to the messaging service only after successful initialization
-        const messaging = firebase.messaging();
-        console.log('[SW] Firebase Messaging service obtained.');
+if (typeof firebase !== 'undefined' && firebase.apps.length === 0) {
+    // Basic validation to ensure placeholders are replaced
+    if (firebaseConfig.apiKey && !firebaseConfig.apiKey.startsWith("YOUR_")) {
+        try {
+            firebase.initializeApp(firebaseConfig);
+            console.log('[SW] Firebase app initialized successfully.');
+            
+            // This is necessary for the service worker to handle background notifications
+            const messaging = firebase.messaging();
+            console.log('[SW] Firebase Messaging service obtained for background handling.');
 
-    } catch(e) {
-        console.error('[SW] Firebase initialization failed.', e);
+        } catch(e) {
+            console.error('[SW] Firebase initialization failed.', e);
+        }
+    } else {
+        console.warn("[SW] Firebase config is missing or contains placeholder values. Firebase will not be initialized.");
     }
 } else {
-    if (missingKeys.length > 0) {
-        console.warn(
-            `[SW] Firebase config from URL parameters is incomplete. The following keys are missing: ${missingKeys.join(', ')}.`,
-            "This usually happens when environment variables (like VITE_FIREBASE_API_KEY) were not set in the deployment environment (e.g., Vercel).",
-            "Firebase will not be initialized, and push notifications will fail."
-        );
-    } else if (typeof firebase === 'undefined') {
-        console.warn('[SW] Firebase is not defined. Initialization skipped.');
-    } else if (firebase.apps.length > 0) {
-        console.warn('[SW] Firebase is already initialized. Initialization skipped.');
+    if (typeof firebase === 'undefined') {
+        console.error('[SW] Firebase is not defined. Scripts might have failed to load.');
     } else {
-        console.warn('[SW] An unknown issue prevented Firebase initialization.');
+        console.log('[SW] Firebase already initialized.');
     }
 }
-
 
 // --- PWA Caching Logic ---
 const CACHE_NAME = 'logos-church-cache-v1';
@@ -94,8 +87,7 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  // This strategy is a "Network falling back to cache" for navigation requests.
-  // It's good for ensuring users get the latest version if they are online.
+  // Network falling back to cache for navigation requests.
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request).catch(() => {
@@ -103,8 +95,6 @@ self.addEventListener('fetch', event => {
       })
     );
   }
-  // For other requests (CSS, JS, images), you might want a "Cache First" strategy
-  // to make the app load faster, but that can be added later if needed.
 });
 
 
@@ -112,8 +102,7 @@ self.addEventListener('fetch', event => {
 
 self.addEventListener('push', event => {
   console.log('[SW] Push Received. The browser will display the notification.');
-  // The push event is often handled by the browser automatically when using FCM,
-  // but you can add custom logic here if needed.
+  // The push event is handled by the browser automatically when using FCM.
 });
 
 self.addEventListener('notificationclick', event => {

@@ -298,9 +298,9 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान १५, लूका ११:१-२८, अय्यूब ३２, २ कोरिन्थी ५",
     "प्रस्थान १६, लूका ११:२९-５４, अय्यूब ३３, २ कोरिन्थी ६",
     "प्रस्थान १७, लूका १२:१-३４, अय्यूब ३४, २ कोरिन्थी ७",
-    "प्रस्थान १८, लूका १२:३５-５९, अय्यूब ३５, २ कोरिन्थी ८",
+    "प्रस्थान १८, लूका १२:३５-５९, अय्यूब ३५, २ कोरिन्थी ८",
     "प्रस्थान १९, लूका १३, अय्यूब ३６, २ कोरिन्थी ९",
-    "प्रस्थान २०, लूका १४:१-२４, अय्यूब ३７, २ कोरिन्थी १०",
+    "प्रस्थान २०, लूका १४:१-२４, अय्यूब ३७, २ कोरिन्थी १०",
     "प्रस्थान २१, लूका १४:२५-३५, अय्यूब ३８, २ कोरिन्थी ११",
     "प्रस्थान २２, लूका १५, अय्यूब ३９, २ कोरिन्थी १२",
     "प्रस्थान ২৩, लूका १६, अय्यूब ४०, २ कोरिन्थी १३",
@@ -416,7 +416,7 @@ const MCCHEYNE_READING_PLAN = [
     "व्यवस्था ३０, रोमी १६, यशैया ८, यशैया १२",
     "व्यवस्था ३１, १ कोरिन्थी १, यशैया ९, यशैया १३",
     "व्यवस्था ३２, १ कोरिन्थी २, यशैया १०, यशैया १४",
-    "व्यवस्था ३３, १ कोरिन्थी ३, यशैया ११, यशैया १५",
+    "व्यवस्था ३३, १ कोरिन्थी ३, यशैया ११, यशैया १५",
     "व्यवस्था ३４, १ कोरिन्थी ४, यशैया १२, यशैया १६",
     "यहोशू १, १ कोरिन्थी ५, यशैया १३, यशैया १७",
     "यहोशू २, १ कोरिन्थी ६, यशैया १४, यशैया १८",
@@ -576,7 +576,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
     "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५７",
-    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५９",
+    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५९",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६५",
@@ -584,8 +584,8 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६९",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७३",
-    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
-    "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
+    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७५",
+    "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७७",
     "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७८",
     "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७९",
     "१ इतिहास २०, लूका ३, हितोपदेश १२, भजनसंग्रh ८０",
@@ -595,7 +595,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २४, लूका ७, हितोपदेश १६, भजनसंग्रh ८４",
     "१ इतिहास २५, लूका ८, हितोपदेश १७, भजनसंग्रh ८５",
     "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रh ८６",
-    "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८७",
+    "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८７",
     "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८８",
     "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८９",
     "२ इतिहास १, लूका १३, हितोपदेश २२, भजनसंग्रh ९０",
@@ -620,11 +620,11 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
     "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６４, भजनसंग्रh ११९:६५-९६",
     "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१２८, भजनसंग्रh ११९:१२९-१५２",
-    "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७६, भजनसंग्रh १२०",
+    "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७６, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रh १२３, भजनसंग्रh १२４",
-    "२ इतिहास २６, यूहन्ना १४, भजनसंग्रh १२５, भजनसंग्रh १२６",
-    "२ इतिहास २७, यूहन्ना १५, भजनसंग्रh १२７, भजनसंग्रh १२８",
+    "२ इतिहास २６, यूहन्ना १४, भजनसंग्रh १२५, भजनसंग्रh १२６",
+    "२ इतिहास २७, यूहन्ना १५, भजनसंग्रh १२७, भजनसंग्रh १२８",
     "२ इतिहास २８, यूहन्ना १६, भजनसंग्रh १२९, भजनसंग्रh १३０",
     "२ इतिहास २९, यूहन्ना १७, भजनसंग्रh १३１, भजनसंग्रh १३２",
     "२ इतिहास ३０, यूहन्ना १८, भजनसंग्रh १३３, भजनसंग्रh १३４",
@@ -3653,46 +3653,10 @@ root.render(
 // --- Service Worker Registration ---
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    const firebaseConfig = {
-      apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-      authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-      storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-      messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-      appId: import.meta.env.VITE_FIREBASE_APP_ID,
-      measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
-    };
-
-    const requiredEnvVars = {
-      'VITE_FIREBASE_API_KEY': firebaseConfig.apiKey,
-      'VITE_FIREBASE_AUTH_DOMAIN': firebaseConfig.authDomain,
-      'VITE_FIREBASE_PROJECT_ID': firebaseConfig.projectId,
-      'VITE_FIREBASE_STORAGE_BUCKET': firebaseConfig.storageBucket,
-      'VITE_FIREBASE_MESSAGING_SENDER_ID': firebaseConfig.messagingSenderId,
-      'VITE_FIREBASE_APP_ID': firebaseConfig.appId,
-    };
-
-    const missingEnvKeys = Object.entries(requiredEnvVars)
-      .filter(([, value]) => !value)
-      .map(([key]) => key);
-
-    if (missingEnvKeys.length > 0) {
-      console.error(
-        '❌ SW Registration Aborted: Cannot register service worker because the following environment variables are missing:',
-        missingEnvKeys.join(', '),
-        'Please ensure they are set in your Vercel project settings and redeploy.'
-      );
-    } else {
-      const searchParams = new URLSearchParams();
-      for (const [key, value] of Object.entries(firebaseConfig)) {
-          if (value) {
-              searchParams.append(key, value);
-          }
-      }
-
-      const swUrl = `/firebase-messaging-sw.js?${searchParams.toString()}`;
-
-      navigator.serviceWorker.register(swUrl).then(registration => {
+    // The service worker now has the Firebase config hardcoded.
+    // We can register it directly without passing any URL parameters.
+    navigator.serviceWorker.register('/firebase-messaging-sw.js')
+      .then(registration => {
         console.log('SW registration successful with scope: ', registration.scope);
         registration.addEventListener('updatefound', () => {
           console.log('A new service worker is being installed.');
@@ -3700,14 +3664,15 @@ if ('serviceWorker' in navigator) {
       }).catch(registrationError => {
         console.error('SW registration failed: ', registrationError);
       });
-      
-      let refreshing: boolean;
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-          if (refreshing) return;
-          console.log('New service worker has taken control. Reloading page.');
-          window.location.reload();
-          refreshing = true;
-      });
-    }
+
+    // This logic helps reload the page when a new service worker takes control,
+    // ensuring the user always has the latest version of the app assets.
+    let refreshing: boolean;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (refreshing) return;
+      console.log('New service worker has taken control. Reloading page.');
+      window.location.reload();
+      refreshing = true;
+    });
   });
 }
