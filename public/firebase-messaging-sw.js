@@ -1,30 +1,59 @@
 // Use the official and stable Firebase CDN for service workers.
-importScripts("https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js");
-importScripts("https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js");
+try {
+    console.log('[SW] Attempting to import Firebase scripts...');
+    importScripts("https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js");
+    importScripts("https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js");
+    console.log('[SW] Firebase scripts imported successfully.');
+} catch (e) {
+    console.error('[SW] CRITICAL: Failed to import Firebase scripts. This is why notifications will not work.', e);
+}
+
 
 // =================================================================================
-// [중요] 사용자 작업 필요
-// 아래의 플레이스홀더 값들을 실제 Firebase 프로젝트 설정 값으로 교체해주세요.
-// 이 값들은 VITE 환경 변수 (.env.local 파일 등)에 있는 값과 동일합니다.
-// 예: "YOUR_VITE_FIREBASE_API_KEY" -> 실제 API 키 값
+// [★★★★★ 가장 중요 ★★★★★]
+// 아래의 값들을 실제 Firebase 프로젝트 설정 값으로 반드시 교체해야 합니다!
+// 이 값들은 Vercel 프로젝트의 환경 변수나 .env.local 파일에서 찾을 수 있습니다.
+// 이 부분을 수정하지 않으면 알림 기능이 절대 동작하지 않습니다.
 // =================================================================================
 const firebaseConfig = {
-    apiKey: "AIzaSyAP9kw58KFVZ_abiiLiJUFqSPOjLSQraC0",
-    authDomain: "logos-church-nepal.firebaseapp.com",
-    projectId: "logos-church-nepal",
-    storageBucket: "logos-church-nepal.firebasestorage.app",
-    messagingSenderId: "869546960167",
-    appId: "1:869546960167:web:19a41c46ef253617683502",
-    measurementId: "G-6DQ7BDJ8GX"
+    // 예: "AIzaSy...
+    apiKey: "AIzaSyAP9kw58KFVZ_abiiLiJUFqSPOjLSQraC0", // <== 여기에 실제 API 키를 입력하세요.
+    
+    // 예: "your-project-id.firebaseapp.com"
+    authDomain: "logos-church-nepal.firebaseapp.com", // <== 여기에 실제 Auth Domain을 입력하세요.
+    
+    // 예: "your-project-id"
+    projectId: "logos-church-nepal", // <== 여기에 실제 Project ID를 입력하세요.
+    
+    // 예: "your-project-id.appspot.com"
+    storageBucket: "logos-church-nepal.firebasestorage.app", // <== 여기에 실제 Storage Bucket을 입력하세요.
+    
+    // 예: "123456789012"
+    messagingSenderId: "869546960167", // <== 여기에 실제 Messaging Sender ID를 입력하세요.
+    
+    // 예: "1:12345...
+    appId: "1:869546960167:web:19a41c46ef253617683502", // <== 여기에 실제 App ID를 입력하세요.
+    
+    // 예: "G-..."
+    measurementId: "G-6DQ7BDJ8GX" // <== 여기에 실제 Measurement ID를 입력하세요.
 };
+
 
 // Initialize Firebase
 if (firebase.apps.length === 0) {
-    firebase.initializeApp(firebaseConfig);
+    try {
+        firebase.initializeApp(firebaseConfig);
+        console.log('[SW] Firebase app initialized successfully.');
+        
+        // Get a reference to the messaging service only after successful initialization
+        const messaging = firebase.messaging();
+        console.log('[SW] Firebase Messaging service obtained.');
+
+    } catch(e) {
+        console.error('[SW] Firebase initialization failed.', e);
+    }
 }
 
-// Get a reference to the messaging service
-const messaging = firebase.messaging();
 
 // --- PWA Caching Logic (from original sw.js) ---
 const CACHE_NAME = 'logos-church-cache-v55'; // Version bumped to ensure update
