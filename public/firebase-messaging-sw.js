@@ -1,6 +1,6 @@
-// IMPORTANT: Import Firebase scripts for compatibility in service workers.
-importScripts("https://aistudiocdn.com/firebase@^12.4.0/firebase-app-compat.js");
-importScripts("https://aistudiocdn.com/firebase@^12.4.0/firebase-messaging-compat.js");
+// Use the official and stable Firebase CDN for service workers.
+importScripts("https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js");
 
 // =================================================================================
 // [중요] 사용자 작업 필요
@@ -27,7 +27,7 @@ if (firebase.apps.length === 0) {
 const messaging = firebase.messaging();
 
 // --- PWA Caching Logic (from original sw.js) ---
-const CACHE_NAME = 'logos-church-cache-v54'; // Version bumped to ensure update
+const CACHE_NAME = 'logos-church-cache-v55'; // Version bumped to ensure update
 const urlsToCache = [
   '/',
   '/index.html',
@@ -64,12 +64,35 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  event.respondWith(
-    fetch(event.request).catch(() => {
-      return caches.match(event.request);
-    })
-  );
+  // We only handle navigation requests with a network-first strategy.
+  // For other requests (CSS, JS, images), we let the browser handle it,
+  // relying on standard HTTP caching. This avoids issues with opaque responses
+  // from cross-origin CDNs.
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          // Check if we received a valid response
+          if (!response || response.status !== 200 || response.type !== 'basic') {
+            return response;
+          }
+          
+          const responseToCache = response.clone();
+          caches.open(CACHE_NAME)
+            .then(cache => {
+              cache.put(event.request, responseToCache);
+            });
+
+          return response;
+        })
+        .catch(() => {
+          // Network failed, try to serve from cache.
+          return caches.match(event.request);
+        })
+    );
+  }
 });
+
 
 // --- PUSH NOTIFICATION HANDLING ---
 

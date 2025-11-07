@@ -329,7 +329,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी ५, यूहन्ना ४:१-३０, भजनसंग्रह २६, १ थिस्सलोनिकी २",
     "लेवी ६, यूहन्ना ४:३१-５４, भजनसंग्रह २७, १ थिस्सलोनिकी ३",
     "लेवी ७, यूहन्ना ५:१-२३, भजनसंग्रह २८, १ थिस्सलोनिकी ४",
-    "लेवी ८, यूहन्ना ५:２４-４७, भजनसंग्रह २९, १ थिस्सलोनिकी ५",
+    "लेवी ८, यूहन्ना ५:２４-４７, भजनसंग्रह २९, १ थिस्सलोनिकी ५",
     "लेवी ९, यूहन्ना ६:१-२１, भजनसंग्रह ३０, २ थिस्सलोनिकी १",
     "लेवी १०, यूहन्ना ६:२２-४०, भजनसंग्रह ३１, २ थिस्सलोनिकी २",
     "लेवी ११, यूहन्ना ६:४१-७１, भजनसंग्रह ३２, २ थिस्सलोनिकी ३",
@@ -383,7 +383,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ३２, प्रेरित १६, हितोपदेश ३, यहूदा १",
     "गन्ती ३३, प्रेरित १७:१-१５, हितोपदेश ४, प्रकाश १",
     "गन्ती ३４, प्रेरित १७:१६-３４, हितोपदेश ५, प्रकाश २",
-    "गन्ती ३５, प्रेरित १८, हितोपदेश ६, प्रकाश ३",
+    "गन्ती ३५, प्रेरित १८, हितोपदेश ६, प्रकाश ३",
     "गन्ती ३６, प्रेरित १९, हितोपदेश ७, प्रकाश ४",
     "व्यवस्था १, प्रेरित २०:१-१６, हितोपदेश ८, प्रकाश ५",
     "व्यवस्था २, प्रेरित २०:१７-३८, हितोपदेश ९, प्रकाश ६",
@@ -567,16 +567,16 @@ const MCCHEYNE_READING_PLAN = [
     "२ राजा २०, मत्ती ২৩, भजनसंग्रh ३２, भजनसंग्रh ३३",
     "२ राजा २१, मत्ती २४, भजनसंग्रh ३４, भजनसंग्रh ३５",
     "२ राजा २２, मत्ती २५, भजनसंग्रh ३６, भजनसंग्रh ३７",
-    "२ राजा ২৩, मत्ती २６, भजनसंग्रh ३８, भजनसंग्रh ३９",
+    "२ राजा ২৩, मत्ती २６, भजनसंग्रh ३８, भजनसंग्रh ३९",
     "२ राजा २४, मत्ती २７, भजनसंग्रh ४०, भजनसंग्रh ४१",
-    "२ राजा २५, मत्ती २８, भजनसंग्रh ४२, भजनसंग्रh ४३",
+    "२ राजा २५, मत्ती २８, भजनसंग्रh ४２, भजनसंग्रh ४३",
     "१ इतिहास १, मर्कूस १, भजनसंग्रh ४４, भजनसंग्रh ४५",
     "१ इतिहास २, मर्कूस २, भजनसंग्रh ৪६, भजनसंग्रh ४७",
     "१ इतिहास ३, मर्कूस ३, भजनसंग्रh ४८, भजनसंग्रh ४९",
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५１",
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
-    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५७",
+    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५７",
     "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५८, भजनसंग्रh ५９",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
@@ -585,10 +585,10 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६९",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७१",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७३",
-    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७५",
+    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७७",
-    "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७８",
-    "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७９",
+    "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७८",
+    "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७९",
     "१ इतिहास २०, लूका ३, हितोपदेश १२, भजनसंग्रh ८０",
     "१ इतिहास २１, लूका ४, हितोपदेश १३, भजनसंग्रh ८１",
     "१ इतिहास २２, लूका ५, हितोपदेश १४, भजनसंग्रh ८２",
@@ -598,7 +598,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रh ८６",
     "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८７",
     "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८８",
-    "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८९",
+    "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८９",
     "२ इतिहास १, लूका १३, हितोपदेश २२, भजनसंग्रh ९０",
     "२ इतिहास २, लूका १४, हितोपदेश ২৩, भजनसंग्रh ९１",
     "२ इतिहास ३, लूका १५, हितोपदेश २४, भजनसंग्रh ९２",
@@ -611,7 +611,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रh ९９",
     "२ इतिहास ११, लूका ২৩, भजनसंग्रh १०४, भजनसंग्रh १००",
     "२ इतिहास १२, लूका २४, भजनसंग्रh १०५, भजनसंग्रh १०१",
-    "२ इतिहास १३, यूहन्ना १, भजनसंग्रh १०６, भजनसंग्रh १०２",
+    "२ इतिहास १३, यूहन्ना १, भजनसंग्रh १०６, भजनसंग्रh १०२",
     "२ इतिहास १४, यूहन्ना २, भजनसंग्रh १०७, भजनसंग्रh १०३",
     "२ इतिहास १५, यूहन्ना ३, भजनसंग्रh १०८, भजनसंग्रh १०९",
     "२ इतिहास १६, यूहन्ना ४, भजनसंग्रh १１０, भजनसंग्रh ११１",
@@ -620,13 +620,13 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１６, भजनसंग्रh ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
     "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６４, भजनसंग्रh ११९:६५-९६",
-    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१२८, भजनसंग्रh ११९:१२९-१५２",
+    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१२８, भजनसंग्रh ११९:१२९-१५２",
     "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७६, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रh १२３, भजनसंग्रh १२４",
     "२ इतिहास २６, यूहन्ना १४, भजनसंग्रh १२５, भजनसंग्रh १२６",
     "२ इतिहास २७, यूहन्ना १५, भजनसंग्रh १२７, भजनसंग्रh १२８",
-    "२ इतिहास २８, यूहन्ना १६, भजनसंग्रh १२९, भजनसंग्रh १३０",
+    "२ इतिहास २８, यूहन्ना १६, भजनसंग्रh १२９, भजनसंग्रh १३０",
     "२ इतिहास २९, यूहन्ना १७, भजनसंग्रh १३１, भजनसंग्रh १३２",
     "२ इतिहास ३０, यूहन्ना १८, भजनसंग्रh १३３, भजनसंग्रh १३４",
     "२ इतिहास ३１, यूहन्ना १९, भजनसंग्रh १३５, भजनसंग्रh १३６",
@@ -2469,20 +2469,67 @@ const ConversationPage: React.FC<{
     const [deletingMessage, setDeletingMessage] = useState<Message | null>(null);
     const [viewingMedia, setViewingMedia] = useState<{ media: MediaItem[]; startIndex: number } | null>(null);
     const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
-
-    const messagesEndRef = useRef<HTMLDivElement>(null);
+    
     const fileInputRef = useRef<HTMLInputElement>(null);
     const messageInputRef = useRef<HTMLInputElement>(null);
     
+    // --- Advanced Scroll Management ---
+    const messageListRef = useRef<HTMLDivElement>(null);
+    const [isAtBottom, setIsAtBottom] = useState(true);
+    const prevMessagesLength = useRef(0);
+
     const sortedMessages = useMemo(() => 
         [...serverMessages, ...optimisticMessages]
             .sort((a, b) => (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0)),
         [serverMessages, optimisticMessages]
     );
 
+    const scrollToBottom = useCallback((behavior: 'smooth' | 'auto' = 'auto') => {
+        const list = messageListRef.current;
+        if (list) {
+            list.scrollTo({ top: list.scrollHeight, behavior });
+        }
+    }, []);
+
+    const handleScroll = useCallback(() => {
+        const list = messageListRef.current;
+        if (list) {
+            const atBottom = list.scrollHeight - list.scrollTop <= list.clientHeight + 50;
+            setIsAtBottom(atBottom);
+        }
+    }, []);
+
+    const handleImageLoad = useCallback(() => {
+        if (isAtBottom) {
+            scrollToBottom('auto'); // Instant scroll to correct position as images load
+        }
+    }, [isAtBottom, scrollToBottom]);
+
+    // Effect for smart scrolling on new messages or initial load
+    useEffect(() => {
+        const isInitialLoad = prevMessagesLength.current === 0 && sortedMessages.length > 0;
+        const isNewMessage = sortedMessages.length > prevMessagesLength.current;
+
+        if (isInitialLoad) {
+            // Instant scroll on first load
+            setTimeout(() => scrollToBottom('auto'), 100);
+        } else if (isNewMessage) {
+            const lastMessage = sortedMessages[sortedMessages.length - 1];
+            if (lastMessage.senderId === currentUser.id || isAtBottom) {
+                // Smooth scroll for new messages if at bottom or we sent it
+                scrollToBottom('smooth');
+            }
+        }
+        
+        prevMessagesLength.current = sortedMessages.length;
+    }, [sortedMessages, currentUser.id, isAtBottom, scrollToBottom]);
+
+
     useEffect(() => {
         if (!db || !chatId) return;
         setLoading(true);
+        prevMessagesLength.current = 0; // Reset for new chat
+        
         const chatRef = doc(db, 'chats', chatId);
         const unsubscribeChat = onSnapshot(chatRef, (doc) => {
             if (doc.exists()) {
@@ -2520,10 +2567,6 @@ const ConversationPage: React.FC<{
         return () => { unsubscribeChat(); unsubscribeMessages(); }
     }, [db, chatId, onBack, currentUser.id]);
 
-
-    useEffect(() => {
-        if (!loading) { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }
-    }, [sortedMessages, loading]);
 
     const handleSendMessage = useCallback(async () => {
         const textContent = newMessage.trim();
@@ -2564,8 +2607,8 @@ const ConversationPage: React.FC<{
 
                 if (preview.type === 'image') {
                     const [fullFile, thumbFile] = await Promise.all([
-                        resizeImage(preview.file, 1024, 0.8),
-                        resizeImage(preview.file, 400, 0.75)
+                        resizeImage(preview.file, 1024, 0.75), // Slightly reduced quality for speed
+                        resizeImage(preview.file, 400, 0.7)
                     ]);
                     
                     const fullPath = `chat_media/${currentChat.id}/${timestamp}_${cleanName}`;
@@ -2701,7 +2744,7 @@ const ConversationPage: React.FC<{
                     <div className="header-action-button" style={{ visibility: 'hidden' }}></div>
                 )}
             </header>
-            <div className="message-list">
+            <div className="message-list" ref={messageListRef} onScroll={handleScroll}>
                 {loading ? <Loading message="Loading messages..." /> : (
                     <>
                         {sortedMessages.map(msg => (
@@ -2711,9 +2754,9 @@ const ConversationPage: React.FC<{
                                 isSent={msg.senderId === currentUser.id} 
                                 onMediaClick={(index) => msg.media && setViewingMedia({ media: msg.media, startIndex: index })}
                                 onLongPress={() => setDeletingMessage(msg)}
+                                onImageLoad={handleImageLoad}
                             />
                         ))}
-                        <div ref={messagesEndRef} />
                     </>
                 )}
             </div>
@@ -2806,7 +2849,8 @@ const MessageBubble: React.FC<{
     isSent: boolean;
     onMediaClick: (index: number) => void;
     onLongPress: () => void;
-}> = ({ message, isSent, onMediaClick, onLongPress }) => {
+    onImageLoad?: () => void;
+}> = ({ message, isSent, onMediaClick, onLongPress, onImageLoad }) => {
     const timerRef = useRef<number | null>(null);
 
     const handlePointerDown = () => {
@@ -2843,7 +2887,7 @@ const MessageBubble: React.FC<{
                 onContextMenu={handleContextMenu}
             >
                 {message.media && message.media.length > 0 && (
-                    <MediaGrid media={message.media} messageId={message.id} onMediaClick={onMediaClick} />
+                    <MediaGrid media={message.media} messageId={message.id} onMediaClick={onMediaClick} onImageLoad={onImageLoad} />
                 )}
                 {message.content && <p className="message-content">{message.content}</p>}
                 <div className="message-footer">
@@ -2856,7 +2900,7 @@ const MessageBubble: React.FC<{
     );
 };
 
-const MediaGridItem: React.FC<{ item: MediaItem, messageId: string, onClick: () => void }> = ({ item, messageId, onClick }) => {
+const MediaGridItem: React.FC<{ item: MediaItem, messageId: string, onClick: () => void, onImageLoad?: () => void; }> = ({ item, messageId, onClick, onImageLoad }) => {
     // Use messageId for caching, which is stable for server messages.
     // For optimistic messages, the parent `MessageBubble` has a tempId as key, which is sufficient.
     const cachedImageUrl = useCachedImage(item.thumbnailUrl || item.url, messageId);
@@ -2866,7 +2910,7 @@ const MediaGridItem: React.FC<{ item: MediaItem, messageId: string, onClick: () 
             e.stopPropagation();
             onClick();
         }}>
-            {item.type === 'image' ? <img src={cachedImageUrl} alt="media content" /> : <video src={item.url} />}
+            {item.type === 'image' ? <img src={cachedImageUrl} alt="media content" onLoad={onImageLoad} /> : <video src={item.url} />}
             {item.type === 'video' && (
                 <div className="video-play-icon">
                     <span className="material-symbols-outlined">play_circle</span>
@@ -2877,7 +2921,7 @@ const MediaGridItem: React.FC<{ item: MediaItem, messageId: string, onClick: () 
 };
 
 
-const MediaGrid: React.FC<{ media: MediaItem[], messageId: string, onMediaClick: (index: number) => void }> = ({ media, messageId, onMediaClick }) => {
+const MediaGrid: React.FC<{ media: MediaItem[], messageId: string, onMediaClick: (index: number) => void, onImageLoad?: () => void; }> = ({ media, messageId, onMediaClick, onImageLoad }) => {
     const count = media.length;
     const displayMedia = count > 4 ? media.slice(0, 4) : media;
 
@@ -2889,11 +2933,12 @@ const MediaGrid: React.FC<{ media: MediaItem[], messageId: string, onMediaClick:
                     item={item}
                     messageId={`${messageId}-${index}`}
                     onClick={() => onMediaClick(index)} 
+                    onImageLoad={onImageLoad}
                 />
             ))}
             {count > 4 && (
                 <div className="media-grid-item" onClick={(e) => { e.stopPropagation(); onMediaClick(3); }}>
-                    <MediaGridItem item={displayMedia[3]} messageId={`${messageId}-3`} onClick={() => onMediaClick(3)} />
+                    <MediaGridItem item={displayMedia[3]} messageId={`${messageId}-3`} onClick={() => onMediaClick(3)} onImageLoad={onImageLoad} />
                     <div className="more-overlay">+{count - 4}</div>
                 </div>
             )}
@@ -3288,17 +3333,22 @@ const App: React.FC = () => {
 
     // --- FCM/Push Notifications ---
     const requestPermissionAndToken = useCallback(async () => {
-        if (!firebaseServices.messaging || !currentUser || !db) return;
+        if (!firebaseServices.messaging || !currentUser || !db) {
+            console.log("Notification prerequisites not met (messaging, user, or db not ready).");
+            return;
+        }
         const { messaging } = firebaseServices;
     
         try {
             let permission = Notification.permission;
             if (permission === 'default') {
+                console.log("Requesting notification permission...");
                 permission = await Notification.requestPermission();
-                setNotificationPermissionStatus(permission); // Update UI based on user's choice
+                setNotificationPermissionStatus(permission); 
             }
     
             if (permission === 'granted') {
+                console.log("Notification permission granted. Getting token...");
                 const currentToken = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY });
                 if (currentToken) {
                     console.log('✅ FCM Token generated:', currentToken);
@@ -3306,21 +3356,22 @@ const App: React.FC = () => {
                     const userDoc = await getDoc(userRef);
                     const userTokens = userDoc.data()?.fcmTokens || [];
                     if (!userTokens.includes(currentToken)) {
+                        console.log("New token found, updating in Firestore.");
                         await updateDoc(userRef, {
                             fcmTokens: arrayUnion(currentToken)
                         });
                     }
                 } else {
-                    console.log('No registration token available. Request permission to generate one.');
+                    console.warn('No registration token available. This can happen if the service worker is not registered correctly.');
                 }
             } else {
-                 console.log('Notification permission not granted.');
+                 console.log(`Notification permission status: ${permission}.`);
                  if (permission === 'denied') {
                      showToast("Notifications Blocked", "You can enable notifications in your browser settings later.");
                  }
             }
         } catch (err: any) {
-            console.error('❌ Failed to get token. Error Code:', err.code, 'Message:', err.message);
+            console.error('❌ Failed to get token. This is often a service worker or VAPID key issue. Error Code:', err.code, 'Message:', err.message);
         }
     }, [firebaseServices, currentUser, db, showToast]);
 
