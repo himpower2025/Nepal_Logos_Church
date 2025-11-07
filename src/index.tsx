@@ -321,7 +321,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३८, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
     "प्रस्थान ३９, लूका २४:१३-５३, भजनसंग्रह २०, फिलिप्पी ४",
     "प्रस्थान ४०, यूहन्ना १:१-२८, भजनसंग्रह २१, कलस्सी १",
-    "लेवी १, यूहन्ना १:२९-５１, भजनसंग्रह २२, कलस्सी २",
+    "लेवी १, यूहन्ना १:२९-５१, भजनसंग्रह २२, कलस्सी २",
     "लेवी २, यूहन्ना २, भजनसंग्रह ২৩, कलस्सी ३",
     "लेवी ३, यूहन्ना ३:१-२１, भजनसंग्रह २४, कलस्सी ४",
     "लेवी ४, यूहन्ना ३:२२-३６, भजनसंग्रह २५, १ थिस्सलोनिकी १",
@@ -595,7 +595,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २४, लूका ७, हितोपदेश १६, भजनसंग्रh ८４",
     "१ इतिहास २५, लूका ८, हितोपदेश १७, भजनसंग्रh ८５",
     "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रh ८６",
-    "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८７",
+    "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८७",
     "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८８",
     "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८９",
     "२ इतिहास १, लूका १३, हितोपदेश २२, भजनसंग्रh ९０",
@@ -3653,7 +3653,6 @@ root.render(
 // --- Service Worker Registration ---
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    // Construct the Firebase config from environment variables
     const firebaseConfig = {
       apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
       authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -3664,32 +3663,51 @@ if ('serviceWorker' in navigator) {
       measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
     };
 
-    // Encode the config into URL search parameters
-    const searchParams = new URLSearchParams();
-    for (const [key, value] of Object.entries(firebaseConfig)) {
-        if (value) { // Only add if the value exists
-            searchParams.append(key, value);
-        }
-    }
+    const requiredEnvVars = {
+      'VITE_FIREBASE_API_KEY': firebaseConfig.apiKey,
+      'VITE_FIREBASE_AUTH_DOMAIN': firebaseConfig.authDomain,
+      'VITE_FIREBASE_PROJECT_ID': firebaseConfig.projectId,
+      'VITE_FIREBASE_STORAGE_BUCKET': firebaseConfig.storageBucket,
+      'VITE_FIREBASE_MESSAGING_SENDER_ID': firebaseConfig.messagingSenderId,
+      'VITE_FIREBASE_APP_ID': firebaseConfig.appId,
+    };
 
-    const swUrl = `/firebase-messaging-sw.js?${searchParams.toString()}`;
+    const missingEnvKeys = Object.entries(requiredEnvVars)
+      .filter(([, value]) => !value)
+      .map(([key]) => key);
 
-    navigator.serviceWorker.register(swUrl).then(registration => {
-      console.log('SW registration successful with scope: ', registration.scope);
-      registration.addEventListener('updatefound', () => {
-        // A new service worker is installing.
-        console.log('A new service worker is being installed.');
+    if (missingEnvKeys.length > 0) {
+      console.error(
+        '❌ SW Registration Aborted: Cannot register service worker because the following environment variables are missing:',
+        missingEnvKeys.join(', '),
+        'Please ensure they are set in your Vercel project settings and redeploy.'
+      );
+    } else {
+      const searchParams = new URLSearchParams();
+      for (const [key, value] of Object.entries(firebaseConfig)) {
+          if (value) {
+              searchParams.append(key, value);
+          }
+      }
+
+      const swUrl = `/firebase-messaging-sw.js?${searchParams.toString()}`;
+
+      navigator.serviceWorker.register(swUrl).then(registration => {
+        console.log('SW registration successful with scope: ', registration.scope);
+        registration.addEventListener('updatefound', () => {
+          console.log('A new service worker is being installed.');
+        });
+      }).catch(registrationError => {
+        console.error('SW registration failed: ', registrationError);
       });
-    }).catch(registrationError => {
-      console.error('SW registration failed: ', registrationError);
-    });
-    
-    let refreshing: boolean;
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (refreshing) return;
-        console.log('New service worker has taken control. Reloading page.');
-        window.location.reload();
-        refreshing = true;
-    });
+      
+      let refreshing: boolean;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if (refreshing) return;
+          console.log('New service worker has taken control. Reloading page.');
+          window.location.reload();
+          refreshing = true;
+      });
+    }
   });
 }

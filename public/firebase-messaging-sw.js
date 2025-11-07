@@ -1,3 +1,4 @@
+
 // IMPORTANT: This service worker file must be in the `public` directory.
 
 try {
@@ -21,10 +22,12 @@ const firebaseConfig = {
     measurementId: urlParams.get('measurementId')
 };
 
-const hasAllConfigKeys = Object.values(firebaseConfig).every(value => value);
+const missingKeys = Object.entries(firebaseConfig)
+    .filter(([key, value]) => !value && key !== 'measurementId') // measurementId is often optional
+    .map(([key]) => key);
 
 // Initialize Firebase
-if (hasAllConfigKeys && typeof firebase !== 'undefined' && firebase.apps.length === 0) {
+if (missingKeys.length === 0 && typeof firebase !== 'undefined' && firebase.apps.length === 0) {
     try {
         firebase.initializeApp(firebaseConfig);
         console.log('[SW] Firebase app initialized successfully.');
@@ -37,10 +40,18 @@ if (hasAllConfigKeys && typeof firebase !== 'undefined' && firebase.apps.length 
         console.error('[SW] Firebase initialization failed.', e);
     }
 } else {
-    if (!hasAllConfigKeys) {
-        console.warn('[SW] Firebase config from URL parameters is incomplete. Firebase will not be initialized.');
+    if (missingKeys.length > 0) {
+        console.warn(
+            `[SW] Firebase config from URL parameters is incomplete. The following keys are missing: ${missingKeys.join(', ')}.`,
+            "This usually happens when environment variables (like VITE_FIREBASE_API_KEY) were not set in the deployment environment (e.g., Vercel).",
+            "Firebase will not be initialized, and push notifications will fail."
+        );
+    } else if (typeof firebase === 'undefined') {
+        console.warn('[SW] Firebase is not defined. Initialization skipped.');
+    } else if (firebase.apps.length > 0) {
+        console.warn('[SW] Firebase is already initialized. Initialization skipped.');
     } else {
-        console.warn('[SW] Firebase is not defined or already initialized. Firebase initialization skipped.');
+        console.warn('[SW] An unknown issue prevented Firebase initialization.');
     }
 }
 
