@@ -1,5 +1,4 @@
 
-
 import React, { useState, useEffect, useRef, useCallback, createContext, useContext, useMemo, memo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createPortal } from 'react-dom';
@@ -352,7 +351,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १, यूहन्ना १८:१-२३, भजनसंग्रह ۴९, हिब्रू ३",
     "गन्ती २, यूहन्ना १८:２４-４०, भजनसंग्रह ५０, हिब्रू ४",
     "गन्ती ३, यूहन्ना १९:१-२２, भजनसंग्रह ५१, हिब्रू ५",
-    "गन्ती ४, यूहन्ना १९:२３-４２, भजनसंग्रह ५２, हिब्रू ६",
+    "गन्ती ४, यूहन्ना १९:२３-４２, भजनसंग्रह ५२, हिब्रू ६",
     "गन्ती ५, यूहन्ना २०, भजनसंग्रह ५३, हिब्रू ७",
     "गन्ती ६, यूहन्ना २１, भजनसंग्रह ५४, हिब्रू ८",
     "गन्ती ७, प्रेरित १, भजनसंग्रह ५５, हिब्रू ९",
@@ -568,7 +567,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ राजा २१, मत्ती २४, भजनसंग्रh ३４, भजनसंग्रh ३５",
     "२ राजा २２, मत्ती २५, भजनसंग्रh ३６, भजनसंग्रh ३７",
     "२ राजा ২৩, मत्ती २６, भजनसंग्रh ३８, भजनसंग्रh ३९",
-    "२ राजा २४, मत्ती २７, भजनसंग्रh ४०, भजनसंग्रh ४१",
+    "२ राजा २४, मत्ती २７, भजनसंग्रh ४०, भजनसंग्रh ४１",
     "२ राजा २५, मत्ती २８, भजनसंग्रh ४２, भजनसंग्रh ४३",
     "१ इतिहास १, मर्कूस १, भजनसंग्रh ४４, भजनसंग्रh ४५",
     "१ इतिहास २, मर्कूस २, भजनसंग्रh ৪६, भजनसंग्रh ४७",
@@ -580,13 +579,13 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५८, भजनसंग्रh ५９",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
-    "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
+    "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६५",
     "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६７",
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६९",
-    "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७१",
+    "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७३",
     "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
-    "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७७",
+    "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
     "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७८",
     "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७९",
     "१ इतिहास २०, लूका ३, हितोपदेश १२, भजनसंग्रh ८０",
@@ -3340,18 +3339,25 @@ const App: React.FC = () => {
         const { messaging } = firebaseServices;
     
         try {
-            let permission = Notification.permission;
-            if (permission === 'default') {
-                console.log("Requesting notification permission...");
-                permission = await Notification.requestPermission();
-                setNotificationPermissionStatus(permission); 
-            }
+            console.log("Requesting notification permission...");
+            const permission = await Notification.requestPermission();
+            setNotificationPermissionStatus(permission); 
+            console.log("Permission status:", permission);
     
             if (permission === 'granted') {
-                console.log("Notification permission granted. Getting token...");
-                const currentToken = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY });
+                const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
+                console.log("Notification permission granted. VAPID key check:", vapidKey ? "Present" : "MISSING!");
+
+                if (!vapidKey) {
+                    console.error("VAPID key is missing in the client-side environment variables. Cannot get token.");
+                    return;
+                }
+
+                console.log("Attempting to get FCM token...");
+                const currentToken = await getToken(messaging, { vapidKey });
+
                 if (currentToken) {
-                    console.log('✅ FCM Token generated:', currentToken);
+                    console.log('✅ SUCCESS: FCM Token received:', currentToken);
                     const userRef = doc(db, "users", currentUser.id);
                     const userDoc = await getDoc(userRef);
                     const userTokens = userDoc.data()?.fcmTokens || [];
@@ -3360,18 +3366,20 @@ const App: React.FC = () => {
                         await updateDoc(userRef, {
                             fcmTokens: arrayUnion(currentToken)
                         });
+                    } else {
+                        console.log("Token already exists in Firestore.");
                     }
                 } else {
-                    console.warn('No registration token available. This can happen if the service worker is not registered correctly.');
+                    console.warn(' FAILED: getToken() returned null or undefined. This is the main issue. Check your firebase-messaging-sw.js file and VAPID key configuration.');
                 }
             } else {
-                 console.log(`Notification permission status: ${permission}.`);
+                 console.log(`Notification permission was not granted: ${permission}.`);
                  if (permission === 'denied') {
                      showToast("Notifications Blocked", "You can enable notifications in your browser settings later.");
                  }
             }
         } catch (err: any) {
-            console.error('❌ Failed to get token. This is often a service worker or VAPID key issue. Error Code:', err.code, 'Message:', err.message);
+            console.error('❌ An error occurred while getting the token. This often points to a misconfiguration in the service worker (firebase-messaging-sw.js) or a problem with the VAPID key.', err);
         }
     }, [firebaseServices, currentUser, db, showToast]);
 
@@ -3618,7 +3626,6 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
       return <ErrorFallback error={this.state.error} />;
     }
 
-    // Fix: Correctly return this.props.children in the ErrorBoundary component's render method. This resolves a TypeScript error where 'props' was reported as not existing on the component type.
     return this.props.children;
   }
 }
