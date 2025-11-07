@@ -1,7 +1,4 @@
 // IMPORTANT: This service worker file must be in the `public` directory.
-// It is a static file and CANNOT use environment variables.
-// You MUST replace the placeholder values below with your actual Firebase project configuration.
-// Find these values in your Firebase project settings.
 
 // Use the official and stable Firebase CDN for service workers.
 try {
@@ -15,6 +12,7 @@ try {
 
 
 // These values are replaced by the Vite build process (see vite.config.ts)
+// This structure is INTENTIONAL and REQUIRED for the build to work correctly.
 const firebaseConfig = {
     apiKey: process.env.VITE_FIREBASE_API_KEY,
     authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -27,7 +25,7 @@ const firebaseConfig = {
 
 
 // Initialize Firebase
-if (firebase.apps.length === 0) {
+if (typeof firebase !== 'undefined' && firebase.apps.length === 0) {
     try {
         firebase.initializeApp(firebaseConfig);
         console.log('[SW] Firebase app initialized successfully.');
@@ -37,7 +35,7 @@ if (firebase.apps.length === 0) {
         console.log('[SW] Firebase Messaging service obtained.');
 
     } catch(e) {
-        console.error('[SW] Firebase initialization failed. Please check that you have replaced the placeholder values in `firebaseConfig` in this file.', e);
+        console.error('[SW] Firebase initialization failed. Please check your environment variables and vite.config.ts `define` block.', e);
     }
 }
 
