@@ -1,5 +1,5 @@
 // IMPORTANT: This service worker file must be in the public directory.
-console.log('[SW-LOG] v9: Service Worker file evaluating.');
+console.log('[SW-LOG] v11: Service Worker file evaluating.');
 
 try {
     // Use a specific, stable version of the Firebase SDK
@@ -11,69 +11,24 @@ try {
     console.error('[SW-LOG] CRITICAL: Failed to import Firebase scripts. Notifications will not work.', e);
 }
 
-// --- IndexedDB functions for robust config storage ---
-const DB_NAME = 'sw-config-db';
-const STORE_NAME = 'config-store';
-const CONFIG_KEY = 'firebase-config';
+// --- Firebase Initialization from URL parameters for robustness ---
+const urlParams = new URLSearchParams(self.location.search);
+const firebaseConfig = {
+    apiKey: urlParams.get('apiKey'),
+    authDomain: urlParams.get('authDomain'),
+    projectId: urlParams.get('projectId'),
+    storageBucket: urlParams.get('storageBucket'),
+    messagingSenderId: urlParams.get('messagingSenderId'),
+    appId: urlParams.get('appId'),
+    measurementId: urlParams.get('measurementId'),
+};
 
-function openDb() {
-    return new Promise((resolve, reject) => {
-        const request = indexedDB.open(DB_NAME, 1);
-        request.onupgradeneeded = () => {
-            if (!request.result.objectStoreNames.contains(STORE_NAME)) {
-                request.result.createObjectStore(STORE_NAME);
-            }
-        };
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
-    });
-}
+const hasAllConfig = Object.values(firebaseConfig).every(Boolean);
 
-async function saveConfigToDb(config) {
+if (typeof firebase !== 'undefined' && hasAllConfig) {
+    console.log('[SW-LOG] Initializing Firebase with config from URL.');
     try {
-        const db = await openDb();
-        const tx = db.transaction(STORE_NAME, 'readwrite');
-        tx.objectStore(STORE_NAME).put(config, CONFIG_KEY);
-        return new Promise((resolve, reject) => {
-            tx.oncomplete = () => {
-                console.log('[SW-LOG] Config saved to IndexedDB.');
-                resolve();
-            };
-            tx.onerror = () => reject(tx.error);
-        });
-    } catch(e) {
-        console.error('[SW-LOG] Failed to save config to IndexedDB.', e);
-    }
-}
-
-async function getConfigFromDb() {
-    try {
-        const db = await openDb();
-        return new Promise((resolve, reject) => {
-            const tx = db.transaction(STORE_NAME, 'readonly');
-            const request = tx.objectStore(STORE_NAME).get(CONFIG_KEY);
-            tx.oncomplete = () => resolve(request.result);
-            tx.onerror = () => reject(tx.error);
-        });
-    } catch (e) {
-        console.warn("[SW-LOG] IndexedDB not available or failed to open. Will rely on BroadcastChannel.", e);
-        return null;
-    }
-}
-
-// --- Firebase Initialization Logic ---
-let firebaseInitialized = false;
-
-function initializeFirebase(config) {
-    if (firebaseInitialized || !config || firebase.apps.length) {
-        if (!firebaseInitialized) console.log('[SW-LOG] Firebase app already initialized or config missing.');
-        firebaseInitialized = true;
-        return;
-    }
-
-    try {
-        firebase.initializeApp(config);
-        firebaseInitialized = true;
+        firebase.initializeApp(firebaseConfig);
         console.log('[SW-LOG] Firebase app initialized successfully.');
         
         if (firebase.messaging.isSupported()) {
@@ -88,7 +43,7 @@ function initializeFirebase(config) {
                     body: payload.notification?.body || "",
                     icon: '/logos-church-new-logo.jpg',
                     data: {
-                        FCM_MSG: {
+                        FCM_MSG: { // Structure to match what FCM expects
                             fcmOptions: {
                                 link: payload.fcmOptions?.link || payload.data?.url || '/'
                             }
@@ -99,47 +54,29 @@ function initializeFirebase(config) {
                 return self.registration.showNotification(notificationTitle, notificationOptions);
             });
             console.log('[SW-LOG] Background message handler set up.');
+        } else {
+            console.log('[SW-LOG] Firebase Messaging is not supported in this browser.');
         }
     } catch(e) {
         console.error('[SW-LOG] CRITICAL: Error initializing Firebase from config.', e);
     }
-}
-
-// Main logic to orchestrate initialization
-async function main() {
-    const savedConfig = await getConfigFromDb();
-    if (savedConfig) {
-        console.log('[SW-LOG] Initializing Firebase from IndexedDB config.');
-        initializeFirebase(savedConfig);
-    } else {
-        console.log('[SW-LOG] No config in IndexedDB, listening on BroadcastChannel.');
-        const channel = new BroadcastChannel('firebase-config-channel');
-        channel.onmessage = async (event) => {
-            if (event.data.type === 'FIREBASE_CONFIG' && event.data.config) {
-                console.log('[SW-LOG] Received Firebase config via BroadcastChannel.');
-                const config = event.data.config;
-                initializeFirebase(config);
-                await saveConfigToDb(config);
-                channel.close();
-            }
-        };
-    }
-}
-
-if (typeof firebase !== 'undefined') {
-    main();
 } else {
-    console.error('[SW-LOG] CRITICAL: Firebase object not found. Imports likely failed.');
+    if (typeof firebase === 'undefined') {
+         console.error('[SW-LOG] CRITICAL: Firebase object not found. Imports likely failed.');
+    } else {
+         console.error('[SW-LOG] CRITICAL: Firebase config from URL is incomplete. Cannot initialize.');
+    }
 }
 
 
 // --- PWA Caching Logic ---
-const CACHE_NAME = 'logos-church-cache-v1';
+const CACHE_NAME = 'logos-church-cache-v3'; // Incremented cache version for updates
 const urlsToCache = [
     '/',
     '/index.html',
     '/logos-church-new-logo.jpg',
-    '/manifest.json'
+    '/manifest.json',
+    'https://firebasestorage.googleapis.com/v0/b/logos-church-nepal.appspot.com/o/assets%2Fnotification.mp3?alt=media&token=24838a14-a901-469b-9a4f-56193796537b'
 ];
 
 self.addEventListener('install', event => {
@@ -174,18 +111,30 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
+    // For navigation requests, use a network-first strategy.
     if (event.request.mode === 'navigate') {
         event.respondWith(
             fetch(event.request).catch(() => {
-                return caches.match('/index.html');
+                // If network fails, serve the main app page from cache.
+                return caches.match('/');
             })
         );
         return;
     }
 
+    // For other requests (CSS, JS, images), use a cache-first strategy.
     event.respondWith(
         caches.match(event.request).then(response => {
-            return response || fetch(event.request);
+            return response || fetch(event.request).then(fetchResponse => {
+                // Optional: Cache new assets as they are fetched.
+                return caches.open(CACHE_NAME).then(cache => {
+                    // Only cache successful GET requests.
+                    if (fetchResponse.status === 200 && event.request.method === 'GET') {
+                        cache.put(event.request, fetchResponse.clone());
+                    }
+                    return fetchResponse;
+                });
+            });
         })
     );
 });
@@ -193,13 +142,17 @@ self.addEventListener('fetch', event => {
 self.addEventListener('notificationclick', event => {
     console.log('[SW-LOG] Notification click Received.');
     event.notification.close();
+    
+    // Correctly extract the link from the nested data structure.
     const urlToOpen = event.notification.data?.FCM_MSG?.fcmOptions?.link || '/';
+    console.log('[SW-LOG] Opening URL from notification:', urlToOpen);
 
     event.waitUntil(
         clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
-            // Check if a window is already open.
+            // Check if a window with the app's origin is already open.
             const client = windowClients.find(c => c.url.startsWith(self.location.origin) && 'focus' in c);
             if (client) {
+                // If found, navigate that window to the correct URL and focus it.
                 return client.navigate(urlToOpen).then(c => c.focus());
             } else {
                 // Otherwise, open a new window.
