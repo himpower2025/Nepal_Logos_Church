@@ -1,5 +1,5 @@
 // IMPORTANT: This service worker file must be in the public directory.
-console.log('[SW-LOG] v6: Service Worker file evaluating.');
+console.log('[SW-LOG] v7: Service Worker file evaluating.');
 
 try {
     // Use a specific, stable version of the Firebase SDK
@@ -11,6 +11,56 @@ try {
     console.error('[SW-LOG] CRITICAL: Failed to import Firebase scripts. Notifications will not work.', e);
 }
 
+// --- Firebase Initialization (Synchronous from URL) ---
+const params = new URLSearchParams(self.location.search);
+const firebaseConfig = {
+  apiKey: params.get('apiKey'),
+  authDomain: params.get('authDomain'),
+  projectId: params.get('projectId'),
+  storageBucket: params.get('storageBucket'),
+  messagingSenderId: params.get('messagingSenderId'),
+  appId: params.get('appId'),
+  measurementId: params.get('measurementId'),
+};
+
+if (!firebaseConfig.apiKey) {
+  console.error('[SW-LOG] CRITICAL: firebaseConfig parameter not found in service worker URL. Cannot initialize Firebase.');
+} else if (typeof firebase !== 'undefined') {
+    console.log('[SW-LOG] Firebase config parsed from URL. Initializing...');
+    try {
+        firebase.initializeApp(firebaseConfig);
+        console.log('[SW-LOG] Firebase app initialized successfully.');
+        
+        if (firebase.messaging.isSupported()) {
+            const messaging = firebase.messaging();
+            console.log('[SW-LOG] Firebase Messaging service obtained.');
+
+            messaging.onBackgroundMessage(function(payload) {
+                console.log('[SW-LOG] Received background message: ', payload);
+
+                const notificationTitle = payload.notification?.title || "New Message";
+                const notificationOptions = {
+                    body: payload.notification?.body || "",
+                    icon: '/logos-church-new-logo.jpg',
+                    data: {
+                        FCM_MSG: {
+                            fcmOptions: {
+                                link: payload.fcmOptions?.link || payload.data?.url || '/'
+                            }
+                        }
+                    }
+                };
+                
+                return self.registration.showNotification(notificationTitle, notificationOptions);
+            });
+            console.log('[SW-LOG] Background message handler set up.');
+        }
+    } catch(e) {
+        console.error('[SW-LOG] CRITICAL: Error initializing Firebase.', e);
+    }
+}
+
+
 // --- PWA Caching Logic ---
 const CACHE_NAME = 'logos-church-cache-v1';
 const urlsToCache = [
@@ -19,92 +69,6 @@ const urlsToCache = [
     '/logos-church-new-logo.jpg',
     '/manifest.json'
 ];
-
-// Function to retrieve config from IndexedDB
-function getFirebaseConfigFromDB() {
-    return new Promise((resolve, reject) => {
-        const request = self.indexedDB.open('firebase-config-db', 1);
-        request.onerror = (event) => reject("IndexedDB error: " + request.error);
-        request.onsuccess = (event) => {
-            try {
-                const db = request.result;
-                const transaction = db.transaction(['config'], 'readonly');
-                const store = transaction.objectStore('config');
-                const getRequest = store.get('firebaseConfig');
-                getRequest.onsuccess = () => resolve(getRequest.result);
-                getRequest.onerror = () => reject("Failed to get config from store: " + getRequest.error);
-            } catch (e) {
-                reject("Error in DB operations: " + e);
-            }
-        };
-    });
-}
-
-async function initializeFirebase() {
-    if (typeof firebase === 'undefined') {
-        console.error('[SW-LOG] Firebase object not available. Scripts might have failed to load.');
-        return null;
-    }
-
-    if (firebase.apps.length > 0) {
-        console.log('[SW-LOG] Firebase already initialized.');
-        return firebase.app();
-    }
-    
-    try {
-        const config = await getFirebaseConfigFromDB();
-        if (config) {
-            console.log('[SW-LOG] Firebase config retrieved from IndexedDB.');
-            const app = firebase.initializeApp(config);
-            console.log('[SW-LOG] Firebase app initialized successfully from DB config.');
-            
-            // This is necessary for the service worker to handle background notifications
-            if (typeof firebase.messaging === 'function' && firebase.messaging.isSupported()) {
-                firebase.messaging(app);
-                console.log('[SW-LOG] Firebase Messaging service obtained for background handling.');
-            }
-            return app;
-        } else {
-             console.error('[SW-LOG] CRITICAL: firebaseConfig not found in IndexedDB. Cannot initialize Firebase.');
-             return null;
-        }
-    } catch (e) {
-        console.error('[SW-LOG] CRITICAL: Error initializing Firebase from DB.', e);
-        return null;
-    }
-}
-
-// Keep a promise for initialization to avoid race conditions.
-const firebaseInitializationPromise = initializeFirebase();
-
-// Set up the background message handler.
-firebaseInitializationPromise.then(app => {
-    if (app && typeof firebase.messaging === 'function' && firebase.messaging.isSupported()) {
-        const messaging = firebase.messaging();
-        messaging.onBackgroundMessage(function(payload) {
-            console.log('[SW-LOG] Received background message: ', payload);
-
-            const notificationTitle = payload.notification?.title || "New Message";
-            const notificationOptions = {
-                body: payload.notification?.body || "",
-                icon: '/logos-church-new-logo.jpg',
-                data: {
-                    FCM_MSG: { // Match the structure used by the notificationclick handler
-                        fcmOptions: {
-                            link: payload.fcmOptions?.link || payload.data?.url || '/'
-                        }
-                    }
-                }
-            };
-            
-            return self.registration.showNotification(notificationTitle, notificationOptions);
-        });
-        console.log('[SW-LOG] Background message handler set up.');
-    }
-}).catch(err => {
-    console.error("[SW-LOG] Failed to set up background message handler", err);
-});
-
 
 self.addEventListener('install', event => {
     console.log('[SW-LOG] Install event triggered.');
@@ -141,14 +105,12 @@ self.addEventListener('fetch', event => {
     if (event.request.mode === 'navigate') {
         event.respondWith(
             fetch(event.request).catch(() => {
-                // For navigation, fallback to the main cached HTML file
                 return caches.match('/index.html');
             })
         );
         return;
     }
 
-    // For other requests, try cache first, then network.
     event.respondWith(
         caches.match(event.request).then(response => {
             return response || fetch(event.request);

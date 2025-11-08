@@ -316,7 +316,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३２, लूका २१, भजनसंग्रह १०, एफिसी ३",
     "प्रस्थान ३३, लूका २２:१-३０, भजनसंग्रह ११-१२, एफिसी ४",
     "प्रस्थान ३４, लूका २２:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
-    "प्रस्थान ३५, लूका २２:５४-७१, भजनसंग्रह १५-१６, एफिसी ६",
+    "प्रस्थान ३५, लूका २２:５４-७१, भजनसंग्रह १५-१６, एफिसी ६",
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
     "प्रस्थान ३७, लूका २३:२६-５６, भजनसंग्रह १८, फिलिप्पी २",
     "प्रस्थान ३८, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
@@ -351,7 +351,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी २७, यूहन्ना १७, भजनसंग्रह ४８, हिब्रू २",
     "गन्ती १, यूहन्ना १८:१-२३, भजनसंग्रह ۴९, हिब्रू ३",
     "गन्ती २, यूहन्ना १८:２４-４०, भजनसंग्रह ५０, हिब्रू ४",
-    "गन्ती ३, यूहन्ना १९:१-२２, भजनसंग्रह ५१, हिब्रू ५",
+    "गन्ती ३, यूहन्ना १९:१-２２, भजनसंग्रह ५१, हिब्रू ५",
     "गन्ती ४, यूहन्ना १९:२３-４２, भजनसंग्रह ५２, हिब्रू ६",
     "गन्ती ५, यूहन्ना २०, भजनसंग्रह ५३, हिब्रू ७",
     "गन्ती ६, यूहन्ना २１, भजनसंग्रह ५४, हिब्रू ८",
@@ -365,7 +365,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १४, प्रेरित ५:१९-４２, भजनसंग्रह ६２, याकूब ३",
     "गन्ती १५, प्रेरित ६, भजनसंग्रह ६３, याकूब ४",
     "गन्ती १६, प्रेरित ७:१-२१, भजनसंग्रह ६４, याकוב ५",
-    "गन्ती १७, प्रेरित ७:२２-४३, भजनसंग्रह ६５, १ पत्रुस १",
+    "गन्ती १७, प्रेरित ७:２２-४३, भजनसंग्रह ६５, १ पत्रुस १",
     "गन्ती १८, प्रेरित ७:४４-６०, भजनसंग्रह ६６, १ पत्रुस २",
     "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६७, १ पत्रुस ३",
     "गन्ती २०, प्रेरित ८:２６-४०, भजनसंग्रह ६८, १ पत्रुस ४",
@@ -386,7 +386,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ३５, प्रेरित १८, हितोपदेश ६, प्रकाश ३",
     "गन्ती ३６, प्रेरित १९, हितोपदेश ७, प्रकाश ४",
     "व्यवस्था १, प्रेरित २०:१-१６, हितोपदेश ८, प्रकाश ५",
-    "व्यवस्था २, प्रेरित २०:१７-३८, हितोपदेश ९, प्रकाश ६",
+    "व्यवस्था २, प्रेरित २०:१７-३８, हितोपदेश ९, प्रकाश ६",
     "व्यवस्था ३, प्रेरित २१:१-१८, उपदेशक १, प्रकाश ७",
     "व्यवस्था ४, प्रेरित २१:१९-４३, उपदेशक २, प्रकाश ८",
     "व्यवस्था ५, प्रेरित २２, उपदेशक ३, प्रकाश ९",
@@ -441,7 +441,7 @@ const MCCHEYNE_READING_PLAN = [
     "यहोशू २०, २ कोरिन्थी ८, यशैया ३２, यशैया ३６",
     "यहोशू २१, २ कोरिन्थी ९, यशैया ३３, यशैया ३７",
     "यहोशू २２, २ कोरिन्थी १०, यशैया ३４, यशैया ३８",
-    "यहोशू ২৩, २ कोरिन्थी ११, यशैया ३５, यशैया ३９",
+    "यहोशू ২৩, २ कोरिन्थी ११, यशैया ३５, यशैया ३९",
     "यहोशू २४, २ कोरिन्थी १२, यशैया ३６, यशैया ४０",
     "न्यायकर्ता १, २ कोरिन्थी १३, यशैया ३７, यशैया ४１",
     "न्यायकर्ता २, गलाती १, यशैया ३８, यशैया ४２",
@@ -567,7 +567,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ राजा २०, मत्ती ২৩, भजनसंग्रh ३２, भजनसंग्रh ३३",
     "२ राजा २१, मत्ती २४, भजनसंग्रh ३４, भजनसंग्रh ३５",
     "२ राजा २２, मत्ती २५, भजनसंग्रh ३６, भजनसंग्रh ३７",
-    "२ राजा ২৩, मत्ती २６, भजनसंग्रh ३८, भजनसंग्रh ३९",
+    "२ राजा ২৩, मत्ती २６, भजनसंग्रh ३８, भजनसंग्रh ३९",
     "२ राजा २४, मत्ती २７, भजनसंग्रh ४०, भजनसंग्रh ४１",
     "२ राजा २५, मत्ती २８, भजनसंग्रh ४２, भजनसंग्रh ४३",
     "१ इतिहास १, मर्कूस १, भजनसंग्रh ४４, भजनसंग्रh ४५",
@@ -575,12 +575,12 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ३, मर्कूस ३, भजनसंग्रh ४८, भजनसंग्रh ४९",
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५１",
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
-    "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
+    "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५५",
     "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५７",
     "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५९",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६३",
-    "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६५",
+    "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
     "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६७",
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६९",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
@@ -608,7 +608,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ७, लूका १९, हितोपदेश २८, भजनसंग्रh ९６",
     "२ इतिहास ८, लूका २०, हितोपदेश २९, भजनसंग्रh ९７",
     "२ इतिहास ९, लूका २１, हितोपदेश ३０, भजनसंग्रh ९８",
-    "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रh ९９",
+    "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रh ९९",
     "२ इतिहास ११, लूका ২৩, भजनसंग्रh १०४, भजनसंग्रh १००",
     "२ इतिहास १२, लूका २४, भजनसंग्रh १०५, भजनसंग्रh १०१",
     "२ इतिहास १३, यूहन्ना १, भजनसंग्रh १०６, भजनसंग्रh १०२",
@@ -631,7 +631,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ३０, यूहन्ना १८, भजनसंग्रh १३３, भजनसंग्रh १३４",
     "२ इतिहास ३１, यूहन्ना १९, भजनसंग्रh १३５, भजनसंग्रh १३６",
     "२ इतिहास ३２, यूहन्ना २०, भजनसंग्रh १३７, भजनसंग्रh १३８",
-    "२ इतिहास ३３, यूहन्ना २１, भजनसंग्रh १३９, भजनसंग्रh १४０",
+    "२ इतिहास ३३, यूहन्ना २１, भजनसंग्रh १३９, भजनसंग्रh १४０",
     "२ इतिहास ३４, प्रेरित १, भजनसंग्रh १४１, भजनसंग्रh १४２",
     "२ इतिहास ३５, प्रेरित २, भजनसंग्रh १४３, भजनसंग्रh १४４",
     "२ इतिहास ३６, प्रेरित ३, भजनसंग्रh १४५, भजनसंग्रh १४６",
@@ -756,43 +756,6 @@ const resizeImage = (file: File, maxSize: number, quality: number): Promise<File
         reader.onerror = (error) => reject(error);
     });
 };
-
-// Helper function to save Firebase config for the service worker
-async function saveFirebaseConfigToDB(config: object): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-        const request = indexedDB.open('firebase-config-db', 1);
-        
-        request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
-            const db = (event.target as IDBOpenDBRequest).result;
-            if (!db.objectStoreNames.contains('config')) {
-                db.createObjectStore('config');
-            }
-        };
-
-        request.onerror = () => reject("IndexedDB error: " + request.error);
-
-        request.onsuccess = (event: Event) => {
-            const db = (event.target as IDBOpenDBRequest).result;
-            try {
-                const transaction = db.transaction(['config'], 'readwrite');
-                const store = transaction.objectStore('config');
-                store.put(config, 'firebaseConfig');
-                
-                transaction.oncomplete = () => {
-                    db.close();
-                    resolve();
-                };
-                transaction.onerror = () => {
-                    db.close();
-                    reject("Transaction error: " + transaction.error);
-                };
-            } catch (e) {
-                db.close();
-                reject("Error during transaction: " + e);
-            }
-        };
-    });
-}
 
 
 // --- IndexedDB Image Cache for Chat ---
@@ -3705,17 +3668,16 @@ if ('serviceWorker' in navigator) {
 
   window.addEventListener('load', async () => {
     try {
-        await saveFirebaseConfigToDB(firebaseConfig);
-        console.log('Firebase config saved to IndexedDB for service worker.');
+        const configParams = new URLSearchParams(firebaseConfig).toString();
+        const registration = await navigator.serviceWorker.register(`/firebase-messaging-sw.js?${configParams}`);
         
-        const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
         console.log('SW registration successful with scope: ', registration.scope);
         
         registration.addEventListener('updatefound', () => {
           console.log('A new service worker is being installed.');
         });
     } catch (err) {
-        console.error('Service Worker registration or config saving failed: ', err);
+        console.error('Service Worker registration failed: ', err);
     }
     
     // This logic helps reload the page when a new service worker takes control,
