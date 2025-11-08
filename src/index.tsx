@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect, useRef, useCallback, createContext, useContext, useMemo, memo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createPortal } from 'react-dom';
@@ -330,7 +331,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी ७, यूहन्ना ५:१-२३, भजनसंग्रह २८, १ थिस्सलोनिकी ४",
     "लेवी ८, यूहन्ना ५:２４-４७, भजनसंग्रह २९, १ थिस्सलोनिकी ५",
     "लेवी ९, यूहन्ना ६:१-२１, भजनसंग्रह ३０, २ थिस्सलोनिकी १",
-    "लेवी १०, यूहन्ना ६:२２-४०, भजनसंग्रह ३１, २ थिस्सलोनिकी २",
+    "लेवी १०, यूहन्ना ६:२２-４०, भजनसंग्रह ३１, २ थिस्सलोनिकी २",
     "लेवी ११, यूहन्ना ६:४१-७１, भजनसंग्रह ३２, २ थिस्सलोनिकी ३",
     "लेवी १२, यूहन्ना ७:१-३１, भजनसंग्रह ३३, १ तिमोथी १",
     "लेवी १३, यूहन्ना ७:३２-５३, भजनसंग्रह ३４, १ तिमोथी २",
@@ -387,7 +388,7 @@ const MCCHEYNE_READING_PLAN = [
     "व्यवस्था १, प्रेरित २०:१-१６, हितोपदेश ८, प्रकाश ५",
     "व्यवस्था २, प्रेरित २०:१７-३८, हितोपदेश ९, प्रकाश ६",
     "व्यवस्था ३, प्रेरित २१:१-१८, उपदेशक १, प्रकाश ७",
-    "व्यवस्था ४, प्रेरित २१:१९-４３, उपदेशक २, प्रकाश ८",
+    "व्यवस्था ४, प्रेरित २१:१९-４३, उपदेशक २, प्रकाश ८",
     "व्यवस्था ५, प्रेरित २２, उपदेशक ३, प्रकाश ९",
     "व्यवस्था ६, प्रेरित ২৩, उपदेशक ४, प्रकाश १०",
     "व्यवस्था ७, प्रेरित २४, उपदेशक ५, प्रकाश ११",
@@ -575,7 +576,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५１",
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
-    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५७",
+    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५７",
     "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५९",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६३",
@@ -584,7 +585,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६९",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७३",
-    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७५",
+    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
     "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७８",
     "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७९",
@@ -595,7 +596,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २४, लूका ७, हितोपदेश १६, भजनसंग्रh ८４",
     "१ इतिहास २५, लूका ८, हितोपदेश १७, भजनसंग्रh ८５",
     "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रh ८６",
-    "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८७",
+    "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८７",
     "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८８",
     "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८९",
     "२ इतिहास १, लूका १३, हितोपदेश २२, भजनसंग्रh ९０",
@@ -616,9 +617,9 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १६, यूहन्ना ४, भजनसंग्रh १１０, भजनसंग्रh ११１",
     "२ इतिहास १७, यूहन्ना ५, भजनसंग्रh १１２, भजनसंग्रh ११३",
     "२ इतिहास १८, यूहन्ना ६, भजनसंग्रh १１４, भजनसंग्रh ११५",
-    "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１६, भजनसंग्रh ११७",
+    "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１６, भजनसंग्रh ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
-    "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６४, भजनसंग्रh ११९:६५-९६",
+    "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６４, भजनसंग्रh ११९:६५-९६",
     "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१२८, भजनसंग्रh ११९:१२९-१५２",
     "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७６, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
@@ -633,7 +634,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ३３, यूहन्ना २１, भजनसंग्रh १३９, भजनसंग्रh १४０",
     "२ इतिहास ३４, प्रेरित १, भजनसंग्रh १४１, भजनसंग्रh १४２",
     "२ इतिहास ३５, प्रेरित २, भजनसंग्रh १४３, भजनसंग्रh १४４",
-    "२ इतिहास ३６, प्रेरित ३, भजनसंग्रh १४５, भजनसंग्रh १४６",
+    "२ इतिहास ३６, प्रेरित ३, भजनसंग्रh १४५, भजनसंग्रh १४６",
     "एज्रा १, प्रेरित ४, भजनसंग्रh १४７, भजनसंग्रh १४８",
     "एज्रा २, प्रेरित ५, भजनसंग्रh १४९, भजनसंग्रh १५０",
 ];
@@ -755,6 +756,43 @@ const resizeImage = (file: File, maxSize: number, quality: number): Promise<File
         reader.onerror = (error) => reject(error);
     });
 };
+
+// Helper function to save Firebase config for the service worker
+async function saveFirebaseConfigToDB(config: object): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+        const request = indexedDB.open('firebase-config-db', 1);
+        
+        request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
+            const db = (event.target as IDBOpenDBRequest).result;
+            if (!db.objectStoreNames.contains('config')) {
+                db.createObjectStore('config');
+            }
+        };
+
+        request.onerror = () => reject("IndexedDB error: " + request.error);
+
+        request.onsuccess = (event: Event) => {
+            const db = (event.target as IDBOpenDBRequest).result;
+            try {
+                const transaction = db.transaction(['config'], 'readwrite');
+                const store = transaction.objectStore('config');
+                store.put(config, 'firebaseConfig');
+                
+                transaction.oncomplete = () => {
+                    db.close();
+                    resolve();
+                };
+                transaction.onerror = () => {
+                    db.close();
+                    reject("Transaction error: " + transaction.error);
+                };
+            } catch (e) {
+                db.close();
+                reject("Error during transaction: " + e);
+            }
+        };
+    });
+}
 
 
 // --- IndexedDB Image Cache for Chat ---
@@ -3353,27 +3391,8 @@ const App: React.FC = () => {
                     return;
                 }
 
-                // **NEW ROBUST WAITING LOGIC**
-                // Wait for the service worker to be ready and in control.
-                await new Promise<void>((resolve, reject) => {
-                    navigator.serviceWorker.ready.then(registration => {
-                        console.log("Service worker is ready.");
-                        if (registration.active) {
-                            console.log("Service worker is active and controlling the page.");
-                            resolve();
-                        } else {
-                             // This case is rare but handles when a SW is ready but not yet active.
-                            console.log("Service worker is ready, but not yet active. Waiting for controller change.");
-                            navigator.serviceWorker.addEventListener('controllerchange', () => {
-                                console.log("Controller change event fired. Service worker is now in control.");
-                                resolve();
-                            }, { once: true });
-
-                            // Safety timeout in case the event doesn't fire
-                            setTimeout(() => reject("Timeout waiting for controller change."), 5000);
-                        }
-                    }).catch(err => reject(err));
-                });
+                await navigator.serviceWorker.ready;
+                console.log("Service worker is ready for token retrieval.");
 
 
                 console.log("Attempting to get FCM token...");
@@ -3393,7 +3412,7 @@ const App: React.FC = () => {
                         console.log("Token already exists in Firestore.");
                     }
                 } else {
-                    console.warn(' FAILED: getToken() returned null or undefined. This is the main issue. Check your firebase-messaging-sw.js file and VAPID key configuration.');
+                    console.warn(' FAILED: getToken() returned null or undefined. This indicates an issue with the service worker registration or configuration.');
                 }
             } else {
                  console.log(`Notification permission was not granted: ${permission}.`);
@@ -3402,7 +3421,7 @@ const App: React.FC = () => {
                  }
             }
         } catch (err: any) {
-            console.error('❌ An error occurred while getting the token. This often points to a misconfiguration in the service worker (firebase-messaging-sw.js) or a problem with the VAPID key.', err);
+            console.error('❌ An error occurred while getting the token.', err);
         }
     }, [firebaseServices, currentUser, db, showToast]);
 
@@ -3674,7 +3693,6 @@ root.render(
 
 // --- Service Worker Registration ---
 if ('serviceWorker' in navigator) {
-  // We must pass the Firebase config to the service worker because it cannot access environment variables.
   const firebaseConfig = {
       apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
       authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -3684,19 +3702,22 @@ if ('serviceWorker' in navigator) {
       appId: import.meta.env.VITE_FIREBASE_APP_ID,
       measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
   };
-  const encodedConfig = encodeURIComponent(JSON.stringify(firebaseConfig));
 
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register(`/firebase-messaging-sw.js?firebaseConfig=${encodedConfig}`)
-      .then(registration => {
+  window.addEventListener('load', async () => {
+    try {
+        await saveFirebaseConfigToDB(firebaseConfig);
+        console.log('Firebase config saved to IndexedDB for service worker.');
+        
+        const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
         console.log('SW registration successful with scope: ', registration.scope);
+        
         registration.addEventListener('updatefound', () => {
           console.log('A new service worker is being installed.');
         });
-      }).catch(registrationError => {
-        console.error('SW registration failed: ', registrationError);
-      });
-
+    } catch (err) {
+        console.error('Service Worker registration or config saving failed: ', err);
+    }
+    
     // This logic helps reload the page when a new service worker takes control,
     // ensuring the user always has the latest version of the app assets.
     let refreshing: boolean;
