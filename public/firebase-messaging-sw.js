@@ -1,5 +1,5 @@
 // IMPORTANT: This service worker file must be in the public directory.
-console.log('[SW-LOG] v7: Service Worker file evaluating.');
+console.log('[SW-LOG] v9: Service Worker file evaluating.');
 
 try {
     // Use a specific, stable version of the Firebase SDK
@@ -11,24 +11,69 @@ try {
     console.error('[SW-LOG] CRITICAL: Failed to import Firebase scripts. Notifications will not work.', e);
 }
 
-// --- Firebase Initialization (Synchronous from URL) ---
-const params = new URLSearchParams(self.location.search);
-const firebaseConfig = {
-  apiKey: params.get('apiKey'),
-  authDomain: params.get('authDomain'),
-  projectId: params.get('projectId'),
-  storageBucket: params.get('storageBucket'),
-  messagingSenderId: params.get('messagingSenderId'),
-  appId: params.get('appId'),
-  measurementId: params.get('measurementId'),
-};
+// --- IndexedDB functions for robust config storage ---
+const DB_NAME = 'sw-config-db';
+const STORE_NAME = 'config-store';
+const CONFIG_KEY = 'firebase-config';
 
-if (!firebaseConfig.apiKey) {
-  console.error('[SW-LOG] CRITICAL: firebaseConfig parameter not found in service worker URL. Cannot initialize Firebase.');
-} else if (typeof firebase !== 'undefined') {
-    console.log('[SW-LOG] Firebase config parsed from URL. Initializing...');
+function openDb() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, 1);
+        request.onupgradeneeded = () => {
+            if (!request.result.objectStoreNames.contains(STORE_NAME)) {
+                request.result.createObjectStore(STORE_NAME);
+            }
+        };
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+    });
+}
+
+async function saveConfigToDb(config) {
     try {
-        firebase.initializeApp(firebaseConfig);
+        const db = await openDb();
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        tx.objectStore(STORE_NAME).put(config, CONFIG_KEY);
+        return new Promise((resolve, reject) => {
+            tx.oncomplete = () => {
+                console.log('[SW-LOG] Config saved to IndexedDB.');
+                resolve();
+            };
+            tx.onerror = () => reject(tx.error);
+        });
+    } catch(e) {
+        console.error('[SW-LOG] Failed to save config to IndexedDB.', e);
+    }
+}
+
+async function getConfigFromDb() {
+    try {
+        const db = await openDb();
+        return new Promise((resolve, reject) => {
+            const tx = db.transaction(STORE_NAME, 'readonly');
+            const request = tx.objectStore(STORE_NAME).get(CONFIG_KEY);
+            tx.oncomplete = () => resolve(request.result);
+            tx.onerror = () => reject(tx.error);
+        });
+    } catch (e) {
+        console.warn("[SW-LOG] IndexedDB not available or failed to open. Will rely on BroadcastChannel.", e);
+        return null;
+    }
+}
+
+// --- Firebase Initialization Logic ---
+let firebaseInitialized = false;
+
+function initializeFirebase(config) {
+    if (firebaseInitialized || !config || firebase.apps.length) {
+        if (!firebaseInitialized) console.log('[SW-LOG] Firebase app already initialized or config missing.');
+        firebaseInitialized = true;
+        return;
+    }
+
+    try {
+        firebase.initializeApp(config);
+        firebaseInitialized = true;
         console.log('[SW-LOG] Firebase app initialized successfully.');
         
         if (firebase.messaging.isSupported()) {
@@ -56,8 +101,35 @@ if (!firebaseConfig.apiKey) {
             console.log('[SW-LOG] Background message handler set up.');
         }
     } catch(e) {
-        console.error('[SW-LOG] CRITICAL: Error initializing Firebase.', e);
+        console.error('[SW-LOG] CRITICAL: Error initializing Firebase from config.', e);
     }
+}
+
+// Main logic to orchestrate initialization
+async function main() {
+    const savedConfig = await getConfigFromDb();
+    if (savedConfig) {
+        console.log('[SW-LOG] Initializing Firebase from IndexedDB config.');
+        initializeFirebase(savedConfig);
+    } else {
+        console.log('[SW-LOG] No config in IndexedDB, listening on BroadcastChannel.');
+        const channel = new BroadcastChannel('firebase-config-channel');
+        channel.onmessage = async (event) => {
+            if (event.data.type === 'FIREBASE_CONFIG' && event.data.config) {
+                console.log('[SW-LOG] Received Firebase config via BroadcastChannel.');
+                const config = event.data.config;
+                initializeFirebase(config);
+                await saveConfigToDb(config);
+                channel.close();
+            }
+        };
+    }
+}
+
+if (typeof firebase !== 'undefined') {
+    main();
+} else {
+    console.error('[SW-LOG] CRITICAL: Firebase object not found. Imports likely failed.');
 }
 
 
@@ -125,10 +197,12 @@ self.addEventListener('notificationclick', event => {
 
     event.waitUntil(
         clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
+            // Check if a window is already open.
             const client = windowClients.find(c => c.url.startsWith(self.location.origin) && 'focus' in c);
             if (client) {
                 return client.navigate(urlToOpen).then(c => c.focus());
             } else {
+                // Otherwise, open a new window.
                 return clients.openWindow(urlToOpen);
             }
         })
