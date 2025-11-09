@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useCallback, createContext, useContext, useMemo, memo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createPortal } from 'react-dom';
@@ -339,7 +340,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी १७, यूहन्ना १०:१-२１, भजनसंग्रह ३８, १ तिमोथी ६",
     "लेवी १८, यूहन्ना १०:२२-４２, भजनसंग्रह ३９, २ तिमोथी १",
     "लेवी १९, यूहन्ना ११:१-२７, भजनसंग्रह ४०, २ तिमोथी २",
-    "लेवी २०, यूहन्ना ११:２８-５७, भजनसंग्रह ४१, २ तिमोथी ३",
+    "लेवी २०, यूहन्ना ११:２८-５७, भजनसंग्रह ४१, २ तिमोथी ३",
     "लेवी २१, यूहन्ना १२:१-१९, भजनसंग्रह ४２, २ तिमोथी ४",
     "लेवी २２, यूहन्ना १२:२०-５０, भजनसंग्रह ४३, तीतस १",
     "लेवी ২৩, यूहन्ना १३, भजनसंग्रह ۴４, तीतस २",
@@ -384,7 +385,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती ३５, प्रेरित १८, हितोपदेश ६, प्रकाश ३",
     "गन्ती ३６, प्रेरित १९, हितोपदेश ७, प्रकाश ४",
     "व्यवस्था १, प्रेरित २०:१-१６, हितोपदेश ८, प्रकाश ५",
-    "व्यवस्था २, प्रेरित २०:१７-३८, हितोपदेश ९, प्रकाश ६",
+    "व्यवस्था २, प्रेरित २०:१７-३８, हितोपदेश ९, प्रकाश ६",
     "व्यवस्था ३, प्रेरित २१:१-१८, उपदेशक १, प्रकाश ७",
     "व्यवस्था ४, प्रेरित २१:१९-４३, उपदेशक २, प्रकाश ८",
     "व्यवस्था ५, प्रेरित २２, उपदेशक ३, प्रकाश ९",
@@ -601,7 +602,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास २, लूका १४, हितोपदेश ২৩, भजनसंग्रh ९１",
     "२ इतिहास ३, लूका १५, हितोपदेश २४, भजनसंग्रh ९２",
     "२ इतिहास ४, लूका १६, हितोपदेश २५, भजनसंग्रh ९３",
-    "२ इतिहास ५, लूका १७, हितोपदेश २６, भजनसंग्रh ९４",
+    "२ इतिहास ५, लूका १७, हितोपदेश २６, भजनसंग्रh ९४",
     "२ इतिहास ६, लूका १८, हितोपदेश २७, भजनसंग्रh ९５",
     "२ इतिहास ७, लूका १९, हितोपदेश २८, भजनसंग्रh ९６",
     "२ इतिहास ८, लूका २०, हितोपदेश २९, भजनसंग्रh ९７",
@@ -617,8 +618,8 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १८, यूहन्ना ६, भजनसंग्रh १１４, भजनसंग्रh ११५",
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１６, भजनसंग्रh ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
-    "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６４, भजनसंग्रh ११९:६५-९६",
-    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१२८, भजनसंग्रh ११९:१२९-१५２",
+    "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６４, भजनसंग्रh ११९:६५-९６",
+    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१२８, भजनसंग्रh ११९:१२९-१५２",
     "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७６, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रh १२３, भजनसंग्रh १२４",
@@ -3545,15 +3546,15 @@ const App: React.FC = () => {
             {notificationPermissionStatus === 'denied' && !isConversationOpen && (
                 <div className="notification-permission-banner denied">
                     <span className="material-symbols-outlined">notifications_off</span>
-                    <p>알림이 차단되었습니다. 메시지 및 업데이트를 받으려면 브라우저 설정에서 이 사이트의 알림을 허용해 주세요.</p>
+                    <p>सूचनाहरू रोकिएका छन्। सन्देश र अद्यावधिकहरू प्राप्त गर्न, कृपया आफ्नो ब्राउजर सेटिङहरूमा यो साइटको लागि सूचनाहरूलाई अनुमति दिनुहोस्।</p>
                 </div>
             )}
 
             {notificationPermissionStatus === 'default' && !isConversationOpen && (
                 <div className="notification-permission-banner request">
                     <span className="material-symbols-outlined">notifications</span>
-                    <p>알림을 활성화하여 새로운 메시지와 업데이트를 받으세요.</p>
-                    <button onClick={requestPermissionAndToken}>활성화</button>
+                    <p>नयाँ सन्देश र अद्यावधिकहरू प्राप्त गर्न सूचनाहरू सक्षम गर्नुहोस्।</p>
+                    <button onClick={requestPermissionAndToken}>सक्षम गर्नुहोस्</button>
                 </div>
             )}
 
@@ -3627,10 +3628,7 @@ interface ErrorBoundaryState {
 }
 
 class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  constructor(props: ErrorBoundaryProps) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
+  state: ErrorBoundaryState = { hasError: false, error: null };
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return { hasError: true, error: error };
