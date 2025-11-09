@@ -1,5 +1,5 @@
 // IMPORTANT: This service worker file must be in the public directory.
-console.log('[SW-LOG] v12: Service Worker file evaluating.');
+console.log('[SW-LOG] v14: Service Worker file evaluating.');
 
 try {
     // Use a specific, stable version of the Firebase SDK
@@ -42,12 +42,9 @@ if (typeof firebase !== 'undefined' && hasAllConfig) {
                 const notificationOptions = {
                     body: payload.notification?.body || "",
                     icon: '/logos-church-new-logo.jpg',
+                    tag: payload.data?.tag || 'logos-church-notification',
                     data: {
-                        FCM_MSG: { // Structure to match what FCM expects
-                            fcmOptions: {
-                                link: payload.fcmOptions?.link || payload.data?.url || '/'
-                            }
-                        }
+                        url: payload.fcmOptions?.link || payload.data?.url || self.origin,
                     }
                 };
                 
@@ -55,22 +52,23 @@ if (typeof firebase !== 'undefined' && hasAllConfig) {
             });
             console.log('[SW-LOG] Background message handler set up.');
         } else {
-            console.log('[SW-LOG] Firebase Messaging is not supported in this browser.');
+            console.log('[SW-LOG] Firebase Messaging is not supported in this browser environment.');
         }
     } catch(e) {
-        console.error('[SW-LOG] CRITICAL: Error initializing Firebase from config.', e);
+        console.error('[SW-LOG] CRITICAL: An error occurred during Firebase initialization.', e);
     }
 } else {
     if (typeof firebase === 'undefined') {
-         console.error('[SW-LOG] CRITICAL: Firebase object not found. Imports likely failed.');
+         console.error('[SW-LOG] CRITICAL: The `firebase` object is not available. Firebase script imports have failed.');
     } else {
-         console.error('[SW-LOG] CRITICAL: Firebase config from URL is incomplete. Cannot initialize.');
+         const missingKeys = Object.entries(firebaseConfig).filter(([, val]) => !val).map(([key]) => key);
+         console.error(`[SW-LOG] CRITICAL: Firebase config is incomplete. This usually happens when the service worker is activated without the required URL parameters. Missing keys: ${missingKeys.join(', ')}. Notifications will fail.`);
     }
 }
 
 
 // --- PWA Caching Logic ---
-const CACHE_NAME = 'logos-church-cache-v6'; // Incremented cache version for updates
+const CACHE_NAME = 'logos-church-cache-v8'; // Incremented cache version for updates
 const CRITICAL_URLS_TO_CACHE = [
     '/',
     '/index.html',
@@ -162,19 +160,17 @@ self.addEventListener('notificationclick', event => {
     console.log('[SW-LOG] Notification click Received.');
     event.notification.close();
     
-    // Correctly extract the link from the nested data structure.
-    const urlToOpen = event.notification.data?.FCM_MSG?.fcmOptions?.link || '/';
-    console.log('[SW-LOG] Opening URL from notification:', urlToOpen);
+    const urlToOpen = event.notification.data?.url || '/';
+    console.log('[SW-LOG] User clicked notification. Attempting to open URL:', urlToOpen);
 
     event.waitUntil(
         clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
-            // Check if a window with the app's origin is already open.
             const client = windowClients.find(c => c.url.startsWith(self.location.origin) && 'focus' in c);
             if (client) {
-                // If found, navigate that window to the correct URL and focus it.
+                console.log('[SW-LOG] Found an existing app window. Navigating and focusing.');
                 return client.navigate(urlToOpen).then(c => c.focus());
             } else {
-                // Otherwise, open a new window.
+                console.log('[SW-LOG] No existing app window found. Opening a new one.');
                 return clients.openWindow(urlToOpen);
             }
         })

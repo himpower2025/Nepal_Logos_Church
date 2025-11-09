@@ -569,11 +569,11 @@ const MCCHEYNE_READING_PLAN = [
     "२ राजा ২৩, मत्ती २６, भजनसंग्रh ३８, भजनसंग्रh ३９",
     "२ राजा २४, मत्ती २७, भजनसंग्रh ४०, भजनसंग्रh ४１",
     "२ राजा २५, मत्ती २８, भजनसंग्रh ४２, भजनसंग्रh ४३",
-    "१ इतिहास १, मर्कूस १, भजनसंग्रh ४４, भजनसंग्रh ४५",
+    "१ इतिहास १, मर्कूस १, भजनसंग्रh ৪४, भजनसंग्रh ४५",
     "१ इतिहास २, मर्कूस २, भजनसंग्रh ৪६, भजनसंग्रh ४७",
     "१ इतिहास ३, मर्कूस ३, भजनसंग्रh ४८, भजनसंग्रh ४९",
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५１",
-    "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
+    "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५３",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
     "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५７",
     "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५८, भजनसंग्रh ५９",
@@ -633,7 +633,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ३३, यूहन्ना २１, भजनसंग्रh १३９, भजनसंग्रh १४０",
     "२ इतिहास ३４, प्रेरित १, भजनसंग्रh १४１, भजनसंग्रh १४２",
     "२ इतिहास ३５, प्रेरित २, भजनसंग्रh १४３, भजनसंग्रh १४４",
-    "२ इतिहास ३６, प्रेरित ३, भजनसंग्रh १४५, भजनसंग्रh १४６",
+    "२ इतिहास ३６, प्रेरित ३, भजनसंग्रh १४５, भजनसंग्रh १४６",
     "एज्रा १, प्रेरित ४, भजनसंग्रh १४७, भजनसंग्रh १४８",
     "एज्रा २, प्रेरित ५, भजनसंग्रh १४९, भजनसंग्रh १५０",
 ];
@@ -3628,7 +3628,10 @@ interface ErrorBoundaryState {
 }
 
 class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  state: ErrorBoundaryState = { hasError: false, error: null };
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return { hasError: true, error: error };
@@ -3694,7 +3697,8 @@ if ('serviceWorker' in navigator) {
         const encodedConfig = searchParams.toString();
         const swUrl = `/firebase-messaging-sw.js?${encodedConfig}`;
         
-        const registration = await navigator.serviceWorker.register(swUrl);
+        // Explicitly set the scope to the root to ensure it controls the entire app
+        const registration = await navigator.serviceWorker.register(swUrl, { scope: '/' });
         console.log('SW registration successful with scope: ', registration.scope);
 
         registration.addEventListener('updatefound', () => {
