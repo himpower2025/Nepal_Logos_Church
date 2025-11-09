@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect, useRef, useCallback, createContext, useContext, useMemo, memo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createPortal } from 'react-dom';
@@ -566,7 +567,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ राजा २०, मत्ती ২৩, भजनसंग्रh ३２, भजनसंग्रh ३३",
     "२ राजा २१, मत्ती २४, भजनसंग्रh ३４, भजनसंग्रh ३５",
     "२ राजा २２, मत्ती २५, भजनसंग्रh ३６, भजनसंग्रh ३７",
-    "२ राजा ২৩, मत्ती २６, भजनसंग्रh ३８, भजनसंग्रh ३９",
+    "२ राजा ২৩, मत्ती २６, भजनसंग्रh ३８, भजनसंग्रh ३९",
     "२ राजा २४, मत्ती २७, भजनसंग्रh ४०, भजनसंग्रh ४１",
     "२ राजा २५, मत्ती २８, भजनसंग्रh ४２, भजनसंग्रh ४३",
     "१ इतिहास १, मर्कूस १, भजनसंग्रh ৪४, भजनसंग्रh ४५",
@@ -575,17 +576,17 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५１",
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५３",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
-    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५７",
+    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५७",
     "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५९",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
-    "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६７",
+    "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६७",
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६९",
-    "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
+    "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७१",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७３",
     "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
-    "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
+    "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७७",
     "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७８",
     "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७९",
     "१ इतिहास २०, लूका ३, हितोपदेश १२, भजनसंग्रh ८０",
@@ -597,11 +598,11 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रh ८６",
     "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८７",
     "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८８",
-    "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८९",
+    "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८９",
     "२ इतिहास १, लूका १३, हितोपदेश २२, भजनसंग्रh ९０",
     "२ इतिहास २, लूका १४, हितोपदेश ২৩, भजनसंग्रh ९１",
     "२ इतिहास ३, लूका १५, हितोपदेश २४, भजनसंग्रh ९２",
-    "२ इतिहास ४, लूका १६, हितोपदेश २५, भजनसंग्रh ९३",
+    "२ इतिहास ४, लूका १६, हितोपदेश २५, भजनसंग्रh ९３",
     "२ इतिहास ५, लूका १७, हितोपदेश २６, भजनसंग्रh ९４",
     "२ इतिहास ६, लूका १८, हितोपदेश २७, भजनसंग्रh ९５",
     "२ इतिहास ७, लूका १९, हितोपदेश २८, भजनसंग्रh ९６",
@@ -632,7 +633,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ३２, यूहन्ना २०, भजनसंग्रh १३７, भजनसंग्रh १३８",
     "२ इतिहास ३३, यूहन्ना २１, भजनसंग्रh १३９, भजनसंग्रh १४０",
     "२ इतिहास ३４, प्रेरित १, भजनसंग्रh १४１, भजनसंग्रh १४２",
-    "२ इतिहास ३५, प्रेरित २, भजनसंग्रh १४３, भजनसंग्रh १४４",
+    "२ इतिहास ३５, प्रेरित २, भजनसंग्रh १४３, भजनसंग्रh १४４",
     "२ इतिहास ३６, प्रेरित ३, भजनसंग्रh १४５, भजनसंग्रh १४６",
     "एज्रा १, प्रेरित ४, भजनसंग्रh १४७, भजनसंग्रh १४８",
     "एज्रा २, प्रेरित ५, भजनसंग्रh १४९, भजनसंग्रh १५０",
@@ -3665,34 +3666,9 @@ root.render(
 
 // --- Service Worker Registration ---
 if ('serviceWorker' in navigator) {
-  const firebaseConfig = {
-      apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-      authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-      storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-      messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-      appId: import.meta.env.VITE_FIREBASE_APP_ID,
-      measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
-  };
-
   window.addEventListener('load', async () => {
     try {
-        const hasAllConfig = Object.values(firebaseConfig).every(Boolean);
-
-        if (!hasAllConfig) {
-            console.error("CRITICAL: Firebase config is missing from environment variables. Cannot register service worker.");
-            return;
-        }
-        
-        // Pass config to service worker via URL params for robust initialization
-        const searchParams = new URLSearchParams();
-        for (const [key, value] of Object.entries(firebaseConfig)) {
-            if (value) { // Ensure no undefined values are added
-                searchParams.set(key, value);
-            }
-        }
-        const encodedConfig = searchParams.toString();
-        const swUrl = `/firebase-messaging-sw.js?${encodedConfig}`;
+        const swUrl = `/firebase-messaging-sw.js`;
         
         // Explicitly set the scope to the root to ensure it controls the entire app
         const registration = await navigator.serviceWorker.register(swUrl, { scope: '/' });

@@ -1,5 +1,5 @@
 // IMPORTANT: This service worker file must be in the public directory.
-console.log('[SW-LOG] v18: Service Worker file evaluating.');
+console.log('[SW-LOG] v19: Service Worker file evaluating.');
 
 try {
     // Use a specific, stable version of the Firebase SDK
@@ -11,22 +11,24 @@ try {
     console.error('[SW-LOG] CRITICAL: Failed to import Firebase scripts. Notifications will not work.', e);
 }
 
-// --- Firebase Initialization from URL parameters for robustness ---
-const urlParams = new URLSearchParams(self.location.search);
+// --- Robust Firebase Initialization with hardcoded config ---
+// This is the most reliable way to ensure the service worker always has its config.
+// In a real build pipeline, these values would be replaced at build time.
 const firebaseConfig = {
-    apiKey: urlParams.get('apiKey'),
-    authDomain: urlParams.get('authDomain'),
-    projectId: urlParams.get('projectId'),
-    storageBucket: urlParams.get('storageBucket'),
-    messagingSenderId: urlParams.get('messagingSenderId'),
-    appId: urlParams.get('appId'),
-    measurementId: urlParams.get('measurementId'),
+    apiKey: "__VITE_FIREBASE_API_KEY__",
+    authDomain: "__VITE_FIREBASE_AUTH_DOMAIN__",
+    projectId: "__VITE_FIREBASE_PROJECT_ID__",
+    storageBucket: "__VITE_FIREBASE_STORAGE_BUCKET__",
+    messagingSenderId: "__VITE_FIREBASE_MESSAGING_SENDER_ID__",
+    appId: "__VITE_FIREBASE_APP_ID__",
+    measurementId: "__VITE_FIREBASE_MEASUREMENT_ID__",
 };
 
-const hasAllConfig = Object.values(firebaseConfig).every(Boolean);
+
+const hasAllConfig = Object.values(firebaseConfig).every(val => val && !val.startsWith('__'));
 
 if (typeof firebase !== 'undefined' && hasAllConfig) {
-    console.log('[SW-LOG] Initializing Firebase with config from URL.');
+    console.log('[SW-LOG] Initializing Firebase with hardcoded config.');
     try {
         firebase.initializeApp(firebaseConfig);
         console.log('[SW-LOG] Firebase app initialized successfully.');
@@ -61,23 +63,20 @@ if (typeof firebase !== 'undefined' && hasAllConfig) {
     if (typeof firebase === 'undefined') {
          console.error('[SW-LOG] CRITICAL: The `firebase` object is not available. Firebase script imports have failed.');
     } else {
-         const missingKeys = Object.entries(firebaseConfig).filter(([, val]) => !val).map(([key]) => key);
-         console.error(`[SW-LOG] CRITICAL: Firebase config is incomplete. This usually happens when the service worker is activated without the required URL parameters. Missing keys: ${missingKeys.join(', ')}. Notifications will fail.`);
+         const missingKeys = Object.entries(firebaseConfig).filter(([, val]) => !val || val.startsWith('__')).map(([key]) => key);
+         console.error(`[SW-LOG] CRITICAL: Firebase config is incomplete or not replaced by build process. Missing/Invalid keys: ${missingKeys.join(', ')}. Notifications will fail.`);
     }
 }
 
 
 // --- PWA Caching Logic ---
-const CACHE_NAME = 'logos-church-cache-v12'; // Incremented cache version for updates
+const CACHE_NAME = 'logos-church-cache-v13'; // Incremented cache version for updates
 const CRITICAL_URLS_TO_CACHE = [
     '/',
     '/index.html',
     '/logos-church-new-logo.jpg',
     '/logos-qr-code.png',
     '/manifest.json',
-];
-const NON_CRITICAL_URLS_TO_CACHE = [
-    'https://firebasestorage.googleapis.com/v0/b/logos-church-nepal.appspot.com/o/assets%2Fnotification.mp3?alt=media&token=24838a14-a901-469b-9a4f-56193796537b'
 ];
 
 self.addEventListener('install', event => {
@@ -88,14 +87,6 @@ self.addEventListener('install', event => {
                 console.log('[SW-LOG] Opened cache for PWA assets. Caching critical assets...');
                 // Cache critical assets. If this fails, the entire installation fails.
                 await cache.addAll(CRITICAL_URLS_TO_CACHE);
-
-                console.log('[SW-LOG] Caching non-critical assets (will not block installation).');
-                // Attempt to cache non-critical assets but don't let failures block installation.
-                try {
-                    await cache.addAll(NON_CRITICAL_URLS_TO_CACHE);
-                } catch (error) {
-                    console.warn('[SW-LOG] Failed to cache a non-critical asset. This is not a fatal error.', error);
-                }
             })
             .then(() => {
                 console.log('[SW-LOG] Critical assets cached. Service worker installing.');
