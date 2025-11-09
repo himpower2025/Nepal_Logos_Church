@@ -1,5 +1,5 @@
 // IMPORTANT: This service worker file must be in the public directory.
-console.log('[SW-LOG] v14: Service Worker file evaluating.');
+console.log('[SW-LOG] v18: Service Worker file evaluating.');
 
 try {
     // Use a specific, stable version of the Firebase SDK
@@ -68,7 +68,7 @@ if (typeof firebase !== 'undefined' && hasAllConfig) {
 
 
 // --- PWA Caching Logic ---
-const CACHE_NAME = 'logos-church-cache-v8'; // Incremented cache version for updates
+const CACHE_NAME = 'logos-church-cache-v12'; // Incremented cache version for updates
 const CRITICAL_URLS_TO_CACHE = [
     '/',
     '/index.html',
