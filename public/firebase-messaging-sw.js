@@ -1,5 +1,5 @@
 // IMPORTANT: This service worker file must be in the public directory.
-console.log('[SW-LOG] v11: Service Worker file evaluating.');
+console.log('[SW-LOG] v12: Service Worker file evaluating.');
 
 try {
     // Use a specific, stable version of the Firebase SDK
@@ -70,12 +70,15 @@ if (typeof firebase !== 'undefined' && hasAllConfig) {
 
 
 // --- PWA Caching Logic ---
-const CACHE_NAME = 'logos-church-cache-v3'; // Incremented cache version for updates
-const urlsToCache = [
+const CACHE_NAME = 'logos-church-cache-v6'; // Incremented cache version for updates
+const CRITICAL_URLS_TO_CACHE = [
     '/',
     '/index.html',
     '/logos-church-new-logo.jpg',
+    '/logos-qr-code.png',
     '/manifest.json',
+];
+const NON_CRITICAL_URLS_TO_CACHE = [
     'https://firebasestorage.googleapis.com/v0/b/logos-church-nepal.appspot.com/o/assets%2Fnotification.mp3?alt=media&token=24838a14-a901-469b-9a4f-56193796537b'
 ];
 
@@ -83,11 +86,27 @@ self.addEventListener('install', event => {
     console.log('[SW-LOG] Install event triggered.');
     event.waitUntil(
         caches.open(CACHE_NAME)
-            .then(cache => {
-                console.log('[SW-LOG] Opened cache for PWA assets');
-                return cache.addAll(urlsToCache);
+            .then(async (cache) => {
+                console.log('[SW-LOG] Opened cache for PWA assets. Caching critical assets...');
+                // Cache critical assets. If this fails, the entire installation fails.
+                await cache.addAll(CRITICAL_URLS_TO_CACHE);
+
+                console.log('[SW-LOG] Caching non-critical assets (will not block installation).');
+                // Attempt to cache non-critical assets but don't let failures block installation.
+                try {
+                    await cache.addAll(NON_CRITICAL_URLS_TO_CACHE);
+                } catch (error) {
+                    console.warn('[SW-LOG] Failed to cache a non-critical asset. This is not a fatal error.', error);
+                }
             })
-            .then(() => self.skipWaiting())
+            .then(() => {
+                console.log('[SW-LOG] Critical assets cached. Service worker installing.');
+                return self.skipWaiting();
+            })
+            .catch(error => {
+                // This catch will trigger if caching critical assets failed.
+                console.error('[SW-LOG] Caching of critical assets failed. Service worker installation aborted.', error);
+            })
     );
 });
 

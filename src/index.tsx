@@ -306,7 +306,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान २४, लूका १७:१-१९, अय्यूब ४१, गलाती १",
     "प्रस्थान २५, लूका १७:२०-३７, अय्यूब ४２, गलाती २",
     "प्रस्थान २६, लूका १८:१-१८, भजनसंग्रह १-२, गलाती ३",
-    "प्रस्थान २७, लूका १८:१९-４३, भजनसंग्रह ३-४, गलाती ४",
+    "प्रस्थान २७, लूका १८:१९-４３, भजनसंग्रह ३-४, गलाती ४",
     "प्रस्थान २८, लूका १९:१-२७, भजनसंग्रह ५-६, गलाती ५",
     "प्रस्थान २९, लूका १९:२८-４８, भजनसंग्रह ७, गलाती ६",
     "प्रस्थान ३०, लूका २०:१-१९, भजनसंग्रह ८, एफिसी १",
@@ -349,7 +349,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी २७, यूहन्ना १७, भजनसंग्रह ४８, हिब्रू २",
     "गन्ती १, यूहन्ना १८:१-२३, भजनसंग्रह ۴९, हिब्रू ३",
     "गन्ती २, यूहन्ना १८:２４-４०, भजनसंग्रह ५０, हिब्रू ४",
-    "गन्ती ३, यूहन्ना १९:१-２２, भजनसंग्रह ५१, हिब्रू ५",
+    "गन्ती ३, यूहन्ना १९:१-२２, भजनसंग्रह ५१, हिब्रू ५",
     "गन्ती ४, यूहन्ना १९:２３-４２, भजनसंग्रह ५２, हिब्रू ६",
     "गन्ती ५, यूहन्ना २०, भजनसंग्रह ५३, हिब्रू ७",
     "गन्ती ६, यूहन्ना २１, भजनसंग्रह ५४, हिब्रू ८",
@@ -367,7 +367,7 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १८, प्रेरित ७:४４-６०, भजनसंग्रह ६６, १ पत्रुस २",
     "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६७, १ पत्रुस ३",
     "गन्ती २०, प्रेरित ८:２６-४०, भजनसंग्रह ६८, १ पत्रुस ४",
-    "गन्ती २१, प्रेरित ९:१-２１, भजनसंग्रह ६९, १ पत्रुस ५",
+    "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६९, १ पत्रुस ५",
     "गन्ती २２, प्रेरित ९:२२-４३, भजनसंग्रह ७０, २ पत्रुस १",
     "गन्ती ২৩, प्रेरित १०:१-२३, भजनसंग्रह ७１, २ पत्रुस २",
     "गन्ती २४, प्रेरित १०:२４-４८, भजनसंग्रह ७２, २ पत्रुस ३",
@@ -574,7 +574,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५１",
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५३",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
-    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५७",
+    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५７",
     "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५८, भजनसंग्रh ५９",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
@@ -582,8 +582,8 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६७",
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६९",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
-    "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७३",
-    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७४, भजनसंग्रh ७５",
+    "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७３",
+    "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
     "१ इतिहास १७, लूका १:१-३८, भजनसंग्रh ७６, भजनसंग्रh ७７",
     "१ इतिहास १८, लूका १:३९-८०, हितोपदेश १०, भजनसंग्रh ७８",
     "१ इतिहास १९, लूका २, हितोपदेश ११, भजनसंग्रh ७९",
@@ -596,7 +596,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रh ८６",
     "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८７",
     "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८８",
-    "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८９",
+    "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८९",
     "२ इतिहास १, लूका १३, हितोपदेश २२, भजनसंग्रh ९０",
     "२ इतिहास २, लूका १४, हितोपदेश ২৩, भजनसंग्रh ९１",
     "२ इतिहास ३, लूका १५, हितोपदेश २४, भजनसंग्रh ९２",
@@ -631,7 +631,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास ३２, यूहन्ना २०, भजनसंग्रh १३７, भजनसंग्रh १३８",
     "२ इतिहास ३३, यूहन्ना २１, भजनसंग्रh १३９, भजनसंग्रh १४０",
     "२ इतिहास ३４, प्रेरित १, भजनसंग्रh १४１, भजनसंग्रh १४２",
-    "२ इतिहास ३५, प्रेरित २, भजनसंग्रh १४３, भजनसंग्रh १४４",
+    "२ इतिहास ३５, प्रेरित २, भजनसंग्रh १४３, भजनसंग्रh १४４",
     "२ इतिहास ३６, प्रेरित ३, भजनसंग्रh १४५, भजनसंग्रh १४６",
     "एज्रा १, प्रेरित ४, भजनसंग्रh १४७, भजनसंग्रh १४８",
     "एज्रा २, प्रेरित ५, भजनसंग्रh १४९, भजनसंग्रh १५０",
@@ -3087,17 +3087,17 @@ const InstallationGuidePage: React.FC = () => {
 
     const IosInstructions = () => (
         <div className="instruction-steps">
-            <h3>iPhone/iPad에 앱 설치하기</h3>
+            <h3>iPhone/iPad को लागि निर्देशनहरू</h3>
             <div className="step">
-                <p>1. 화면 하단의 '공유' 아이콘을 누르세요.</p>
+                <p>१. आफ्नो ब्राउजरमा, 'Share' आइकनमा ट्याप गर्नुहोस्।</p>
                 <span className="material-symbols-outlined instruction-icon">ios_share</span>
             </div>
             <div className="step">
-                <p>2. '홈 화면에 추가'를 찾아 누르세요.</p>
+                <p>२. विकल्पहरूबाट 'Add to Home Screen' छान्नुहोस्।</p>
                 <span className="material-symbols-outlined instruction-icon">add_box</span>
             </div>
             <div className="step">
-                <p>3. 오른쪽 상단의 '추가'를 누르면 설치가 완료됩니다.</p>
+                <p>३. स्थापना पुष्टि गर्न 'Add' मा ट्याप गर्नुहोस्।</p>
                  <span className="material-symbols-outlined instruction-icon">add</span>
             </div>
         </div>
@@ -3105,17 +3105,17 @@ const InstallationGuidePage: React.FC = () => {
 
     const AndroidInstructions = () => (
          <div className="instruction-steps">
-            <h3>Android에 앱 설치하기</h3>
+            <h3>Android को लागि निर्देशनहरू</h3>
             <div className="step">
-                <p>1. 오른쪽 상단의 점 3개 메뉴를 누르세요.</p>
+                <p>१. आफ्नो ब्राउजरमा, मेनु आइकन (३ थोप्ला) मा ट्याप गर्नुहोस्।</p>
                 <span className="material-symbols-outlined instruction-icon">more_vert</span>
             </div>
             <div className="step">
-                <p>2. '앱 설치' 또는 '홈 화면에 추가'를 누르세요.</p>
+                <p>२. 'Install app' वा 'Add to Home Screen' छान्नुहोस्।</p>
                 <span className="material-symbols-outlined instruction-icon">install_mobile</span>
             </div>
             <div className="step">
-                <p>3. '설치'를 누르면 바로 설치가 완료됩니다.</p>
+                <p>३. स्थापना पुष्टि गर्न 'Install' मा ट्याप गर्नुहोस्।</p>
                 <span className="material-symbols-outlined instruction-icon">download</span>
             </div>
         </div>
@@ -3123,25 +3123,25 @@ const InstallationGuidePage: React.FC = () => {
     
     const OtherInstructions = () => (
          <div className="instruction-steps">
-            <h3>앱 설치하기</h3>
-            <p><strong>Chrome/Edge 브라우저:</strong> 주소창 오른쪽의 컴퓨터 모양 아이콘을 클릭하여 설치하세요.</p>
-            <p><strong>모바일 기기:</strong> 브라우저 메뉴에서 '홈 화면에 추가' 또는 '앱 설치' 옵션을 찾아보세요.</p>
+            <h3>एप स्थापना गर्नुहोस्</h3>
+            <p><strong>डेस्कटप ब्राउजर:</strong> ठेगाना पट्टीको दायाँपट्टि रहेको स्थापना आइकनमा क्लिक गर्नुहोस्।</p>
+            <p><strong>अन्य मोबाइल:</strong> आफ्नो ब्राउजरको मेनुमा 'Add to Home Screen' वा 'Install App' विकल्प खोज्नुहोस्।</p>
         </div>
     );
 
     return (
         <div className="page-content install-guide-container">
             <img src={CHURCH.logo} alt="Church Logo" className="install-guide-logo" />
-            <h2>{CHURCH.name} 앱</h2>
-            <p className="install-guide-subtitle">앱을 휴대폰에 설치하여 더 쉽게 접속하세요.</p>
+            <h2>{CHURCH.name} एप</h2>
+            <p className="install-guide-subtitle">सजिलो पहुँचको लागि आफ्नो फोनमा एप स्थापना गर्नुहोस्।</p>
             <div className="card">
                 {os === 'ios' && <IosInstructions />}
                 {os === 'android' && <AndroidInstructions />}
                 {os === 'other' && <OtherInstructions />}
-                {!os && <Loading message="기기 정보를 확인 중입니다..." />}
+                {!os && <Loading message="तपाईंको यन्त्र पहिचान गरिँदैछ..." />}
             </div>
             <a href="/" className="action-button install-guide-button">
-                앱으로 바로가기
+                एपमा जानुहोस्
                 <span className="material-symbols-outlined">arrow_forward</span>
             </a>
         </div>
@@ -3435,6 +3435,15 @@ const App: React.FC = () => {
                     }
                 }
              );
+
+            const newNotification: Notification = {
+                id: payload.messageId || crypto.randomUUID(),
+                icon: 'notifications', // default icon
+                message: data?.body || 'You have a new message.',
+                timestamp: formatRelativeTime(Timestamp.now())
+            };
+            setNotifications(prev => [newNotification, ...prev.slice(0, 19)]); // Keep max 20
+
              setHasUnreadNotifications(true);
         });
     
