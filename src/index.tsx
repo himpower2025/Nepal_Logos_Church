@@ -314,7 +314,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३１, लूका २०:२०-４७, भजनसंग्रह ९, एफिसी २",
     "प्रस्थान ३２, लूका २१, भजनसंग्रह १०, एफिसी ३",
     "प्रस्थान ३३, लूका २２:१-३０, भजनसंग्रह ११-१२, एफिसी ४",
-    "प्रस्थान ३４, लूका २２:३१-५३, भजनसंग्रह १३-१४, एफिसी ५",
+    "प्रस्थान ३４, लूका २２:३१-５३, भजनसंग्रह १३-१४, एफिसी ५",
     "प्रस्थान ३५, लूका २２:５４-७१, भजनसंग्रह १५-१６, एफिसी ६",
     "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
     "प्रस्थान ३७, लूका २३:२६-５６, भजनसंग्रह १८, फिलिप्पी २",
@@ -595,9 +595,9 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २४, लूका ७, हितोपदेश १६, भजनसंग्रh ८４",
     "१ इतिहास २५, लूका ८, हितोपदेश १७, भजनसंग्रh ८５",
     "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रh ८６",
-    "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८７",
+    "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८७",
     "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८८",
-    "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८९",
+    "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८９",
     "२ इतिहास १, लूका १३, हितोपदेश २२, भजनसंग्रh ९０",
     "२ इतिहास २, लूका १४, हितोपदेश ২৩, भजनसंग्रh ९１",
     "२ इतिहास ३, लूका १५, हितोपदेश २४, भजनसंग्रh ९２",
@@ -615,7 +615,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १५, यूहन्ना ३, भजनसंग्रh १०८, भजनसंग्रh १०९",
     "२ इतिहास १६, यूहन्ना ४, भजनसंग्रh १１０, भजनसंग्रh ११１",
     "२ इतिहास १७, यूहन्ना ५, भजनसंग्रh १１２, भजनसंग्रh ११३",
-    "२ इतिहास १८, यूहन्ना ६, भजनसंग्रh १１४, भजनसंग्रh ११५",
+    "२ इतिहास १८, यूहन्ना ६, भजनसंग्रh १１４, भजनसंग्रh ११५",
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１６, भजनसंग्रh ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
     "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６４, भजनसंग्रh ११९:६५-९६",
@@ -3396,7 +3396,7 @@ const App: React.FC = () => {
         }
     }, [firebaseServices, currentUser, db, showToast]);
 
-    // Effect to check permission status and get token on load
+    // Effect to check permission status and get token on load (Robust version)
     useEffect(() => {
         if (!currentUser) return;
     
@@ -3406,6 +3406,7 @@ const App: React.FC = () => {
             const handlePermissionChange = () => {
                 if (permissionStatus) {
                     const newStatus = permissionStatus.state;
+                    // Map 'prompt' to 'default' to match NotificationPermission type
                     setNotificationPermissionStatus(newStatus === 'prompt' ? 'default' : newStatus);
                     if (newStatus === 'granted') {
                         requestPermissionAndToken();
@@ -3422,10 +3423,15 @@ const App: React.FC = () => {
                     requestPermissionAndToken();
                 }
                 
-                status.addEventListener('change', handlePermissionChange);
+                permissionStatus.addEventListener('change', handlePermissionChange);
             }).catch(err => {
-                 console.warn("Permissions API not fully supported, falling back.", err);
-                 setNotificationPermissionStatus(Notification.permission);
+                 console.warn("Permissions API not fully supported, falling back to legacy check.", err);
+                 // Fallback for older browsers
+                 const legacyPermission = Notification.permission;
+                 setNotificationPermissionStatus(legacyPermission);
+                 if (legacyPermission === 'granted') {
+                    requestPermissionAndToken();
+                 }
             });
     
             return () => {
@@ -3434,6 +3440,7 @@ const App: React.FC = () => {
                 }
             };
         } else {
+            // Fallback for browsers without Permissions API
             const initialPermission = Notification.permission;
             setNotificationPermissionStatus(initialPermission);
             if (initialPermission === 'granted') {

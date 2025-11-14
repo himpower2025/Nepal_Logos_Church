@@ -150,20 +150,20 @@ export const onNewsCreated = onDocumentCreated("news/{newsId}", async (event) =>
             tokens: allTokens,
             // --- High-priority delivery configuration for all platforms ---
             android: {
-                priority: "high", // Ensures message is delivered even in Doze mode
+                priority: "high",
                 notification: {
-                    priority: "max", // Sets the highest importance for the notification itself
-                    channelId: "church_announcements", // Corresponds to a channel created in the app
+                    priority: "max",
+                    channelId: "church_announcements",
                 },
             },
             apns: {
                 headers: {
-                    "apns-priority": "10", // '10' is for immediate delivery
+                    "apns-priority": "10",
                 },
             },
             webpush: {
                 headers: {
-                    Urgency: "high", // Standard high urgency for web push
+                    Urgency: "high",
                 },
                 notification: {
                     title: notificationTitle,
@@ -219,22 +219,21 @@ export const onPrayerRequestCreated = onDocumentCreated("prayerRequests/{request
                 url: link,
             },
             tokens: allTokens,
-            // --- High-priority delivery configuration for all platforms ---
             android: {
-                priority: "high", // Ensures message is delivered even in Doze mode
+                priority: "high",
                 notification: {
-                    priority: "max", // Sets the highest importance for the notification itself
-                    channelId: "prayer_requests", // Corresponds to a channel created in the app
+                    priority: "max",
+                    channelId: "prayer_requests",
                 },
             },
             apns: {
                 headers: {
-                    "apns-priority": "10", // '10' is for immediate delivery
+                    "apns-priority": "10",
                 },
             },
             webpush: {
                 headers: {
-                    Urgency: "high", // Standard high urgency for web push
+                    Urgency: "high",
                 },
                 notification: {
                     title: notificationTitle,
@@ -349,22 +348,21 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
             chatId: chatId, // Pass for in-app handling
         },
         tokens: uniqueTokens,
-        // --- High-priority delivery configuration for all platforms ---
         android: {
-            priority: "high", // Ensures message is delivered even in Doze mode
+            priority: "high",
             notification: {
-                priority: "max", // Sets the highest importance for the notification itself
-                channelId: "chat_messages", // Corresponds to a channel created in the app
+                priority: "max",
+                channelId: "chat_messages",
             },
         },
         apns: {
             headers: {
-                "apns-priority": "10", // '10' is for immediate delivery
+                "apns-priority": "10",
             },
         },
         webpush: {
             headers: {
-                Urgency: "high", // Standard high urgency for web push
+                Urgency: "high",
             },
             notification: {
                 title: notificationTitle,
