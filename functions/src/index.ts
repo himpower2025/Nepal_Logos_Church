@@ -1,3 +1,4 @@
+
 import {onDocumentCreated} from "firebase-functions/v2/firestore";
 import * as admin from "firebase-admin";
 import * as logger from "firebase-functions/logger";
@@ -72,7 +73,7 @@ const cleanStaleTokens = async (tokensToRemove: string[]) => {
             return;
         }
 
-        const updates: Promise<FirebaseFirestore.WriteResult>[] = [];
+        const updates: Promise<admin.firestore.WriteResult>[] = [];
         snapshot.forEach((doc) => {
             updates.push(doc.ref.update({
                 fcmTokens: admin.firestore.FieldValue.arrayRemove(...tokensToRemove),
@@ -146,7 +147,24 @@ export const onNewsCreated = onDocumentCreated("news/{newsId}", async (event) =>
             data: {
                 url: link,
             },
+            tokens: allTokens,
+            // --- High-priority delivery configuration for all platforms ---
+            android: {
+                priority: "high", // Ensures message is delivered even in Doze mode
+                notification: {
+                    priority: "max", // Sets the highest importance for the notification itself
+                    channelId: "church_announcements", // Corresponds to a channel created in the app
+                },
+            },
+            apns: {
+                headers: {
+                    "apns-priority": "10", // '10' is for immediate delivery
+                },
+            },
             webpush: {
+                headers: {
+                    Urgency: "high", // Standard high urgency for web push
+                },
                 notification: {
                     title: notificationTitle,
                     body: notificationBody,
@@ -157,7 +175,6 @@ export const onNewsCreated = onDocumentCreated("news/{newsId}", async (event) =>
                     link: `${APP_URL}${link}`,
                 },
             },
-            tokens: allTokens,
         };
 
         logger.log(`Sending 'news' notification to ${allTokens.length} tokens.`);
@@ -201,7 +218,24 @@ export const onPrayerRequestCreated = onDocumentCreated("prayerRequests/{request
             data: {
                 url: link,
             },
+            tokens: allTokens,
+            // --- High-priority delivery configuration for all platforms ---
+            android: {
+                priority: "high", // Ensures message is delivered even in Doze mode
+                notification: {
+                    priority: "max", // Sets the highest importance for the notification itself
+                    channelId: "prayer_requests", // Corresponds to a channel created in the app
+                },
+            },
+            apns: {
+                headers: {
+                    "apns-priority": "10", // '10' is for immediate delivery
+                },
+            },
             webpush: {
+                headers: {
+                    Urgency: "high", // Standard high urgency for web push
+                },
                 notification: {
                     title: notificationTitle,
                     body: notificationBody,
@@ -212,7 +246,6 @@ export const onPrayerRequestCreated = onDocumentCreated("prayerRequests/{request
                     link: `${APP_URL}${link}`,
                 },
             },
-            tokens: allTokens,
         };
         logger.log(`Sending 'prayer' notification to ${allTokens.length} tokens.`);
         try {
@@ -260,7 +293,7 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
 
 
     const userDocs = await db.collection("users").where(admin.firestore.FieldPath.documentId(), "in", recipientIds).get();
-    const allTokens = userDocs.docs.flatMap(doc => (doc.data() as UserData).fcmTokens || []);
+    const allTokens: string[] = userDocs.docs.flatMap(doc => (doc.data() as UserData).fcmTokens || []);
     const uniqueTokens = [...new Set(allTokens)];
 
 
@@ -315,7 +348,24 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
             url: link,
             chatId: chatId, // Pass for in-app handling
         },
+        tokens: uniqueTokens,
+        // --- High-priority delivery configuration for all platforms ---
+        android: {
+            priority: "high", // Ensures message is delivered even in Doze mode
+            notification: {
+                priority: "max", // Sets the highest importance for the notification itself
+                channelId: "chat_messages", // Corresponds to a channel created in the app
+            },
+        },
+        apns: {
+            headers: {
+                "apns-priority": "10", // '10' is for immediate delivery
+            },
+        },
         webpush: {
+            headers: {
+                Urgency: "high", // Standard high urgency for web push
+            },
             notification: {
                 title: notificationTitle,
                 body: notificationBody,
@@ -326,7 +376,6 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
                 link: `${APP_URL}${link}`,
             },
         },
-        tokens: uniqueTokens,
     };
 
     logger.log(`Sending chat notification payload to ${uniqueTokens.length} tokens for chat ${chatId}.`);
