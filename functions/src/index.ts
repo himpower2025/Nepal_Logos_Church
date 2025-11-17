@@ -15,6 +15,11 @@ const APP_URL = "https://logos-church-nepal.web.app";
 interface UserData {
     fcmTokens?: string[];
     name?: string;
+    notificationPreferences?: {
+        news?: boolean;
+        prayer?: boolean;
+        chat?: boolean;
+    };
 }
 
 interface NewsData {
@@ -39,22 +44,29 @@ interface ChatData {
     participantIds: string[];
 }
 
-
-// Helper function to get all FCM tokens from all users, optionally excluding one user
-const getAllTokens = async (excludeUserId?: string): Promise<string[]> => {
+// Helper to get tokens for a specific topic, respecting user preferences
+const getTokensForTopic = async (
+    topic: "news" | "prayer",
+    excludeUserId?: string
+): Promise<string[]> => {
     const usersSnapshot = await db.collection("users").get();
     const tokens: string[] = [];
+
     usersSnapshot.forEach((doc) => {
         if (doc.id === excludeUserId) {
-            return; // Skip the excluded user
+            return;
         }
         const user = doc.data() as UserData;
-        if (user.fcmTokens && Array.isArray(user.fcmTokens)) {
+        // Default to true if preference is not set (user.notificationPreferences?.[topic] !== false)
+        const canNotify = !user.notificationPreferences || user.notificationPreferences[topic] !== false;
+
+        if (canNotify && user.fcmTokens && Array.isArray(user.fcmTokens)) {
             tokens.push(...user.fcmTokens);
         }
     });
     return [...new Set(tokens)]; // Return unique tokens
 };
+
 
 // Helper to remove stale FCM tokens from Firestore to prevent sending to invalid endpoints.
 const cleanStaleTokens = async (tokensToRemove: string[]) => {
@@ -132,7 +144,7 @@ export const onNewsCreated = onDocumentCreated("news/{newsId}", async (event) =>
     }
 
     logger.log(`New news item created: "${newsItem.title}", by author: ${newsItem.authorId}`);
-    const allTokens = await getAllTokens(newsItem.authorId);
+    const allTokens = await getTokensForTopic("news", newsItem.authorId);
 
     if (allTokens.length > 0) {
         const link = "/?page=news";
@@ -203,7 +215,7 @@ export const onPrayerRequestCreated = onDocumentCreated("prayerRequests/{request
     }
 
     logger.log(`New prayer request: "${prayerRequest.title}", by author: ${prayerRequest.authorName}`);
-    const allTokens = await getAllTokens(prayerRequest.authorId);
+    const allTokens = await getTokensForTopic("prayer", prayerRequest.authorId);
 
     if (allTokens.length > 0) {
         const link = "/?page=prayer";
@@ -292,12 +304,23 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
 
 
     const userDocs = await db.collection("users").where(admin.firestore.FieldPath.documentId(), "in", recipientIds).get();
-    const allTokens: string[] = userDocs.docs.flatMap(doc => (doc.data() as UserData).fcmTokens || []);
-    const uniqueTokens = [...new Set(allTokens)];
+    
+    const tokensToSend: string[] = [];
+    userDocs.docs.forEach((doc) => {
+        const user = doc.data() as UserData;
+        // Default to true if preference for chat is not explicitly false
+        const canNotify = !user.notificationPreferences || user.notificationPreferences.chat !== false;
+
+        if (canNotify && user.fcmTokens && Array.isArray(user.fcmTokens)) {
+            tokensToSend.push(...user.fcmTokens);
+        }
+    });
+    
+    const uniqueTokens = [...new Set(tokensToSend)];
 
 
     if (uniqueTokens.length === 0) {
-        return logger.log(`No FCM tokens found for any recipients in chat ${chatId}.`);
+        return logger.log(`No FCM tokens found for any opted-in recipients in chat ${chatId}.`);
     }
     logger.log(`Found ${uniqueTokens.length} unique FCM tokens to send to.`);
 

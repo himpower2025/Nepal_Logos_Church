@@ -1,9 +1,14 @@
 
 import { defineConfig, loadEnv, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
-import process from 'node:process';
+// Fix for 'Property 'cwd' does not exist on type 'Process''.
+// The global `process` object might have incorrect typings in this context.
+// Importing `cwd` directly from `node:process` avoids type conflicts with the global `process` object.
+import { cwd } from 'node:process';
 import fs from 'fs';
 import path from 'path';
+// Fix: Add import for fileURLToPath to construct __dirname in an ES module environment.
+import { fileURLToPath } from 'url';
 
 /**
  * Custom Vite plugin to replace placeholder variables in the service worker file.
@@ -16,6 +21,8 @@ const serviceWorkerFirebaseConfigPlugin = (env: Record<string, string>): Plugin 
     const swFilename = 'firebase-messaging-sw.js';
     
     const getTransformedContent = () => {
+        // Fix: __dirname is not available in ES modules. Recreate it using import.meta.url.
+        const __dirname = path.dirname(fileURLToPath(import.meta.url));
         const swPath = path.resolve(__dirname, 'public', swFilename);
         try {
             let content = fs.readFileSync(swPath, 'utf-8');
@@ -74,7 +81,8 @@ const serviceWorkerFirebaseConfigPlugin = (env: Record<string, string>): Plugin 
 export default defineConfig(({ mode }) => {
   // Load env file based on `mode` in the current working directory.
   // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
-  const env = loadEnv(mode, process.cwd(), '');
+  // Fix: Use the imported `cwd` function instead of `process.cwd()` to avoid TypeScript errors.
+  const env = loadEnv(mode, cwd(), '');
   
   return {
     plugins: [
@@ -82,15 +90,5 @@ export default defineConfig(({ mode }) => {
         // This custom plugin is essential for the service worker to get Firebase config.
         serviceWorkerFirebaseConfigPlugin(env),
     ],
-    // The 'define' block is for the main application code (src/*), not for public assets.
-    define: {
-      'process.env.VITE_FIREBASE_API_KEY': JSON.stringify(env.VITE_FIREBASE_API_KEY),
-      'process.env.VITE_FIREBASE_AUTH_DOMAIN': JSON.stringify(env.VITE_FIREBASE_AUTH_DOMAIN),
-      'process.env.VITE_FIREBASE_PROJECT_ID': JSON.stringify(env.VITE_FIREBASE_PROJECT_ID),
-      'process.env.VITE_FIREBASE_STORAGE_BUCKET': JSON.stringify(env.VITE_FIREBASE_STORAGE_BUCKET),
-      'process.env.VITE_FIREBASE_MESSAGING_SENDER_ID': JSON.stringify(env.VITE_FIREBASE_MESSAGING_SENDER_ID),
-      'process.env.VITE_FIREBASE_APP_ID': JSON.stringify(env.VITE_FIREBASE_APP_ID),
-      'process.env.VITE_FIREBASE_MEASUREMENT_ID': JSON.stringify(env.VITE_FIREBASE_MEASUREMENT_ID),
-    }
   }
 });

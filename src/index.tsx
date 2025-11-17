@@ -32,10 +32,12 @@ import {
     deleteDoc,
     getDocs,
     limit,
-    increment
+    increment,
+    Firestore
 } from "firebase/firestore";
 import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
 import { getToken, onMessage } from "firebase/messaging";
+import type { Auth } from "firebase/auth";
 
 
 // --- Firebase Context for safe dependency injection ---
@@ -128,7 +130,7 @@ const ToastContainer: React.FC<{ toasts: ToastMessage[] }> = ({ toasts }) => {
 
 // --- Types ---
 type UserRole = 'admin' | 'member' | 'news_contributor' | 'podcast_contributor';
-type User = { id: string; name: string; email: string; avatar: string; roles: UserRole[]; fcmTokens?: string[] };
+type User = { id: string; name: string; email: string; avatar: string; roles: UserRole[]; fcmTokens?: string[]; notificationPreferences?: { news?: boolean, prayer?: boolean, chat?: boolean } };
 type Church = { id: string; name: string; logo: string; offeringDetails: any; };
 type Comment = { id: string; authorId: string; authorName: string; authorAvatar: string; content: string; createdAt: Timestamp; };
 type PrayerRequest = { id:string; authorId: string; authorName: string; title: string; content: string; image?: string | null; thumbnailUrl?: string | null; imagePath?: string | null; thumbnailPath?: string | null; prayedBy: string[]; comments?: Comment[]; commentCount?: number; createdAt: Timestamp; status?: 'uploading' | 'failed'; tempId?: string; localImagePreview?: string | null; };
@@ -328,7 +330,7 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी ५, यूहन्ना ४:१-३０, भजनसंग्रह २६, १ थिस्सलोनिकी २",
     "लेवी ६, यूहन्ना ४:३१-５４, भजनसंग्रह २७, १ थिस्सलोनिकी ३",
     "लेवी ७, यूहन्ना ५:१-२३, भजनसंग्रह २८, १ थिस्सलोनिकी ४",
-    "लेवी ८, यूहन्ना ५:２４-４७, भजनसंग्रह २९, १ थिस्सलोनिकी ५",
+    "लेवी ८, यूहन्ना ५:２４-４７, भजनसंग्रह २९, १ थिस्सलोनिकी ५",
     "लेवी ९, यूहन्ना ६:१-२１, भजनसंग्रह ३０, २ थिस्सलोनिकी १",
     "लेवी १०, यूहन्ना ६:२２-４०, भजनसंग्रह ३１, २ थिस्सलोनिकी २",
     "लेवी ११, यूहन्ना ६:४१-७１, भजनसंग्रह ३２, २ थिस्सलोनिकी ३",
@@ -576,12 +578,12 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५３",
     "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
     "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५७",
-    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५९",
+    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५９",
     "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
     "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६７",
-    "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६८, भजनसंग्रh ६९",
+    "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६९",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७３",
     "१ इतिहास १६, मर्कूस १६, भजनसंग्रh ७４, भजनसंग्रh ७５",
@@ -595,7 +597,7 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २४, लूका ७, हितोपदेश १६, भजनसंग्रh ८４",
     "१ इतिहास २५, लूका ८, हितोपदेश १७, भजनसंग्रh ८５",
     "१ इतिहास २６, लूका ९, हितोपदेश १८, भजनसंग्रh ८６",
-    "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८७",
+    "१ इतिहास २७, लूका १०, हितोपदेश १९, भजनसंग्रh ८７",
     "१ इतिहास २８, लूका ११, हितोपदेश २०, भजनसंग्रh ८८",
     "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८９",
     "२ इतिहास १, लूका १३, हितोपदेश २२, भजनसंग्रh ९０",
@@ -618,8 +620,8 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास १८, यूहन्ना ६, भजनसंग्रh १１４, भजनसंग्रh ११५",
     "२ इतिहास १९, यूहन्ना ७, भजनसंग्रh १１６, भजनसंग्रh ११७",
     "२ इतिहास २०, यूहन्ना ८, भजनसंग्रh १１８, भजनसंग्रh ११९:१-३२",
-    "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６４, भजनसंग्रh ११९:६५-९६",
-    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१२८, भजनसंग्रh ११९:१२९-१५２",
+    "२ इतिहास २१, यूहन्ना ९, भजनसंग्रh ११९:३३-６४, भजनसंग्रh ११९:६५-९६",
+    "२ इतिहास २２, यूहन्ना १०, भजनसंग्रh ११९:९७-१२８, भजनसंग्रh ११९:१२९-१५２",
     "२ इतिहास ২৩, यूहन्ना ११, भजनसंग्रh ११९:१५३-१७६, भजनसंग्रh १२०",
     "२ इतिहास २४, यूहन्ना १२, भजनसंग्रh १२１, भजनसंग्रh १२２",
     "२ इतिहास २५, यूहन्ना १३, भजनसंग्रh १२３, भजनसंग्रh १२４",
@@ -3151,6 +3153,120 @@ const InstallationGuidePage: React.FC = () => {
 };
 
 
+const ProfilePage: React.FC<{
+    currentUser: User;
+    auth: Auth | undefined;
+    db: Firestore | undefined;
+    setIsManageUsersOpen: (isOpen: boolean) => void;
+}> = ({ currentUser, auth, db, setIsManageUsersOpen }) => {
+    const [settings, setSettings] = useState({ news: true, prayer: true, chat: true });
+    const [isUpdating, setIsUpdating] = useState(false);
+    const isAdmin = currentUser.roles.includes('admin');
+
+    // Use a memoized ref to prevent re-creating it on every render
+    const userDocRef = useMemo(() => {
+        if (!db || !currentUser.id) return null;
+        return doc(db, "users", currentUser.id);
+    }, [db, currentUser.id]);
+    
+    // Listen for real-time updates to notification preferences
+    useEffect(() => {
+        if (!userDocRef) return;
+        const unsubscribe = onSnapshot(userDocRef, (docSnap) => {
+            if (docSnap.exists()) {
+                const prefs = docSnap.data().notificationPreferences || {};
+                setSettings({
+                    news: prefs.news !== false,
+                    prayer: prefs.prayer !== false,
+                    chat: prefs.chat !== false,
+                });
+            }
+        }, (error) => {
+            console.error("Error listening to user document:", error);
+        });
+        return () => unsubscribe();
+    }, [userDocRef]);
+
+    const handleToggle = async (key: 'news' | 'prayer' | 'chat') => {
+        if (!userDocRef || isUpdating) return;
+        
+        setIsUpdating(true);
+        try {
+            await updateDoc(userDocRef, {
+                [`notificationPreferences.${key}`]: !settings[key],
+            });
+        } catch (error) {
+            console.error("Failed to update notification settings", error);
+            // onSnapshot will automatically revert the UI if the update fails
+        } finally {
+            setIsUpdating(false);
+        }
+    };
+
+    return (
+        <div className="page-content">
+            <div className="card profile-header-card">
+                <div className="profile-avatar">{getAvatarInitial(currentUser.name)}</div>
+                <div className="profile-info">
+                    <h3>{currentUser.name}</h3>
+                    <p>{currentUser.email}</p>
+                </div>
+                {currentUser.roles && (
+                    <div className="profile-roles">
+                        {currentUser.roles.map(role => (
+                            <span key={role} className="role-badge">{role.replace('_', ' ')}</span>
+                        ))}
+                    </div>
+                )}
+            </div>
+            
+            <div className="settings-section">
+                <h3>सूचनाहरू</h3>
+                <div className="settings-list">
+                    <div className="setting-item">
+                        <p>News & Announcements</p>
+                        <label className="toggle-switch">
+                            <input type="checkbox" checked={settings.news} onChange={() => handleToggle('news')} disabled={isUpdating} />
+                            <span className="toggle-slider"></span>
+                        </label>
+                    </div>
+                     <div className="setting-item">
+                        <p>Prayer Requests</p>
+                        <label className="toggle-switch">
+                            <input type="checkbox" checked={settings.prayer} onChange={() => handleToggle('prayer')} disabled={isUpdating} />
+                            <span className="toggle-slider"></span>
+                        </label>
+                    </div>
+                     <div className="setting-item">
+                        <p>Chat Messages</p>
+                        <label className="toggle-switch">
+                            <input type="checkbox" checked={settings.chat} onChange={() => handleToggle('chat')} disabled={isUpdating} />
+                            <span className="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div className="settings-section">
+                 <h3>खाता</h3>
+                 <div className="profile-actions-list">
+                    {isAdmin && (
+                        <button className="action-button" onClick={() => setIsManageUsersOpen(true)}>
+                            <span className="material-symbols-outlined">manage_accounts</span>
+                            प्रयोगकर्ताहरू व्यवस्थापन गर्नुहोस्
+                        </button>
+                    )}
+                     <button className="action-button" onClick={() => auth && signOut(auth)}>
+                        <span className="material-symbols-outlined">logout</span>
+                        लगआउट
+                    </button>
+                 </div>
+            </div>
+        </div>
+    );
+};
+
+
 // --- Main App Component ---
 const App: React.FC = () => {
     const firebaseServices = useFirebase();
@@ -3159,7 +3275,7 @@ const App: React.FC = () => {
     
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
-    const [activePage, setActivePage] = useState<'worship' | 'bible' | 'news' | 'podcast' | 'prayer' | 'chat'>('news');
+    const [activePage, setActivePage] = useState<'worship' | 'bible' | 'news' | 'podcast' | 'prayer' | 'chat' | 'profile'>('news');
     const [currentChatId, setCurrentChatId] = useState<string | null>(null);
     const [isManageUsersOpen, setIsManageUsersOpen] = useState(false);
     const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
@@ -3197,9 +3313,10 @@ const App: React.FC = () => {
         bible: { label: 'बाइबल', icon: 'menu_book' },
         chat: { label: 'संगतिहरु', icon: 'groups' },
         prayer: { label: 'प्रार्थना', icon: 'volunteer_activism' },
+        profile: { label: 'प्रोफाइल', icon: 'person' },
     };
     
-    const navOrder: (keyof typeof pageConfig)[] = ['news', 'worship', 'podcast', 'bible', 'chat', 'prayer'];
+    const navOrder: (keyof typeof pageConfig)[] = ['news', 'worship', 'podcast', 'bible', 'chat', 'prayer', 'profile'];
 
     // --- Authentication ---
     useEffect(() => {
@@ -3239,8 +3356,9 @@ const App: React.FC = () => {
                         name: user.displayName || userData.name || '',
                         email: user.email || userData.email || '',
                         avatar: user.photoURL || userData.avatar || '',
-                        roles: finalRoles
-                    } as User);
+                        roles: finalRoles,
+                        notificationPreferences: userData.notificationPreferences || {},
+                    });
 
                 } else {
                     const baseRoles: UserRole[] = ['member'];
@@ -3251,6 +3369,7 @@ const App: React.FC = () => {
                         email: user.email || '',
                         avatar: user.photoURL || '',
                         roles: finalRoles,
+                        notificationPreferences: { news: true, prayer: true, chat: true },
                     };
                     await setDoc(userDocRef, newUser);
                     setCurrentUser({ id: user.uid, ...newUser } as User);
@@ -3549,8 +3668,6 @@ const App: React.FC = () => {
         return <LoginPage />;
     }
     
-    const isAdmin = currentUser.roles.includes('admin');
-
     const renderPage = () => {
         if (isConversationOpen) {
             return (
@@ -3583,6 +3700,8 @@ const App: React.FC = () => {
                 );
             case 'prayer':
                 return <PrayerPage currentUser={currentUser} requests={prayerRequests} setRequests={setPrayerRequests} />;
+            case 'profile':
+                return <ProfilePage currentUser={currentUser} auth={auth} db={db} setIsManageUsersOpen={setIsManageUsersOpen} />;
             default:
                 return <NewsPage currentUser={currentUser} news={news} setNews={setNews} />;
         }
@@ -3618,14 +3737,6 @@ const App: React.FC = () => {
                         }}>
                             <span className="material-symbols-outlined">notifications</span>
                             {hasUnreadNotifications && <div className="notification-dot"></div>}
-                        </button>
-                         {isAdmin && (
-                            <button className="header-button" onClick={() => setIsManageUsersOpen(true)}>
-                                <span className="material-symbols-outlined">manage_accounts</span>
-                            </button>
-                         )}
-                        <button className="header-button" onClick={() => auth && signOut(auth)}>
-                            <span className="material-symbols-outlined">logout</span>
                         </button>
                     </div>
                 </header>
