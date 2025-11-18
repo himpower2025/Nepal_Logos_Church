@@ -2990,20 +2990,7 @@ const MediaViewer: React.FC<{
 };
 
 // --- User Management (Admin) ---
-const ManageUsersModal: React.FC<{
-    isOpen: boolean;
-    onClose: () => void;
-    users: User[];
-}> = ({ isOpen, onClose, users }) => {
-    const { db } = useFirebase();
 
-    const handleRoleChange = async (userId: string, role: UserRole, isChecked: boolean) => {
-        if (!db) return;
-        const userRef = doc(db, "users", userId);
-        await updateDoc(userRef, {
-            roles: isChecked ? arrayUnion(role) : arrayRemove(role)
-        });
-    };
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
@@ -3153,16 +3140,6 @@ const InstallationGuidePage: React.FC = () => {
 };
 
 
-const ProfilePage: React.FC<{
-    currentUser: User;
-    auth: Auth | undefined;
-    db: Firestore | undefined;
-    setIsManageUsersOpen: (isOpen: boolean) => void;
-}> = ({ currentUser, auth, db, setIsManageUsersOpen }) => {
-    const [settings, setSettings] = useState({ news: true, prayer: true, chat: true });
-    const [isUpdating, setIsUpdating] = useState(false);
-    const isAdmin = currentUser.roles.includes('admin');
-
     // Use a memoized ref to prevent re-creating it on every render
     const userDocRef = useMemo(() => {
         if (!db || !currentUser.id) return null;
@@ -3275,9 +3252,8 @@ const App: React.FC = () => {
     
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
-    const [activePage, setActivePage] = useState<'worship' | 'bible' | 'news' | 'podcast' | 'prayer' | 'chat' | 'profile'>('news');
+    const [activePage, setActivePage] = useState<'worship' | 'bible' | 'news' | 'podcast' | 'prayer' | 'chat'>('news');
     const [currentChatId, setCurrentChatId] = useState<string | null>(null);
-    const [isManageUsersOpen, setIsManageUsersOpen] = useState(false);
     const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
     
     // Data states
@@ -3313,10 +3289,9 @@ const App: React.FC = () => {
         bible: { label: 'बाइबल', icon: 'menu_book' },
         chat: { label: 'संगतिहरु', icon: 'groups' },
         prayer: { label: 'प्रार्थना', icon: 'volunteer_activism' },
-        profile: { label: 'प्रोफाइल', icon: 'person' },
     };
     
-    const navOrder: (keyof typeof pageConfig)[] = ['news', 'worship', 'podcast', 'bible', 'chat', 'prayer', 'profile'];
+    const navOrder: (keyof typeof pageConfig)[] = ['news', 'worship', 'podcast', 'bible', 'chat', 'prayer'];
 
     // --- Authentication ---
     useEffect(() => {
@@ -3700,8 +3675,6 @@ const App: React.FC = () => {
                 );
             case 'prayer':
                 return <PrayerPage currentUser={currentUser} requests={prayerRequests} setRequests={setPrayerRequests} />;
-            case 'profile':
-                return <ProfilePage currentUser={currentUser} auth={auth} db={db} setIsManageUsersOpen={setIsManageUsersOpen} />;
             default:
                 return <NewsPage currentUser={currentUser} news={news} setNews={setNews} />;
         }
@@ -3738,6 +3711,9 @@ const App: React.FC = () => {
                             <span className="material-symbols-outlined">notifications</span>
                             {hasUnreadNotifications && <div className="notification-dot"></div>}
                         </button>
+                        <button className="header-button" onClick={() => auth && signOut(auth)} aria-label="Logout">
+                            <span className="material-symbols-outlined">logout</span>
+                        </button>
                     </div>
                 </header>
             )}
@@ -3758,12 +3734,6 @@ const App: React.FC = () => {
                     ))}
                 </nav>
             )}
-            
-            <ManageUsersModal
-                isOpen={isManageUsersOpen}
-                onClose={() => setIsManageUsersOpen(false)}
-                users={users}
-            />
             
             <NotificationPanel 
                 isOpen={isNotificationPanelOpen}
