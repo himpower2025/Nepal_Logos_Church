@@ -1,14 +1,10 @@
-
 import { defineConfig, loadEnv, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
-// Fix for 'Property 'cwd' does not exist on type 'Process''.
-// The global `process` object might have incorrect typings in this context.
-// Importing `cwd` directly from `node:process` avoids type conflicts with the global `process` object.
-import { cwd } from 'node:process';
 import fs from 'fs';
 import path from 'path';
 // Fix: Add import for fileURLToPath to construct __dirname in an ES module environment.
 import { fileURLToPath } from 'url';
+import process from 'process';
 
 /**
  * Custom Vite plugin to replace placeholder variables in the service worker file.
@@ -81,8 +77,8 @@ const serviceWorkerFirebaseConfigPlugin = (env: Record<string, string>): Plugin 
 export default defineConfig(({ mode }) => {
   // Load env file based on `mode` in the current working directory.
   // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
-  // Fix: Use the imported `cwd` function instead of `process.cwd()` to avoid TypeScript errors.
-  const env = loadEnv(mode, cwd(), '');
+  // Using process.cwd() explicitly imported to avoid type errors.
+  const env = loadEnv(mode, process.cwd(), '');
   
   return {
     plugins: [
