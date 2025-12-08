@@ -270,7 +270,7 @@ const MCCHEYNE_READING_PLAN = [
     "उत्पत्ति ३५, मर्कूस ७, अय्यूब २, रोमी ७",
     "उत्पत्ति ३６, मर्कूस ८, अय्यूब ३, रोमी ८",
     "उत्पत्ति ३७, मर्कूस ९, अय्यूब ४, रोमी ९",
-    "उत्पत्ति ३८, मर्कूस १०, अय्यूब ५, रोमी १०",
+    "उत्पत्ति ३۸, मर्कूस १०, अय्यूब ५, रोमी १०",
     "उत्पत्ति ३９, मर्कूस ११, अय्यूब ६, रोमी ११",
     "उत्पत्ति ४०, मर्कूस १२, अय्यूब ७, रोमी १२",
     "उत्पत्ति ४१, मर्कूस १३, अय्यूब ८, रोमी १३",
@@ -299,7 +299,7 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान १४, लूका १०:२५-４２, अय्यूब ३１, २ कोरिन्थी ४",
     "प्रस्थान १५, लूका ११:१-२८, अय्यूब ३２, २ कोरिन्थी ५",
     "प्रस्थान १६, लूका ११:२९-５４, अय्यूब ३३, २ कोरिन्थी ६",
-    "प्रस्थान १७, लूका १२:१-३４, अय्यूब ३४, २ कोरिन्थी ७",
+    "प्रस्थान १७, लूका १२:१-३४, अय्यूब ३४, २ कोरिन्थी ७",
     "प्रस्थान १८, लूका १२:३５-５९, अय्यूब ३५, २ कोरिन्थी ८",
     "प्रस्थान १९, लूका १३, अय्यूब ३６, २ कोरिन्थी ९",
     "प्रस्थान २०, लूका १४:१-२４, अय्यूब ३७, २ कोरिन्थी १०",
@@ -310,7 +310,6 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान २५, लूका १७:२०-३７, अय्यूब ४２, गलाती २",
     "प्रस्थान २६, लूका १८:१-१८, भजनसंग्रह १-२, गलाती ३",
     "प्रस्थान २७, लूका १८:१९-４３, भजनसंग्रह ३-४, गलाती ४",
-    "प्रस्थान २८, लूका १९:१-२७, भजनसंग्रह ५-६, गलाती ५",
     "प्रस्थान २९, लूका १९:२८-４８, भजनसंग्रह ७, गलाती ६",
     "प्रस्थान ३०, लूका २०:१-१९, भजनसंग्रह ८, एफिसी १",
     "प्रस्थान ३１, लूका २०:२०-４७, भजनसंग्रह ९, एफिसी २",
@@ -318,10 +317,10 @@ const MCCHEYNE_READING_PLAN = [
     "प्रस्थान ३३, लूका २２:१-३０, भजनसंग्रह ११-१२, एफिसी ४",
     "प्रस्थान ३４, लूका २２:३१-５३, भजनसंग्रह १३-१४, एफिसी ५",
     "प्रस्थान ३५, लूका २２:５４-७१, भजनसंग्रह १५-१６, एफिसी ६",
-    "प्रस्थान ३６, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
+    "प्रस्थान ३६, लूका ২৩:१-२५, भजनसंग्रह १७, फिलिप्पी १",
     "प्रस्थान ३७, लूका २३:२६-５６, भजनसंग्रह १८, फिलिप्पी २",
     "प्रस्थान ३८, लूका २४:१-१२, भजनसंग्रह १९, फिलिप्पी ३",
-    "प्रस्थान ३９, लूका २४:१३-５３, भजनसंग्रह २०, फिलिप्पी ४",
+    "प्रस्थान ३९, लूका २४:१३-５३, भजनसंग्रह २०, फिलिप्पी ४",
     "प्रस्थान ४०, यूहन्ना १:१-२८, भजनसंग्रह २१, कलस्सी १",
     "लेवी १, यूहन्ना १:२९-５१, भजनसंग्रह २२, कलस्सी २",
     "लेवी २, यूहन्ना २, भजनसंग्रह ২৩, कलस्सी ३",
@@ -340,8 +339,8 @@ const MCCHEYNE_READING_PLAN = [
     "लेवी १५, यूहन्ना ८:३१-५९, भजनसंग्रह ३６, १ तिमोथी ४",
     "लेवी १६, यूहन्ना ९, भजनसंग्रह ३７, १ तिमोथी ५",
     "लेवी १७, यूहन्ना १०:१-२１, भजनसंग्रह ३८, १ तिमोथी ६",
-    "लेवी १८, यूहन्ना १०:२२-４２, भजनसंग्रह ३９, २ तिमोथी १",
-    "लेवी १९, यूहन्ना ११:१-२７, भजनसंग्रह ४०, २ तिमोथी २",
+    "लेवी १८, यूहन्ना १०:२२-４, भजनसंग्रह ३९, २ तिमोथी १",
+    "लेवी १९, यूहन्ना ११:१-२७, भजनसंग्रह ४०, २ तिमोथी २",
     "लेवी २०, यूहन्ना ११:２８-５７, भजनसंग्रह ४१, २ तिमोथी ३",
     "लेवी २१, यूहन्ना १२:१-१९, भजनसंग्रह ४２, २ तिमोथी ४",
     "लेवी २２, यूहन्ना १२:२०-５０, भजनसंग्रह ४३, तीतस १",
@@ -353,11 +352,11 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १, यूहन्ना १८:१-२३, भजनसंग्रह ۴९, हिब्रू ३",
     "गन्ती २, यूहन्ना १८:２４-４०, भजनसंग्रह ५０, हिब्रू ४",
     "गन्ती ३, यूहन्ना १९:१-２２, भजनसंग्रह ५१, हिब्रू ५",
-    "गन्ती ४, यूहन्ना १९:２３-４２, भजनसंग्रह ५２, हिब्रू ६",
+    "गन्ती ४, यूहन्ना १९:２३-４२, भजनसंग्रह ५２, हिब्रू ६",
     "गन्ती ५, यूहन्ना २०, भजनसंग्रह ५३, हिब्रू ७",
     "गन्ती ६, यूहन्ना २１, भजनसंग्रह ५४, हिब्रू ८",
     "गन्ती ७, प्रेरित १, भजनसंग्रह ५５, हिब्रू ९",
-    "गन्ती ८, प्रेरित २:१-२१, भजनसंग्रह ५６, हिब्रू १०",
+    "गन्ती ८, प्रेरित २:१-२१, भजनसंग्रह ५४, हिब्रू १०",
     "गन्ती ९, प्रेरित २:२２-４७, भजनसंग्रह ५७, हिब्रू ११",
     "गन्ती १०, प्रेरित ३, भजनसंग्रह ५८, हिब्रू १२",
     "गन्ती ११, प्रेरित ४:१-२२, भजनसंग्रह ५९, हिब्रू १३",
@@ -367,25 +366,25 @@ const MCCHEYNE_READING_PLAN = [
     "गन्ती १५, प्रेरित ६, भजनसंग्रह ६３, याकוב ४",
     "गन्ती १६, प्रेरित ७:१-२१, भजनसंग्रह ६４, याकוב ५",
     "गन्ती १७, प्रेरित ७:２２-４३, भजनसंग्रह ६５, १ पत्रुस १",
-    "गन्ती १८, प्रेरित ७:४４-६०, भजनसंग्रह ६６, १ पत्रुस २",
+    "गन्ती १८, प्रेरित ७:४४-६०, भजनसंग्रह ६６, १ पत्रुस २",
     "गन्ती १९, प्रेरित ८:१-२५, भजनसंग्रह ६७, १ पत्रुस ३",
     "गन्ती २०, प्रेरित ८:２６-४०, भजनसंग्रह ६८, १ पत्रुस ४",
-    "गन्ती २१, प्रेरित ९:१-२１, भजनसंग्रह ६९, १ पत्रुस ५",
+    "गन्ती २१, प्रेरित ९:१-२१, भजनसंग्रह ६९, १ पत्रुस ५",
     "गन्ती २２, प्रेरित ९:२२-４३, भजनसंग्रह ७０, २ पत्रुस १",
     "गन्ती ২৩, प्रेरित १०:१-२३, भजनसंग्रह ७１, २ पत्रुस २",
     "गन्ती २४, प्रेरित १०:२４-４８, भजनसंग्रह ७２, २ पत्रुस ३",
     "गन्ती २५, प्रेरित ११, भजनसंग्रह ७３, १ यूहन्ना १",
-    "गन्ती २６, प्रेरित १२, भजनसंग्रह ७４, १ यूहन्ना २",
-    "गन्ती २७, प्रेरित १३:१-२５, भजनसंग्रह ७５, १ यूहन्ना ३",
-    "गन्ती २८, प्रेरित १३:２６-５２, भजनसंग्रह ७６, १ यूhanna ४",
+    "गन्ती २６, प्रेरित १२, भजनसंग्रह ७४, १ यूहन्ना २",
+    "गन्ती २७, प्रेरित १३:१-२५, भजनसंग्रह ७५, १ यूहन्ना ३",
+    "गन्ती २८, प्रेरित १३:２６-５２, भजनसंग्रह ७६, १ यूhanna ४",
     "गन्ती २९, प्रेरित १४, भजनसंग्रह ७７, १ यूहन्ना ५",
-    "गन्ती ३０, प्रेरित १५:१-२१, हितोपदेश १, २ यूहन्ना १",
+    "गन्ती ३०, प्रेरित १५:१-२१, हितोपदेश १, २ यूहन्ना १",
     "गन्ती ३１, प्रेरित १५:२२-４१, हितोपदेश २, ३ यूहन्ना १",
     "गन्ती ३２, प्रेरित १६, हितोपदेश ३, यहूदा १",
     "गन्ती ३३, प्रेरित १७:१-१５, हितोपदेश ४, प्रकाश १",
-    "गन्ती ३４, प्रेरित १७:१६-３４, हितोपदेश ५, प्रकाश २",
+    "गन्ती ३४, प्रेरित १७:१६-３४, हितोपदेश ५, प्रकाश २",
     "गन्ती ३५, प्रेरित १८, हितोपदेश ६, प्रकाश ३",
-    "गन्ती ३６, प्रेरित १९, हितोपदेश ७, प्रकाश ४",
+    "गन्ती ३६, प्रेरित १९, हितोपदेश ७, प्रकाश ४",
     "व्यवस्था १, प्रेरित २०:१-१６, हितोपदेश ८, प्रकाश ५",
     "व्यवस्था २, प्रेरित २०:१７-३८, हितोपदेश ९, प्रकाश ६",
     "व्यवस्था ३, प्रेरित २१:१-१८, उपदेशक १, प्रकाश ७",
@@ -408,7 +407,7 @@ const MCCHEYNE_READING_PLAN = [
     "व्यवस्था २०, रोमी ८:१९-३९, श्रेष्ठगीत ६, यशैया २",
     "व्यवस्था २१, रोमी ९, श्रेष्ठगीत ७, यशैया ३",
     "व्यवस्था २２, रोमी १०, श्रेष्ठगीत ८, यशैया ४",
-    "व्यवस्था ২৩, रोमी ११:१-२４, यशैया १, यशैया ५",
+    "व्यवस्था ২৩, रोमी ११:१-२४, यशैया १, यशैया ५",
     "व्यवस्था २४, रोमी ११:２５-３６, यशैया २, यशैया ६",
     "व्यवस्था २५, रोमी १२, यशैया ३, यशैया ७",
     "व्यवस्था २६, रोमी १३, यशैया ४, यशैया ८",
@@ -440,9 +439,9 @@ const MCCHEYNE_READING_PLAN = [
     "यहोशू १८, २ कोरिन्थी ६, यशैया ३０, यशैया ३４",
     "यहोशू १९, २ कोरिन्थी ७, यशैया ३１, यशैया ३５",
     "यहोशू २०, २ कोरिन्थी ८, यशैया ३２, यशैया ३６",
-    "यहोशू २१, २ कोरिन्थी ९, यशैया ३３, यशैया ३７",
+    "यहोशू २१, २ कोरिन्थी ९, यशैया ३３, यशैया ३७",
     "यहोशू २２, २ कोरिन्थी १०, यशैया ३４, यशैया ३᱘",
-    "यहोशू ২৩, २ कोरिन्थी ११, यशैया ३５, यशैया ३९",
+    "यहोशू ২৩, २ कोरिन्थी ११, यशैया ३५, यशैया ३९",
     "यहोशू २४, २ कोरिन्थी १२, यशैया ३６, यशैया ४０",
     "न्यायकर्ता १, २ कोरिन्थी १३, यशैया ३७, यशैया ४１",
     "न्यायकर्ता २, गलाती १, यशैया ३８, यशैया ४２",
@@ -457,9 +456,9 @@ const MCCHEYNE_READING_PLAN = [
     "न्यायकर्ता ११, एफिसी ४, यर्मिया ७, यशैया ५１",
     "न्यायकर्ता १२, एफिसी ५, यर्मिया ८, यशैया ५２",
     "न्यायकर्ता १३, एफिसी ६, यर्मिया ९, यशैया ५３",
-    "न्यायकर्ता १४, फिलिप्पी १, यर्मिया १०, यशैया ५４",
+    "न्यायकर्ता १४, फिलिप्पी १, यर्मिया १०, यशैया ५४",
     "न्यायकर्ता १५, फिलिप्पी २, यर्मिया ११, यशैया ५５",
-    "न्यायकर्ता १६, फिलिप्पी ३, यर्मिया १२, यशैया ५６",
+    "न्यायकर्ता १६, फिलिप्पी ३, यर्मिया १२, यशैया ५۶",
     "न्यायकर्ता १७, फिलिप्पी ४, यर्मिया १३, यशैया ५７",
     "न्यायकर्ता १८, कलस्सी १, यर्मिया १४, यशैया ५８",
     "न्यायकर्ता १९, कलस्सी २, यर्मिया १५, यशैया ५९",
@@ -480,9 +479,9 @@ const MCCHEYNE_READING_PLAN = [
     "१ शमूएल ९, १ तिमोथी ५, यर्मिया ३０, इजकिएल ३",
     "१ शमूएल १०, १ तिमोथी ६, यर्मिया ३１, इजकिएल ४",
     "१ शमूएल ११, २ तिमोथी १, यर्मिया ३２, इजकिएल ५",
-    "१ शमूएल १२, २ तिमोथी २, यर्मिया ३３, इजकिएल ६",
-    "१ शमूएल १३, २ तिमोथी ३, यर्मिया ३４, इजकिएल ७",
-    "१ शमूएल १४, २ तिमोथी ४, यर्मिया ३５, इजकिएल ८",
+    "१ शमूएल १२, २ तिमोथी २, यर्मिया ३３, इजकिएल ७",
+    "१ शमूएल १३, २ तिमोथी ३, यर्मिया ३४, इजकिएल ७",
+    "१ शमूएल १४, २ तिमोथी ४, यर्मिया ३५, इजकिएल ८",
     "१ शमूएल १५, तीतस १, यर्मिया ३６, इजकिएल ९",
     "१ शमूएल १६, तीतस २, यर्मिया ३７, इजकिएल १०",
     "१ शमूएल १७, तीतस ३, यर्मिया ३８, इजकिएल ११",
@@ -490,11 +489,11 @@ const MCCHEYNE_READING_PLAN = [
     "१ शमूएल १९, हिब्रू १, यर्मिया ४०, इजकिएल १३",
     "१ शमूएल २०, हिब्रू २, यर्मिया ४１, इजकिएल १४",
     "१ शमूएल २१, हिब्रू ३, यर्मिया ४２, इजकिएल १५",
-    "१ शमूएल २２, हिब्रू ४, यर्मिया ४３, इजकिएल १६",
-    "१ शमूएल ২৩, हिब्रू ५, यर्मिया ४４, इजकिएल १७",
+    "१ शमूएल २२, हिब्रू ४, यर्मिया ४３, इजकिएल १६",
+    "१ शमूएल ২৩, हिब्रू ५, यर्मिया ४४, इजकिएल १७",
     "१ शमूएल २४, हिब्रू ६, यर्मिया ४５, इजकिएल १८",
-    "१ शमूएल २५, हिब्रू ७, यर्मिया ४６, इजकिएल १९",
-    "१ शमूएल २६, हिब्रू ८, यर्मिया ४７, इजकिएल २०",
+    "१ शमूएल २५, हिब्रू ७, यर्मिया ४۶, इजकिएल १९",
+    "१ शमूएल २६, हिब्रू ८, यर्मिया ४७, इजकिएल २०",
     "१ शमूएल २７, हिब्रू ९, यर्मिया ४８, इजकिएल २१",
     "१ शमूएल २८, हिब्रू १०, यर्मिया ४９, इजकिएल २２",
     "१ शमूएल २९, हिब्रू ११, यर्मिया ५０, इजकिएल ২৩",
@@ -507,9 +506,9 @@ const MCCHEYNE_READING_PLAN = [
     "२ शमूएल ५, याकूब ५, दानिएल ५, इजकिएल ३０",
     "२ शमूएल ६, १ पत्रुस १, दानिएल ६, इजकिएल ३１",
     "२ शमूएल ७, १ पत्रुस २, दानिएल ७, इजकिएल ३２",
-    "२ शमूएल ८, १ पत्रुस ३, दानिएल ८, इजकिएल ३３",
+    "२ शमूएल ८, १ पत्रुस ३, दानिएल ८, इजकिएल ३३",
     "२ शमूएल ९, १ पत्रुस ४, दानिएल ९, इजकिएल ३４",
-    "२ शमूएल १०, १ पत्रुस ५, दानिएल १०, इजकिएल ३５",
+    "२ शमूएल १०, १ पत्रुस ५, दानिएल १०, इजकिएल ३५",
     "२ शमूएल ११, २ पत्रुस १, दानिएल ११, इजकिएल ३６",
     "२ शमूएल १२, २ पत्रुस २, दानिएल १२, इजकिएल ३７",
     "२ शमूएल १३, २ पत्रुस ३, होशे १, इजकिएल ३᱘",
@@ -521,7 +520,7 @@ const MCCHEYNE_READING_PLAN = [
     "२ शमूएल १९, २ यूहन्ना १, होशे ७, इजकिएल ४４",
     "२ शमूएल २०, ३ यूहन्ना १, होशे ८, इजकिएल ४５",
     "२ शमूएल २१, यहूदा १, होशे ९, इजकिएल ४６",
-    "२ शमूएल २２, प्रकाश १, होशे १०, इजकिएल ४７",
+    "२ शमूएल २२, प्रकाश १, होशे १०, इजकिएल ४７",
     "२ शमूएल ২৩, प्रकाश २, होशे ११, इजकिएल ४８",
     "२ शमूएल २४, प्रकाश ३, होशे १२, योएल १",
     "१ राजा १, प्रकाश ४, होशे १३, योएल २",
@@ -566,8 +565,8 @@ const MCCHEYNE_READING_PLAN = [
     "२ राजा १८, मत्ती २１, भजनसंग्रh २８, भजनसंग्रh २९",
     "२ राजा १९, मत्ती २２, भजनसंग्रh ३०, भजनसंग्रh ३１",
     "२ राजा २०, मत्ती ২৩, भजनसंग्रh ३２, भजनसंग्रh ३३",
-    "२ राजा २१, मत्ती २४, भजनसंग्रh ३４, भजनसंग्रh ३５",
-    "२ राजा २２, मत्ती २५, भजनसंग्रh ३６, भजनसंग्रh ३７",
+    "२ राजा २१, मत्ती २४, भजनसंग्रh ३４, भजनसंग्रh ३५",
+    "२ राजा २２, मत्ती २५, भजनसंग्रh ३۶, भजनसंग्रh ३７",
     "२ राजा ২৩, मत्ती २６, भजनसंग्रh ३８, भजनसंग्रh ३९",
     "२ राजा २४, मत्ती २७, भजनसंग्रh ४०, भजनसंग्रh ४１",
     "२ राजा २५, मत्ती २８, भजनसंग्रh ४２, भजनसंग्रh ४३",
@@ -576,13 +575,13 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास ३, मर्कूस ३, भजनसंग्रh ४८, भजनसंग्रh ४९",
     "१ इतिहास ४, मर्कूस ४, भजनसंग्रh ५０, भजनसंग्रh ५１",
     "१ इतिहास ५, मर्कूस ५, भजनसंग्रh ५２, भजनसंग्रh ५３",
-    "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५４, भजनसंग्रh ५５",
-    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५６, भजनसंग्रh ५७",
-    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५９",
-    "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६１",
+    "१ इतिहास ६, मर्कूस ६, भजनसंग्रh ५४, भजनसंग्रh ५５",
+    "१ इतिहास ७, मर्कूस ७, भजनसंग्रh ५६, भजनसंग्रh ५७",
+    "१ इतिहास ८, मर्कूस ८, भजनसंग्रh ५８, भजनसंग्रh ५۹",
+    "१ इतिहास ९, मर्कूस ९, भजनसंग्रh ६０, भजनसंग्रh ६१",
     "१ इतिहास १०, मर्कूस १०, भजनसंग्रh ६２, भजनसंग्रh ६３",
     "१ इतिहास ११, मर्कूस ११, भजनसंग्रh ६４, भजनसंग्रh ६５",
-    "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६６, भजनसंग्रh ६７",
+    "१ इतिहास १२, मर्कूस १२, भजनसंग्रh ६६, भजनसंग्रh ६７",
     "१ इतिहास १३, मर्कूस १३, भजनसंग्रh ६８, भजनसंग्रh ६९",
     "१ इतिहास १४, मर्कूस १४, भजनसंग्रh ७０, भजनसंग्रh ७１",
     "१ इतिहास १५, मर्कूस १५, भजनसंग्रh ७２, भजनसंग्रh ७３",
@@ -602,13 +601,13 @@ const MCCHEYNE_READING_PLAN = [
     "१ इतिहास २९, लूका १२, हितोपदेश २१, भजनसंग्रh ८９",
     "२ इतिहास १, लूका १३, हितोपदेश २२, भजनसंग्रh ९０",
     "२ इतिहास २, लूका १४, हितोपदेश ২৩, भजनसंग्रh ९１",
-    "२ इतिहास ३, लूका १५, हितोपदेश २४, भजनसंग्रh ९２",
+    "२ इतिहास ३, लूका १५, हितोपदेश २४, भजनसंग्रh ९२",
     "२ इतिहास ४, लूका १६, हितोपदेश २५, भजनसंग्रh ९３",
-    "२ इतिहास ५, लूका १७, हितोपदेश २６, भजनसंग्रh ९４",
-    "२ इतिहास ६, लूका १८, हितोपदेश २७, भजनसंग्रh ९５",
+    "२ इतिहास ५, लूका १७, हितोपदेश २６, भजनसंग्रh ९४",
+    "२ इतिहास ६, लूका १८, हितोपदेश २७, भजनसंग्रh ९५",
     "२ इतिहास ७, लूका १९, हितोपदेश २८, भजनसंग्रh ९６",
     "२ इतिहास ८, लूका २०, हितोपदेश २९, भजनसंग्रh ९７",
-    "२ इतिहास ९, लूका २１, हितोपदेश ३０, भजनसंग्रh ९８",
+    "२ इतिहास ९, लूका २１, हितोपदेश ३०, भजनसंग्रh ९８",
     "२ इतिहास १०, लूका २２, हितोपदेश ३１, भजनसंग्रh ९９",
     "२ इतिहास ११, लूका ২৩, भजनसंग्रh १०४, भजनसंग्रh १००",
     "२ इतिहास १२, लूका २४, भजनसंग्रh १०५, भजनसंग्रh १०१",
@@ -629,13 +628,13 @@ const MCCHEYNE_READING_PLAN = [
     "२ इतिहास २७, यूहन्ना १५, भजनसंग्रh १२७, भजनसंग्रh १२８",
     "२ इतिहास २８, यूहन्ना १६, भजनसंग्रh १२९, भजनसंग्रh १३０",
     "२ इतिहास २९, यूहन्ना १७, भजनसंग्रh १३１, भजनसंग्रh १३２",
-    "२ इतिहास ३０, यूहन्ना १८, भजनसंग्रh १३３, भजनसंग्रh १३４",
-    "२ इतिहास ३１, यूहन्ना १९, भजनसंग्रh १३５, भजनसंग्रh १३６",
+    "२ इतिहास ३०, यूहन्ना १८, भजनसंग्रh १३３, भजनसंग्रh १३४",
+    "२ इतिहास ३१, यूहन्ना १९, भजनसंग्रh १३५, भजनसंग्रh १३６",
     "२ इतिहास ३２, यूहन्ना २०, भजनसंग्रh १३７, भजनसंग्रh १३８",
-    "२ इतिहास ३३, यूहन्ना २１, भजनसंग्रh १३９, भजनसंग्रh १४０",
-    "२ इतिहास ३４, प्रेरित १, भजनसंग्रh १४１, भजनसंग्रh १४２",
-    "२ इतिहास ३５, प्रेरित २, भजनसंग्रh १४３, भजनसंग्रh १४４",
-    "२ इतिहास ३６, प्रेरित ३, भजनसंग्रh १४５, भजनसंग्रh १४６",
+    "२ इतिहास ३३, यूहन्ना २１, भजनसंग्रh १३９, भजनसंग्रh १४०",
+    "२ इतिहास ३४, प्रेरित १, भजनसंग्रh १४１, भजनसंग्रh १४２",
+    "२ इतिहास ३५, प्रेरित २, भजनसंग्रh १४３, भजनसंग्रh १४４",
+    "२ इतिहास ३६, प्रेरित ३, भजनसंग्रh १४५, भजनसंग्रh १४６",
     "एज्रा १, प्रेरित ४, भजनसंग्रh १४७, भजनसंग्रh १४８",
     "एज्रा २, प्रेरित ५, भजनसंग्रh १४९, भजनसंग्रh १५０",
 ];
@@ -3134,6 +3133,15 @@ const App: React.FC = () => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
     const [notificationPermissionStatus, setNotificationPermissionStatus] = useState<NotificationPermission>('default');
+    
+    // Check localStorage for dismissal state on mount
+    const [isBannerDismissed, setIsBannerDismissed] = useState(() => {
+        try {
+            return localStorage.getItem('notificationBannerDismissed') === 'true';
+        } catch (e) {
+            return false;
+        }
+    });
 
     const deepLinkProcessed = useRef(false);
 
@@ -3333,6 +3341,10 @@ const App: React.FC = () => {
 
                 if (currentToken) {
                     console.log('✅ SUCCESS: FCM Token received:', currentToken);
+                    
+                    // Force state update to ensure UI reflects granted status immediately
+                    setNotificationPermissionStatus('granted');
+                    
                     const userRef = doc(db, "users", currentUser.id);
                     const userDoc = await getDoc(userRef);
                     const userTokens = userDoc.data()?.fcmTokens || [];
@@ -3358,57 +3370,34 @@ const App: React.FC = () => {
         }
     }, [firebaseServices, currentUser, db, showToast]);
 
-    // Effect to check permission status and get token on load (Robust version)
+    // Enhanced effect for checking permission status
+    // Now includes visibilitychange listener and localStorage dismissal logic
     useEffect(() => {
-        if (!currentUser) return;
-    
-        if ('permissions' in navigator) {
-            let permissionStatus: PermissionStatus;
-    
-            const handlePermissionChange = () => {
-                if (permissionStatus) {
-                    const newStatus = permissionStatus.state;
-                    // Map 'prompt' to 'default' to match NotificationPermission type
-                    setNotificationPermissionStatus(newStatus === 'prompt' ? 'default' : newStatus);
-                    if (newStatus === 'granted') {
-                        requestPermissionAndToken();
-                    }
-                }
-            };
-    
-            navigator.permissions.query({ name: 'notifications' }).then((status) => {
-                permissionStatus = status;
-                const initialState = status.state;
-                setNotificationPermissionStatus(initialState === 'prompt' ? 'default' : initialState);
-    
-                if (initialState === 'granted') {
-                    requestPermissionAndToken();
-                }
+        const checkPermission = () => {
+            if ('Notification' in window) {
+                const permission = Notification.permission;
+                setNotificationPermissionStatus(permission);
                 
-                permissionStatus.addEventListener('change', handlePermissionChange);
-            }).catch(err => {
-                 console.warn("Permissions API not fully supported, falling back to legacy check.", err);
-                 // Fallback for older browsers
-                 const legacyPermission = Notification.permission;
-                 setNotificationPermissionStatus(legacyPermission);
-                 if (legacyPermission === 'granted') {
-                    requestPermissionAndToken();
-                 }
-            });
-    
-            return () => {
-                if (permissionStatus) {
-                    permissionStatus.removeEventListener('change', handlePermissionChange);
+                // If granted, check token status.
+                // We add the `currentUser` check to ensure we only try when logged in.
+                if (permission === 'granted' && currentUser) {
+                     requestPermissionAndToken();
                 }
-            };
-        } else {
-            // Fallback for browsers without Permissions API
-            const initialPermission = Notification.permission;
-            setNotificationPermissionStatus(initialPermission);
-            if (initialPermission === 'granted') {
-                requestPermissionAndToken();
             }
-        }
+        };
+
+        // Check immediately on mount
+        checkPermission();
+
+        // Re-check whenever the app comes into foreground (e.g. user returning from settings)
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'visible') {
+                checkPermission();
+            }
+        };
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
     }, [currentUser, requestPermissionAndToken]);
     
     // Effect for handling incoming messages
@@ -3501,6 +3490,15 @@ const App: React.FC = () => {
         setCurrentChatId(null);
     }, []);
 
+    const handleDismissBanner = () => {
+        setIsBannerDismissed(true);
+        try {
+            localStorage.setItem('notificationBannerDismissed', 'true');
+        } catch (e) {
+            console.error("Failed to save banner dismissal state", e);
+        }
+    };
+
     if (firebaseServices.firebaseError) {
         return <ErrorFallback error={new Error(firebaseServices.firebaseError)} />;
     }
@@ -3550,18 +3548,26 @@ const App: React.FC = () => {
 
     return (
         <div className="app-container">
-            {notificationPermissionStatus === 'denied' && !isConversationOpen && (
+            {notificationPermissionStatus === 'denied' && !isConversationOpen && !isBannerDismissed && (
                 <div className="notification-permission-banner denied">
                     <span className="material-symbols-outlined">notifications_off</span>
                     <p>सूचनाहरू रोकिएका छन्। सन्देश र अद्यावधिकहरू प्राप्त गर्न, कृपया आफ्नो ब्राउजर सेटिङहरूमा यो साइटको लागि सूचनाहरूलाई अनुमति दिनुहोस्।</p>
+                    <button className="banner-dismiss-btn" onClick={handleDismissBanner} style={{marginLeft: 'auto', background: 'none', border: 'none', cursor: 'pointer', padding: '4px'}}>
+                        <span className="material-symbols-outlined" style={{fontSize: '20px', color: 'inherit'}}>close</span>
+                    </button>
                 </div>
             )}
 
-            {notificationPermissionStatus === 'default' && !isConversationOpen && (
+            {notificationPermissionStatus === 'default' && !isConversationOpen && !isBannerDismissed && (
                 <div className="notification-permission-banner request">
                     <span className="material-symbols-outlined">notifications</span>
                     <p>नयाँ सन्देश र अद्यावधिकहरू प्राप्त गर्न सूचनाहरू सक्षम गर्नुहोस्।</p>
-                    <button onClick={requestPermissionAndToken}>सक्षम गर्नुहोस्</button>
+                    <div style={{display: 'flex', gap: '8px', alignItems: 'center'}}>
+                        <button onClick={requestPermissionAndToken}>सक्षम गर्नुहोस्</button>
+                        <button onClick={handleDismissBanner} style={{background: 'none', border: 'none', padding: '4px', display: 'flex', alignItems: 'center', color: 'inherit'}}>
+                             <span className="material-symbols-outlined" style={{fontSize: '20px'}}>close</span>
+                        </button>
+                    </div>
                 </div>
             )}
 
@@ -3611,82 +3617,3 @@ const App: React.FC = () => {
         </div>
     );
 };
-
-
-// --- Error Boundary ---
-interface ErrorBoundaryProps {
-  children: React.ReactNode;
-}
-
-interface ErrorBoundaryState {
-  hasError: boolean;
-  error: Error | null;
-}
-
-class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  constructor(props: ErrorBoundaryProps) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-
-  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-    return { hasError: true, error: error };
-  }
-
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error("Uncaught error:", error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError && this.state.error) {
-      return <ErrorFallback error={this.state.error} />;
-    }
-
-    return this.props.children;
-  }
-}
-
-
-
-// --- App Root ---
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-root.render(
-    <React.StrictMode>
-        <ErrorBoundary>
-            <FirebaseContext.Provider value={initializeFirebaseServices()}>
-                <ToastProvider>
-                   <App />
-                </ToastProvider>
-            </FirebaseContext.Provider>
-        </ErrorBoundary>
-    </React.StrictMode>
-);
-
-// --- Service Worker Registration ---
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', async () => {
-    try {
-        const swUrl = `/firebase-messaging-sw.js`;
-        
-        // Explicitly set the scope to the root to ensure it controls the entire app
-        const registration = await navigator.serviceWorker.register(swUrl, { scope: '/' });
-        console.log('SW registration successful with scope: ', registration.scope);
-
-        registration.addEventListener('updatefound', () => {
-          console.log('A new service worker is being installed.');
-        });
-    } catch (err) {
-        console.error('Service Worker registration failed: ', err);
-    }
-    
-    // This logic helps reload the page when a new service worker takes control,
-    // ensuring the user always has the latest version of the app assets.
-    let refreshing: boolean;
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (refreshing) return;
-      console.log('New service worker has taken control. Reloading page.');
-      window.location.reload();
-      refreshing = true;
-    });
-  });
-}
