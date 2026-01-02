@@ -2830,7 +2830,7 @@ const App: React.FC = () => {
                         email: user.email || userData.email || '',
                         avatar: user.photoURL || userData.avatar || '',
                         roles: finalRoles,
-                        notificationPreferences: mergedPrefs, userData.notificationPreferences || {},
+                        notificationPreferences: mergedPrefs,
                     });
 
                 } else {
@@ -2887,6 +2887,7 @@ const App: React.FC = () => {
 
         const unsubChats = onSnapshot(query(collection(db, "chats"), where("participantIds", "array-contains", currentUser.id)), (snapshot) => {
             const fetchedChats = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Chat));
+        });
 
         const unsubUsers = onSnapshot(query(collection(db, "users")), (snapshot) => {
             const users = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as User));
