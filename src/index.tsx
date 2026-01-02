@@ -2724,22 +2724,11 @@ const App: React.FC = () => {
     const firebaseServices = useFirebase();
     const { auth, db } = firebaseServices;
     const { showToast } = useToast();
-    
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
     const [activePage, setActivePage] = useState<'worship' | 'bible' | 'news' | 'podcast' | 'prayer' | 'chat'>('news');
     const [currentChatId, setCurrentChatId] = useState<string | null>(null);
     const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
-
-    useEffect(() => {
-        if ('setAppBadge' in navigator) {
-            if (unreadCount > 0) {
-                (navigator as any).setAppBadge(unreadCount).catch((e: any) => console.error(e));
-            } else {
-                (navigator as any).clearAppBadge().catch((e: any) => console.error(e));
-            }
-        }
-    }, [unreadCount]);
 
     // Data states
     const [worshipService, setWorshipService] = useState<WorshipService | null>(null);
@@ -2753,6 +2742,16 @@ const App: React.FC = () => {
     const [unreadCount, setUnreadCount] = useState(0);
     const [notificationPermissionStatus, setNotificationPermissionStatus] = useState<NotificationPermission>('default');
     
+    useEffect(() => {
+        if ('setAppBadge' in navigator) {
+            if (unreadCount > 0) {
+                (navigator as any).setAppBadge(unreadCount).catch((e: any) => console.error(e));
+            } else {
+                (navigator as any).clearAppBadge().catch((e: any) => console.error(e));
+            }
+        }
+    }, [unreadCount]);
+
     // Check localStorage for dismissal state on mount
     const [isBannerDismissed, setIsBannerDismissed] = useState(() => {
         try {
@@ -2885,9 +2884,10 @@ const App: React.FC = () => {
             setPrayerRequests(requests);
         });
 
-               const unsubChats = onSnapshot(query(collection(db, "chats"), where("participantIds", "array-contains", currentUser.id)), (snapshot) => {
+        const unsubChats = onSnapshot(query(collection(db, "chats"), where("participantIds", "array-contains", currentUser.id)), (snapshot) => {
             const fetchedChats = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Chat));
             
+            // 안 읽은 메시지 개수 계산 (반드시 onSnapshot 내부에서 수행해야 합니다)
             const count = fetchedChats.reduce((acc, chat) => {
                 const isUnread = chat.lastRead && chat.lastMessage && 
                                  chat.lastMessage.senderId !== currentUser.id && 
@@ -2911,7 +2911,7 @@ const App: React.FC = () => {
             unsubPodcasts();
             unsubPrayer();
             unsubUsers();
-            unsubChats();
+            unsubChats(); //
         };
 
     }, [db, currentUser]);
