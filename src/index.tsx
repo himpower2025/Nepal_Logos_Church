@@ -130,7 +130,7 @@ const ToastContainer: React.FC<{ toasts: ToastMessage[] }> = ({ toasts }) => {
 
 // --- Types ---
 type UserRole = 'admin' | 'member' | 'news_contributor' | 'podcast_contributor';
-type User = { id: string; name: string; email: string; avatar: string; roles: UserRole[]; fcmTokens?: string[]; notificationPreferences?: { news?: boolean, prayer?: boolean, chat?: boolean } };
+type User = { id: string; name: string; email: string; avatar: string; roles: UserRole[]; fcmTokens?: string[]; notificationPreferences?: { news?: boolean, prayer?: boolean, chat?: boolean, worship?: boolean, podcast?: boolean } };
 type Church = { id: string; name: string; logo: string; offeringDetails: any; };
 type Comment = { id: string; authorId: string; authorName: string; authorAvatar: string; content: string; createdAt: Timestamp; };
 type PrayerRequest = { id:string; authorId: string; authorName: string; title: string; content: string; image?: string | null; thumbnailUrl?: string | null; imagePath?: string | null; thumbnailPath?: string | null; prayedBy: string[]; comments?: Comment[]; commentCount?: number; createdAt: Timestamp; status?: 'uploading' | 'failed'; tempId?: string; localImagePreview?: string | null; };
@@ -2730,7 +2730,17 @@ const App: React.FC = () => {
     const [activePage, setActivePage] = useState<'worship' | 'bible' | 'news' | 'podcast' | 'prayer' | 'chat'>('news');
     const [currentChatId, setCurrentChatId] = useState<string | null>(null);
     const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
-    
+
+    useEffect(() => {
+        if ('setAppBadge' in navigator) {
+            if (unreadCount > 0) {
+                (navigator as any).setAppBadge(unreadCount).catch((e: any) => console.error(e));
+            } else {
+                (navigator as any).clearAppBadge().catch((e: any) => console.error(e));
+            }
+        }
+    }, [unreadCount]);
+
     // Data states
     const [worshipService, setWorshipService] = useState<WorshipService | null>(null);
     const [pastServices, setPastServices] = useState<PastWorshipService[]>([]);
@@ -2740,6 +2750,7 @@ const App: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [notifications, setNotifications] = useState<AppNotification[]>([]);
     const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
+    const [unreadCount, setUnreadCount] = useState(0);
     const [notificationPermissionStatus, setNotificationPermissionStatus] = useState<NotificationPermission>('default');
     
     // Check localStorage for dismissal state on mount
@@ -2810,14 +2821,16 @@ const App: React.FC = () => {
                      if (!user.photoURL && userData.avatar) {
                         await updateProfile(user, { photoURL: userData.avatar });
                     }
-                    
+                    const existingPrefs = userData.notificationPreferences || {};
+                    const mergedPrefs = { news: true, prayer: true, chat: true, worship: true, podcast: true, ...existingPrefs };
+
                     setCurrentUser({ 
                         id: user.uid, 
                         name: user.displayName || userData.name || '',
                         email: user.email || userData.email || '',
                         avatar: user.photoURL || userData.avatar || '',
                         roles: finalRoles,
-                        notificationPreferences: userData.notificationPreferences || {},
+                        notificationPreferences: mergedPrefs, userData.notificationPreferences || {},
                     });
 
                 } else {
@@ -2829,7 +2842,7 @@ const App: React.FC = () => {
                         email: user.email || '',
                         avatar: user.photoURL || '',
                         roles: finalRoles,
-                        notificationPreferences: { news: true, prayer: true, chat: true },
+                        notificationPreferences: { news: true, prayer: true, chat: true, worship: true, podcast: true },
                     };
                     await setDoc(userDocRef, newUser);
                     setCurrentUser({ id: user.uid, ...newUser } as User);
@@ -2872,10 +2885,23 @@ const App: React.FC = () => {
             setPrayerRequests(requests);
         });
 
+        const unsubChats = onSnapshot(query(collection(db, "chats"), where("participantIds", "array-contains", currentUser.id)), (snapshot) => {
+            const fetchedChats = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Chat));
+
         const unsubUsers = onSnapshot(query(collection(db, "users")), (snapshot) => {
             const users = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as User));
             users.sort((a, b) => a.name.localeCompare(b.name));
             setUsers(users);
+        });
+
+        const count = fetchedChats.reduce((acc, chat) => {
+                const isUnread = chat.lastRead && chat.lastMessage && 
+                                 chat.lastMessage.senderId !== currentUser.id && 
+                                 (!chat.lastRead[currentUser.id] || chat.lastRead[currentUser.id] < chat.lastMessage.createdAt);
+                return isUnread ? acc + 1 : acc;
+            }, 0);
+            
+            setUnreadCount(count);
         });
 
         return () => {
@@ -2885,6 +2911,7 @@ const App: React.FC = () => {
             unsubPodcasts();
             unsubPrayer();
             unsubUsers();
+            unsubChats();
         };
 
     }, [db, currentUser]);

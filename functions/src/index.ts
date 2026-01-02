@@ -19,6 +19,8 @@ interface UserData {
         news?: boolean;
         prayer?: boolean;
         chat?: boolean;
+        worship?: boolean; // 추가
+        podcast?: boolean; // 추가
     };
 }
 
@@ -46,7 +48,7 @@ interface ChatData {
 
 // Helper to get tokens for a specific topic, respecting user preferences
 const getTokensForTopic = async (
-    topic: "news" | "prayer",
+    topic: "news" | "prayer" | "worship" | "podcast",
     excludeUserId?: string
 ): Promise<string[]> => {
     const usersSnapshot = await db.collection("users").get();
@@ -58,7 +60,7 @@ const getTokensForTopic = async (
         }
         const user = doc.data() as UserData;
         // Default to true if preference is not set (user.notificationPreferences?.[topic] !== false)
-        const canNotify = !user.notificationPreferences || user.notificationPreferences[topic] !== false;
+        const canNotify = !user.notificationPreferences || (user.notificationPreferences as any)[topic] !== false;
 
         if (canNotify && user.fcmTokens && Array.isArray(user.fcmTokens)) {
             tokens.push(...user.fcmTokens);
@@ -405,5 +407,56 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
         handleSendResponse(response, uniqueTokens);
     } catch (error) {
         logger.error("Error sending chat notification multicast:", error);
+    }
+});
+// --- 이 아래 코드를 파일 맨 끝에 추가하세요 ---
+
+// 3. 예배 영상 알림 트리거
+export const onPastWorshipCreated = onDocumentCreated("pastWorshipServices/{serviceId}", async (event) => {
+    const snapshot = event.data;
+    if (!snapshot) return;
+    const service = snapshot.data() as { title: string };
+    if (!service || !service.title) return;
+
+    const allTokens = await getTokensForTopic("worship");
+
+    if (allTokens.length > 0) {
+        const link = "/?page=worship";
+        const payload: MulticastMessage = {
+            notification: { title: "🎥 New Worship Video", body: service.title },
+            data: { url: link },
+            tokens: allTokens,
+            webpush: {
+                notification: { icon: `${APP_URL}/logos-church-new-logo.jpg` },
+                fcmOptions: { link: `${APP_URL}${link}` },
+            },
+        };
+        const response = await fcm.sendEachForMulticast(payload);
+        handleSendResponse(response, allTokens);
+    }
+});
+
+// 4. 팟캐스트 알림 트리거
+export const onPodcastCreated = onDocumentCreated("podcasts/{podcastId}", async (event) => {
+    const snapshot = event.data;
+    if (!snapshot) return;
+    const podcast = snapshot.data() as { title: string };
+    if (!podcast || !podcast.title) return;
+
+    const allTokens = await getTokensForTopic("podcast");
+
+    if (allTokens.length > 0) {
+        const link = "/?page=podcast";
+        const payload: MulticastMessage = {
+            notification: { title: "🎧 New Podcast", body: podcast.title },
+            data: { url: link },
+            tokens: allTokens,
+            webpush: {
+                notification: { icon: `${APP_URL}/logos-church-new-logo.jpg` },
+                fcmOptions: { link: `${APP_URL}${link}` },
+            },
+        };
+        const response = await fcm.sendEachForMulticast(payload);
+        handleSendResponse(response, allTokens);
     }
 });

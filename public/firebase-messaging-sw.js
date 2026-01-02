@@ -44,12 +44,13 @@ if (typeof firebase !== 'undefined' && hasAllConfig) {
                 const notificationOptions = {
                     body: payload.notification?.body || "",
                     icon: '/logos-church-new-logo.jpg',
+                    badge: '/logos-church-new-logo.jpg',
                     tag: payload.data?.tag || 'logos-church-notification',
                     data: {
                         url: payload.fcmOptions?.link || payload.data?.url || self.origin,
                     }
                 };
-                
+                if (navigator.setAppBadge) { navigator.setAppBadge(); }
                 return self.registration.showNotification(notificationTitle, notificationOptions);
             });
             console.log('[SW-LOG] Background message handler set up.');
