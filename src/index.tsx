@@ -2885,17 +2885,10 @@ const App: React.FC = () => {
             setPrayerRequests(requests);
         });
 
-        const unsubChats = onSnapshot(query(collection(db, "chats"), where("participantIds", "array-contains", currentUser.id)), (snapshot) => {
+               const unsubChats = onSnapshot(query(collection(db, "chats"), where("participantIds", "array-contains", currentUser.id)), (snapshot) => {
             const fetchedChats = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Chat));
-        });
-
-        const unsubUsers = onSnapshot(query(collection(db, "users")), (snapshot) => {
-            const users = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as User));
-            users.sort((a, b) => a.name.localeCompare(b.name));
-            setUsers(users);
-        });
-
-        const count = fetchedChats.reduce((acc, chat) => {
+            
+            const count = fetchedChats.reduce((acc, chat) => {
                 const isUnread = chat.lastRead && chat.lastMessage && 
                                  chat.lastMessage.senderId !== currentUser.id && 
                                  (!chat.lastRead[currentUser.id] || chat.lastRead[currentUser.id] < chat.lastMessage.createdAt);
@@ -2903,6 +2896,12 @@ const App: React.FC = () => {
             }, 0);
             
             setUnreadCount(count);
+        }, (error) => console.error("Chat listener error:", error));
+
+        const unsubUsers = onSnapshot(query(collection(db, "users")), (snapshot) => {
+            const usersList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as User));
+            usersList.sort((a, b) => a.name.localeCompare(b.name));
+            setUsers(usersList);
         });
 
         return () => {
