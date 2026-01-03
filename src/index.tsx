@@ -251,6 +251,14 @@ const formatDate = (timestamp: Timestamp | Date | undefined): string => {
         day: 'numeric',
     });
 };
+const isSameDay = (ts1: Timestamp | undefined, ts2: Timestamp | undefined) => {
+    if (!ts1 || !ts2) return false;
+    const d1 = ts1.toDate();
+    const d2 = ts2.toDate();
+    return d1.getFullYear() === d2.getFullYear() &&
+           d1.getMonth() === d2.getMonth() &&
+           d1.getDate() === d2.getDate();
+};
 const formatTime = (timestamp: Timestamp | undefined): string => {
     if (!timestamp) return '';
     return timestamp.toDate().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
@@ -2357,22 +2365,36 @@ const ConversationPage: React.FC<{
                     <div className="header-action-button" style={{ visibility: 'hidden' }}></div>
                 )}
             </header>
-            <div className="message-list" ref={messageListRef} onScroll={handleScroll}>
-                {loading ? <Loading message="Loading messages..." /> : (
-                    <>
-                        {sortedMessages.map(msg => (
-                            <MessageBubble 
-                                key={msg.tempId || msg.id} 
-                                message={msg} 
-                                isSent={msg.senderId === currentUser.id} 
-                                onMediaClick={(index) => msg.media && setViewingMedia({ media: msg.media, startIndex: index })}
-                                onLongPress={() => setDeletingMessage(msg)}
-                                onImageLoad={handleImageLoad}
-                            />
-                        ))}
-                    </>
-                )}
-            </div>
+                
+<div className="message-list" ref={messageListRef} onScroll={handleScroll}>
+    {loading ? <Loading message="Loading messages..." /> : (
+        <>
+            {sortedMessages.map((msg, index) => {
+                // 이전 메시지와 날짜가 다른지 확인
+                const prevMsg = index > 0 ? sortedMessages[index - 1] : null;
+                const showDate = !prevMsg || !isSameDay(msg.createdAt, prevMsg.createdAt);
+                
+                return (
+                    <React.Fragment key={msg.tempId || msg.id}>
+                        {/* 날짜가 바뀌었을 때만 구분선 표시 */}
+                        {showDate && (
+                            <div className="date-separator">
+                                <span>{formatDate(msg.createdAt)}</span>
+                            </div>
+                        )}
+                        <MessageBubble 
+                            message={msg} 
+                            isSent={msg.senderId === currentUser.id} 
+                            onMediaClick={(idx) => msg.media && setViewingMedia({ media: msg.media, startIndex: idx })}
+                            onLongPress={() => setDeletingMessage(msg)}
+                            onImageLoad={handleImageLoad}
+                        />
+                    </React.Fragment>
+                );
+            })}
+        </>
+    )}
+</div>
             <div className="message-input-container">
                 {mediaPreviews.length > 0 && (
                     <div className="media-preview-container">
