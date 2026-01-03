@@ -245,7 +245,7 @@ const MCCHEYNE_READING_PLAN = [
 const formatDate = (timestamp: Timestamp | Date | undefined): string => {
     if (!timestamp) return '';
     const date = (timestamp as Timestamp).toDate ? (timestamp as Timestamp).toDate() : (timestamp as Date);
-    return date.toLocaleDateString('ne-NP', {
+    return date.toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
@@ -255,8 +255,8 @@ const isSameDay = (ts1: Timestamp | undefined, ts2: Timestamp | undefined) => {
     if (!ts1 || !ts2) return false;
     const d1 = ts1.toDate();
     const d2 = ts2.toDate();
-    return d1.getFullYear() === d2.getFullYear() &&
-           d1.getMonth() === d2.getMonth() &&
+    return d1.getFullYear() === d2.getFullYear() && 
+           d1.getMonth() === d2.getMonth() && 
            d1.getDate() === d2.getDate();
 };
 const formatTime = (timestamp: Timestamp | undefined): string => {
