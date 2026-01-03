@@ -1860,7 +1860,6 @@ html, body, #root {
     max-width: 400px;
 }
 
-
 .date-separator {
     text-align: center;
     margin: 20px 0;
@@ -1879,7 +1878,7 @@ html, body, #root {
 }
 
 .date-separator span {
-    background-color: #f5f5f5;
+    background-color: #f0f0f0;
     padding: 4px 12px;
     border-radius: 12px;
     font-size: 12px;
@@ -1899,21 +1898,44 @@ html, body, #root {
     border-radius: 10px;
     min-width: 18px;
     text-align: center;
-    font-weight: bold;
 }
 
-.message-bubble-row {
-    display: flex;
-    margin-bottom: 10px;
+/* Sent message bubble: Improved visibility with dark text on light mint background */
+.sent .message-bubble,
+.sent .message-bubble p,
+.sent .message-bubble .message-content {
+    color: #000000 !important;
 }
-.message-bubble-row.sent { justify-content: flex-end; }
-.message-bubble-row.received { justify-content: flex-start; }
+
+.received .message-bubble { 
+    background-color: #ffffff; 
+    color: #000000; 
+    border-bottom-left-radius: 4px; 
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
 
 .message-bubble {
-    padding: 10px 14px;
-    border-radius: 18px;
-    max-width: 70%;
+    padding: 8px 12px;
+    border-radius: 16px;
+    max-width: 80%;
     position: relative;
+    font-size: 15px;
+    line-height: 1.4;
 }
-.sent .message-bubble { background-color: #004d40; color: white; border-bottom-right-radius: 4px; }
-.received .message-bubble { background-color: #e0e0e0; color: black; border-bottom-left-radius: 4px; }
+
+.message-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.message-timestamp {
+    font-size: 10px;
+    color: #666;
+}
+
+.sent .message-timestamp {
+    color: #555;
+}
