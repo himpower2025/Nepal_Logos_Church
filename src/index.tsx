@@ -3049,6 +3049,29 @@ const App: React.FC = () => {
     }
 }, [firebaseServices, currentUser, db]);
 
+const handleRequestPermission = useCallback(async () => {
+    if (!firebaseServices.messaging || !currentUser) return;
+    try {
+        const permission = await Notification.requestPermission();
+        setNotificationPermissionStatus(permission);
+        if (permission === 'granted') {
+            await retrieveToken();
+            showToast("Success", "Notifications enabled!");
+        } else {
+            showToast("Blocked", "Notifications are blocked. Please enable them in browser settings.");
+        }
+    } catch (error) {
+        console.error("Permission request failed", error);
+    } finally {
+        setIsBannerDismissed(true);
+        try {
+            localStorage.setItem('notificationBannerDismissed', 'true');
+        } catch (e) {
+            console.error("Failed to save banner dismissal state", e);
+        }
+    }
+}, [firebaseServices, currentUser, retrieveToken, showToast]);
+
 
     // 3. Initial Check on Mount (No Popups)
     useEffect(() => {
