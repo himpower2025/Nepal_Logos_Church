@@ -1,4 +1,3 @@
-
 import {onDocumentCreated} from "firebase-functions/v2/firestore";
 import * as admin from "firebase-admin";
 import * as logger from "firebase-functions/logger";
@@ -11,7 +10,7 @@ const fcm = admin.messaging();
 
 const APP_URL = "https://logos-church-nepal.web.app";
 
-// --- TYPE DEFINITIONS for Firestore documents ---
+// --- TYPE DEFINITIONS ---
 interface UserData {
     fcmTokens?: string[];
     name?: string;
@@ -19,8 +18,8 @@ interface UserData {
         news?: boolean;
         prayer?: boolean;
         chat?: boolean;
-        worship?: boolean; // 추가
-        podcast?: boolean; // 추가
+        worship?: boolean;
+        podcast?: boolean;
     };
 }
 
@@ -59,375 +58,72 @@ const getTokensForTopic = async (
             return;
         }
         const user = doc.data() as UserData;
-        // Default to true if preference is not set (user.notificationPreferences?.[topic] !== false)
         const canNotify = !user.notificationPreferences || (user.notificationPreferences as any)[topic] !== false;
 
         if (canNotify && user.fcmTokens && Array.isArray(user.fcmTokens)) {
             tokens.push(...user.fcmTokens);
         }
     });
-    return [...new Set(tokens)]; // Return unique tokens
+    return [...new Set(tokens)];
 };
 
-
-// Helper to remove stale FCM tokens from Firestore to prevent sending to invalid endpoints.
+// Helper to remove stale FCM tokens
 const cleanStaleTokens = async (tokensToRemove: string[]) => {
-    if (tokensToRemove.length === 0) {
-        return;
-    }
-    logger.log(`Attempting to clean ${tokensToRemove.length} stale tokens.`);
+    if (tokensToRemove.length === 0) return;
     try {
         const usersRef = db.collection("users");
-        // Firestore 'in' queries are limited to 30 items. A more robust solution
-        // would batch this for large numbers of stale tokens.
         const snapshot = await usersRef.where("fcmTokens", "array-contains-any", tokensToRemove.slice(0, 30)).get();
-
-        if (snapshot.empty) {
-            logger.log("No users found with the specified stale tokens.");
-            return;
-        }
-
         const updates: Promise<admin.firestore.WriteResult>[] = [];
         snapshot.forEach((doc) => {
             updates.push(doc.ref.update({
                 fcmTokens: admin.firestore.FieldValue.arrayRemove(...tokensToRemove),
             }));
         });
-
         await Promise.all(updates);
-        logger.log(`Cleaned stale tokens from ${updates.length} user documents.`);
     } catch (error) {
         logger.error("Error cleaning stale tokens:", error);
     }
 };
 
-// Helper function to process FCM send responses, logging errors and cleaning stale tokens.
+// Helper function to process FCM send responses
 const handleSendResponse = (response: admin.messaging.BatchResponse, tokens: string[]) => {
-    if (!response || !response.responses) {
-        logger.log("No response object from FCM send.");
-        return;
-    }
     const staleTokens: string[] = [];
-    let successCount = 0;
-
     response.responses.forEach((result, index) => {
-        const error = result.error;
-        if (result.success) {
-            successCount++;
-        } else if (error) {
-            logger.error(`Failure sending notification to token: ${tokens[index]}`, error);
-            // Check for codes indicating a token is no longer valid.
-            if (error.code === "messaging/invalid-registration-token" ||
-                error.code === "messaging/registration-token-not-registered") {
+        if (!result.success && result.error) {
+            if (result.error.code === "messaging/invalid-registration-token" ||
+                result.error.code === "messaging/registration-token-not-registered") {
                 staleTokens.push(tokens[index]);
             }
         }
     });
-
-    logger.log(`FCM send complete. Success: ${successCount}, Failures: ${response.failureCount}.`);
-
-    if (staleTokens.length > 0) {
-        cleanStaleTokens(staleTokens);
-    }
+    if (staleTokens.length > 0) cleanStaleTokens(staleTokens);
 };
 
-
-// 1. Function to send notification when a new news item is created
+// 1. New News Notification
 export const onNewsCreated = onDocumentCreated("news/{newsId}", async (event) => {
-    logger.log("onNewsCreated triggered. Event ID:", event.id);
-    const snapshot = event.data;
-    if (!snapshot) {
-        logger.log("Function triggered for a deletion or invalid data, exiting.");
-        return;
-    }
-    const newsItem = snapshot.data() as NewsData;
-    if (!newsItem || !newsItem.title) {
-        return logger.log("News item data is missing title or other essential fields.");
-    }
-
-    logger.log(`New news item created: "${newsItem.title}", by author: ${newsItem.authorId}`);
-    const allTokens = await getTokensForTopic("news", newsItem.authorId);
-
-    if (allTokens.length > 0) {
-        const link = "/?page=news";
-        const notificationTitle = "⛪️ New Announcement";
-        const notificationBody = newsItem.title;
-
-        const payload: MulticastMessage = {
-            notification: {
-                title: notificationTitle,
-                body: notificationBody,
-            },
-            data: {
-                url: link,
-            },
-            tokens: allTokens,
-            // --- High-priority delivery configuration for all platforms ---
-            android: {
-                priority: "high",
-                notification: {
-                    priority: "max",
-                    channelId: "church_announcements",
-                },
-            },
-            apns: {
-                headers: {
-                    "apns-priority": "10",
-                },
-            },
-            webpush: {
-                headers: {
-                    Urgency: "high",
-                },
-                notification: {
-                    title: notificationTitle,
-                    body: notificationBody,
-                    icon: `${APP_URL}/logos-church-new-logo.jpg`,
-                    tag: `news-${event.params.newsId}`,
-                },
-                fcmOptions: {
-                    link: `${APP_URL}${link}`,
-                },
-            },
-        };
-
-        logger.log(`Sending 'news' notification to ${allTokens.length} tokens.`);
-        try {
-            const response = await fcm.sendEachForMulticast(payload);
-            handleSendResponse(response, allTokens);
-        } catch(error) {
-            logger.error("Error sending news notification multicast:", error);
-        }
-    } else {
-         logger.log("No FCM tokens found to send notification for new news item.");
-    }
-});
-
-// 2. Function to send notification for a new prayer request
-export const onPrayerRequestCreated = onDocumentCreated("prayerRequests/{requestId}", async (event) => {
-    logger.log("onPrayerRequestCreated triggered. Event ID:", event.id);
-    const snapshot = event.data;
-    if (!snapshot) {
-        logger.log("Function triggered for a deletion or invalid data, exiting.");
-        return;
-    }
-    const prayerRequest = snapshot.data() as PrayerRequestData;
-    if (!prayerRequest || !prayerRequest.authorName) {
-        return logger.log("Prayer request data is missing authorName.");
-    }
-
-    logger.log(`New prayer request: "${prayerRequest.title}", by author: ${prayerRequest.authorName}`);
-    const allTokens = await getTokensForTopic("prayer", prayerRequest.authorId);
-
-    if (allTokens.length > 0) {
-        const link = "/?page=prayer";
-        const notificationTitle = "🙏 New Prayer Request";
-        const notificationBody = `${prayerRequest.authorName} has shared a new request.`;
-
-        const payload: MulticastMessage = {
-            notification: {
-                title: notificationTitle,
-                body: notificationBody,
-            },
-            data: {
-                url: link,
-            },
-            tokens: allTokens,
-            android: {
-                priority: "high",
-                notification: {
-                    priority: "max",
-                    channelId: "prayer_requests",
-                },
-            },
-            apns: {
-                headers: {
-                    "apns-priority": "10",
-                },
-            },
-            webpush: {
-                headers: {
-                    Urgency: "high",
-                },
-                notification: {
-                    title: notificationTitle,
-                    body: notificationBody,
-                    icon: `${APP_URL}/logos-church-new-logo.jpg`,
-                    tag: `prayer-${event.params.requestId}`,
-                },
-                fcmOptions: {
-                    link: `${APP_URL}${link}`,
-                },
-            },
-        };
-        logger.log(`Sending 'prayer' notification to ${allTokens.length} tokens.`);
-        try {
-            const response = await fcm.sendEachForMulticast(payload);
-            handleSendResponse(response, allTokens);
-        } catch(error) {
-            logger.error("Error sending prayer notification multicast:", error);
-        }
-    } else {
-        logger.log("No FCM tokens found to send prayer request notification.");
-    }
-});
-
-// 3. Function to send notification for a new chat message
-export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{messageId}", async (event) => {
-    const { chatId } = event.params;
-    logger.log(`onChatMessageCreated triggered for chat: ${chatId}. Event ID: ${event.id}`);
-    const snapshot = event.data;
-
-    if (!snapshot) {
-        logger.log("Message snapshot is missing, likely a deletion. Exiting.");
-        return;
-    }
-    const message = snapshot.data() as MessageData;
-
-    if (!message || !message.senderId) {
-        return logger.log("Message data is invalid or missing senderId.");
-    }
-
-    const chatDoc = await db.collection("chats").doc(chatId).get();
-    const chatData = chatDoc.data() as ChatData | undefined;
-
-    if (!chatDoc.exists || !chatData || !chatData.participantIds) {
-        return logger.log(`Chat ${chatId} not found or has no participants.`);
-    }
-
-    const senderSnapshot = await db.collection("users").doc(message.senderId).get();
-    const senderName = (senderSnapshot.data() as UserData | undefined)?.name || "Someone";
-
-    const recipientIds = chatData.participantIds.filter((id) => id !== message.senderId);
-    if (recipientIds.length === 0) {
-        return logger.log(`No recipients for this message in chat ${chatId}.`);
-    }
-    logger.log(`Found ${recipientIds.length} recipients: ${recipientIds.join(", ")}`);
-
-
-    const userDocs = await db.collection("users").where(admin.firestore.FieldPath.documentId(), "in", recipientIds).get();
-    
-    const tokensToSend: string[] = [];
-    userDocs.docs.forEach((doc) => {
-        const user = doc.data() as UserData;
-        // Default to true if preference for chat is not explicitly false
-        const canNotify = !user.notificationPreferences || user.notificationPreferences.chat !== false;
-
-        if (canNotify && user.fcmTokens && Array.isArray(user.fcmTokens)) {
-            tokensToSend.push(...user.fcmTokens);
-        }
-    });
-    
-    const uniqueTokens = [...new Set(tokensToSend)];
-
-
-    if (uniqueTokens.length === 0) {
-        return logger.log(`No FCM tokens found for any opted-in recipients in chat ${chatId}.`);
-    }
-    logger.log(`Found ${uniqueTokens.length} unique FCM tokens to send to.`);
-
-    let messageContent = message.content;
-    if (!messageContent) {
-        if (message.media && message.media.length > 0) {
-            messageContent = message.media.length > 1 ? "Sent media" : (message.media[0].type === "image" ? "Sent a photo" : "Sent a video");
-        } else {
-            messageContent = "Sent a message";
-        }
-    }
-
-    const link = `/?page=chat&chatId=${chatId}`;
-    const truncatedBody = messageContent.length > 100 ? messageContent.substring(0, 97) + "..." : messageContent;
-    const isGroupChat = chatData.participantIds.length > 2;
-
-    let notificationTitle: string;
-
-    if (isGroupChat) {
-        let groupTitle = chatData.name;
-        if (!groupTitle) {
-            const participantNames = (await Promise.all(
-                chatData.participantIds
-                .filter((id) => id !== message.senderId)
-                .slice(0, 3)
-                .map((id) => db.collection("users").doc(id).get())
-            )).map((doc) => (doc.data() as UserData)?.name?.split(" ")[0] || "");
-            
-            groupTitle = participantNames.slice(0, 2).join(", ");
-            if (participantNames.length > 2) {
-                groupTitle += "...";
-            }
-        }
-        notificationTitle = `💬 ${groupTitle || "Group Chat"}`;
-    } else {
-        notificationTitle = `💬 ${senderName}`;
-    }
-
-    const notificationBody = isGroupChat ? `${senderName}: ${truncatedBody}` : truncatedBody;
-
-    const payload: MulticastMessage = {
-        notification: {
-            title: notificationTitle,
-            body: notificationBody,
-        },
-        data: {
-            url: link,
-            chatId: chatId, // Pass for in-app handling
-        },
-        tokens: uniqueTokens,
-        android: {
-            priority: "high",
-            notification: {
-                priority: "max",
-                channelId: "chat_messages",
-            },
-        },
-        apns: {
-            headers: {
-                "apns-priority": "10",
-            },
-        },
-        webpush: {
-            headers: {
-                Urgency: "high",
-            },
-            notification: {
-                title: notificationTitle,
-                body: notificationBody,
-                icon: `${APP_URL}/logos-church-new-logo.jpg`,
-                tag: `chat-${chatId}`,
-            },
-            fcmOptions: {
-                link: `${APP_URL}${link}`,
-            },
-        },
-    };
-
-    logger.log(`Sending chat notification payload to ${uniqueTokens.length} tokens for chat ${chatId}.`);
-    try {
-        const response = await fcm.sendEachForMulticast(payload);
-        handleSendResponse(response, uniqueTokens);
-    } catch (error) {
-        logger.error("Error sending chat notification multicast:", error);
-    }
-});
-// --- 이 아래 코드를 파일 맨 끝에 추가하세요 ---
-
-// 3. 예배 영상 알림 트리거
-export const onPastWorshipCreated = onDocumentCreated("pastWorshipServices/{serviceId}", async (event) => {
     const snapshot = event.data;
     if (!snapshot) return;
-    const service = snapshot.data() as { title: string };
-    if (!service || !service.title) return;
+    const newsItem = snapshot.data() as NewsData;
+    if (!newsItem || !newsItem.title) return;
 
-    const allTokens = await getTokensForTopic("worship");
-
+    const allTokens = await getTokensForTopic("news", newsItem.authorId);
     if (allTokens.length > 0) {
-        const link = "/?page=worship";
+        const link = "/?page=news";
+        const title = "⛪️ New Announcement";
+        const body = newsItem.title;
+
         const payload: MulticastMessage = {
-            notification: { title: "🎥 New Worship Video", body: service.title },
+            notification: { title, body },
             data: { url: link },
             tokens: allTokens,
+            android: {
+                priority: "high",
+                notification: { priority: "max", channelId: "church_announcements" },
+            },
+            apns: { headers: { "apns-priority": "10" }, payload: { aps: { sound: "default" } } },
             webpush: {
-                notification: { icon: `${APP_URL}/logos-church-new-logo.jpg` },
+                headers: { Urgency: "high" },
+                notification: { title, body, icon: `${APP_URL}/logos-church-new-logo.jpg`, tag: `news-${event.params.newsId}` },
                 fcmOptions: { link: `${APP_URL}${link}` },
             },
         };
@@ -436,7 +132,129 @@ export const onPastWorshipCreated = onDocumentCreated("pastWorshipServices/{serv
     }
 });
 
-// 4. 팟캐스트 알림 트리거
+// 2. New Prayer Request Notification
+export const onPrayerRequestCreated = onDocumentCreated("prayerRequests/{requestId}", async (event) => {
+    const snapshot = event.data;
+    if (!snapshot) return;
+    const prayerRequest = snapshot.data() as PrayerRequestData;
+    if (!prayerRequest) return;
+
+    const allTokens = await getTokensForTopic("prayer", prayerRequest.authorId);
+    if (allTokens.length > 0) {
+        const link = "/?page=prayer";
+        const title = "🙏 New Prayer Request";
+        const body = `${prayerRequest.authorName} has shared a new request.`;
+
+        const payload: MulticastMessage = {
+            notification: { title, body },
+            data: { url: link },
+            tokens: allTokens,
+            android: {
+                priority: "high",
+                notification: { priority: "max", channelId: "prayer_requests" },
+            },
+            apns: { headers: { "apns-priority": "10" }, payload: { aps: { sound: "default" } } },
+            webpush: {
+                headers: { Urgency: "high" },
+                notification: { title, body, icon: `${APP_URL}/logos-church-new-logo.jpg`, tag: `prayer-${event.params.requestId}` },
+                fcmOptions: { link: `${APP_URL}${link}` },
+            },
+        };
+        const response = await fcm.sendEachForMulticast(payload);
+        handleSendResponse(response, allTokens);
+    }
+});
+
+// 3. New Chat Message Notification
+export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{messageId}", async (event) => {
+    const { chatId } = event.params;
+    const snapshot = event.data;
+    if (!snapshot) return;
+    const message = snapshot.data() as MessageData;
+    if (!message) return;
+
+    const chatDoc = await db.collection("chats").doc(chatId).get();
+    const chatData = chatDoc.data() as ChatData | undefined;
+    if (!chatDoc.exists || !chatData) return;
+
+    const senderSnapshot = await db.collection("users").doc(message.senderId).get();
+    const senderName = (senderSnapshot.data() as UserData | undefined)?.name || "Someone";
+    const recipientIds = chatData.participantIds.filter((id) => id !== message.senderId);
+    if (recipientIds.length === 0) return;
+
+    const userDocs = await db.collection("users").where(admin.firestore.FieldPath.documentId(), "in", recipientIds).get();
+    const tokensToSend: string[] = [];
+    userDocs.docs.forEach((doc) => {
+        const user = doc.data() as UserData;
+        if (user.notificationPreferences?.chat !== false && user.fcmTokens) {
+            tokensToSend.push(...user.fcmTokens);
+        }
+    });
+    
+    const uniqueTokens = [...new Set(tokensToSend)];
+    if (uniqueTokens.length === 0) return;
+
+    let messageContent = message.content;
+    if (!messageContent) {
+        messageContent = message.media && message.media.length > 0 ? "Sent media" : "Sent a message";
+    }
+
+    const link = `/?page=chat&chatId=${chatId}`;
+    const truncatedBody = messageContent.length > 100 ? messageContent.substring(0, 97) + "..." : messageContent;
+    const isGroupChat = chatData.participantIds.length > 2;
+    const notificationTitle = isGroupChat ? `💬 ${chatData.name || "Group Chat"}` : `💬 ${senderName}`;
+    const notificationBody = isGroupChat ? `${senderName}: ${truncatedBody}` : truncatedBody;
+
+    const payload: MulticastMessage = {
+        notification: { title: notificationTitle, body: notificationBody },
+        data: { url: link, chatId: chatId },
+        tokens: uniqueTokens,
+        android: {
+            priority: "high",
+            notification: { priority: "max", channelId: "chat_messages" },
+        },
+        apns: { headers: { "apns-priority": "10" }, payload: { aps: { sound: "default" } } },
+        webpush: {
+            headers: { Urgency: "high" },
+            notification: { title: notificationTitle, body: notificationBody, icon: `${APP_URL}/logos-church-new-logo.jpg`, tag: `chat-${chatId}` },
+            fcmOptions: { link: `${APP_URL}${link}` },
+        },
+    };
+    const response = await fcm.sendEachForMulticast(payload);
+    handleSendResponse(response, uniqueTokens);
+});
+
+// 4. New Worship Video Notification
+export const onPastWorshipCreated = onDocumentCreated("pastWorshipServices/{serviceId}", async (event) => {
+    const snapshot = event.data;
+    if (!snapshot) return;
+    const service = snapshot.data() as { title: string };
+    if (!service || !service.title) return;
+
+    const allTokens = await getTokensForTopic("worship");
+    if (allTokens.length > 0) {
+        const link = "/?page=worship";
+        const title = "🎥 New Worship Video";
+        const body = service.title;
+
+        const payload: MulticastMessage = {
+            notification: { title, body },
+            data: { url: link },
+            tokens: allTokens,
+            android: { priority: "high", notification: { priority: "max", channelId: "worship_updates" } },
+            apns: { headers: { "apns-priority": "10" }, payload: { aps: { sound: "default" } } },
+            webpush: {
+                headers: { Urgency: "high" },
+                notification: { title, body, icon: `${APP_URL}/logos-church-new-logo.jpg`, tag: `worship-${event.params.serviceId}` },
+                fcmOptions: { link: `${APP_URL}${link}` },
+            },
+        };
+        const response = await fcm.sendEachForMulticast(payload);
+        handleSendResponse(response, allTokens);
+    }
+});
+
+// 5. New Podcast Notification
 export const onPodcastCreated = onDocumentCreated("podcasts/{podcastId}", async (event) => {
     const snapshot = event.data;
     if (!snapshot) return;
@@ -444,15 +262,20 @@ export const onPodcastCreated = onDocumentCreated("podcasts/{podcastId}", async 
     if (!podcast || !podcast.title) return;
 
     const allTokens = await getTokensForTopic("podcast");
-
     if (allTokens.length > 0) {
         const link = "/?page=podcast";
+        const title = "🎧 New Podcast";
+        const body = podcast.title;
+
         const payload: MulticastMessage = {
-            notification: { title: "🎧 New Podcast", body: podcast.title },
+            notification: { title, body },
             data: { url: link },
             tokens: allTokens,
+            android: { priority: "high", notification: { priority: "max", channelId: "podcast_updates" } },
+            apns: { headers: { "apns-priority": "10" }, payload: { aps: { sound: "default" } } },
             webpush: {
-                notification: { icon: `${APP_URL}/logos-church-new-logo.jpg` },
+                headers: { Urgency: "high" },
+                notification: { title, body, icon: `${APP_URL}/logos-church-new-logo.jpg`, tag: `podcast-${event.params.podcastId}` },
                 fcmOptions: { link: `${APP_URL}${link}` },
             },
         };

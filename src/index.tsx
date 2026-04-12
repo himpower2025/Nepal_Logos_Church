@@ -2966,68 +2966,88 @@ const App: React.FC = () => {
     // --- FCM/Push Notifications Logic (Separated for iOS Stability) ---
     
     // 1. Silent Token Retrieval (Call this when we know we have permission)
-    const retrieveToken = useCallback(async () => {
-        if (!firebaseServices.messaging || !currentUser || !db) return;
-        const { messaging } = firebaseServices;
+ const retrieveToken = useCallback(async () => {
+    if (!firebaseServices.messaging || !currentUser || !db) return;
+    const { messaging } = firebaseServices;
 
-        try {
-            const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
-            if (!vapidKey) {
-                console.error("VAPID key is missing.");
+    try {
+        const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
+        if (!vapidKey) {
+            console.error("VAPID key is missing. Check Vercel environment variables.");
+            return;
+        }
+
+        // iOS에서 서비스 워커 등록을 직접 확인하고 기다리는 로직
+        if (!('serviceWorker' in navigator)) {
+            console.log('Service Worker not supported in this browser.');
+            return;
+        }
+
+        // 서비스 워커가 등록되어 있는지 먼저 확인
+        let registration = await navigator.serviceWorker.getRegistration('/firebase-messaging-sw.js');
+
+        // 등록이 안 되어 있으면 직접 등록 시도
+        if (!registration) {
+            console.log('Service Worker not found, registering now...');
+            try {
+                registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+                console.log('Service Worker registered successfully.');
+            } catch (swError) {
+                console.error('Service Worker registration failed:', swError);
                 return;
             }
+        }
 
-            const registration = await navigator.serviceWorker.ready;
-            const currentToken = await getToken(messaging, { 
-                vapidKey,
-                serviceWorkerRegistration: registration,
-            });
+        // iOS에서 활성화까지 기다리는 안전장치 (최대 5초)
+        if (registration.installing || registration.waiting) {
+            console.log('Waiting for Service Worker to activate...');
+            await new Promise<void>((resolve) => {
+                const timeout = setTimeout(() => {
+                    console.warn('Service Worker activation timed out.');
+                    resolve();
+                }, 5000);
 
-            if (currentToken) {
-                console.log('FCM Token retrieved (silent):', currentToken);
-                const userRef = doc(db, "users", currentUser.id);
-                const userDoc = await getDoc(userRef);
-                const userTokens = userDoc.data()?.fcmTokens || [];
-                if (!userTokens.includes(currentToken)) {
-                    await updateDoc(userRef, { fcmTokens: arrayUnion(currentToken) });
+                const sw = registration!.installing || registration!.waiting;
+                if (sw) {
+                    sw.addEventListener('statechange', function handler() {
+                        if (sw.state === 'activated') {
+                            clearTimeout(timeout);
+                            sw.removeEventListener('statechange', handler);
+                            resolve();
+                        }
+                    });
+                } else {
+                    clearTimeout(timeout);
+                    resolve();
                 }
-            }
-        } catch (err) {
-            // Suppress errors during silent retrieval to avoid user confusion
-            console.log('Silent token retrieval skipped or failed (expected if permission denied).');
+            });
         }
-    }, [firebaseServices, currentUser, db]);
 
-    // 2. Explicit Permission Request (Call this only on user interaction)
-    const handleRequestPermission = useCallback(async () => {
-        if (!firebaseServices.messaging || !currentUser) return;
-        
-        try {
-            const permission = await Notification.requestPermission();
-            setNotificationPermissionStatus(permission);
-            
-            if (permission === 'granted') {
-                // If granted, try to get the token immediately
-                await retrieveToken();
-                showToast("Success", "Notifications enabled!");
+        // 이제 안전하게 토큰 요청
+        const currentToken = await getToken(messaging, {
+            vapidKey,
+            serviceWorkerRegistration: registration,
+        });
+
+        if (currentToken) {
+            console.log('FCM Token retrieved successfully.');
+            const userRef = doc(db, "users", currentUser.id);
+            const userDoc = await getDoc(userRef);
+            const userTokens = userDoc.data()?.fcmTokens || [];
+            if (!userTokens.includes(currentToken)) {
+                await updateDoc(userRef, { fcmTokens: arrayUnion(currentToken) });
+                console.log('New FCM token saved to Firestore.');
             } else {
-                showToast("Blocked", "Notifications are blocked. Please enable them in browser settings.");
+                console.log('FCM token already exists in Firestore.');
             }
-        } catch (error) {
-            console.error("Permission request failed", error);
-        } finally {
-            // Plan B #2: FORCE MEMORY.
-            // Regardless of whether they granted or denied, stop pestering them in this session/browser.
-            // If they denied it, they will stop seeing the banner but notifications won't work (which is expected).
-            // If they granted it, the banner disappears.
-            setIsBannerDismissed(true);
-            try {
-                localStorage.setItem('notificationBannerDismissed', 'true');
-            } catch (e) {
-                console.error("Failed to save banner dismissal state", e);
-            }
+        } else {
+            console.warn('getToken returned empty. Check VAPID key and Firebase configuration.');
         }
-    }, [firebaseServices, currentUser, retrieveToken, showToast]);
+
+    } catch (err: any) {
+        console.log('Token retrieval failed:', err?.message || err);
+    }
+}, [firebaseServices, currentUser, db]);
 
 
     // 3. Initial Check on Mount (No Popups)

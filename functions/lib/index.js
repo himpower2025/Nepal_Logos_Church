@@ -1,5 +1,4 @@
 "use strict";
-// functions/src/index.ts 파일의 전체 내용을 아래 코드로 교체해주세요.
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -34,168 +33,239 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.onChatMessageCreated = exports.onPrayerRequestCreated = exports.onNewsCreated = void 0;
-const functions = __importStar(require("firebase-functions"));
+exports.onPodcastCreated = exports.onPastWorshipCreated = exports.onChatMessageCreated = exports.onPrayerRequestCreated = exports.onNewsCreated = void 0;
+const firestore_1 = require("firebase-functions/v2/firestore");
 const admin = __importStar(require("firebase-admin"));
 const logger = __importStar(require("firebase-functions/logger"));
 admin.initializeApp();
 const db = admin.firestore();
 const fcm = admin.messaging();
-// Helper function to get all FCM tokens from all users
-const getAllTokens = async () => {
+const APP_URL = "https://logos-church-nepal.web.app";
+// Helper to get tokens for a specific topic, respecting user preferences
+const getTokensForTopic = async (topic, excludeUserId) => {
     const usersSnapshot = await db.collection("users").get();
     const tokens = [];
     usersSnapshot.forEach((doc) => {
+        if (doc.id === excludeUserId) {
+            return;
+        }
         const user = doc.data();
-        if (user.fcmTokens && Array.isArray(user.fcmTokens)) {
+        const canNotify = !user.notificationPreferences || user.notificationPreferences[topic] !== false;
+        if (canNotify && user.fcmTokens && Array.isArray(user.fcmTokens)) {
             tokens.push(...user.fcmTokens);
         }
     });
-    return [...new Set(tokens)]; // Return unique tokens
+    return [...new Set(tokens)];
 };
-// Helper function to log stale tokens after a multicast send
-const logStaleTokens = (response, tokens) => {
+// Helper to remove stale FCM tokens
+const cleanStaleTokens = async (tokensToRemove) => {
+    if (tokensToRemove.length === 0)
+        return;
+    try {
+        const usersRef = db.collection("users");
+        const snapshot = await usersRef.where("fcmTokens", "array-contains-any", tokensToRemove.slice(0, 30)).get();
+        const updates = [];
+        snapshot.forEach((doc) => {
+            updates.push(doc.ref.update({
+                fcmTokens: admin.firestore.FieldValue.arrayRemove(...tokensToRemove),
+            }));
+        });
+        await Promise.all(updates);
+    }
+    catch (error) {
+        logger.error("Error cleaning stale tokens:", error);
+    }
+};
+// Helper function to process FCM send responses
+const handleSendResponse = (response, tokens) => {
+    const staleTokens = [];
     response.responses.forEach((result, index) => {
-        const error = result.error;
-        if (error) {
-            logger.error("Failure sending notification to", tokens[index], error);
-            if (error.code === "messaging/invalid-registration-token" || error.code === "messaging/registration-token-not-registered") {
-                logger.warn(`Stale token found: ${tokens[index]}`);
+        if (!result.success && result.error) {
+            if (result.error.code === "messaging/invalid-registration-token" ||
+                result.error.code === "messaging/registration-token-not-registered") {
+                staleTokens.push(tokens[index]);
             }
         }
     });
+    if (staleTokens.length > 0)
+        cleanStaleTokens(staleTokens);
 };
-// 1. Function to send notification when a new news item is created
-exports.onNewsCreated = functions.firestore
-    .document("news/{newsId}")
-    .onCreate(async (snapshot, context) => {
+// 1. New News Notification
+exports.onNewsCreated = (0, firestore_1.onDocumentCreated)("news/{newsId}", async (event) => {
+    const snapshot = event.data;
+    if (!snapshot)
+        return;
     const newsItem = snapshot.data();
-    if (!newsItem || !newsItem.title) {
-        return logger.log("News item data is missing title.");
-    }
-    const title = "⛪️ New Announcement";
-    const body = newsItem.title;
-    const allTokens = await getAllTokens();
+    if (!newsItem || !newsItem.title)
+        return;
+    const allTokens = await getTokensForTopic("news", newsItem.authorId);
     if (allTokens.length > 0) {
+        const link = "/?page=news";
+        const title = "⛪️ New Announcement";
+        const body = newsItem.title;
         const payload = {
-            notification: {
-                title: title,
-                body: body,
-            },
-            webpush: {
-                notification: {
-                    icon: "/logos-church-new-logo.jpg",
-                },
-            },
-            data: {
-                url: "/",
-                page: "news",
-            },
+            notification: { title, body },
+            data: { url: link },
             tokens: allTokens,
+            android: {
+                priority: "high",
+                notification: { priority: "max", channelId: "church_announcements" },
+            },
+            apns: { headers: { "apns-priority": "10" }, payload: { aps: { sound: "default" } } },
+            webpush: {
+                headers: { Urgency: "high" },
+                notification: { title, body, icon: `${APP_URL}/logos-church-new-logo.jpg`, tag: `news-${event.params.newsId}` },
+                fcmOptions: { link: `${APP_URL}${link}` },
+            },
         };
-        logger.log(`Sending notification to ${allTokens.length} tokens.`);
         const response = await fcm.sendEachForMulticast(payload);
-        logStaleTokens(response, allTokens);
-    }
-    else {
-        logger.log("No FCM tokens found to send notification.");
+        handleSendResponse(response, allTokens);
     }
 });
-// 2. Function to send notification for a new prayer request
-exports.onPrayerRequestCreated = functions.firestore
-    .document("prayerRequests/{requestId}")
-    .onCreate(async (snapshot, context) => {
+// 2. New Prayer Request Notification
+exports.onPrayerRequestCreated = (0, firestore_1.onDocumentCreated)("prayerRequests/{requestId}", async (event) => {
+    const snapshot = event.data;
+    if (!snapshot)
+        return;
     const prayerRequest = snapshot.data();
-    if (!prayerRequest || !prayerRequest.authorName) {
-        return logger.log("Prayer request data is missing authorName.");
-    }
-    const allTokens = await getAllTokens();
+    if (!prayerRequest)
+        return;
+    const allTokens = await getTokensForTopic("prayer", prayerRequest.authorId);
     if (allTokens.length > 0) {
+        const link = "/?page=prayer";
+        const title = "🙏 New Prayer Request";
+        const body = `${prayerRequest.authorName} has shared a new request.`;
         const payload = {
-            notification: {
-                title: "🙏 New Prayer Request",
-                body: `${prayerRequest.authorName} has shared a new request.`,
-            },
-            webpush: {
-                notification: {
-                    icon: "/logos-church-new-logo.jpg",
-                },
-            },
-            data: {
-                url: "/",
-                page: "prayer",
-            },
+            notification: { title, body },
+            data: { url: link },
             tokens: allTokens,
+            android: {
+                priority: "high",
+                notification: { priority: "max", channelId: "prayer_requests" },
+            },
+            apns: { headers: { "apns-priority": "10" }, payload: { aps: { sound: "default" } } },
+            webpush: {
+                headers: { Urgency: "high" },
+                notification: { title, body, icon: `${APP_URL}/logos-church-new-logo.jpg`, tag: `prayer-${event.params.requestId}` },
+                fcmOptions: { link: `${APP_URL}${link}` },
+            },
         };
         const response = await fcm.sendEachForMulticast(payload);
-        logStaleTokens(response, allTokens);
+        handleSendResponse(response, allTokens);
     }
 });
-// 3. Function to send notification for a new chat message
-exports.onChatMessageCreated = functions.firestore
-    .document("chats/{chatId}/messages/{messageId}")
-    .onCreate(async (snapshot, context) => {
-    const { chatId } = context.params;
+// 3. New Chat Message Notification
+exports.onChatMessageCreated = (0, firestore_1.onDocumentCreated)("chats/{chatId}/messages/{messageId}", async (event) => {
+    const { chatId } = event.params;
+    const snapshot = event.data;
+    if (!snapshot)
+        return;
     const message = snapshot.data();
-    if (!message || !message.senderId) {
-        return logger.log("Message data is invalid.");
-    }
-    const chatRef = db.collection("chats").doc(chatId);
-    const chatDoc = await chatRef.get();
+    if (!message)
+        return;
+    const chatDoc = await db.collection("chats").doc(chatId).get();
     const chatData = chatDoc.data();
-    if (!chatData || !chatData.participantIds) {
-        return logger.log(`Chat ${chatId} not found or has no participants.`);
-    }
-    // Get the sender's details
+    if (!chatDoc.exists || !chatData)
+        return;
     const senderSnapshot = await db.collection("users").doc(message.senderId).get();
     const senderName = senderSnapshot.data()?.name || "Someone";
-    let messageContent = message.content;
-    if (!messageContent) {
-        if (message.media && message.media.length > 0) {
-            messageContent = message.media[0].type === 'image' ? "Sent a photo" : "Sent a video";
-        }
-        else {
-            messageContent = "Sent a message";
-        }
-    }
-    // Get tokens of all participants except the sender
     const recipientIds = chatData.participantIds.filter((id) => id !== message.senderId);
-    if (recipientIds.length === 0) {
-        return logger.log("No recipients for this message.");
-    }
-    const tokens = [];
+    if (recipientIds.length === 0)
+        return;
     const userDocs = await db.collection("users").where(admin.firestore.FieldPath.documentId(), "in", recipientIds).get();
-    userDocs.forEach((doc) => {
+    const tokensToSend = [];
+    userDocs.docs.forEach((doc) => {
         const user = doc.data();
-        if (user.fcmTokens && Array.isArray(user.fcmTokens)) {
-            tokens.push(...user.fcmTokens);
+        if (user.notificationPreferences?.chat !== false && user.fcmTokens) {
+            tokensToSend.push(...user.fcmTokens);
         }
     });
-    if (tokens.length > 0) {
-        const uniqueTokens = [...new Set(tokens)];
-        const payload = {
-            notification: {
-                title: `💬 New Message from ${senderName}`,
-                body: messageContent,
-            },
-            webpush: {
-                notification: {
-                    icon: "/logos-church-new-logo.jpg",
-                },
-            },
-            data: {
-                url: "/",
-                page: "chat", // To open the chat page
-                chatId: chatId,
-            },
-            tokens: uniqueTokens,
-        };
-        logger.log(`Sending chat notification to ${uniqueTokens.length} tokens for chat ${chatId}.`);
-        const response = await fcm.sendEachForMulticast(payload);
-        logStaleTokens(response, uniqueTokens);
+    const uniqueTokens = [...new Set(tokensToSend)];
+    if (uniqueTokens.length === 0)
+        return;
+    let messageContent = message.content;
+    if (!messageContent) {
+        messageContent = message.media && message.media.length > 0 ? "Sent media" : "Sent a message";
     }
-    else {
-        logger.log(`No tokens found for recipients in chat ${chatId}.`);
+    const link = `/?page=chat&chatId=${chatId}`;
+    const truncatedBody = messageContent.length > 100 ? messageContent.substring(0, 97) + "..." : messageContent;
+    const isGroupChat = chatData.participantIds.length > 2;
+    const notificationTitle = isGroupChat ? `💬 ${chatData.name || "Group Chat"}` : `💬 ${senderName}`;
+    const notificationBody = isGroupChat ? `${senderName}: ${truncatedBody}` : truncatedBody;
+    const payload = {
+        notification: { title: notificationTitle, body: notificationBody },
+        data: { url: link, chatId: chatId },
+        tokens: uniqueTokens,
+        android: {
+            priority: "high",
+            notification: { priority: "max", channelId: "chat_messages" },
+        },
+        apns: { headers: { "apns-priority": "10" }, payload: { aps: { sound: "default" } } },
+        webpush: {
+            headers: { Urgency: "high" },
+            notification: { title: notificationTitle, body: notificationBody, icon: `${APP_URL}/logos-church-new-logo.jpg`, tag: `chat-${chatId}` },
+            fcmOptions: { link: `${APP_URL}${link}` },
+        },
+    };
+    const response = await fcm.sendEachForMulticast(payload);
+    handleSendResponse(response, uniqueTokens);
+});
+// 4. New Worship Video Notification
+exports.onPastWorshipCreated = (0, firestore_1.onDocumentCreated)("pastWorshipServices/{serviceId}", async (event) => {
+    const snapshot = event.data;
+    if (!snapshot)
+        return;
+    const service = snapshot.data();
+    if (!service || !service.title)
+        return;
+    const allTokens = await getTokensForTopic("worship");
+    if (allTokens.length > 0) {
+        const link = "/?page=worship";
+        const title = "🎥 New Worship Video";
+        const body = service.title;
+        const payload = {
+            notification: { title, body },
+            data: { url: link },
+            tokens: allTokens,
+            android: { priority: "high", notification: { priority: "max", channelId: "worship_updates" } },
+            apns: { headers: { "apns-priority": "10" }, payload: { aps: { sound: "default" } } },
+            webpush: {
+                headers: { Urgency: "high" },
+                notification: { title, body, icon: `${APP_URL}/logos-church-new-logo.jpg`, tag: `worship-${event.params.serviceId}` },
+                fcmOptions: { link: `${APP_URL}${link}` },
+            },
+        };
+        const response = await fcm.sendEachForMulticast(payload);
+        handleSendResponse(response, allTokens);
+    }
+});
+// 5. New Podcast Notification
+exports.onPodcastCreated = (0, firestore_1.onDocumentCreated)("podcasts/{podcastId}", async (event) => {
+    const snapshot = event.data;
+    if (!snapshot)
+        return;
+    const podcast = snapshot.data();
+    if (!podcast || !podcast.title)
+        return;
+    const allTokens = await getTokensForTopic("podcast");
+    if (allTokens.length > 0) {
+        const link = "/?page=podcast";
+        const title = "🎧 New Podcast";
+        const body = podcast.title;
+        const payload = {
+            notification: { title, body },
+            data: { url: link },
+            tokens: allTokens,
+            android: { priority: "high", notification: { priority: "max", channelId: "podcast_updates" } },
+            apns: { headers: { "apns-priority": "10" }, payload: { aps: { sound: "default" } } },
+            webpush: {
+                headers: { Urgency: "high" },
+                notification: { title, body, icon: `${APP_URL}/logos-church-new-logo.jpg`, tag: `podcast-${event.params.podcastId}` },
+                fcmOptions: { link: `${APP_URL}${link}` },
+            },
+        };
+        const response = await fcm.sendEachForMulticast(payload);
+        handleSendResponse(response, allTokens);
     }
 });
 //# sourceMappingURL=index.js.map
