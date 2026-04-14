@@ -50,25 +50,54 @@ if (typeof firebase !== 'undefined' && hasAllConfig) {
                         url: payload.fcmOptions?.link || payload.data?.url || self.origin,
                     }
                 };
-                if (navigator.setAppBadge) { navigator.setAppBadge(); }
-                return self.registration.showNotification(notificationTitle, notificationOptions);
-            });
-            console.log('[SW-LOG] Background message handler set up.');
-        } else {
-            console.log('[SW-LOG] Firebase Messaging is not supported in this browser environment.');
-        }
-    } catch(e) {
-        console.error('[SW-LOG] CRITICAL: An error occurred during Firebase initialization.', e);
-    }
-} else {
-    if (typeof firebase === 'undefined') {
-         console.error('[SW-LOG] CRITICAL: The `firebase` object is not available. Firebase script imports have failed.');
-    } else {
-         const missingKeys = Object.entries(firebaseConfig).filter(([, val]) => !val || val.startsWith('__')).map(([key]) => key);
-         console.error(`[SW-LOG] CRITICAL: Firebase config is incomplete or not replaced by build process. Missing/Invalid keys: ${missingKeys.join(', ')}. Notifications will fail.`);
-    }
-}
+                // 배지 카운트를 IndexedDB에서 관리
+const getBadgeCount = () => {
+    return new Promise((resolve) => {
+        const request = indexedDB.open('badge-store', 1);
+        request.onupgradeneeded = (e) => {
+            e.target.result.createObjectStore('badges', { keyPath: 'id' });
+        };
+        request.onsuccess = (e) => {
+            const db = e.target.result;
+            const tx = db.transaction('badges', 'readonly');
+            const store = tx.objectStore('badges');
+            const getReq = store.get('count');
+            getReq.onsuccess = () => resolve(getReq.result?.value || 0);
+            getReq.onerror = () => resolve(0);
+        };
+        request.onerror = () => resolve(0);
+    });
+};
 
+const setBadgeCount = (count) => {
+    return new Promise((resolve) => {
+        const request = indexedDB.open('badge-store', 1);
+        request.onupgradeneeded = (e) => {
+            e.target.result.createObjectStore('badges', { keyPath: 'id' });
+        };
+        request.onsuccess = (e) => {
+            const db = e.target.result;
+            const tx = db.transaction('badges', 'readwrite');
+            const store = tx.objectStore('badges');
+            store.put({ id: 'count', value: count });
+            tx.oncomplete = () => resolve();
+            tx.onerror = () => resolve();
+        };
+        request.onerror = () => resolve();
+    });
+};
+
+// 배지 카운트 증가 및 표시
+getBadgeCount().then(async (count) => {
+    const newCount = count + 1;
+    await setBadgeCount(newCount);
+    if (navigator.setAppBadge) {
+        navigator.setAppBadge(newCount).catch(() => {
+            // iOS는 숫자 배지 미지원, 점(dot)만 표시됨
+            navigator.setAppBadge();
+        });
+    }
+});
 
 // --- PWA Caching Logic ---
 const CACHE_NAME = 'logos-church-cache-v13'; // Incremented cache version for updates

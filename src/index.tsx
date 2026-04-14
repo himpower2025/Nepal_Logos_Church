@@ -3075,31 +3075,35 @@ const handleRequestPermission = useCallback(async () => {
 
     // 3. Initial Check on Mount (No Popups)
     useEffect(() => {
-        const checkPermission = () => {
-            if ('Notification' in window) {
-                const permission = Notification.permission;
-                setNotificationPermissionStatus(permission);
-                
-                // If already granted, just get the token silently.
-                if (permission === 'granted' && currentUser) {
-                     retrieveToken();
-                     // Also ensure banner is dismissed if permission is already granted
-                     setIsBannerDismissed(true); 
-                }
+    const checkPermission = () => {
+        if ('Notification' in window) {
+            const permission = Notification.permission;
+            setNotificationPermissionStatus(permission);
+            if (permission === 'granted' && currentUser) {
+                retrieveToken();
+                setIsBannerDismissed(true);
             }
-        };
+        }
+    };
+    checkPermission();
 
-        checkPermission();
+    // 앱 첫 실행 시 배지 초기화 ← 여기 추가
+    if (navigator.clearAppBadge) {
+        navigator.clearAppBadge().catch(() => {});
+    }
 
-        const handleVisibilityChange = () => {
-            if (document.visibilityState === 'visible') {
-                checkPermission();
+    const handleVisibilityChange = () => {
+        if (document.visibilityState === 'visible') {
+            checkPermission();
+            // 앱이 열리면 배지 초기화 ← 여기 추가
+            if (navigator.clearAppBadge) {
+                navigator.clearAppBadge().catch(() => {});
             }
-        };
-
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-        return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-    }, [currentUser, retrieveToken]);
+        }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+}, [currentUser, retrieveToken]);
     
     // Effect for handling incoming messages
     useEffect(() => {
