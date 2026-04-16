@@ -2749,6 +2749,10 @@ const App: React.FC = () => {
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
     const [activePage, setActivePage] = useState<'worship' | 'bible' | 'news' | 'podcast' | 'prayer' | 'chat'>('news');
+    // 페이지 이동 시 해당 탭 배지 초기화
+useEffect(() => {
+    setUnreadCounts(prev => ({ ...prev, [activePage]: 0 }));
+}, [activePage]);
     const [currentChatId, setCurrentChatId] = useState<string | null>(null);
     const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
 
@@ -2761,7 +2765,7 @@ const App: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [notifications, setNotifications] = useState<AppNotification[]>([]);
     const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
-    const [unreadCount, setUnreadCount] = useState(0);
+    const [unreadCounts, setUnreadCounts] = useState<{ [key: string]: number }>({});
     const [notificationPermissionStatus, setNotificationPermissionStatus] = useState<NotificationPermission>('default');
     
     useEffect(() => {
@@ -3149,11 +3153,19 @@ const handleRequestPermission = useCallback(async () => {
             setNotifications(prev => [newNotification, ...prev.slice(0, 19)]); // Keep max 20
 
              setHasUnreadNotifications(true);
-        });
+    const targetPage = customData?.url?.split('page=')?.[1]?.split('&')?.[0];
+        if (targetPage && targetPage !== activePage) {
+            setUnreadCounts(prev => ({
+        ...prev,
+        [targetPage]: (prev[targetPage] || 0) + 1
+    }));
+}
+    setHasUnreadNotifications(true);
+            // ...setUnreadCounts...
+        });                                     // ← onMessage 닫기
     
-        return () => unsubscribeOnMessage();
+        return () => unsubscribeOnMessage();    // ← useEffect 리턴
     }, [firebaseServices.messaging, currentUser, db, showToast, currentChatId]);
-
 
     const handleCreateChat = async (selectedUsers: User[]): Promise<string | null> => {
         if (!db || !currentUser) return null;
@@ -3303,15 +3315,47 @@ const handleRequestPermission = useCallback(async () => {
 
             {!isConversationOpen && (
                 <nav className="bottom-nav">
-                    {navOrder.map(page => (
-                        <button key={page} className={`nav-item ${activePage === page ? 'active' : ''}`} onClick={() => setActivePage(page)}>
-                            <span className="material-symbols-outlined">
-                                {pageConfig[page].icon}
-                            </span>
-                            <span>{pageConfig[page].label}</span>
-                        </button>
-                    ))}
-                </nav>
+    {navOrder.map(page => (
+        <button
+            key={page}
+            className={`nav-item ${activePage === page ? 'active' : ''}`}
+            onClick={() => {
+                setActivePage(page as any);
+                // 해당 페이지 클릭 시 배지 초기화
+                setUnreadCounts(prev => ({ ...prev, [page]: 0 }));
+            }}
+        >
+            <span style={{ position: 'relative', display: 'inline-flex' }}>
+                <span className="material-symbols-outlined">
+                    {pageConfig[page].icon}
+                </span>
+                {/* 배지 표시 */}
+                {unreadCounts[page] > 0 && (
+                    <span style={{
+                        position: 'absolute',
+                        top: '-6px',
+                        right: '-8px',
+                        background: '#e53935',
+                        color: 'white',
+                        borderRadius: '50%',
+                        minWidth: '16px',
+                        height: '16px',
+                        fontSize: '10px',
+                        fontWeight: 'bold',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '0 3px',
+                        lineHeight: 1,
+                    }}>
+                        {unreadCounts[page] > 99 ? '99+' : unreadCounts[page]}
+                    </span>
+                )}
+            </span>
+            <span>{pageConfig[page].label}</span>
+        </button>
+    ))}
+</nav>
             )}
             
             <NotificationPanel 
