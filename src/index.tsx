@@ -2770,13 +2770,13 @@ useEffect(() => {
     
     useEffect(() => {
         if ('setAppBadge' in navigator) {
-            if (unreadCount > 0) {
-                (navigator as any).setAppBadge(unreadCount).catch((e: any) => console.error(e));
+            if (unreadCounts > 0) {
+                (navigator as any).setAppBadge(unreadCounts).catch((e: any) => console.error(e));
             } else {
                 (navigator as any).clearAppBadge().catch((e: any) => console.error(e));
             }
         }
-    }, [unreadCount]);
+    }, [unreadCounts]);
 
     // Check localStorage for dismissal state on mount
     const [isBannerDismissed, setIsBannerDismissed] = useState(() => {
@@ -2921,7 +2921,7 @@ useEffect(() => {
                 return isUnread ? acc + 1 : acc;
             }, 0);
             
-            setUnreadCount(count);
+            setUnreadCounts(count);
         }, (error) => console.error("Chat listener error:", error));
 
         const unsubUsers = onSnapshot(query(collection(db, "users")), (snapshot) => {
