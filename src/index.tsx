@@ -2765,6 +2765,7 @@ useEffect(() => {
     const [users, setUsers] = useState<User[]>([]);
     const [notifications, setNotifications] = useState<AppNotification[]>([]);
     const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
+    const [unreadCount, setUnreadCount] = useState<number>(0);
     const [unreadCounts, setUnreadCounts] = useState<{ [key: string]: number }>({});
     const [notificationPermissionStatus, setNotificationPermissionStatus] = useState<NotificationPermission>('default');
     
@@ -2776,7 +2777,7 @@ useEffect(() => {
                 (navigator as any).clearAppBadge().catch((e: any) => console.error(e));
             }
         }
-    }, [unreadCounts]);
+    }, [unreadCount]);
 
     // Check localStorage for dismissal state on mount
     const [isBannerDismissed, setIsBannerDismissed] = useState(() => {
