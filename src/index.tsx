@@ -2770,8 +2770,8 @@ useEffect(() => {
     
     useEffect(() => {
         if ('setAppBadge' in navigator) {
-            if (unreadCounts > 0) {
-                (navigator as any).setAppBadge(unreadCounts).catch((e: any) => console.error(e));
+            if (unreadCount > 0) {
+                (navigator as any).setAppBadge(unreadCount).catch((e: any) => console.error(e));
             } else {
                 (navigator as any).clearAppBadge().catch((e: any) => console.error(e));
             }
@@ -2921,7 +2921,7 @@ useEffect(() => {
                 return isUnread ? acc + 1 : acc;
             }, 0);
             
-            setUnreadCounts(count);
+            setUnreadCount(count);
         }, (error) => console.error("Chat listener error:", error));
 
         const unsubUsers = onSnapshot(query(collection(db, "users")), (snapshot) => {
