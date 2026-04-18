@@ -45,6 +45,28 @@ const setBadgeCount = (count) => {
     });
 };
 
+const saveTabBadgeCount = (page) => {
+    return new Promise((resolve) => {
+        const request = indexedDB.open('tab-badge-store', 1);
+        request.onupgradeneeded = (e) => {
+            e.target.result.createObjectStore('tabBadges', { keyPath: 'page' });
+        };
+        request.onsuccess = (e) => {
+            const db = e.target.result;
+            const tx = db.transaction('tabBadges', 'readwrite');
+            const store = tx.objectStore('tabBadges');
+            const getReq = store.get(page);
+            getReq.onsuccess = () => {
+                const current = getReq.result?.count || 0;
+                store.put({ page, count: current + 1 });
+            };
+            tx.oncomplete = () => resolve();
+            tx.onerror = () => resolve();
+        };
+        request.onerror = () => resolve();
+    });
+};
+
 const firebaseConfig = {
     apiKey: "__VITE_FIREBASE_API_KEY__",
     authDomain: "__VITE_FIREBASE_AUTH_DOMAIN__",
@@ -87,6 +109,10 @@ if (typeof firebase !== 'undefined' && hasAllConfig) {
                         });
                     }
                 });
+                const targetUrl = payload.fcmOptions?.link || payload.data?.url || '';
+                const pageMatch = targetUrl.match(/[?&]page=([^&]+)/);
+                const targetPage = pageMatch ? pageMatch[1] : 'news';
+                saveTabBadgeCount(targetPage);
 
                 return self.registration.showNotification(notificationTitle, notificationOptions);
             });

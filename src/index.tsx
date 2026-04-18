@@ -2969,7 +2969,43 @@ useEffect(() => {
     }, []);
 
     // --- FCM/Push Notifications Logic (Separated for iOS Stability) ---
-    
+ const loadTabBadgesFromDB = useCallback(() => {
+    return new Promise<void>((resolve) => {
+        const request = indexedDB.open('tab-badge-store', 1);
+        request.onupgradeneeded = (e: any) => {
+            e.target.result.createObjectStore('tabBadges', { keyPath: 'page' });
+        };
+        request.onsuccess = (e: any) => {
+            const db = e.target.result;
+            const tx = db.transaction('tabBadges', 'readonly');
+            const store = tx.objectStore('tabBadges');
+            const getAllReq = store.getAll();
+            getAllReq.onsuccess = () => {
+                const entries = getAllReq.result as { page: string; count: number }[];
+                if (entries && entries.length > 0) {
+                    const counts: { [key: string]: number } = {};
+                    entries.forEach(entry => {
+                        counts[entry.page] = entry.count;
+                    });
+                    setUnreadCounts(counts);
+                }
+                resolve();
+            };
+            getAllReq.onerror = () => resolve();
+        };
+        request.onerror = () => resolve();
+    });
+}, []);
+
+const clearTabBadgeInDB = useCallback((page: string) => {
+    const request = indexedDB.open('tab-badge-store', 1);
+    request.onsuccess = (e: any) => {
+        const db = e.target.result;
+        const tx = db.transaction('tabBadges', 'readwrite');
+        tx.objectStore('tabBadges').delete(page);
+    };
+}, []);
+   
     // 1. Silent Token Retrieval (Call this when we know we have permission)
  const retrieveToken = useCallback(async () => {
     if (!firebaseServices.messaging || !currentUser || !db) return;
@@ -3091,6 +3127,7 @@ const handleRequestPermission = useCallback(async () => {
         }
     };
     checkPermission();
+    loadTabBadgesFromDB();
 
     // 앱 첫 실행 시 배지 초기화 ← 여기 추가
     if (navigator.clearAppBadge) {
@@ -3324,6 +3361,7 @@ const handleRequestPermission = useCallback(async () => {
                 setActivePage(page as any);
                 // 해당 페이지 클릭 시 배지 초기화
                 setUnreadCounts(prev => ({ ...prev, [page]: 0 }));
+                clearTabBadgeInDB(page);
             }}
         >
             <span style={{ position: 'relative', display: 'inline-flex' }}>
