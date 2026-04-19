@@ -3129,20 +3129,13 @@ const handleRequestPermission = useCallback(async () => {
     checkPermission();
     loadTabBadgesFromDB();
 
-    // 앱 첫 실행 시 배지 초기화 ← 여기 추가
-    if (navigator.clearAppBadge) {
-        navigator.clearAppBadge().catch(() => {});
-    }
-
     const handleVisibilityChange = () => {
-        if (document.visibilityState === 'visible') {
-            checkPermission();
-            // 앱이 열리면 배지 초기화 ← 여기 추가
-            if (navigator.clearAppBadge) {
-                navigator.clearAppBadge().catch(() => {});
-            }
-        }
-    };
+    if (document.visibilityState === 'visible') {
+        checkPermission();
+        loadTabBadgesFromDB();  // ← 앱이 다시 보일 때 탭 배지 다시 불러오기
+    }
+};
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
 }, [currentUser, retrieveToken]);
