@@ -112,7 +112,15 @@ if (typeof firebase !== 'undefined' && hasAllConfig) {
                 const targetUrl = payload.fcmOptions?.link || payload.data?.url || '';
                 const pageMatch = targetUrl.match(/[?&]page=([^&]+)/);
                 const targetPage = pageMatch ? pageMatch[1] : 'news';
-                saveTabBadgeCount(targetPage);
+                self.clients.matchAll({ type: 'window', includeUncontrolled: true })
+                    .then(clients => {
+                        clients.forEach(client => {
+                            client.postMessage({
+                                type: 'NEW_NOTIFICATION',
+                                page: targetPage
+                            });
+                        });
+            });
 
                 return self.registration.showNotification(notificationTitle, notificationOptions);
             });

@@ -2997,6 +2997,33 @@ useEffect(() => {
     });
 }, []);
 
+    // 서비스 워커에서 보내는 메시지 수신
+useEffect(() => {
+    if (!('serviceWorker' in navigator)) return;
+
+    const handleSWMessage = (event: MessageEvent) => {
+        if (event.data?.type === 'NEW_NOTIFICATION') {
+            const page = event.data.page;
+            console.log('[App] New notification for page:', page);
+            // 현재 보고 있는 탭이 아닐 때만 배지 증가
+            setActivePage(prev => {
+                if (prev !== page) {
+                    setUnreadCounts(counts => ({
+                        ...counts,
+                        [page]: (counts[page] || 0) + 1
+                    }));
+                    // IndexedDB에도 저장 (앱 껐다 켤 때를 위해)
+                    saveTabBadgeCountInApp(page);
+                }
+                return prev;
+            });
+        }
+    };
+
+    navigator.serviceWorker.addEventListener('message', handleSWMessage);
+    return () => navigator.serviceWorker.removeEventListener('message', handleSWMessage);
+}, []);
+
 const clearTabBadgeInDB = useCallback((page: string) => {
     const request = indexedDB.open('tab-badge-store', 1);
     request.onsuccess = (e: any) => {
@@ -3005,7 +3032,24 @@ const clearTabBadgeInDB = useCallback((page: string) => {
         tx.objectStore('tabBadges').delete(page);
     };
 }, []);
-   
+
+const saveTabBadgeCountInApp = useCallback((page: string) => {
+    const request = indexedDB.open('tab-badge-store', 1);
+    request.onupgradeneeded = (e: any) => {
+        e.target.result.createObjectStore('tabBadges', { keyPath: 'page' });
+    };
+    request.onsuccess = (e: any) => {
+        const db = e.target.result;
+        const tx = db.transaction('tabBadges', 'readwrite');
+        const store = tx.objectStore('tabBadges');
+        const getReq = store.get(page);
+        getReq.onsuccess = () => {
+            const current = getReq.result?.count || 0;
+            store.put({ page, count: current + 1 });
+        };
+    };
+}, []);
+
     // 1. Silent Token Retrieval (Call this when we know we have permission)
  const retrieveToken = useCallback(async () => {
     if (!firebaseServices.messaging || !currentUser || !db) return;
