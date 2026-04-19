@@ -45,28 +45,6 @@ const setBadgeCount = (count) => {
     });
 };
 
-const saveTabBadgeCount = (page) => {
-    return new Promise((resolve) => {
-        const request = indexedDB.open('tab-badge-store', 1);
-        request.onupgradeneeded = (e) => {
-            e.target.result.createObjectStore('tabBadges', { keyPath: 'page' });
-        };
-        request.onsuccess = (e) => {
-            const db = e.target.result;
-            const tx = db.transaction('tabBadges', 'readwrite');
-            const store = tx.objectStore('tabBadges');
-            const getReq = store.get(page);
-            getReq.onsuccess = () => {
-                const current = getReq.result?.count || 0;
-                store.put({ page, count: current + 1 });
-            };
-            tx.oncomplete = () => resolve();
-            tx.onerror = () => resolve();
-        };
-        request.onerror = () => resolve();
-    });
-};
-
 const firebaseConfig = {
     apiKey: "__VITE_FIREBASE_API_KEY__",
     authDomain: "__VITE_FIREBASE_AUTH_DOMAIN__",
@@ -86,44 +64,62 @@ if (typeof firebase !== 'undefined' && hasAllConfig) {
             const messaging = firebase.messaging();
 
             messaging.onBackgroundMessage(function(payload) {
-                console.log('[SW-LOG] Background message received:', payload);
+    console.log('[SW-LOG] Background message received:', payload);
 
-                const notificationTitle = payload.notification?.title || "New Message";
-                const notificationOptions = {
-                    body: payload.notification?.body || "",
-                    icon: '/logos-church-new-logo.jpg',
-                    badge: '/logos-church-new-logo.jpg',
-                    tag: payload.data?.tag || 'logos-church-notification',
-                    data: {
-                        url: payload.fcmOptions?.link || payload.data?.url || self.origin,
-                    }
-                };
+    const notificationTitle = payload.notification?.title || "New Message";
+    const notificationOptions = {
+        body: payload.notification?.body || "",
+        icon: '/logos-church-new-logo.jpg',
+        badge: '/logos-church-new-logo.jpg',
+        tag: payload.data?.tag || 'logos-church-notification',
+        data: {
+            url: payload.fcmOptions?.link || payload.data?.url || self.origin,
+        }
+    };
 
-                // 배지 카운트 증가
-                getBadgeCount().then(async (count) => {
-                    const newCount = count + 1;
-                    await setBadgeCount(newCount);
-                    if (navigator.setAppBadge) {
-                        navigator.setAppBadge(newCount).catch(() => {
-                            navigator.setAppBadge();
-                        });
-                    }
-                });
-                const targetUrl = payload.fcmOptions?.link || payload.data?.url || '';
-                const pageMatch = targetUrl.match(/[?&]page=([^&]+)/);
-                const targetPage = pageMatch ? pageMatch[1] : 'news';
-                self.clients.matchAll({ type: 'window', includeUncontrolled: true })
-                    .then(clients => {
-                        clients.forEach(client => {
-                            client.postMessage({
-                                type: 'NEW_NOTIFICATION',
-                                page: targetPage
-                            });
-                        });
+    // 앱 배지 카운트 증가
+    getBadgeCount().then(async (count) => {
+        const newCount = count + 1;
+        await setBadgeCount(newCount);
+        if (navigator.setAppBadge) {
+            navigator.setAppBadge(newCount).catch(() => {
+                navigator.setAppBadge();
             });
+        }
+    });
 
-                return self.registration.showNotification(notificationTitle, notificationOptions);
+    // 탭 페이지 파악 후 IndexedDB에 저장
+    const targetUrl = payload.fcmOptions?.link || payload.data?.url || '';
+    const pageMatch = targetUrl.match(/[?&]page=([^&]+)/);
+    const targetPage = pageMatch ? pageMatch[1] : 'news';
+
+    // IndexedDB에 탭별 카운트 저장 (앱이 닫혀있을 때를 위해)
+    const req = indexedDB.open('tab-badge-store', 1);
+    req.onupgradeneeded = (e) => {
+        e.target.result.createObjectStore('tabBadges', { keyPath: 'page' });
+    };
+    req.onsuccess = (e) => {
+        const idb = e.target.result;
+        const tx = idb.transaction('tabBadges', 'readwrite');
+        const store = tx.objectStore('tabBadges');
+        const getReq = store.get(targetPage);
+        getReq.onsuccess = () => {
+            const current = getReq.result?.count || 0;
+            store.put({ page: targetPage, count: current + 1 });
+        };
+    };
+
+    // 혹시 앱이 열려있으면 직접 메시지도 전송
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true })
+        .then(clients => {
+            clients.forEach(client => {
+                client.postMessage({ type: 'NEW_NOTIFICATION', page: targetPage });
             });
+        });
+
+    return self.registration.showNotification(notificationTitle, notificationOptions);
+});
+
             console.log('[SW-LOG] Background message handler set up.');
         }
     } catch(e) {

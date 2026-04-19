@@ -3184,63 +3184,74 @@ const handleRequestPermission = useCallback(async () => {
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
 }, [currentUser, retrieveToken]);
     
-    // Effect for handling incoming messages
-    useEffect(() => {
-        if (!firebaseServices.messaging || !currentUser) return;
-        const { messaging } = firebaseServices;
-    
-        const unsubscribeOnMessage = onMessage(messaging, (payload) => {
-             const data = payload.notification;
-             const customData = payload.data;
-             const fromChatId = customData?.chatId;
-    
-             if (fromChatId && fromChatId === currentChatId) {
-                // If user is already in the chat, don't show a toast.
-                return;
-             }
-             
-             showToast(
-                data?.title || 'New Message',
-                data?.body || 'You have a new message.',
-                () => {
-                    const urlString = customData?.url;
-                    if (urlString) {
+    // Effect for handling incoming messages (포그라운드)
+useEffect(() => {
+    if (!firebaseServices.messaging || !currentUser) return;
+    const { messaging } = firebaseServices;
+
+    const unsubscribeOnMessage = onMessage(messaging, (payload) => {
+        const data = payload.notification;
+        const customData = payload.data;
+        const fromChatId = customData?.chatId;
+
+        // 현재 보고 있는 채팅방 메시지는 무시
+        if (fromChatId && fromChatId === currentChatId) return;
+
+        // 토스트 표시
+        showToast(
+            data?.title || 'New Message',
+            data?.body || 'You have a new message.',
+            () => {
+                const urlString = customData?.url;
+                if (urlString) {
+                    try {
                         const url = new URL(urlString);
                         const page = url.searchParams.get('page');
                         const chatId = url.searchParams.get('chatId');
-    
                         if (page === 'chat' && chatId) {
-                             setActivePage('chat');
-                             setCurrentChatId(chatId);
+                            setActivePage('chat');
+                            setCurrentChatId(chatId);
                         } else if (page && navOrder.includes(page as any)) {
                             setActivePage(page as any);
                         }
-                    }
+                    } catch(e) {}
                 }
-             );
+            }
+        );
 
-            const newNotification: AppNotification = {
-                id: payload.messageId || crypto.randomUUID(),
-                icon: 'notifications', // default icon
-                message: data?.body || 'You have a new message.',
-                timestamp: formatRelativeTime(Timestamp.now())
-            };
-            setNotifications(prev => [newNotification, ...prev.slice(0, 19)]); // Keep max 20
+        // 알림 패널에 추가
+        const newNotification: AppNotification = {
+            id: payload.messageId || crypto.randomUUID(),
+            icon: 'notifications',
+            message: data?.body || 'You have a new message.',
+            timestamp: formatRelativeTime(Timestamp.now())
+        };
+        setNotifications(prev => [newNotification, ...prev.slice(0, 19)]);
+        setHasUnreadNotifications(true);
 
-             setHasUnreadNotifications(true);
-    const targetPage = customData?.url?.split('page=')?.[1]?.split('&')?.[0];
-        if (targetPage && targetPage !== activePage) {
-            setUnreadCounts(prev => ({
-        ...prev,
-        [targetPage]: (prev[targetPage] || 0) + 1
-    }));
-}
-    setHasUnreadNotifications(true);
-            // ...setUnreadCounts...
-        });                                     // ← onMessage 닫기
-    
-        return () => unsubscribeOnMessage();    // ← useEffect 리턴
-    }, [firebaseServices.messaging, currentUser, db, showToast, currentChatId]);
+        // 탭 배지 업데이트 — customData.url 에서 page 추출
+        try {
+            const urlString = customData?.url;
+            if (urlString) {
+                const url = new URL(urlString);
+                const targetPage = url.searchParams.get('page') || 'news';
+                // 현재 보고 있는 페이지가 아닐 때만 배지 증가
+                setActivePage(currentPage => {
+                    if (currentPage !== targetPage) {
+                        setUnreadCounts(prev => ({
+                            ...prev,
+                            [targetPage]: (prev[targetPage] || 0) + 1
+                        }));
+                        saveTabBadgeCountInApp(targetPage);
+                    }
+                    return currentPage;
+                });
+            }
+        } catch(e) {}
+    });
+
+    return () => unsubscribeOnMessage();
+}, [firebaseServices.messaging, currentUser, db, showToast, currentChatId]);
 
     const handleCreateChat = async (selectedUsers: User[]): Promise<string | null> => {
         if (!db || !currentUser) return null;
