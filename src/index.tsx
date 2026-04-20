@@ -2752,6 +2752,7 @@ const App: React.FC = () => {
     // 페이지 이동 시 해당 탭 배지 초기화
 useEffect(() => {
     setUnreadCounts(prev => ({ ...prev, [activePage]: 0 }));
+    clearTabBadgeInDB(activePage);
 }, [activePage]);
     const [currentChatId, setCurrentChatId] = useState<string | null>(null);
     const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
@@ -3205,7 +3206,7 @@ useEffect(() => {
                 const urlString = customData?.url;
                 if (urlString) {
                     try {
-                        const url = new URL(urlString);
+                        const url = new URL(urlString, window.location.origin);
                         const page = url.searchParams.get('page');
                         const chatId = url.searchParams.get('chatId');
                         if (page === 'chat' && chatId) {
@@ -3233,7 +3234,7 @@ useEffect(() => {
         try {
             const urlString = customData?.url;
             if (urlString) {
-                const url = new URL(urlString);
+                const url = new URL(urlString, window.location.origin);
                 const targetPage = url.searchParams.get('page') || 'news';
                 // 현재 보고 있는 페이지가 아닐 때만 배지 증가
                 setActivePage(currentPage => {
