@@ -2771,14 +2771,33 @@ useEffect(() => {
     const [notificationPermissionStatus, setNotificationPermissionStatus] = useState<NotificationPermission>('default');
     
     useEffect(() => {
+        let total = unreadCount;
+        for (const key in unreadCounts) {
+            if (key !== 'chat') {
+                total += (unreadCounts[key] || 0);
+            }
+        }
+
         if ('setAppBadge' in navigator) {
-            if (unreadCount > 0) {
-                (navigator as any).setAppBadge(unreadCount).catch((e: any) => console.error(e));
+            if (total > 0) {
+                (navigator as any).setAppBadge(total).catch((e: any) => console.error(e));
             } else {
                 (navigator as any).clearAppBadge().catch((e: any) => console.error(e));
             }
         }
-    }, [unreadCount]);
+
+        try {
+            const request = indexedDB.open('badge-store', 1);
+            request.onupgradeneeded = (e: any) => {
+                e.target.result.createObjectStore('badges', { keyPath: 'id' });
+            };
+            request.onsuccess = (e: any) => {
+                const db = e.target.result;
+                const tx = db.transaction('badges', 'readwrite');
+                tx.objectStore('badges').put({ id: 'count', value: total });
+            };
+        } catch (e) {}
+    }, [unreadCount, unreadCounts]);
 
     // Check localStorage for dismissal state on mount
     const [isBannerDismissed, setIsBannerDismissed] = useState(() => {
