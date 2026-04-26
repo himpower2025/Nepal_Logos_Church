@@ -66,17 +66,6 @@ if (typeof firebase !== 'undefined' && hasAllConfig) {
             messaging.onBackgroundMessage(function(payload) {
     console.log('[SW-LOG] Background message received:', payload);
 
-    const notificationTitle = payload.notification?.title || "New Message";
-    const notificationOptions = {
-        body: payload.notification?.body || "",
-        icon: '/logos-church-new-logo.jpg',
-        badge: '/logos-church-new-logo.jpg',
-        tag: payload.data?.tag || 'logos-church-notification',
-        data: {
-            url: payload.fcmOptions?.link || payload.data?.url || self.origin,
-        }
-    };
-
     // 앱 배지 카운트 증가
     getBadgeCount().then(async (count) => {
         const newCount = count + 1;
@@ -117,7 +106,9 @@ if (typeof firebase !== 'undefined' && hasAllConfig) {
             });
         });
 
-    return self.registration.showNotification(notificationTitle, notificationOptions);
+    // Firebase SDK automatically displays the notification if the payload contains a 'notification' object.
+    // Do NOT call self.registration.showNotification here, or it will cause duplicate notifications
+    // which Android groups together, showing a "2" badge for a single message.
 });
 
             console.log('[SW-LOG] Background message handler set up.');
