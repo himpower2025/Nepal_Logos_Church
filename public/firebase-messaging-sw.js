@@ -66,45 +66,51 @@ if (typeof firebase !== 'undefined' && hasAllConfig) {
             messaging.onBackgroundMessage(function(payload) {
     console.log('[SW-LOG] Background message received:', payload);
 
-    // 앱 배지 카운트 증가
-    getBadgeCount().then(async (count) => {
-        const newCount = count + 1;
-        await setBadgeCount(newCount);
-        if (navigator.setAppBadge) {
-            navigator.setAppBadge(newCount).catch(() => {
-                navigator.setAppBadge();
-            });
-        }
-    });
-
-    // 탭 페이지 파악 후 IndexedDB에 저장
-    const targetUrl = payload.fcmOptions?.link || payload.data?.url || '';
-    const pageMatch = targetUrl.match(/[?&]page=([^&]+)/);
-    const targetPage = pageMatch ? pageMatch[1] : 'news';
-
-    // IndexedDB에 탭별 카운트 저장 (앱이 닫혀있을 때를 위해)
-    const req = indexedDB.open('tab-badge-store', 1);
-    req.onupgradeneeded = (e) => {
-        e.target.result.createObjectStore('tabBadges', { keyPath: 'page' });
-    };
-    req.onsuccess = (e) => {
-        const idb = e.target.result;
-        const tx = idb.transaction('tabBadges', 'readwrite');
-        const store = tx.objectStore('tabBadges');
-        const getReq = store.get(targetPage);
-        getReq.onsuccess = () => {
-            const current = getReq.result?.count || 0;
-            store.put({ page: targetPage, count: current + 1 });
-        };
-    };
-
-    // 혹시 앱이 열려있으면 직접 메시지도 전송
-    self.clients.matchAll({ type: 'window', includeUncontrolled: true })
-        .then(clients => {
-            clients.forEach(client => {
-                client.postMessage({ type: 'NEW_NOTIFICATION', page: targetPage });
-            });
+    // Return a Promise so the Service Worker stays alive until DB updates finish
+    return new Promise((resolve) => {
+        // 앱 배지 카운트 증가
+        getBadgeCount().then(async (count) => {
+            const newCount = count + 1;
+            await setBadgeCount(newCount);
+            if (navigator.setAppBadge) {
+                navigator.setAppBadge(newCount).catch(() => {
+                    navigator.setAppBadge();
+                });
+            }
         });
+
+        // 탭 페이지 파악 후 IndexedDB에 저장
+        const targetUrl = payload.fcmOptions?.link || payload.data?.url || '';
+        const pageMatch = targetUrl.match(/[?&]page=([^&]+)/);
+        const targetPage = pageMatch ? pageMatch[1] : 'news';
+
+        // IndexedDB에 탭별 카운트 저장 (앱이 닫혀있을 때를 위해)
+        const req = indexedDB.open('tab-badge-store', 1);
+        req.onupgradeneeded = (e) => {
+            e.target.result.createObjectStore('tabBadges', { keyPath: 'page' });
+        };
+        req.onsuccess = (e) => {
+            const idb = e.target.result;
+            const tx = idb.transaction('tabBadges', 'readwrite');
+            const store = tx.objectStore('tabBadges');
+            const getReq = store.get(targetPage);
+            getReq.onsuccess = () => {
+                const current = getReq.result?.count || 0;
+                store.put({ page: targetPage, count: current + 1 });
+                
+                // 혹시 앱이 열려있으면 직접 메시지도 전송
+                self.clients.matchAll({ type: 'window', includeUncontrolled: true })
+                    .then(clients => {
+                        clients.forEach(client => {
+                            client.postMessage({ type: 'NEW_NOTIFICATION', page: targetPage });
+                        });
+                        resolve(); // DB 업데이트 및 메시지 전송 후 종료
+                    });
+            };
+            getReq.onerror = () => resolve();
+        };
+        req.onerror = () => resolve();
+    });
 
     // Firebase SDK automatically displays the notification if the payload contains a 'notification' object.
     // Do NOT call self.registration.showNotification here, or it will cause duplicate notifications
