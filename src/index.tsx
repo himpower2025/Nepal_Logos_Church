@@ -2373,6 +2373,14 @@ const ConversationPage: React.FC<{
                 // 이전 메시지와 날짜가 다른지 확인
                 const prevMsg = index > 0 ? sortedMessages[index - 1] : null;
                 const showDate = !prevMsg || !isSameDay(msg.createdAt, prevMsg.createdAt);
+
+                // 단체방 여부(참여자 3명 이상) 및 보낸 사람 이름 계산
+                const isGroupChat = (currentChat?.participantIds.length ?? 0) > 2;
+                const isSent = msg.senderId === currentUser.id;
+                // 같은 사람이 연속으로 보낸 메시지는 이름을 반복 표시하지 않음
+                const showSenderName = isGroupChat && !isSent &&
+                    (!prevMsg || prevMsg.senderId !== msg.senderId || showDate);
+                const senderName = currentChat?.participants?.[msg.senderId]?.name;
                 
                 return (
                     <React.Fragment key={msg.tempId || msg.id}>
@@ -2384,7 +2392,8 @@ const ConversationPage: React.FC<{
                         )}
                         <MessageBubble 
                             message={msg} 
-                            isSent={msg.senderId === currentUser.id} 
+                            isSent={isSent} 
+                            senderName={showSenderName ? senderName : undefined}
                             onMediaClick={(idx) => msg.media && setViewingMedia({ media: msg.media, startIndex: idx })}
                             onLongPress={() => setDeletingMessage(msg)}
                             onImageLoad={handleImageLoad}
@@ -2482,10 +2491,11 @@ const UploadProgressCircle: React.FC<{ progress: number }> = ({ progress }) => {
 const MessageBubble: React.FC<{
     message: Message;
     isSent: boolean;
+    senderName?: string;
     onMediaClick: (index: number) => void;
     onLongPress: () => void;
     onImageLoad?: () => void;
-}> = ({ message, isSent, onMediaClick, onLongPress, onImageLoad }) => {
+}> = ({ message, isSent, senderName, onMediaClick, onLongPress, onImageLoad }) => {
     const timerRef = useRef<number | null>(null);
 
     const handlePointerDown = () => {
@@ -2513,6 +2523,9 @@ const MessageBubble: React.FC<{
 
     return (
         <div className={`message-container ${isSent ? 'sent' : 'received'}`}>
+            {senderName && (
+                <span className="message-sender-name">{senderName}</span>
+            )}
             <div 
                 className={`message-bubble ${message.media ? 'has-media' : ''}`}
                 onMouseDown={handlePointerDown}
