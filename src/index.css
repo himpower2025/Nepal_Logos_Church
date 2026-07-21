@@ -1393,7 +1393,8 @@ html, body, #root {
 }
 .message-container {
     display: flex;
-    margin-bottom: var(--space-sm);
+    margin-bottom: 6px;
+    align-items: flex-start;
 }
 .message-container.sent {
     justify-content: flex-end;
@@ -1401,13 +1402,79 @@ html, body, #root {
 .message-container.received {
     justify-content: flex-start;
 }
+
+/* Group Chat Avatar Styling */
+.message-avatar-container {
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+}
+
+.message-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+
+.message-avatar-placeholder {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    letter-spacing: -0.5px;
+}
+
+.message-avatar-spacer {
+    width: 32px;
+    height: 32px;
+}
+
+/* Wrapper for sender name + bubble */
+.message-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    max-width: 78%;
+}
+
+.message-container.sent .message-content-wrapper {
+    align-items: flex-end;
+}
+
+.message-container.received .message-content-wrapper {
+    align-items: flex-start;
+}
+
+.message-sender-name {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    margin-left: 4px;
+    margin-bottom: 3px;
+    display: inline-block;
+    line-height: 1.2;
+}
+
 .message-bubble {
-    max-width: 75%;
+    width: fit-content;
+    max-width: 100%;
     padding: 8px 12px;
-    border-radius: 18px;
+    border-radius: 16px;
     line-height: 1.4;
     position: relative;
-    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
 }
 .message-bubble.has-media {
     padding: var(--space-xs);

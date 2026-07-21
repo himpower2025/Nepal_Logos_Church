@@ -277,11 +277,40 @@ const formatRelativeTime = (timestamp: Timestamp | undefined): string => {
 };
 function getAvatarInitial(name: string | undefined | null): string {
     if (!name) return 'L';
-    const parts = name.split(' ');
+    const parts = name.trim().split(' ');
     if (parts.length > 1 && parts[parts.length - 1]) {
         return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
     }
-    return name.substring(0, 1).toUpperCase();
+    return name.trim().substring(0, 1).toUpperCase();
+}
+
+function getFirstName(fullName: string | undefined | null): string {
+    if (!fullName) return '';
+    const trimmed = fullName.trim();
+    if (!trimmed) return '';
+    const firstWord = trimmed.split(/\s+/)[0];
+    return firstWord || trimmed;
+}
+
+function getParticipantColor(id: string | undefined | null): string {
+    if (!id) return '#2563eb';
+    const colors = [
+        '#2563eb', // Rich Blue
+        '#7c3aed', // Purple / Violet
+        '#db2777', // Pink / Rose
+        '#d97706', // Warm Amber
+        '#059669', // Deep Emerald
+        '#0284c7', // Bright Sky
+        '#9333ea', // Vivid Purple
+        '#ea580c', // Dark Orange
+        '#0891b2', // Cyan / Teal
+        '#c026d3', // Magenta
+    ];
+    let hash = 0;
+    for (let i = 0; i < id.length; i++) {
+        hash = id.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return colors[Math.abs(hash) % colors.length];
 }
 const getEmbedUrl = (url: string, muted: boolean = false): string | null => {
     if (!url) return null;
@@ -2377,10 +2406,14 @@ const ConversationPage: React.FC<{
                 // 단체방 여부(참여자 3명 이상) 및 보낸 사람 이름 계산
                 const isGroupChat = (currentChat?.participantIds.length ?? 0) > 2;
                 const isSent = msg.senderId === currentUser.id;
+                const isFirstInSequence = !prevMsg || prevMsg.senderId !== msg.senderId || showDate;
+                
                 // 같은 사람이 연속으로 보낸 메시지는 이름을 반복 표시하지 않음
-                const showSenderName = isGroupChat && !isSent &&
-                    (!prevMsg || prevMsg.senderId !== msg.senderId || showDate);
-                const senderName = currentChat?.participants?.[msg.senderId]?.name;
+                const showSenderName = isGroupChat && !isSent && isFirstInSequence;
+                const participant = currentChat?.participants?.[msg.senderId];
+                const rawSenderName = participant?.name;
+                const senderAvatar = participant?.avatar;
+                const firstName = getFirstName(rawSenderName);
                 
                 return (
                     <React.Fragment key={msg.tempId || msg.id}>
@@ -2393,7 +2426,12 @@ const ConversationPage: React.FC<{
                         <MessageBubble 
                             message={msg} 
                             isSent={isSent} 
-                            senderName={showSenderName ? senderName : undefined}
+                            isGroupChat={isGroupChat}
+                            senderName={showSenderName ? firstName : undefined}
+                            senderFullName={rawSenderName}
+                            senderAvatar={senderAvatar}
+                            senderId={msg.senderId}
+                            showAvatar={isGroupChat && !isSent && isFirstInSequence}
                             onMediaClick={(idx) => msg.media && setViewingMedia({ media: msg.media, startIndex: idx })}
                             onLongPress={() => setDeletingMessage(msg)}
                             onImageLoad={handleImageLoad}
@@ -2491,11 +2529,28 @@ const UploadProgressCircle: React.FC<{ progress: number }> = ({ progress }) => {
 const MessageBubble: React.FC<{
     message: Message;
     isSent: boolean;
+    isGroupChat?: boolean;
     senderName?: string;
+    senderFullName?: string;
+    senderAvatar?: string;
+    senderId?: string;
+    showAvatar?: boolean;
     onMediaClick: (index: number) => void;
     onLongPress: () => void;
     onImageLoad?: () => void;
-}> = ({ message, isSent, senderName, onMediaClick, onLongPress, onImageLoad }) => {
+}> = ({ 
+    message, 
+    isSent, 
+    isGroupChat, 
+    senderName, 
+    senderFullName, 
+    senderAvatar, 
+    senderId, 
+    showAvatar, 
+    onMediaClick, 
+    onLongPress, 
+    onImageLoad 
+}) => {
     const timerRef = useRef<number | null>(null);
 
     const handlePointerDown = () => {
@@ -2521,27 +2576,48 @@ const MessageBubble: React.FC<{
          }
     };
 
+    const senderColor = senderId ? getParticipantColor(senderId) : '#2563eb';
+
     return (
-        <div className={`message-container ${isSent ? 'sent' : 'received'}`}>
-            {senderName && (
-                <span className="message-sender-name">{senderName}</span>
+        <div className={`message-container ${isSent ? 'sent' : 'received'} ${isGroupChat ? 'group-message' : ''}`}>
+            {!isSent && isGroupChat && (
+                <div className="message-avatar-container">
+                    {showAvatar ? (
+                        senderAvatar ? (
+                            <img src={senderAvatar} alt={senderName || 'Avatar'} className="message-avatar" />
+                        ) : (
+                            <div className="message-avatar-placeholder" style={{ backgroundColor: senderColor }}>
+                                {getAvatarInitial(senderFullName || senderName)}
+                            </div>
+                        )
+                    ) : (
+                        <div className="message-avatar-spacer" />
+                    )}
+                </div>
             )}
-            <div 
-                className={`message-bubble ${message.media ? 'has-media' : ''}`}
-                onMouseDown={handlePointerDown}
-                onMouseUp={handlePointerUp}
-                onTouchStart={handlePointerDown}
-                onTouchEnd={handlePointerUp}
-                onContextMenu={handleContextMenu}
-            >
-                {message.media && message.media.length > 0 && (
-                    <MediaGrid media={message.media} messageId={message.id} onMediaClick={onMediaClick} onImageLoad={onImageLoad} />
+            <div className="message-content-wrapper">
+                {senderName && (
+                    <span className="message-sender-name" style={{ color: senderColor }}>
+                        {senderName}
+                    </span>
                 )}
-                {message.content && <p className="message-content">{message.content}</p>}
-                <div className="message-footer">
-                    <span className="message-timestamp">{formatTime(message.createdAt)}</span>
-                    {message.status === 'uploading' && <div className="spinner-small" style={{borderColor: '#999', borderTopColor: '#666'}}></div>}
-                    {message.status === 'failed' && <span className="material-symbols-outlined message-failed-indicator">error</span>}
+                <div 
+                    className={`message-bubble ${message.media ? 'has-media' : ''}`}
+                    onMouseDown={handlePointerDown}
+                    onMouseUp={handlePointerUp}
+                    onTouchStart={handlePointerDown}
+                    onTouchEnd={handlePointerUp}
+                    onContextMenu={handleContextMenu}
+                >
+                    {message.media && message.media.length > 0 && (
+                        <MediaGrid media={message.media} messageId={message.id} onMediaClick={onMediaClick} onImageLoad={onImageLoad} />
+                    )}
+                    {message.content && <p className="message-content">{message.content}</p>}
+                    <div className="message-footer">
+                        <span className="message-timestamp">{formatTime(message.createdAt)}</span>
+                        {message.status === 'uploading' && <div className="spinner-small" style={{borderColor: '#999', borderTopColor: '#666'}}></div>}
+                        {message.status === 'failed' && <span className="material-symbols-outlined message-failed-indicator">error</span>}
+                    </div>
                 </div>
             </div>
         </div>
