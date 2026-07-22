@@ -13,6 +13,9 @@ import {
     GoogleAuthProvider,
     signInWithPopup,
     User as FirebaseAuthUser,
+    EmailAuthProvider,
+    reauthenticateWithCredential,
+    reauthenticateWithPopup,
 } from "firebase/auth";
 import { 
     collection, 
@@ -711,6 +714,11 @@ const LoginPage: React.FC = () => {
                     </svg>
                     <span>Sign in with Google</span>
                 </button>
+
+                <div className="login-compliance-notice" style={{ marginTop: '20px', fontSize: '11px', color: '#64748b', textAlign: 'center', lineHeight: '1.4' }}>
+                    By signing up or logging in, you agree to our <br />
+                    <a href="/terms.html" target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb', textDecoration: 'underline' }}>Terms of Use</a> and <a href="/privacy.html" target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb', textDecoration: 'underline' }}>Privacy Policy</a>.
+                </div>
 
                 {error && <p className="login-error">{error}</p>}
             </div>
@@ -2830,6 +2838,311 @@ const InstallationGuidePage: React.FC = () => {
     // Use a memoized ref to prevent re-creating it on every render
 
 
+// --- Settings Modal Component ---
+const SettingsModal: React.FC<{
+    isOpen: boolean;
+    onClose: () => void;
+    currentUser: User;
+    setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
+}> = ({ isOpen, onClose, currentUser, setCurrentUser }) => {
+    const firebaseServices = useFirebase();
+    const { auth, db } = firebaseServices;
+    const { showToast } = useToast();
+
+    // Re-authentication states
+    const [confirmDelete, setConfirmDelete] = useState(false);
+    const [showReauthForm, setShowReauthForm] = useState(false);
+    const [reauthPassword, setReauthPassword] = useState('');
+    const [reauthError, setReauthError] = useState('');
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    if (!isOpen) return null;
+
+    const providerId = auth?.currentUser?.providerData[0]?.providerId;
+    const isGoogleUser = providerId === 'google.com';
+
+    const handleTogglePreference = async (key: 'news' | 'prayer' | 'chat' | 'worship' | 'podcast') => {
+        if (!db) return;
+        const currentPrefs = currentUser.notificationPreferences || {};
+        const updatedPrefs = {
+            ...currentPrefs,
+            [key]: !currentPrefs[key]
+        };
+
+        // Optimistic UI update
+        setCurrentUser(prev => prev ? { ...prev, notificationPreferences: updatedPrefs } : null);
+
+        try {
+            await updateDoc(doc(db, "users", currentUser.id), {
+                notificationPreferences: updatedPrefs
+            });
+            showToast("Settings Saved", "알림 설정이 변경되었습니다.");
+        } catch (e) {
+            console.error("Failed to update notification settings", e);
+            showToast("Error", "알림 설정을 저장하는 데 실패했습니다.");
+            // Rollback
+            setCurrentUser(prev => prev ? { ...prev, notificationPreferences: currentPrefs } : null);
+        }
+    };
+
+    const executeDeletion = async () => {
+        if (!auth || !auth.currentUser || !db) return;
+        try {
+            const userId = auth.currentUser.uid;
+            
+            // Delete Firestore user document first
+            await deleteDoc(doc(db, "users", userId));
+            
+            // Delete Auth user
+            await auth.currentUser.delete();
+            
+            showToast("계정 탈퇴 완료", "계정이 성공적으로 탈퇴 처리되었습니다.");
+            onClose();
+        } catch (err: any) {
+            console.error("Account deletion error", err);
+            if (err.code === 'auth/requires-recent-login') {
+                setShowReauthForm(true);
+            } else {
+                setReauthError(err.message || '계정 탈퇴 중 오류가 발생했습니다.');
+            }
+            setIsDeleting(false);
+        }
+    };
+
+    const handleDeleteClick = async () => {
+        setReauthError('');
+        if (window.confirm("정말로 계정을 영구 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없으며, 모든 개인 데이터가 즉시 삭제됩니다.")) {
+            setIsDeleting(true);
+            await executeDeletion();
+        }
+    };
+
+    const handleEmailReauthenticate = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!auth || !auth.currentUser || !auth.currentUser.email) return;
+        setReauthError('');
+        setIsDeleting(true);
+        try {
+            const credential = EmailAuthProvider.credential(auth.currentUser.email, reauthPassword);
+            await reauthenticateWithCredential(auth.currentUser, credential);
+            await executeDeletion();
+        } catch (err: any) {
+            console.error("Email reauth failed", err);
+            let msg = err.message;
+            if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+                msg = '비밀번호가 올바르지 않습니다. 다시 입력해 주세요.';
+            }
+            setReauthError(msg);
+            setIsDeleting(false);
+        }
+    };
+
+    const handleGoogleReauthenticate = async () => {
+        if (!auth || !auth.currentUser) return;
+        setReauthError('');
+        setIsDeleting(true);
+        try {
+            const provider = new GoogleAuthProvider();
+            await reauthenticateWithPopup(auth.currentUser, provider);
+            await executeDeletion();
+        } catch (err: any) {
+            console.error("Google reauth failed", err);
+            setReauthError("구글 인증에 실패했습니다. 다시 시도해 주세요.");
+            setIsDeleting(false);
+        }
+    };
+
+    const preferencesList = [
+        { key: 'news', label: '공지사항 & 소식 (Announcements)', desc: '교회의 새로운 공지 및 알림 수신' },
+        { key: 'worship', label: 'आरधना - 예배 알림 (Worship)', desc: '라이브 예배 스트리밍 및 영상 관련 알림 수신' },
+        { key: 'podcast', label: 'Podcast - 팟캐스트 알림', desc: '새로운 오디오 팟캐스트 등록 알림 수신' },
+        { key: 'prayer', label: 'प्रार्थना - 기도제목 알림 (Prayer)', desc: '새로운 성도의 기도제목 등록 알림 수신' },
+        { key: 'chat', label: 'संगतिहरु - 소그룹 채팅 알림 (Chat)', desc: '참여 중인 대화방의 새 메시지 알림 수신' }
+    ] as const;
+
+    return createPortal(
+        <div className="modal-backdrop" onClick={onClose}>
+            <div className="modal-content settings-modal-content" onClick={(e) => e.stopPropagation()}>
+                <header className="settings-header">
+                    <h2>설정 (Settings)</h2>
+                    <button className="modal-close-button" onClick={onClose} aria-label="Close settings">
+                        <span className="material-symbols-outlined">close</span>
+                    </button>
+                </header>
+
+                <div className="settings-scroll-container">
+                    {/* Profile Section */}
+                    <div className="settings-section profile-section">
+                        <div className="profile-details">
+                            {currentUser.avatar ? (
+                                <img src={currentUser.avatar} alt={currentUser.name} className="profile-avatar" />
+                            ) : (
+                                <div className="profile-avatar-placeholder">
+                                    {getAvatarInitial(currentUser.name)}
+                                </div>
+                            )}
+                            <div className="profile-info">
+                                <h3>{currentUser.name}</h3>
+                                <p>{currentUser.email}</p>
+                                <span className="user-role-badge">
+                                    {currentUser.roles.includes('admin') ? '관리자 (Admin)' : '성도 (Member)'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Notification Preferences */}
+                    <div className="settings-section">
+                        <h4 className="section-title">알림 설정 (Notifications)</h4>
+                        <div className="preferences-list">
+                            {preferencesList.map(({ key, label, desc }) => {
+                                const isChecked = currentUser.notificationPreferences?.[key] !== false;
+                                return (
+                                    <div key={key} className="preference-item">
+                                        <div className="preference-text">
+                                            <div className="preference-label">{label}</div>
+                                            <div className="preference-desc">{desc}</div>
+                                        </div>
+                                        <label className="switch-toggle">
+                                            <input 
+                                                type="checkbox" 
+                                                checked={isChecked}
+                                                onChange={() => handleTogglePreference(key)}
+                                            />
+                                            <span className="switch-slider"></span>
+                                        </label>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    {/* App Documents */}
+                    <div className="settings-section">
+                        <h4 className="section-title">약관 및 정책 (Legal & Info)</h4>
+                        <div className="settings-links">
+                            <a href="/terms.html" target="_blank" rel="noopener noreferrer" className="settings-link-item">
+                                <span className="material-symbols-outlined">description</span>
+                                <span>이용약관 (Terms of Use)</span>
+                                <span className="material-symbols-outlined arrow-icon">open_in_new</span>
+                            </a>
+                            <a href="/privacy.html" target="_blank" rel="noopener noreferrer" className="settings-link-item">
+                                <span className="material-symbols-outlined">policy</span>
+                                <span>개인정보처리방침 (Privacy Policy)</span>
+                                <span className="material-symbols-outlined arrow-icon">open_in_new</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    {/* Account Settings / Deletion */}
+                    <div className="settings-section danger-zone">
+                        <h4 className="section-title">계정 관리 (Account Management)</h4>
+                        
+                        {!confirmDelete && !showReauthForm ? (
+                            <button 
+                                type="button" 
+                                className="delete-account-trigger-btn"
+                                onClick={() => setConfirmDelete(true)}
+                            >
+                                <span className="material-symbols-outlined">delete_forever</span>
+                                계정 탈퇴 (Delete Account)
+                            </button>
+                        ) : (
+                            <div className="delete-account-confirm-box">
+                                <p className="warning-title">⚠️ 계정 영구 탈퇴 안내</p>
+                                <p className="warning-text">
+                                    탈퇴 시 계정 정보 및 프로필이 영구 삭제되며 복구할 수 없습니다. 
+                                    (작성하신 기도제목 및 채팅 내역 등은 탈퇴 회원으로 표시되거나 영구 삭제됩니다.)
+                                </p>
+                                
+                                {showReauthForm ? (
+                                    <div className="reauth-container">
+                                        <p className="reauth-prompt">
+                                            안전을 위해 다시 한 번 로그인을 진행해 주세요.
+                                        </p>
+                                        
+                                        {isGoogleUser ? (
+                                            <button 
+                                                type="button" 
+                                                className="google-reauth-btn"
+                                                onClick={handleGoogleReauthenticate}
+                                                disabled={isDeleting}
+                                            >
+                                                <svg viewBox="0 0 48 48" width="18px" height="18px">
+                                                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                                                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                                                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                                                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                                                </svg>
+                                                <span>Google 계정으로 재인증</span>
+                                            </button>
+                                        ) : (
+                                            <form onSubmit={handleEmailReauthenticate} className="reauth-form">
+                                                <input 
+                                                    type="password" 
+                                                    placeholder="비밀번호 입력 (Password)"
+                                                    value={reauthPassword}
+                                                    onChange={(e) => setReauthPassword(e.target.value)}
+                                                    required
+                                                    className="reauth-input"
+                                                    disabled={isDeleting}
+                                                />
+                                                <button 
+                                                    type="submit" 
+                                                    className="reauth-submit-btn"
+                                                    disabled={isDeleting}
+                                                >
+                                                    {isDeleting ? '탈퇴 처리 중...' : '비밀번호 확인 및 탈퇴'}
+                                                </button>
+                                            </form>
+                                        )}
+                                        {reauthError && <p className="reauth-error-msg">{reauthError}</p>}
+                                        <button 
+                                            type="button" 
+                                            className="reauth-cancel-btn"
+                                            onClick={() => { setShowReauthForm(false); setConfirmDelete(false); }}
+                                            disabled={isDeleting}
+                                        >
+                                            취소 (Cancel)
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="confirm-buttons">
+                                        <button 
+                                            type="button" 
+                                            className="delete-confirm-btn"
+                                            onClick={handleDeleteClick}
+                                            disabled={isDeleting}
+                                        >
+                                            {isDeleting ? '처리 중...' : '예, 탈퇴합니다.'}
+                                        </button>
+                                        <button 
+                                            type="button" 
+                                            className="delete-cancel-btn"
+                                            onClick={() => setConfirmDelete(false)}
+                                            disabled={isDeleting}
+                                        >
+                                            아니오, 취소합니다.
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Version footer */}
+                    <div className="settings-app-info">
+                        <p>Logos Church, Nepal App v1.0.0</p>
+                        <p>&copy; 2026 Logos Church, Nepal. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>,
+        document.body
+    );
+};
+
+
 // --- Main App Component ---
 const App: React.FC = () => {
     const firebaseServices = useFirebase();
@@ -2845,6 +3158,7 @@ useEffect(() => {
 }, [activePage]);
     const [currentChatId, setCurrentChatId] = useState<string | null>(null);
     const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
     // Data states
     const [worshipService, setWorshipService] = useState<WorshipService | null>(null);
@@ -3497,6 +3811,9 @@ useEffect(() => {
                             <span className="material-symbols-outlined">notifications</span>
                             {hasUnreadNotifications && <div className="notification-dot"></div>}
                         </button>
+                        <button className="header-button" onClick={() => setIsSettingsOpen(true)} aria-label="Settings">
+                            <span className="material-symbols-outlined">settings</span>
+                        </button>
                         <button className="header-button" onClick={() => auth && signOut(auth)} aria-label="Logout">
                             <span className="material-symbols-outlined">logout</span>
                         </button>
@@ -3558,6 +3875,12 @@ useEffect(() => {
                 isOpen={isNotificationPanelOpen}
                 onClose={() => setIsNotificationPanelOpen(false)}
                 notifications={notifications}
+            />
+            <SettingsModal
+                isOpen={isSettingsOpen}
+                onClose={() => setIsSettingsOpen(false)}
+                currentUser={currentUser}
+                setCurrentUser={setCurrentUser}
             />
         </div>
     );
