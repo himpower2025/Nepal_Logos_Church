@@ -2612,7 +2612,7 @@ const MessageBubble: React.FC<{
                 </div>
             )}
             <div className="message-content-wrapper">
-                {senderName && (
+                {!isSent && isGroupChat && senderName && showAvatar && (
                     <span className="message-sender-name" style={{ color: senderColor }}>
                         {senderName}
                     </span>
@@ -2631,7 +2631,7 @@ const MessageBubble: React.FC<{
                     {message.content && <p className="message-content">{message.content}</p>}
                     <div className="message-footer">
                         <span className="message-timestamp">{formatTime(message.createdAt)}</span>
-                        {message.status === 'uploading' && <div className="spinner-small" style={{borderColor: '#999', borderTopColor: '#666'}}></div>}
+                        {message.status === 'uploading' && <div className="spinner-small" style={{borderColor: 'rgba(255,255,255,0.7)', borderTopColor: '#fff'}}></div>}
                         {message.status === 'failed' && <span className="material-symbols-outlined message-failed-indicator">error</span>}
                     </div>
                 </div>
