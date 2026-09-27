@@ -1,4 +1,5 @@
 import {onDocumentCreated} from "firebase-functions/v2/firestore";
+import {onSchedule} from "firebase-functions/v2/scheduler";
 import * as admin from "firebase-admin";
 import * as logger from "firebase-functions/logger";
 import {MulticastMessage} from "firebase-admin/messaging";
@@ -224,8 +225,28 @@ export const onChatMessageCreated = onDocumentCreated("chats/{chatId}/messages/{
     handleSendResponse(response, uniqueTokens);
 });
 
-// 4. New Worship Video Notification
+// 4. New Worship Video Notification & Auto-cleanup of videos older than 2 months (60 days)
 export const onPastWorshipCreated = onDocumentCreated("pastWorshipServices/{serviceId}", async (event) => {
+    // 1. Auto-delete past worship services older than 60 days (~2 months)
+    try {
+        const sixtyDaysAgo = new Date(Date.now() - 60 * 24 * 60 * 60 * 1000);
+        const oldServicesSnapshot = await db.collection("pastWorshipServices")
+            .where("createdAt", "<", admin.firestore.Timestamp.fromDate(sixtyDaysAgo))
+            .get();
+
+        if (!oldServicesSnapshot.empty) {
+            const batch = db.batch();
+            oldServicesSnapshot.docs.forEach((docSnap) => {
+                batch.delete(docSnap.ref);
+            });
+            await batch.commit();
+            logger.info(`Deleted ${oldServicesSnapshot.size} past worship services older than 2 months.`);
+        }
+    } catch (err) {
+        logger.error("Error auto-deleting old past worship services:", err);
+    }
+
+    // 2. Send notification
     const snapshot = event.data;
     if (!snapshot) return;
     const service = snapshot.data() as { title: string };
@@ -281,5 +302,26 @@ export const onPodcastCreated = onDocumentCreated("podcasts/{podcastId}", async 
         };
         const response = await fcm.sendEachForMulticast(payload);
         handleSendResponse(response, allTokens);
+    }
+});
+
+// 6. Scheduled Daily Cleanup: Automatically deletes past worship services older than 2 months (60 days)
+export const cleanupOldWorshipServices = onSchedule("0 0 * * *", async (event) => {
+    try {
+        const sixtyDaysAgo = new Date(Date.now() - 60 * 24 * 60 * 60 * 1000);
+        const oldServicesSnapshot = await db.collection("pastWorshipServices")
+            .where("createdAt", "<", admin.firestore.Timestamp.fromDate(sixtyDaysAgo))
+            .get();
+
+        if (!oldServicesSnapshot.empty) {
+            const batch = db.batch();
+            oldServicesSnapshot.docs.forEach((docSnap) => {
+                batch.delete(docSnap.ref);
+            });
+            await batch.commit();
+            logger.info(`[Scheduled Cleanup] Auto-deleted ${oldServicesSnapshot.size} past worship services older than 2 months.`);
+        }
+    } catch (err) {
+        logger.error("[Scheduled Cleanup] Error auto-deleting old past worship services:", err);
     }
 });

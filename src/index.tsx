@@ -746,6 +746,14 @@ const WorshipPage: React.FC<{
         if (!db || !newPastService.title || !newPastService.youtubeUrl) return;
         
         try {
+            // Clean up past worship services older than 60 days (~2 months)
+            const twoMonthsAgo = Timestamp.fromDate(new Date(Date.now() - 60 * 24 * 60 * 60 * 1000));
+            const oldQuery = query(collection(db, "pastWorshipServices"), where("createdAt", "<", twoMonthsAgo));
+            const oldSnap = await getDocs(oldQuery);
+            oldSnap.forEach(async (oldDoc) => {
+                await deleteDoc(oldDoc.ref);
+            });
+
             await addDoc(collection(db, "pastWorshipServices"), {
                 ...newPastService,
                 createdAt: serverTimestamp()
@@ -2856,6 +2864,31 @@ const SettingsModal: React.FC<{
     const [reauthError, setReauthError] = useState('');
     const [isDeleting, setIsDeleting] = useState(false);
 
+    // Admin management state
+    const [adminEmails, setAdminEmails] = useState<string[]>(['davidrai441@gmail.com']);
+    const [newAdminEmail, setNewAdminEmail] = useState('');
+    const [isAddingAdmin, setIsAddingAdmin] = useState(false);
+    const [adminError, setAdminError] = useState('');
+
+    useEffect(() => {
+        if (!isOpen || !currentUser.roles.includes('admin') || !db) return;
+        const adminDocRef = doc(db, "admin_settings", "config");
+        const unsubscribe = onSnapshot(adminDocRef, (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                const emails: string[] = (data.adminEmails || []).map((e: string) => e.toLowerCase());
+                if (!emails.includes('davidrai441@gmail.com')) {
+                    emails.unshift('davidrai441@gmail.com');
+                }
+                setAdminEmails([...new Set(emails)]);
+            } else {
+                setAdminEmails(['davidrai441@gmail.com']);
+                setDoc(adminDocRef, { adminEmails: ['davidrai441@gmail.com'] }, { merge: true }).catch(console.error);
+            }
+        });
+        return () => unsubscribe();
+    }, [isOpen, currentUser.roles, db]);
+
     if (!isOpen) return null;
 
     const providerId = auth?.currentUser?.providerData[0]?.providerId;
@@ -2876,12 +2909,93 @@ const SettingsModal: React.FC<{
             await updateDoc(doc(db, "users", currentUser.id), {
                 notificationPreferences: updatedPrefs
             });
-            showToast("Settings Saved", "알림 설정이 변경되었습니다.");
+            showToast("Settings Saved", "Notification preferences updated.");
         } catch (e) {
             console.error("Failed to update notification settings", e);
-            showToast("Error", "알림 설정을 저장하는 데 실패했습니다.");
+            showToast("Error", "Failed to save notification preferences.");
             // Rollback
             setCurrentUser(prev => prev ? { ...prev, notificationPreferences: currentPrefs } : null);
+        }
+    };
+
+    const handleAddAdminEmail = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!db) return;
+        setAdminError('');
+        const emailToAdd = newAdminEmail.trim().toLowerCase();
+        
+        if (!emailToAdd) return;
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailToAdd)) {
+            setAdminError('Please enter a valid email address.');
+            return;
+        }
+
+        if (adminEmails.includes(emailToAdd)) {
+            setAdminError('This email is already registered as an administrator.');
+            return;
+        }
+
+        setIsAddingAdmin(true);
+        try {
+            const adminDocRef = doc(db, "admin_settings", "config");
+            await setDoc(adminDocRef, {
+                adminEmails: arrayUnion(emailToAdd)
+            }, { merge: true });
+
+            // If user with this email already exists in Firestore, grant admin role immediately
+            const usersRef = collection(db, "users");
+            const q = query(usersRef, where("email", "==", emailToAdd));
+            const querySnap = await getDocs(q);
+            querySnap.forEach(async (userDoc) => {
+                await updateDoc(userDoc.ref, {
+                    roles: arrayUnion('admin')
+                });
+            });
+
+            setNewAdminEmail('');
+            showToast("Admin Added", `Added ${emailToAdd} as an administrator.`);
+        } catch (err: any) {
+            console.error("Failed to add admin email", err);
+            setAdminError(err.message || "Failed to add admin email.");
+        } finally {
+            setIsAddingAdmin(false);
+        }
+    };
+
+    const handleRemoveAdminEmail = async (emailToRemove: string) => {
+        if (!db) return;
+        if (emailToRemove === 'davidrai441@gmail.com') {
+            alert("The primary administrator cannot be removed.");
+            return;
+        }
+        if (emailToRemove === currentUser.email) {
+            if (!window.confirm("Are you sure you want to remove yourself from the admin list?")) {
+                return;
+            }
+        }
+
+        try {
+            const adminDocRef = doc(db, "admin_settings", "config");
+            await updateDoc(adminDocRef, {
+                adminEmails: arrayRemove(emailToRemove)
+            });
+
+            // Update user document if exists
+            const usersRef = collection(db, "users");
+            const q = query(usersRef, where("email", "==", emailToRemove));
+            const querySnap = await getDocs(q);
+            querySnap.forEach(async (userDoc) => {
+                await updateDoc(userDoc.ref, {
+                    roles: arrayRemove('admin')
+                });
+            });
+
+            showToast("Admin Removed", `Removed ${emailToRemove} from administrator list.`);
+        } catch (err: any) {
+            console.error("Failed to remove admin email", err);
+            showToast("Error", "Failed to remove admin email.");
         }
     };
 
@@ -2896,14 +3010,14 @@ const SettingsModal: React.FC<{
             // Delete Auth user
             await auth.currentUser.delete();
             
-            showToast("계정 탈퇴 완료", "계정이 성공적으로 탈퇴 처리되었습니다.");
+            showToast("Account Deleted", "Your account has been deleted successfully.");
             onClose();
         } catch (err: any) {
             console.error("Account deletion error", err);
             if (err.code === 'auth/requires-recent-login') {
                 setShowReauthForm(true);
             } else {
-                setReauthError(err.message || '계정 탈퇴 중 오류가 발생했습니다.');
+                setReauthError(err.message || 'An error occurred while deleting your account.');
             }
             setIsDeleting(false);
         }
@@ -2911,7 +3025,7 @@ const SettingsModal: React.FC<{
 
     const handleDeleteClick = async () => {
         setReauthError('');
-        if (window.confirm("정말로 계정을 영구 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없으며, 모든 개인 데이터가 즉시 삭제됩니다.")) {
+        if (window.confirm("Are you sure you want to permanently delete your account? This action cannot be undone and all your data will be deleted.")) {
             setIsDeleting(true);
             await executeDeletion();
         }
@@ -2930,7 +3044,7 @@ const SettingsModal: React.FC<{
             console.error("Email reauth failed", err);
             let msg = err.message;
             if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
-                msg = '비밀번호가 올바르지 않습니다. 다시 입력해 주세요.';
+                msg = 'Incorrect password. Please try again.';
             }
             setReauthError(msg);
             setIsDeleting(false);
@@ -2947,24 +3061,24 @@ const SettingsModal: React.FC<{
             await executeDeletion();
         } catch (err: any) {
             console.error("Google reauth failed", err);
-            setReauthError("구글 인증에 실패했습니다. 다시 시도해 주세요.");
+            setReauthError("Google authentication failed. Please try again.");
             setIsDeleting(false);
         }
     };
 
     const preferencesList = [
-        { key: 'news', label: '공지사항 & 소식 (Announcements)', desc: '교회의 새로운 공지 및 알림 수신' },
-        { key: 'worship', label: 'आरधना - 예배 알림 (Worship)', desc: '라이브 예배 스트리밍 및 영상 관련 알림 수신' },
-        { key: 'podcast', label: 'Podcast - 팟캐스트 알림', desc: '새로운 오디오 팟캐스트 등록 알림 수신' },
-        { key: 'prayer', label: 'प्रार्थना - 기도제목 알림 (Prayer)', desc: '새로운 성도의 기도제목 등록 알림 수신' },
-        { key: 'chat', label: 'संगतिहरु - 소그룹 채팅 알림 (Chat)', desc: '참여 중인 대화방의 새 메시지 알림 수신' }
+        { key: 'news', label: 'Announcements', desc: 'Receive church announcements and news notifications' },
+        { key: 'worship', label: 'Worship', desc: 'Receive live worship streaming and video notifications' },
+        { key: 'podcast', label: 'Podcast', desc: 'Receive new audio podcast notifications' },
+        { key: 'prayer', label: 'Prayer Requests', desc: 'Receive new prayer request notifications' },
+        { key: 'chat', label: 'Chat', desc: 'Receive new chat message notifications' }
     ] as const;
 
     return createPortal(
         <div className="modal-backdrop" onClick={onClose}>
             <div className="modal-content settings-modal-content" onClick={(e) => e.stopPropagation()}>
                 <header className="settings-header">
-                    <h2>설정 (Settings)</h2>
+                    <h2>Settings</h2>
                     <button className="modal-close-button" onClick={onClose} aria-label="Close settings">
                         <span className="material-symbols-outlined">close</span>
                     </button>
@@ -2985,15 +3099,66 @@ const SettingsModal: React.FC<{
                                 <h3>{currentUser.name}</h3>
                                 <p>{currentUser.email}</p>
                                 <span className="user-role-badge">
-                                    {currentUser.roles.includes('admin') ? '관리자 (Admin)' : '성도 (Member)'}
+                                    {currentUser.roles.includes('admin') ? 'Admin' : 'Member'}
                                 </span>
                             </div>
                         </div>
                     </div>
 
+                    {/* Admin Management Section (Admins Only) */}
+                    {currentUser.roles.includes('admin') && (
+                        <div className="settings-section admin-section">
+                            <h4 className="section-title">Admin Management</h4>
+                            <p className="section-subtitle">Add and manage administrator email addresses for app management.</p>
+                            
+                            <form onSubmit={handleAddAdminEmail} className="add-admin-form">
+                                <div className="admin-input-group">
+                                    <input 
+                                        type="email" 
+                                        placeholder="Enter admin email address" 
+                                        value={newAdminEmail}
+                                        onChange={(e) => setNewAdminEmail(e.target.value)}
+                                        className="admin-email-input"
+                                        disabled={isAddingAdmin}
+                                    />
+                                    <button type="submit" className="add-admin-btn" disabled={isAddingAdmin || !newAdminEmail.trim()}>
+                                        <span className="material-symbols-outlined">person_add</span> Add
+                                    </button>
+                                </div>
+                                {adminError && <p className="admin-error-msg">{adminError}</p>}
+                            </form>
+
+                            <div className="admin-list-container">
+                                <h5 className="admin-list-title">Current Administrators</h5>
+                                <ul className="admin-email-list">
+                                    {adminEmails.map((email) => (
+                                        <li key={email} className="admin-email-item">
+                                            <div className="admin-email-info">
+                                                <span className="material-symbols-outlined admin-icon">admin_panel_settings</span>
+                                                <span className="admin-email-text">{email}</span>
+                                                {email === 'davidrai441@gmail.com' && <span className="primary-admin-tag">Primary</span>}
+                                                {email === currentUser.email.toLowerCase() && <span className="you-tag">You</span>}
+                                            </div>
+                                            {email !== 'davidrai441@gmail.com' && (
+                                                <button 
+                                                    type="button" 
+                                                    className="remove-admin-btn"
+                                                    onClick={() => handleRemoveAdminEmail(email)}
+                                                    title="Remove admin"
+                                                >
+                                                    <span className="material-symbols-outlined">delete</span>
+                                                </button>
+                                            )}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Notification Preferences */}
                     <div className="settings-section">
-                        <h4 className="section-title">알림 설정 (Notifications)</h4>
+                        <h4 className="section-title">Notifications</h4>
                         <div className="preferences-list">
                             {preferencesList.map(({ key, label, desc }) => {
                                 const isChecked = currentUser.notificationPreferences?.[key] !== false;
@@ -3019,16 +3184,16 @@ const SettingsModal: React.FC<{
 
                     {/* App Documents */}
                     <div className="settings-section">
-                        <h4 className="section-title">약관 및 정책 (Legal & Info)</h4>
+                        <h4 className="section-title">Legal & Info</h4>
                         <div className="settings-links">
                             <a href="/terms.html" target="_blank" rel="noopener noreferrer" className="settings-link-item">
                                 <span className="material-symbols-outlined">description</span>
-                                <span>이용약관 (Terms of Use)</span>
+                                <span>Terms of Use</span>
                                 <span className="material-symbols-outlined arrow-icon">open_in_new</span>
                             </a>
                             <a href="/privacy.html" target="_blank" rel="noopener noreferrer" className="settings-link-item">
                                 <span className="material-symbols-outlined">policy</span>
-                                <span>개인정보처리방침 (Privacy Policy)</span>
+                                <span>Privacy Policy</span>
                                 <span className="material-symbols-outlined arrow-icon">open_in_new</span>
                             </a>
                         </div>
@@ -3036,7 +3201,7 @@ const SettingsModal: React.FC<{
 
                     {/* Account Settings / Deletion */}
                     <div className="settings-section danger-zone">
-                        <h4 className="section-title">계정 관리 (Account Management)</h4>
+                        <h4 className="section-title">Account Management</h4>
                         
                         {!confirmDelete && !showReauthForm ? (
                             <button 
@@ -3045,20 +3210,20 @@ const SettingsModal: React.FC<{
                                 onClick={() => setConfirmDelete(true)}
                             >
                                 <span className="material-symbols-outlined">delete_forever</span>
-                                계정 탈퇴 (Delete Account)
+                                Delete Account
                             </button>
                         ) : (
                             <div className="delete-account-confirm-box">
-                                <p className="warning-title">⚠️ 계정 영구 탈퇴 안내</p>
+                                <p className="warning-title">⚠️ Permanent Account Deletion Notice</p>
                                 <p className="warning-text">
-                                    탈퇴 시 계정 정보 및 프로필이 영구 삭제되며 복구할 수 없습니다. 
-                                    (작성하신 기도제목 및 채팅 내역 등은 탈퇴 회원으로 표시되거나 영구 삭제됩니다.)
+                                    Deleting your account will permanently delete your account info and profile and cannot be restored.
+                                    (Your posted prayer requests and chat history will be shown as a deleted member or removed.)
                                 </p>
                                 
                                 {showReauthForm ? (
                                     <div className="reauth-container">
                                         <p className="reauth-prompt">
-                                            안전을 위해 다시 한 번 로그인을 진행해 주세요.
+                                            For security, please sign in again.
                                         </p>
                                         
                                         {isGoogleUser ? (
@@ -3074,13 +3239,13 @@ const SettingsModal: React.FC<{
                                                     <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
                                                     <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
                                                 </svg>
-                                                <span>Google 계정으로 재인증</span>
+                                                <span>Re-authenticate with Google</span>
                                             </button>
                                         ) : (
                                             <form onSubmit={handleEmailReauthenticate} className="reauth-form">
                                                 <input 
                                                     type="password" 
-                                                    placeholder="비밀번호 입력 (Password)"
+                                                    placeholder="Enter Password"
                                                     value={reauthPassword}
                                                     onChange={(e) => setReauthPassword(e.target.value)}
                                                     required
@@ -3092,7 +3257,7 @@ const SettingsModal: React.FC<{
                                                     className="reauth-submit-btn"
                                                     disabled={isDeleting}
                                                 >
-                                                    {isDeleting ? '탈퇴 처리 중...' : '비밀번호 확인 및 탈퇴'}
+                                                    {isDeleting ? 'Deleting...' : 'Confirm Password & Delete Account'}
                                                 </button>
                                             </form>
                                         )}
@@ -3103,7 +3268,7 @@ const SettingsModal: React.FC<{
                                             onClick={() => { setShowReauthForm(false); setConfirmDelete(false); }}
                                             disabled={isDeleting}
                                         >
-                                            취소 (Cancel)
+                                            Cancel
                                         </button>
                                     </div>
                                 ) : (
@@ -3114,7 +3279,7 @@ const SettingsModal: React.FC<{
                                             onClick={handleDeleteClick}
                                             disabled={isDeleting}
                                         >
-                                            {isDeleting ? '처리 중...' : '예, 탈퇴합니다.'}
+                                            {isDeleting ? 'Processing...' : 'Yes, Delete Account'}
                                         </button>
                                         <button 
                                             type="button" 
@@ -3122,7 +3287,7 @@ const SettingsModal: React.FC<{
                                             onClick={() => setConfirmDelete(false)}
                                             disabled={isDeleting}
                                         >
-                                            아니오, 취소합니다.
+                                            No, Keep Account
                                         </button>
                                     </div>
                                 )}
@@ -3246,12 +3411,28 @@ useEffect(() => {
                 const userDocRef = doc(db, "users", user.uid);
                 const userDocSnap = await getDoc(userDocRef);
 
+                // Fetch dynamic admin emails list from Firestore
+                let adminEmails = ['davidrai441@gmail.com'];
+                try {
+                    const adminConfigSnap = await getDoc(doc(db, "admin_settings", "config"));
+                    if (adminConfigSnap.exists() && Array.isArray(adminConfigSnap.data().adminEmails)) {
+                        adminEmails = [...new Set([...adminEmails, ...adminConfigSnap.data().adminEmails.map((e: string) => e.toLowerCase())])];
+                    }
+                } catch (e) {
+                    console.error("Failed to fetch admin emails configuration", e);
+                }
+
                 let rolesToAdd: UserRole[] = [];
                 const existingRoles: UserRole[] = userDocSnap.exists() ? (userDocSnap.data().roles || []) : [];
 
-                if (user.email === 'davidrai441@gmail.com' && !existingRoles.includes('admin')) {
+                const userEmailLower = (user.email || '').toLowerCase();
+                const isAdminEmail = userEmailLower ? adminEmails.includes(userEmailLower) : false;
+
+                if (isAdminEmail && !existingRoles.includes('admin')) {
                     rolesToAdd.push('admin');
-                } else if (user.email === 'koiralacm@gmail.com') {
+                }
+
+                if (user.email === 'koiralacm@gmail.com') {
                     if (!existingRoles.includes('news_contributor')) rolesToAdd.push('news_contributor');
                     if (!existingRoles.includes('podcast_contributor')) rolesToAdd.push('podcast_contributor');
                 }
@@ -3262,7 +3443,13 @@ useEffect(() => {
                     }
                     
                     const userData = userDocSnap.data();
-                    const finalRoles = [...new Set([...existingRoles, ...rolesToAdd])];
+                    let finalRoles = [...new Set([...existingRoles, ...rolesToAdd])];
+                    
+                    // Revoke admin role if user is no longer in adminEmails list (except primary admin)
+                    if (!isAdminEmail && finalRoles.includes('admin') && userEmailLower !== 'davidrai441@gmail.com') {
+                        finalRoles = finalRoles.filter(r => r !== 'admin');
+                        await updateDoc(userDocRef, { roles: arrayRemove('admin') });
+                    }
                     
                     if (!user.displayName && userData.name) {
                         await updateProfile(user, { displayName: userData.name });
@@ -3284,7 +3471,7 @@ useEffect(() => {
 
                 } else {
                     const baseRoles: UserRole[] = ['member'];
-                    const finalRoles = [...new Set([...baseRoles, ...rolesToAdd])];
+                    let finalRoles = [...new Set([...baseRoles, ...rolesToAdd])];
                     
                     const newUser: Omit<User, 'id'> = {
                         name: user.displayName || 'New User',
@@ -3315,7 +3502,29 @@ useEffect(() => {
         });
 
         const unsubPastWorship = onSnapshot(query(collection(db, "pastWorshipServices"), orderBy("createdAt", "desc")), (snapshot) => {
-            const services = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PastWorshipService));
+            const twoMonthsAgoMillis = Date.now() - (60 * 24 * 60 * 60 * 1000); // 60 days
+            const services: PastWorshipService[] = [];
+
+            snapshot.docs.forEach(docSnap => {
+                const data = docSnap.data();
+                const service = { id: docSnap.id, ...data } as PastWorshipService;
+
+                if (data.createdAt) {
+                    const createdAtMillis = typeof data.createdAt.toMillis === 'function' 
+                        ? data.createdAt.toMillis() 
+                        : (data.createdAt.seconds ? data.createdAt.seconds * 1000 : Date.now());
+
+                    if (createdAtMillis < twoMonthsAgoMillis) {
+                        // Automatically delete documents older than 2 months (60 days) from Firestore
+                        deleteDoc(doc(db, "pastWorshipServices", docSnap.id)).catch((err) => {
+                            console.error("Error auto-deleting old past worship service:", err);
+                        });
+                        return; // Exclude from UI
+                    }
+                }
+                services.push(service);
+            });
+
             setPastServices(services);
         });
 

@@ -2449,3 +2449,155 @@ html, body, #root {
 .settings-app-info p {
     margin: 2px 0;
 }
+
+/* Admin Management Section */
+.admin-section {
+    border-color: #cbd5e1;
+    background-color: #ffffff;
+}
+
+.section-subtitle {
+    font-size: 13px;
+    color: #64748b;
+    margin: -8px 0 16px 0;
+}
+
+.add-admin-form {
+    margin-bottom: 16px;
+}
+
+.admin-input-group {
+    display: flex;
+    gap: 8px;
+}
+
+.admin-email-input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.admin-email-input:focus {
+    border-color: var(--primary-color, #2563eb);
+}
+
+.add-admin-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background-color: var(--primary-color, #2563eb);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s;
+}
+
+.add-admin-btn:hover:not(:disabled) {
+    background-color: #1d4ed8;
+}
+
+.add-admin-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.admin-error-msg {
+    color: #ef4444;
+    font-size: 13px;
+    margin-top: 6px;
+    margin-bottom: 0;
+}
+
+.admin-list-container {
+    background-color: #f8fafc;
+    border-radius: 8px;
+    padding: 14px;
+    border: 1px solid #e2e8f0;
+}
+
+.admin-list-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #475569;
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.admin-email-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.admin-email-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background-color: #ffffff;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+}
+
+.admin-email-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #334155;
+    word-break: break-all;
+}
+
+.admin-icon {
+    font-size: 20px;
+    color: var(--primary-color, #2563eb);
+}
+
+.primary-admin-tag {
+    font-size: 11px;
+    background-color: #dbeafe;
+    color: #1e40af;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.you-tag {
+    font-size: 11px;
+    background-color: #fef3c7;
+    color: #92400e;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.remove-admin-btn {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.remove-admin-btn:hover {
+    color: #ef4444;
+    background-color: #fef2f2;
+}
